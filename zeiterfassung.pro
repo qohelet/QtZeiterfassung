@@ -23,7 +23,9 @@ SOURCES += main.cpp \
     models/buchungenmodel.cpp \
     dialogs/kontierungdialog.cpp \
     models/kontierungenmodel.cpp \
-    eventloopwithstatus.cpp
+    eventloopwithstatus.cpp \
+    strips/buchungstrip.cpp \
+    strips/kontierungstrip.cpp
 
 HEADERS += \
     zeiterfassung.h \
@@ -34,7 +36,9 @@ HEADERS += \
     models/buchungenmodel.h \
     dialogs/kontierungdialog.h \
     models/kontierungenmodel.h \
-    eventloopwithstatus.h
+    eventloopwithstatus.h \
+    strips/buchungstrip.h \
+    strips/kontierungstrip.h
 
 RESOURCES += \
     resources.qrc
@@ -44,4 +48,6 @@ FORMS += \
     dialogs/aboutmedialog.ui \
     dialogs/authenticationdialog.ui \
     dialogs/buchungdialog.ui \
-    dialogs/kontierungdialog.ui
+    dialogs/kontierungdialog.ui \
+    strips/buchungstrip.ui \
+    strips/kontierungstrip.ui
