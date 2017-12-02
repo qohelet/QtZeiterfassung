@@ -37,7 +37,7 @@ MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeit
 {
     ui->setupUi(this);
 
-    setWindowTitle(tr("Zeiterfassung - %0").arg(m_userInfo.text));
+    setWindowTitle(tr("Zeiterfassung - %0 (%1)").arg(m_userInfo.text).arg(m_userInfo.email));
 
     ui->actionQuit->setShortcut(QKeySequence::Quit);
 
@@ -847,14 +847,7 @@ void MainWindow::validateEntries()
         if(buchungenIter == m_buchungenModel->constEnd() &&
            kontierungenIter == m_kontierungenModel->constEnd())
         {
-            ui->timeEditTime->setEnabled(true);
-            ui->comboBoxProjekt->setEnabled(true);
-            ui->comboBoxSubprojekt->setEnabled(true);
-            ui->comboBoxWorkpackage->setEnabled(true);
-            ui->comboBoxText->setEnabled(true);
-            ui->pushButtonStart->setEnabled(true);
-
-            return;
+            goto after;
         }
 
         if(buchungenIter == m_buchungenModel->constEnd())
@@ -1053,6 +1046,8 @@ void MainWindow::validateEntries()
                             .arg(buchungTimespan.toString("HH:mm:ss"));
                     goto after;
                 }
+                else
+                    ui->verticalLayout2->addSpacing(17);
             }
         }
     }
