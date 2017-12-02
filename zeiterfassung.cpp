@@ -841,7 +841,7 @@ void Zeiterfassung::getAuswertungRequest0Finished()
 {
     if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
     {
-        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getProjekte->error()), QByteArray());
+        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getAuswertung->error()), QByteArray());
         m_replies.getAuswertung->deleteLater();
         m_replies.getAuswertung = Q_NULLPTR;
         return;
@@ -859,15 +859,15 @@ void Zeiterfassung::getAuswertungRequest0Finished()
 
 void Zeiterfassung::getAuswertungRequest1Finished()
 {
-    if(m_replies.getProjekte->error() != QNetworkReply::NoError)
+    if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
     {
-        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getProjekte->error()), QByteArray());
+        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getAuswertung->error()), QByteArray());
         goto end;
     }
 
-    Q_EMIT getAuswertungFinished(true, QString(), m_replies.getProjekte->readAll());
+    Q_EMIT getAuswertungFinished(true, QString(), m_replies.getAuswertung->readAll());
 
     end:
-    m_replies.getProjekte->deleteLater();
-    m_replies.getProjekte = Q_NULLPTR;
+    m_replies.getAuswertung->deleteLater();
+    m_replies.getAuswertung = Q_NULLPTR;
 }
