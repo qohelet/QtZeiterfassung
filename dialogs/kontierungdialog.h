@@ -13,7 +13,7 @@ class KontierungDialog : public QDialog
 
 public:
     explicit KontierungDialog(Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo,
-                              const QVector<Zeiterfassung::Projekt> &projekte, QWidget *parent = 0);
+                              const QMap<QString, QString> &projekte, QWidget *parent = 0);
     ~KontierungDialog();
 
     QTime getTime() const;

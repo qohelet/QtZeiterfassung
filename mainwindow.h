@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMap>
 
 #include "zeiterfassung.h"
 
@@ -48,7 +49,7 @@ private:
     QSettings &m_settings;
     Zeiterfassung &m_erfassung;
     const Zeiterfassung::UserInfo &m_userInfo;
-    QVector<Zeiterfassung::Projekt> m_projekte;
+    QMap<QString, QString> m_projekte;
     QByteArray m_auswertung;
     QLabel *m_auswertungLabel;
 
