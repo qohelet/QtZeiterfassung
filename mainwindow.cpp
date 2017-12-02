@@ -756,7 +756,7 @@ void MainWindow::validateEntries()
         }
 
         m_lastKontierungStart = startBuchung.time;
-        ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.time, startBuchung.type, ui->scrollAreaWidgetContents));
+        ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.id, startBuchung.time, startBuchung.type, ui->scrollAreaWidgetContents));
 
         if(kontierungenIter == m_kontierungenModel->constEnd())
         {
@@ -776,8 +776,8 @@ void MainWindow::validateEntries()
             return;
         }
 
-        ui->verticalLayout2->addWidget(new KontierungStrip(QTime(0, 0), kontierung.timespan, kontierung.projekt,
-                                                           kontierung.subprojekt, kontierung.workpackage, kontierung.text));
+        ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, kontierung.projekt, kontierung.subprojekt,
+                                                           kontierung.workpackage, kontierung.text, ui->scrollAreaWidgetContents));
 
         if(kontierung.timespan == QTime(0, 0))
         {
@@ -919,7 +919,7 @@ void MainWindow::validateEntries()
                     }
                 }
 
-                ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.time, endBuchung.type, ui->scrollAreaWidgetContents));
+                ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, ui->scrollAreaWidgetContents));
             }
         }
     }
