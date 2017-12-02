@@ -27,6 +27,7 @@ public:
 private Q_SLOTS:
     void refresh();
     void getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte);
+    void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
     void refreshBuchungenFinished(bool success, const QString &message);
     void refreshKontierungenFinished(bool success, const QString &message);
     void contextMenuBuchung(const QPoint &pos);
@@ -39,6 +40,7 @@ private Q_SLOTS:
 private:
     void validateEntries();
     void updateComboboxes();
+    void updateAuswertung();
     void clearStrips();
 
     Ui::MainWindow *ui;
@@ -46,6 +48,7 @@ private:
     Zeiterfassung &m_erfassung;
     const Zeiterfassung::UserInfo &m_userInfo;
     QVector<Zeiterfassung::Projekt> m_projekte;
+    QByteArray m_auswertung;
 
     BuchungenModel *m_buchungenModel;
     KontierungenModel *m_kontierungenModel;

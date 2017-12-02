@@ -271,8 +271,15 @@
     <addaction name="actionToday"/>
     <addaction name="actionRefresh"/>
    </widget>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="actionAuswertung"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menu_View"/>
+   <addaction name="menu_Tools"/>
    <addaction name="menu_About"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -322,6 +329,14 @@
    </property>
    <property name="text">
     <string>&amp;Refresh</string>
+   </property>
+  </action>
+  <action name="actionAuswertung">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Auswertung</string>
    </property>
   </action>
  </widget>
