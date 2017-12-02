@@ -45,6 +45,8 @@ private:
     void updateAuswertung();
     void clearStrips();
 
+    QString buildProjektString(const QString &projekt);
+
     Ui::MainWindow *ui;
     QSettings &m_settings;
     Zeiterfassung &m_erfassung;

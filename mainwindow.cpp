@@ -891,8 +891,9 @@ void MainWindow::validateEntries()
             goto after;
         }
 
-        ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, kontierung.projekt, kontierung.subprojekt,
-                                                           kontierung.workpackage, kontierung.text, ui->scrollAreaWidgetContents));
+        ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
+                                                           kontierung.subprojekt, kontierung.workpackage, kontierung.text,
+                                                           ui->scrollAreaWidgetContents));
 
         if(kontierung.timespan == QTime(0, 0))
         {
@@ -942,8 +943,9 @@ void MainWindow::validateEntries()
                         goto after;
                     }
 
-                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, kontierung.projekt, kontierung.subprojekt,
-                                                                       kontierung.workpackage, kontierung.text, ui->scrollAreaWidgetContents));
+                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
+                                                                       kontierung.subprojekt, kontierung.workpackage, kontierung.text,
+                                                                       ui->scrollAreaWidgetContents));
 
                     if(kontierung.timespan == QTime(0, 0))
                     {
@@ -1000,8 +1002,9 @@ void MainWindow::validateEntries()
                         goto after;
                     }
 
-                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, kontierung.projekt, kontierung.subprojekt,
-                                                                       kontierung.workpackage, kontierung.text, ui->scrollAreaWidgetContents));
+                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
+                                                                       kontierung.subprojekt, kontierung.workpackage, kontierung.text,
+                                                                       ui->scrollAreaWidgetContents));
 
                     if(kontierung.timespan == QTime(0, 0))
                     {
@@ -1169,4 +1172,12 @@ void MainWindow::clearStrips()
         item->widget()->deleteLater();
         delete item;
     }
+}
+
+QString MainWindow::buildProjektString(const QString &projekt)
+{
+    if(m_projekte.contains(projekt))
+        return m_projekte.value(projekt) % " (" % projekt % ")";
+    else
+        return projekt;
 }
