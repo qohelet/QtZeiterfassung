@@ -5,11 +5,12 @@
 
 #include "zeiterfassung.h"
 
+class QSettings;
+class QLabel;
+
 namespace Ui { class MainWindow; }
 class BuchungenModel;
 class KontierungenModel;
-
-class QSettings;
 
 class MainWindow : public QMainWindow
 {
@@ -49,6 +50,7 @@ private:
     const Zeiterfassung::UserInfo &m_userInfo;
     QVector<Zeiterfassung::Projekt> m_projekte;
     QByteArray m_auswertung;
+    QLabel *m_auswertungLabel;
 
     BuchungenModel *m_buchungenModel;
     KontierungenModel *m_kontierungenModel;

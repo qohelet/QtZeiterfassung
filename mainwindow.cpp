@@ -13,6 +13,7 @@
 #include <QDir>
 #include <QTemporaryFile>
 #include <QDesktopServices>
+#include <QRegularExpression>
 #include <QDebug>
 
 #include "eventloopwithstatus.h"
@@ -58,8 +59,6 @@ MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeit
         file.write(m_auswertung);
         file.close();
 
-        qDebug() << file.fileName();
-
         if(!QDesktopServices::openUrl(QUrl::fromLocalFile(file.fileName())))
         {
             QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open default PDF viewer!"));
@@ -101,6 +100,8 @@ MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeit
             this,                  &MainWindow::contextMenuBuchung);
     connect(ui->treeViewKontierungen, &QWidget::customContextMenuRequested,
             this,                     &MainWindow::contextMenuKontierung);
+
+    ui->statusbar->addPermanentWidget(m_auswertungLabel = new QLabel(ui->statusbar));
 
     updateAuswertung();
 }
@@ -210,7 +211,45 @@ void MainWindow::getAuswertungFinished(bool success, const QString &message, con
     ui->actionAuswertung->setEnabled(true);
     m_auswertung = content;
 
-    //TODO: parse content
+    QString normalArbeitszeit = QStringLiteral("???");
+    QString urlaubsAnspruch = QStringLiteral("???");
+    QString gleitzeit = QStringLiteral("???");
+
+    {
+        static QRegularExpression regex("Normalarbeitsze +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)");
+        auto match = regex.match(content);
+        if(match.hasMatch())
+        {
+            normalArbeitszeit = match.captured(2);
+            qDebug() << "Normalarbeitszeit" << match.captured(1) << match.captured(2);
+        }
+        else
+            qWarning() << "Normalarbeitszeit not found";
+    }
+    {
+        static QRegularExpression regex("Urlaubsanspruch +([0-9]+\\.[0-9]+\\-?) +([0-9]+\\.[0-9]+\\-?)");
+        auto match = regex.match(content);
+        if(match.hasMatch())
+        {
+            urlaubsAnspruch = match.captured(2);
+            qDebug() << "Urlaubsanspruch" << match.captured(1) << match.captured(2);
+        }
+        else
+            qWarning() << "Urlaubsanspruch not found";
+    }
+    {
+        static QRegularExpression regex("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)");
+        auto match = regex.match(content);
+        if(match.hasMatch())
+        {
+            gleitzeit = match.captured(2);
+            qDebug() << "Gleitzeit" << match.captured(1) << match.captured(2);
+        }
+        else
+            qWarning() << "Gleitzeit not found";
+    }
+
+    m_auswertungLabel->setText(tr("Urlaubsanspruch: %0 Gleitzeit: %1").arg(urlaubsAnspruch).arg(gleitzeit));
 }
 
 void MainWindow::refreshBuchungenFinished(bool success, const QString &message)
@@ -1103,6 +1142,10 @@ void MainWindow::updateComboboxes()
 
 void MainWindow::updateAuswertung()
 {
+    m_auswertungLabel->setText(tr("Urlaubsanspruch: %0 Gleitzeit: %1")
+                               .arg(QStringLiteral("???"))
+                               .arg(QStringLiteral("???")));
+
     ui->actionAuswertung->setEnabled(false);
     m_auswertung.clear();
 
