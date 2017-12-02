@@ -17,7 +17,8 @@ Zeiterfassung::Zeiterfassung(const QString &url, QObject *parent) :
     m_url(url),
     m_manager(new QNetworkAccessManager(this)),
     m_replies { Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR,
-                Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR }
+                Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR,
+                Q_NULLPTR }
 {
 }
 
@@ -325,7 +326,7 @@ bool Zeiterfassung::doDeleteKontierung(int kontierungId)
     return true;
 }
 
-bool Zeiterfassung::doGetProjekte(int userId, QDate date)
+bool Zeiterfassung::doGetProjekte(int userId, const QDate &date)
 {
     if(m_replies.getProjekte)
     {
@@ -341,6 +342,26 @@ bool Zeiterfassung::doGetProjekte(int userId, QDate date)
 
     m_replies.getProjekte = m_manager->get(request);
     connect(m_replies.getProjekte, &QNetworkReply::finished, this, &Zeiterfassung::getProjekteRequestFinished);
+
+    return true;
+}
+
+bool Zeiterfassung::doGetAuswertung(int userId, const QDate &date)
+{
+    if(m_replies.getAuswertung)
+    {
+        qWarning() << "another getAuswertung already processing!";
+        return false;
+    }
+
+    QNetworkRequest request(QUrl(QStringLiteral("%0json/auswertung/month?persNr=%1&date=%2")
+                                 .arg(m_url)
+                                 .arg(userId)
+                                 .arg(date.toString(QStringLiteral("yyyyMMdd")))));
+    request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
+
+    m_replies.getAuswertung = m_manager->get(request);
+    connect(m_replies.getAuswertung, &QNetworkReply::finished, this, &Zeiterfassung::getAuswertungRequest0Finished);
 
     return true;
 }
@@ -810,6 +831,41 @@ void Zeiterfassung::getProjekteRequestFinished()
 
         Q_EMIT getProjekteFinished(true, QString(), projekte);
     }
+
+    end:
+    m_replies.getProjekte->deleteLater();
+    m_replies.getProjekte = Q_NULLPTR;
+}
+
+void Zeiterfassung::getAuswertungRequest0Finished()
+{
+    if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
+    {
+        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getProjekte->error()), QByteArray());
+        m_replies.getAuswertung->deleteLater();
+        m_replies.getAuswertung = Q_NULLPTR;
+        return;
+    }
+
+    QUrl url(m_url);
+    url.setPath(QString(m_replies.getAuswertung->readAll()));
+
+    m_replies.getAuswertung->deleteLater();
+
+    m_replies.getAuswertung = m_manager->get(QNetworkRequest(url));
+    connect(m_replies.getAuswertung, &QNetworkReply::finished,
+            this,                    &Zeiterfassung::getAuswertungRequest1Finished);
+}
+
+void Zeiterfassung::getAuswertungRequest1Finished()
+{
+    if(m_replies.getProjekte->error() != QNetworkReply::NoError)
+    {
+        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getProjekte->error()), QByteArray());
+        goto end;
+    }
+
+    Q_EMIT getAuswertungFinished(true, QString(), m_replies.getProjekte->readAll());
 
     end:
     m_replies.getProjekte->deleteLater();
