@@ -55,7 +55,7 @@ MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeit
 
     connect(&m_erfassung, &Zeiterfassung::getProjekteFinished,
             this, &MainWindow::getProjekteFinished);
-    erfassung.doGetProjekte(userInfo.userId);
+    erfassung.doGetProjekte(userInfo.userId, QDate::currentDate());
 
     ui->comboBoxProjekt->setMaxVisibleItems(10);
 
@@ -75,6 +75,8 @@ MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeit
             this,                  &MainWindow::contextMenuBuchung);
     connect(ui->treeViewKontierungen, &QWidget::customContextMenuRequested,
             this,                     &MainWindow::contextMenuKontierung);
+
+    erfassung.doGetAuswertung(userInfo.userId, QDate::currentDate());
 }
 
 MainWindow::~MainWindow()
