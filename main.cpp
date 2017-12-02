@@ -13,6 +13,18 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
+    qSetMessagePattern("%{time dd.MM.yyyy HH:mm:ss.zzz} "
+                       "["
+                       "%{if-debug}D%{endif}"
+                       "%{if-info}I%{endif}"
+                       "%{if-warning}W%{endif}"
+                       "%{if-critical}C%{endif}"
+                       "%{if-fatal}F%{endif}"
+                       "] "
+                       "%{function}(): "
+                       "%{message}");
+
     QCoreApplication::setOrganizationDomain(QStringLiteral("brunner.ninja"));
     QCoreApplication::setOrganizationName(QStringLiteral("db-software"));
     QCoreApplication::setApplicationName(QStringLiteral("zeiterfassung"));
