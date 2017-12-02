@@ -192,7 +192,10 @@ void MainWindow::getProjekteFinished(bool success, const QString &message, const
         return;
     }
 
-    m_projekte = projekte;
+    m_projekte.clear();
+
+    for(const auto &projekt : projekte)
+        m_projekte.insert(projekt.value, projekt.label);
 
     updateComboboxes();
 }
@@ -1086,11 +1089,13 @@ void MainWindow::updateComboboxes()
 
         for(const auto &preferedProjekt : preferedProjekte)
         {
-            for(const auto &projekt : m_projekte)
+            if(!m_projekte.contains(preferedProjekt))
             {
-                if(preferedProjekt == projekt.value)
-                    ui->comboBoxProjekt->addItem(projekt.label % " (" % projekt.value % ')', projekt.value);
+                qWarning() << "cannot find projekt" << preferedProjekt;
+                continue;
             }
+
+            ui->comboBoxProjekt->addItem(m_projekte.value(preferedProjekt) % " (" % preferedProjekt % ')', preferedProjekt);
         }
 
         if(preferedProjekte.count())
@@ -1102,10 +1107,10 @@ void MainWindow::updateComboboxes()
             item->setFlags(item->flags() & ~(Qt::ItemIsSelectable|Qt::ItemIsEnabled));
         }
 
-        for(const auto &projekt : m_projekte)
+        for(auto iter = m_projekte.constBegin(); iter != m_projekte.constEnd(); iter++)
         {
-            if(!preferedProjekte.contains(projekt.value))
-                ui->comboBoxProjekt->addItem(projekt.label % " (" % projekt.value % ')', projekt.value);
+            if(!preferedProjekte.contains(iter.key()))
+                ui->comboBoxProjekt->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
         }
     }
 
