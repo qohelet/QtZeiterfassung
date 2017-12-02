@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1242</width>
-    <height>413</height>
+    <height>581</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -172,43 +172,56 @@
      </layout>
     </item>
     <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <widget class="QGroupBox" name="groupBoxBuchungen">
-       <property name="title">
-        <string>Buchungen</string>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QTreeView" name="treeViewBuchungen">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="contextMenuPolicy">
-           <enum>Qt::CustomContextMenu</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Optimized view</string>
+       </attribute>
       </widget>
-      <widget class="QGroupBox" name="groupBoxKontierungen">
-       <property name="title">
-        <string>Kontierungen</string>
+      <widget class="QSplitter" name="splitter">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QTreeView" name="treeViewKontierungen">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="contextMenuPolicy">
-           <enum>Qt::CustomContextMenu</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <attribute name="title">
+        <string>Advanced view</string>
+       </attribute>
+       <widget class="QGroupBox" name="groupBoxBuchungen">
+        <property name="title">
+         <string>Buchungen</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QTreeView" name="treeViewBuchungen">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="groupBoxKontierungen">
+        <property name="title">
+         <string>Kontierungen</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QTreeView" name="treeViewKontierungen">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>
