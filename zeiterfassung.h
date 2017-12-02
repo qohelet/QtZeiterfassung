@@ -8,6 +8,7 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
+class QByteArray;
 
 class Zeiterfassung : public QObject
 {
@@ -78,7 +79,8 @@ public Q_SLOTS:
                             const QString &workpackage, const QString &text);
     bool doDeleteKontierung(int kontierungId);
 
-    bool doGetProjekte(int userId, QDate date = QDate::currentDate());
+    bool doGetProjekte(int userId, const QDate &date);
+    bool doGetAuswertung(int userId, const QDate &date);
 
 Q_SIGNALS:
     void urlChanged(const QString &url);
@@ -98,6 +100,7 @@ Q_SIGNALS:
     void deleteKontierungFinished(bool success, const QString &message);
 
     void getProjekteFinished(bool success, const QString &message, const QVector<Projekt> &projekte);
+    void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
 
 private Q_SLOTS:
     void loginPageRequestFinished();
@@ -115,6 +118,8 @@ private Q_SLOTS:
     void deleteKontierungRequestFinished();
 
     void getProjekteRequestFinished();
+    void getAuswertungRequest0Finished();
+    void getAuswertungRequest1Finished();
 
 private:
     QString m_url;
@@ -136,6 +141,7 @@ private:
         QNetworkReply *deleteKontierung;
 
         QNetworkReply *getProjekte;
+        QNetworkReply *getAuswertung;
     } m_replies;
 };
 
