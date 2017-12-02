@@ -13,9 +13,12 @@ KontierungStrip::KontierungStrip(int id, const QTime &duration, const QString &p
 {
     ui->setupUi(this);
 
+    setMinimumHeight(minimumSizeHint().height());
+    setMaximumHeight(minimumSizeHint().height());
+
     setStyleSheet("background-color: #7FFFFF;");
 
-    ui->labelTime->setText(duration == QTime(0, 0) ? QStringLiteral("???") : duration.toString("HH:mm"));
+    ui->labelTime->setText(duration == QTime(0, 0) ? tr("Open") : duration.toString("HH:mm"));
     ui->labelProjekt->setText(projekt);
     ui->labelId->setText(QString::number(id));
 

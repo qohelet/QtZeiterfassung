@@ -8,6 +8,7 @@
 #include <QStandardItem>
 #include <QStringBuilder>
 #include <QMenu>
+#include <QLabel>
 #include <QDebug>
 
 #include "eventloopwithstatus.h"
@@ -586,7 +587,6 @@ void MainWindow::pushButtonStartPressed()
             connect(&m_erfassung, &Zeiterfassung::updateKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
             auto timespan = timeBetween(m_lastKontierungStart, ui->timeEditTime->time());
-            qDebug() << "timespan" << timespan;
 
             m_erfassung.doUpdateKontierung(kontierung.id, m_userInfo.userId, kontierung.date,
                                            kontierung.time, timespan,
@@ -684,7 +684,6 @@ void MainWindow::pushButtonEndPressed()
         connect(&m_erfassung, &Zeiterfassung::updateKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         auto timespan = timeBetween(m_lastKontierungStart, ui->timeEditTime->time());
-        qDebug() << "timespan" << timespan;
 
         m_erfassung.doUpdateKontierung(kontierung.id, m_userInfo.userId, kontierung.date,
                                        kontierung.time, timespan,
@@ -724,6 +723,8 @@ void MainWindow::validateEntries()
     m_kontierungTime = QTime(0, 0);
     auto buchungTimespan = QTime(0, 0);
 
+    QString errorMessage;
+
     while(true)
     {
         if(buchungenIter == m_buchungenModel->constEnd() &&
@@ -741,18 +742,17 @@ void MainWindow::validateEntries()
 
         if(buchungenIter == m_buchungenModel->constEnd())
         {
-            QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                 .arg(tr("Missing Buchung.")));
-            return;
+            errorMessage = tr("Missing Buchung.");
+            goto after;
         }
 
         auto startBuchung = *buchungenIter++;
-        qDebug() << "startBuchung" << startBuchung.time;
         if(startBuchung.type != QStringLiteral("K"))
         {
-            QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                 .arg(tr("Expected Buchung for Kommen, instead got type %0\nBuchung ID: %1").arg(startBuchung.type).arg(startBuchung.id)));
-            return;
+            errorMessage = tr("Expected Buchung for Kommen, instead got type %0\nBuchung ID: %1")
+                    .arg(startBuchung.type)
+                    .arg(startBuchung.id);
+            goto after;
         }
 
         m_lastKontierungStart = startBuchung.time;
@@ -760,20 +760,18 @@ void MainWindow::validateEntries()
 
         if(kontierungenIter == m_kontierungenModel->constEnd())
         {
-            QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                 .arg(tr("Missing Kontierung.")));
-            return;
+            errorMessage = tr("Missing Kontierung.");
+            goto after;
         }
 
         auto kontierung = *kontierungenIter++;
         if(kontierung.time != m_kontierungTime)
         {
-            QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                 .arg(tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
-                                      .arg(m_kontierungTime.toString("HH:mm:ss"))
-                                      .arg(kontierung.time.toString("HH:mm:ss"))
-                                      .arg(kontierung.id)));
-            return;
+            errorMessage = tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
+                    .arg(m_kontierungTime.toString("HH:mm:ss"))
+                    .arg(kontierung.time.toString("HH:mm:ss"))
+                    .arg(kontierung.id);
+            goto after;
         }
 
         ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, kontierung.projekt, kontierung.subprojekt,
@@ -783,20 +781,18 @@ void MainWindow::validateEntries()
         {
             if(buchungenIter != m_buchungenModel->constEnd())
             {
-                QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                     .arg(tr("There is another Buchung after an unfinished Kontierung.\nBuchung ID: %0\nKontierung ID: %1")
-                                          .arg(buchungenIter->id)
-                                          .arg(kontierung.id)));
-                return;
+                errorMessage = tr("There is another Buchung after an unfinished Kontierung.\nBuchung ID: %0\nKontierung ID: %1")
+                        .arg(buchungenIter->id)
+                        .arg(kontierung.id);
+                goto after;
             }
 
             if(kontierungenIter != m_kontierungenModel->constEnd())
             {
-                QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                     .arg(tr("There is another Kontierung after an unfinished Kontierung.\nKontierung ID: %0\nKontierung ID: %1")
-                                          .arg(kontierungenIter->id)
-                                          .arg(kontierung.id)));
-                return;
+                errorMessage = tr("There is another Kontierung after an unfinished Kontierung.\nKontierung ID: %0\nKontierung ID: %1")
+                        .arg(kontierungenIter->id)
+                        .arg(kontierung.id);
+                goto after;
             }
 
             ui->pushButtonStart->setText(tr("Switch"));
@@ -814,32 +810,33 @@ void MainWindow::validateEntries()
                 {
                     if(kontierungenIter == m_kontierungenModel->constEnd())
                     {
-                        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                             .arg(tr("The last Kontierung is finished without Gehen-Buchung\nKontierung ID: %0")
-                                                  .arg(kontierung.id)));
-                        return;
+                        errorMessage = tr("The last Kontierung is finished without Gehen-Buchung\nKontierung ID: %0")
+                                .arg(kontierung.id);
+                        goto after;
                     }
 
                     kontierung = *kontierungenIter++;
                     if(kontierung.time != m_kontierungTime)
                     {
-                        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                             .arg(tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
-                                                  .arg(m_kontierungTime.toString("HH:mm:ss"))
-                                                  .arg(kontierung.time.toString("HH:mm:ss"))
-                                                  .arg(kontierung.id)));
-                        return;
+                        errorMessage = tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
+                                .arg(m_kontierungTime.toString("HH:mm:ss"))
+                                .arg(kontierung.time.toString("HH:mm:ss"))
+                                .arg(kontierung.id);
+                        goto after;
                     }
+
+                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, kontierung.projekt, kontierung.subprojekt,
+                                                                       kontierung.workpackage, kontierung.text, ui->scrollAreaWidgetContents));
 
                     if(kontierung.timespan == QTime(0, 0))
                     {
                         if(kontierungenIter != m_kontierungenModel->constEnd())
                         {
-                            QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                                 .arg(tr("There is another Kontierung after an unfinished Kontierung.\nKontierung ID: %0\nKontierung ID: %1")
-                                                      .arg(kontierung.id)
-                                                      .arg(kontierungenIter->id)));
-                            return;
+                            errorMessage = tr("There is another Kontierung after an unfinished Kontierung.\n"
+                                              "Kontierung ID: %0\nKontierung ID: %1")
+                                    .arg(kontierung.id)
+                                    .arg(kontierungenIter->id);
+                            goto after;
                         }
 
                         ui->pushButtonStart->setText(tr("Switch"));
@@ -856,57 +853,56 @@ void MainWindow::validateEntries()
             else
             {
                 auto endBuchung = *buchungenIter++;
-                qDebug() << "endBuchung" << endBuchung.time;
                 if(endBuchung.type != QStringLiteral("G"))
                 {
-                    QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                         .arg(tr("Expected Buchung for Gehen, instead got type %0\nBuchung ID: %1").arg(endBuchung.type).arg(endBuchung.id)));
-                    return;
+                    errorMessage = tr("Expected Buchung for Gehen, instead got type %0\nBuchung ID: %1")
+                            .arg(endBuchung.type)
+                            .arg(endBuchung.id);
+                    goto after;
                 }
 
                 buchungTimespan = timeAdd(buchungTimespan, timeBetween(startBuchung.time, endBuchung.time));
-                qDebug() << "buchungTimespan" << buchungTimespan;
 
                 while(m_kontierungTime < buchungTimespan)
                 {
                     if(kontierungenIter == m_kontierungenModel->constEnd())
                     {
-                        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                             .arg(tr("Missing Kontierung! Time not filled: %0 - %1")
-                                                  .arg(m_kontierungTime.toString("HH:mm:ss"))
-                                                  .arg(buchungTimespan.toString("HH:mm:ss"))));
-                        return;
+                        errorMessage = tr("Missing Kontierung! Time not filled: %0 - %1")
+                                .arg(m_kontierungTime.toString("HH:mm:ss"))
+                                .arg(buchungTimespan.toString("HH:mm:ss"));
+                        goto after;
                     }
 
                     kontierung = *kontierungenIter++;
                     if(kontierung.time != m_kontierungTime)
                     {
-                        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                             .arg(tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
-                                                  .arg(m_kontierungTime.toString("HH:mm:ss"))
-                                                  .arg(kontierung.time.toString("HH:mm:ss"))
-                                                  .arg(kontierung.id)));
-                        return;
+                        errorMessage = tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
+                                .arg(m_kontierungTime.toString("HH:mm:ss"))
+                                .arg(kontierung.time.toString("HH:mm:ss"))
+                                .arg(kontierung.id);
+                        goto after;
                     }
+
+                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, kontierung.projekt, kontierung.subprojekt,
+                                                                       kontierung.workpackage, kontierung.text, ui->scrollAreaWidgetContents));
 
                     if(kontierung.timespan == QTime(0, 0))
                     {
                         if(buchungenIter != m_buchungenModel->constEnd())
                         {
-                            QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                                 .arg(tr("There is another Buchung after an unfinished Kontierung.\nBuchung ID: %0\nKontierung ID: %1")
-                                                      .arg(buchungenIter->id)
-                                                      .arg(kontierung.id)));
-                            return;
+                            errorMessage = tr("There is another Buchung after an unfinished Kontierung.\n"
+                                              "Buchung ID: %0\nKontierung ID: %1")
+                                    .arg(buchungenIter->id)
+                                    .arg(kontierung.id);
+                            goto after;
                         }
 
                         if(kontierungenIter != m_kontierungenModel->constEnd())
                         {
-                            QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
-                                                 .arg(tr("There is another Kontierung after an unfinished Kontierung.\nKontierung ID: %0\nKontierung ID: %1")
-                                                      .arg(kontierungenIter->id)
-                                                      .arg(kontierung.id)));
-                            return;
+                            errorMessage = tr("There is another Kontierung after an unfinished Kontierung.\nKontierung ID: %0\nKontierung ID: %1")
+                                    .arg(kontierungenIter->id)
+                                    .arg(kontierung.id);
+                            goto after;
                         }
 
                         ui->pushButtonStart->setText(tr("Switch"));
@@ -919,14 +915,45 @@ void MainWindow::validateEntries()
                     }
                 }
 
+                if(m_kontierungTime > buchungTimespan)
+                {
+                    auto label = new QLabel(tr("Kontierung timespan too long!"), ui->scrollAreaWidgetContents);
+                    label->setMinimumHeight(20);
+                    label->setMaximumHeight(20);
+                    ui->verticalLayout2->addWidget(label);
+                }
+
                 ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, ui->scrollAreaWidgetContents));
+
+                if(m_kontierungTime > buchungTimespan)
+                {
+                    errorMessage = tr("The Kontierung timespan is longer than the Kommen-Gehen timespan. "
+                                      "The tool does not support this yet!\nKontierung: %0\nBuchung: %1")
+                            .arg(m_kontierungTime.toString("HH:mm:ss"))
+                            .arg(buchungTimespan.toString("HH:mm:ss"));
+                    goto after;
+                }
             }
         }
     }
 
-    after:
+    if(!errorMessage.isEmpty())
+    {
+        auto label = new QLabel(tr("Strip rendering aborted due error. May not be complete!"), ui->scrollAreaWidgetContents);
+        label->setMinimumHeight(20);
+        label->setMaximumHeight(20);
+        ui->verticalLayout2->addWidget(label);
+    }
 
-    qDebug() << "m_kontierTime" << m_kontierungTime;
+    after:
+    ui->verticalLayout2->addStretch(1);
+
+    if(!errorMessage.isEmpty())
+    {
+        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
+                             .arg(errorMessage));
+        return;
+    }
 
     ui->timeEditTime->setEnabled(true);
     ui->comboBoxProjekt->setEnabled(true);
