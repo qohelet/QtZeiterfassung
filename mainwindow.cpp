@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QUrl>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QSettings>
@@ -9,6 +10,9 @@
 #include <QStringBuilder>
 #include <QMenu>
 #include <QLabel>
+#include <QDir>
+#include <QTemporaryFile>
+#include <QDesktopServices>
 #include <QDebug>
 
 #include "eventloopwithstatus.h"
@@ -40,6 +44,28 @@ MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeit
 
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
     connect(ui->actionRefresh, &QAction::triggered, this, &MainWindow::refresh);
+
+    connect(ui->actionAuswertung, &QAction::triggered, [=](){
+        QTemporaryFile file(QDir::temp().absoluteFilePath("auswertungXXXXXX.pdf"));
+        file.setAutoRemove(false);
+        if(!file.open())
+        {
+            QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Auswertung could not be written:\n\n%0")
+                                 .arg(file.errorString()));
+            return;
+        }
+
+        file.write(m_auswertung);
+        file.close();
+
+        qDebug() << file.fileName();
+
+        if(!QDesktopServices::openUrl(QUrl::fromLocalFile(file.fileName())))
+        {
+            QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open default PDF viewer!"));
+            return;
+        }
+    });
 
     connect(ui->actionAboutMe, &QAction::triggered, [=](){ AboutMeDialog(userInfo, this).exec(); });
     connect(ui->actionAboutQt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this); });
@@ -76,7 +102,7 @@ MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeit
     connect(ui->treeViewKontierungen, &QWidget::customContextMenuRequested,
             this,                     &MainWindow::contextMenuKontierung);
 
-    erfassung.doGetAuswertung(userInfo.userId, QDate::currentDate());
+    updateAuswertung();
 }
 
 MainWindow::~MainWindow()
@@ -168,6 +194,23 @@ void MainWindow::getProjekteFinished(bool success, const QString &message, const
     m_projekte = projekte;
 
     updateComboboxes();
+}
+
+void MainWindow::getAuswertungFinished(bool success, const QString &message, const QByteArray &content)
+{
+    disconnect(&m_erfassung, &Zeiterfassung::getAuswertungFinished,
+               this,         &MainWindow::getAuswertungFinished);
+
+    if(!success)
+    {
+        QMessageBox::warning(this, tr("Could not load Auswertung!"), tr("Could not load Auswertung:\n\n%0").arg(message));
+        return;
+    }
+
+    ui->actionAuswertung->setEnabled(true);
+    m_auswertung = content;
+
+    //TODO: parse content
 }
 
 void MainWindow::refreshBuchungenFinished(bool success, const QString &message)
@@ -1056,6 +1099,18 @@ void MainWindow::updateComboboxes()
         if(texte.count())
             ui->comboBoxText->setCurrentText(QString());
     }
+}
+
+void MainWindow::updateAuswertung()
+{
+    ui->actionAuswertung->setEnabled(false);
+    m_auswertung.clear();
+
+    if(m_erfassung.doGetAuswertung(m_userInfo.userId, QDate::currentDate()))
+        connect(&m_erfassung, &Zeiterfassung::getAuswertungFinished,
+                this,         &MainWindow::getAuswertungFinished);
+    else
+        QMessageBox::warning(this, tr("Unknown error occured."), tr("An unknown error occured."));
 }
 
 void MainWindow::clearStrips()
