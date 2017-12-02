@@ -821,6 +821,7 @@ void MainWindow::pushButtonEndPressed()
 
 void MainWindow::validateEntries()
 {
+    ui->timeEditTime->setMinimumTime(QTime(0, 0));
     ui->actionToday->setEnabled(true);
     ui->actionRefresh->setEnabled(true);
     ui->dateEditDate->setReadOnly(false);
@@ -906,6 +907,7 @@ void MainWindow::validateEntries()
                 goto after;
             }
 
+            ui->timeEditTime->setMinimumTime(timeAdd(m_lastKontierungStart, QTime(0, 1)));
             ui->pushButtonStart->setText(tr("Switch"));
             ui->pushButtonEnd->setEnabled(true);
             goto after;
@@ -951,6 +953,7 @@ void MainWindow::validateEntries()
                             goto after;
                         }
 
+                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastKontierungStart, QTime(0, 1)));
                         ui->pushButtonStart->setText(tr("Switch"));
                         ui->pushButtonEnd->setEnabled(true);
                         goto after;
@@ -974,6 +977,7 @@ void MainWindow::validateEntries()
                 }
 
                 buchungTimespan = timeAdd(buchungTimespan, timeBetween(startBuchung.time, endBuchung.time));
+                ui->timeEditTime->setMinimumTime(timeAdd(endBuchung.time, QTime(0, 1)));
 
                 while(m_kontierungTime < buchungTimespan)
                 {
@@ -1018,6 +1022,7 @@ void MainWindow::validateEntries()
                             goto after;
                         }
 
+                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastKontierungStart, QTime(0, 1)));
                         ui->pushButtonStart->setText(tr("Switch"));
                         ui->pushButtonEnd->setEnabled(true);
                         goto after;
@@ -1164,7 +1169,7 @@ void MainWindow::clearStrips()
     QLayoutItem *item;
     while(item = ui->verticalLayout2->takeAt(0))
     {
-        item->widget()->deleteLater();
+        delete item->widget();
         delete item;
     }
 }
