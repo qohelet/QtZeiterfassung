@@ -19,6 +19,11 @@ public:
     explicit MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent = 0);
     ~MainWindow();
 
+    static int timeToSeconds(const QTime &time);
+    static QTime timeBetween(const QTime &l, const QTime &r);
+    static QTime timeAdd(const QTime &l, const QTime &r);
+    static QTime timeNormalise(const QTime &time);
+
 private Q_SLOTS:
     void refresh();
     void getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte);
@@ -34,11 +39,7 @@ private Q_SLOTS:
 private:
     void validateEntries();
     void updateComboboxes();
-
-    static int timeToSeconds(const QTime &time);
-    static QTime timeBetween(const QTime &l, const QTime &r);
-    static QTime timeAdd(const QTime &l, const QTime &r);
-    static QTime timeNormalise(const QTime &time);
+    void clearStrips();
 
     Ui::MainWindow *ui;
     QSettings &m_settings;

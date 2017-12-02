@@ -14,6 +14,8 @@
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/buchungdialog.h"
 #include "dialogs/kontierungdialog.h"
+#include "strips/buchungstrip.h"
+#include "strips/kontierungstrip.h"
 #include "models/buchungenmodel.h"
 #include "models/kontierungenmodel.h"
 
@@ -79,6 +81,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+int MainWindow::timeToSeconds(const QTime &time)
+{
+    return QTime(0, 0).secsTo(time);
+}
+
+QTime MainWindow::timeBetween(const QTime &l, const QTime &r)
+{
+    Q_ASSERT(l <= r);
+    return QTime(0, 0).addSecs(l.secsTo(r));
+}
+
+QTime MainWindow::timeAdd(const QTime &l, const QTime &r)
+{
+    Q_ASSERT(timeToSeconds(l) + timeToSeconds(r) < 86400);
+    return l.addSecs(QTime(0, 0).secsTo(r));
+}
+
+QTime MainWindow::timeNormalise(const QTime &time)
+{
+    return time.addSecs(-time.second());
+}
+
 void MainWindow::refresh()
 {
     ui->actionToday->setEnabled(false);
@@ -119,6 +143,8 @@ void MainWindow::refresh()
         ui->actionRefresh->setEnabled(true);
         ui->dateEditDate->setReadOnly(false);
     }
+
+    clearStrips();
 }
 
 void MainWindow::getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte)
@@ -215,6 +241,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewBuchungen->setEnabled(false);
 
+                    clearStrips();
+
                     if(m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
                         connect(m_buchungenModel, &BuchungenModel::refreshFinished,
@@ -262,6 +290,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewBuchungen->setEnabled(false);
+
+                    clearStrips();
 
                     if(m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -314,6 +344,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewBuchungen->setEnabled(false);
+
+                    clearStrips();
 
                     if(m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -385,6 +417,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewKontierungen->setEnabled(false);
 
+                    clearStrips();
+
                     if(m_kontierungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
                         connect(m_kontierungenModel, &KontierungenModel::refreshFinished,
@@ -432,6 +466,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewKontierungen->setEnabled(false);
+
+                    clearStrips();
 
                     if(m_kontierungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -484,6 +520,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewKontierungen->setEnabled(false);
+
+                    clearStrips();
 
                     if(m_kontierungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -718,6 +756,7 @@ void MainWindow::validateEntries()
         }
 
         m_lastKontierungStart = startBuchung.time;
+        ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.time, startBuchung.type, ui->scrollAreaWidgetContents));
 
         if(kontierungenIter == m_kontierungenModel->constEnd())
         {
@@ -736,6 +775,9 @@ void MainWindow::validateEntries()
                                       .arg(kontierung.id)));
             return;
         }
+
+        ui->verticalLayout2->addWidget(new KontierungStrip(QTime(0, 0), kontierung.timespan, kontierung.projekt,
+                                                           kontierung.subprojekt, kontierung.workpackage, kontierung.text));
 
         if(kontierung.timespan == QTime(0, 0))
         {
@@ -876,6 +918,8 @@ void MainWindow::validateEntries()
                         m_kontierungTime = timeAdd(m_kontierungTime, kontierung.timespan);
                     }
                 }
+
+                ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.time, endBuchung.type, ui->scrollAreaWidgetContents));
             }
         }
     }
@@ -955,24 +999,12 @@ void MainWindow::updateComboboxes()
     }
 }
 
-int MainWindow::timeToSeconds(const QTime &time)
+void MainWindow::clearStrips()
 {
-    return QTime(0, 0).secsTo(time);
-}
-
-QTime MainWindow::timeBetween(const QTime &l, const QTime &r)
-{
-    Q_ASSERT(l <= r);
-    return QTime(0, 0).addSecs(l.secsTo(r));
-}
-
-QTime MainWindow::timeAdd(const QTime &l, const QTime &r)
-{
-    Q_ASSERT(timeToSeconds(l) + timeToSeconds(r) < 86400);
-    return l.addSecs(QTime(0, 0).secsTo(r));
-}
-
-QTime MainWindow::timeNormalise(const QTime &time)
-{
-    return time.addSecs(-time.second());
+    QLayoutItem *item;
+    while(item = ui->verticalLayout2->takeAt(0))
+    {
+        item->widget()->deleteLater();
+        delete item;
+    }
 }
