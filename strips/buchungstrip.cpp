@@ -9,6 +9,9 @@ BuchungStrip::BuchungStrip(int id, const QTime &time, const QString &type, QWidg
 {
     ui->setupUi(this);
 
+    setMinimumHeight(minimumSizeHint().height());
+    setMaximumHeight(minimumSizeHint().height());
+
     ui->labelTime->setText(time.toString("HH:mm"));
     if(type == QStringLiteral("K"))
     {
