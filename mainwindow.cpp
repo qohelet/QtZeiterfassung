@@ -109,9 +109,9 @@ void MainWindow::refresh()
     ui->actionToday->setEnabled(false);
     ui->actionRefresh->setEnabled(false);
     ui->dateEditDate->setReadOnly(true);
-    ui->timeEditTime->setEnabled(false);
     ui->pushButtonPrev->setEnabled(false);
     ui->pushButtonNext->setEnabled(false);
+    ui->timeEditTime->setEnabled(false);
     ui->comboBoxProjekt->setEnabled(false);
     ui->comboBoxSubprojekt->setEnabled(false);
     ui->comboBoxWorkpackage->setEnabled(false);
@@ -145,6 +145,8 @@ void MainWindow::refresh()
         ui->actionToday->setEnabled(true);
         ui->actionRefresh->setEnabled(true);
         ui->dateEditDate->setReadOnly(false);
+        ui->pushButtonPrev->setEnabled(true);
+        ui->pushButtonNext->setEnabled(true);
     }
 
     clearStrips();
@@ -235,9 +237,9 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->actionToday->setEnabled(false);
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
-                    ui->timeEditTime->setEnabled(false);
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
+                    ui->timeEditTime->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -259,6 +261,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                         ui->actionToday->setEnabled(true);
                         ui->actionRefresh->setEnabled(true);
                         ui->dateEditDate->setReadOnly(false);
+                        ui->pushButtonPrev->setEnabled(true);
+                        ui->pushButtonNext->setEnabled(true);
                     }
                 }
                 else
@@ -287,9 +291,9 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->actionToday->setEnabled(false);
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
-                    ui->timeEditTime->setEnabled(false);
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
+                    ui->timeEditTime->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -311,6 +315,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                         ui->actionToday->setEnabled(true);
                         ui->actionRefresh->setEnabled(true);
                         ui->dateEditDate->setReadOnly(false);
+                        ui->pushButtonPrev->setEnabled(true);
+                        ui->pushButtonNext->setEnabled(true);
                     }
                 }
                 else
@@ -343,9 +349,9 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->actionToday->setEnabled(false);
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
-                    ui->timeEditTime->setEnabled(false);
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
+                    ui->timeEditTime->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -367,6 +373,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                         ui->actionToday->setEnabled(true);
                         ui->actionRefresh->setEnabled(true);
                         ui->dateEditDate->setReadOnly(false);
+                        ui->pushButtonPrev->setEnabled(true);
+                        ui->pushButtonNext->setEnabled(true);
                     }
                 }
                 else
@@ -417,9 +425,9 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->actionToday->setEnabled(false);
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
-                    ui->timeEditTime->setEnabled(false);
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
+                    ui->timeEditTime->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -441,6 +449,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                         ui->actionToday->setEnabled(true);
                         ui->actionRefresh->setEnabled(true);
                         ui->dateEditDate->setReadOnly(false);
+                        ui->pushButtonPrev->setEnabled(true);
+                        ui->pushButtonNext->setEnabled(true);
                     }
                 }
                 else
@@ -469,9 +479,9 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->actionToday->setEnabled(false);
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
-                    ui->timeEditTime->setEnabled(false);
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
+                    ui->timeEditTime->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -493,6 +503,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                         ui->actionToday->setEnabled(true);
                         ui->actionRefresh->setEnabled(true);
                         ui->dateEditDate->setReadOnly(false);
+                        ui->pushButtonPrev->setEnabled(true);
+                        ui->pushButtonNext->setEnabled(true);
                     }
                 }
                 else
@@ -525,9 +537,9 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->actionToday->setEnabled(false);
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
-                    ui->timeEditTime->setEnabled(false);
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
+                    ui->timeEditTime->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -549,6 +561,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                         ui->actionToday->setEnabled(true);
                         ui->actionRefresh->setEnabled(true);
                         ui->dateEditDate->setReadOnly(false);
+                        ui->pushButtonPrev->setEnabled(true);
+                        ui->pushButtonNext->setEnabled(true);
                     }
                 }
                 else
@@ -723,6 +737,8 @@ void MainWindow::validateEntries()
     ui->actionToday->setEnabled(true);
     ui->actionRefresh->setEnabled(true);
     ui->dateEditDate->setReadOnly(false);
+    ui->pushButtonPrev->setEnabled(true);
+    ui->pushButtonNext->setEnabled(true);
     ui->pushButtonStart->setText(tr("Start"));
 
     if(!ui->treeViewBuchungen->isEnabled())
@@ -745,8 +761,6 @@ void MainWindow::validateEntries()
            kontierungenIter == m_kontierungenModel->constEnd())
         {
             ui->timeEditTime->setEnabled(true);
-            ui->pushButtonPrev->setEnabled(true);
-            ui->pushButtonNext->setEnabled(true);
             ui->comboBoxProjekt->setEnabled(true);
             ui->comboBoxSubprojekt->setEnabled(true);
             ui->comboBoxWorkpackage->setEnabled(true);
@@ -972,8 +986,6 @@ void MainWindow::validateEntries()
     }
 
     ui->timeEditTime->setEnabled(true);
-    ui->pushButtonPrev->setEnabled(true);
-    ui->pushButtonNext->setEnabled(true);
     ui->comboBoxProjekt->setEnabled(true);
     ui->comboBoxSubprojekt->setEnabled(true);
     ui->comboBoxWorkpackage->setEnabled(true);
