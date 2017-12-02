@@ -3,7 +3,7 @@
 
 #include <QTime>
 
-BuchungStrip::BuchungStrip(const QTime &time, const QString &type, QWidget *parent) :
+BuchungStrip::BuchungStrip(int id, const QTime &time, const QString &type, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::BuchungStrip)
 {
@@ -25,6 +25,8 @@ BuchungStrip::BuchungStrip(const QTime &time, const QString &type, QWidget *pare
         setStyleSheet("background-color: #FFFF7F;");
         ui->labelType->setText(tr("UNKNOWN"));
     }
+
+    ui->labelId->setText(QString::number(id));
 }
 
 BuchungStrip::~BuchungStrip()

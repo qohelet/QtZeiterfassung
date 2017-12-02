@@ -12,7 +12,7 @@ class BuchungStrip : public QFrame
     Q_OBJECT
 
 public:
-    explicit BuchungStrip(const QTime &time, const QString &type, QWidget *parent = 0);
+    explicit BuchungStrip(int id, const QTime &time, const QString &type, QWidget *parent = 0);
     ~BuchungStrip();
 
 private:
