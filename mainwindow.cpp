@@ -110,6 +110,8 @@ void MainWindow::refresh()
     ui->actionRefresh->setEnabled(false);
     ui->dateEditDate->setReadOnly(true);
     ui->timeEditTime->setEnabled(false);
+    ui->pushButtonPrev->setEnabled(false);
+    ui->pushButtonNext->setEnabled(false);
     ui->comboBoxProjekt->setEnabled(false);
     ui->comboBoxSubprojekt->setEnabled(false);
     ui->comboBoxWorkpackage->setEnabled(false);
@@ -234,6 +236,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
                     ui->timeEditTime->setEnabled(false);
+                    ui->pushButtonPrev->setEnabled(false);
+                    ui->pushButtonNext->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -284,6 +288,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
                     ui->timeEditTime->setEnabled(false);
+                    ui->pushButtonPrev->setEnabled(false);
+                    ui->pushButtonNext->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -338,6 +344,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
                     ui->timeEditTime->setEnabled(false);
+                    ui->pushButtonPrev->setEnabled(false);
+                    ui->pushButtonNext->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -410,6 +418,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
                     ui->timeEditTime->setEnabled(false);
+                    ui->pushButtonPrev->setEnabled(false);
+                    ui->pushButtonNext->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -460,6 +470,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
                     ui->timeEditTime->setEnabled(false);
+                    ui->pushButtonPrev->setEnabled(false);
+                    ui->pushButtonNext->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -514,6 +526,8 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->actionRefresh->setEnabled(false);
                     ui->dateEditDate->setReadOnly(true);
                     ui->timeEditTime->setEnabled(false);
+                    ui->pushButtonPrev->setEnabled(false);
+                    ui->pushButtonNext->setEnabled(false);
                     ui->comboBoxProjekt->setEnabled(false);
                     ui->comboBoxSubprojekt->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
@@ -731,6 +745,8 @@ void MainWindow::validateEntries()
            kontierungenIter == m_kontierungenModel->constEnd())
         {
             ui->timeEditTime->setEnabled(true);
+            ui->pushButtonPrev->setEnabled(true);
+            ui->pushButtonNext->setEnabled(true);
             ui->comboBoxProjekt->setEnabled(true);
             ui->comboBoxSubprojekt->setEnabled(true);
             ui->comboBoxWorkpackage->setEnabled(true);
@@ -918,9 +934,9 @@ void MainWindow::validateEntries()
                 if(m_kontierungTime > buchungTimespan)
                 {
                     auto label = new QLabel(tr("Kontierung timespan too long!"), ui->scrollAreaWidgetContents);
+                    ui->verticalLayout2->addWidget(label);
                     label->setMinimumHeight(20);
                     label->setMaximumHeight(20);
-                    ui->verticalLayout2->addWidget(label);
                 }
 
                 ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, ui->scrollAreaWidgetContents));
@@ -937,15 +953,15 @@ void MainWindow::validateEntries()
         }
     }
 
+    after:
     if(!errorMessage.isEmpty())
     {
-        auto label = new QLabel(tr("Strip rendering aborted due error. May not be complete!"), ui->scrollAreaWidgetContents);
+        auto label = new QLabel(tr("Strip rendering aborted due error."), ui->scrollAreaWidgetContents);
+        ui->verticalLayout2->addWidget(label);
         label->setMinimumHeight(20);
         label->setMaximumHeight(20);
-        ui->verticalLayout2->addWidget(label);
     }
 
-    after:
     ui->verticalLayout2->addStretch(1);
 
     if(!errorMessage.isEmpty())
@@ -956,6 +972,8 @@ void MainWindow::validateEntries()
     }
 
     ui->timeEditTime->setEnabled(true);
+    ui->pushButtonPrev->setEnabled(true);
+    ui->pushButtonNext->setEnabled(true);
     ui->comboBoxProjekt->setEnabled(true);
     ui->comboBoxSubprojekt->setEnabled(true);
     ui->comboBoxWorkpackage->setEnabled(true);
