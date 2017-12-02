@@ -1,12 +1,13 @@
 #include "kontierungdialog.h"
 #include "ui_kontierungdialog.h"
 
+#include <QMap>
 #include <QMessageBox>
 #include <QStringBuilder>
 #include <QDebug>
 
 KontierungDialog::KontierungDialog(Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo,
-                                   const QVector<Zeiterfassung::Projekt> &projekte, QWidget *parent) :
+                                   const QMap<QString, QString> &projekte, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::KontierungDialog),
     m_erfassung(erfassung),
@@ -14,8 +15,8 @@ KontierungDialog::KontierungDialog(Zeiterfassung &erfassung, const Zeiterfassung
 {
     ui->setupUi(this);
 
-    for(const auto& projekt : projekte)
-        ui->comboBoxProjekt->addItem(projekt.label % " (" % projekt.value % ')', projekt.value);
+    for(auto iter = projekte.constBegin(); iter != projekte.constEnd(); iter++)
+        ui->comboBoxProjekt->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
 }
 
 KontierungDialog::~KontierungDialog()
