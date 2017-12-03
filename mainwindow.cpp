@@ -488,7 +488,7 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
         auto selectedAction = menu.exec(ui->treeViewKontierungen->viewport()->mapToGlobal(pos));
         if(selectedAction == editAction)
         {
-            KontierungDialog dialog(m_erfassung, m_userInfo, m_projekte, this);
+            KontierungDialog dialog(m_projekte, m_settings, this);
             dialog.setTime(kontierung.time);
             dialog.setTimespan(kontierung.timespan);
             dialog.setProjekt(kontierung.projekt);
@@ -522,6 +522,11 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewKontierungen->setEnabled(false);
+
+                    addPreferedEntry("projekte", dialog.getProjekt());
+                    addPreferedEntry("subprojekte", dialog.getSubprojekt());
+                    addPreferedEntry("workpackages", dialog.getWorkpackage());
+                    addPreferedEntry("texte", dialog.getText());
 
                     clearStrips();
 
@@ -606,7 +611,7 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
         auto selectedAction = menu.exec(ui->treeViewKontierungen->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
-            KontierungDialog dialog(m_erfassung, m_userInfo, m_projekte, this);
+            KontierungDialog dialog(m_projekte, m_settings, this);
             again2:
             if(dialog.exec() == QDialog::Accepted)
             {
@@ -634,6 +639,11 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewKontierungen->setEnabled(false);
+
+                    addPreferedEntry("projekte", dialog.getProjekt());
+                    addPreferedEntry("subprojekte", dialog.getSubprojekt());
+                    addPreferedEntry("workpackages", dialog.getWorkpackage());
+                    addPreferedEntry("texte", dialog.getText());
 
                     clearStrips();
 
@@ -736,36 +746,10 @@ void MainWindow::pushButtonStartPressed()
         return;
     }
 
-    {
-        QStringList projekte = m_settings.value("projekte", QStringList()).toStringList();
-        projekte.removeAll(ui->comboBoxProjekt->currentData().toString());
-        projekte.prepend(ui->comboBoxProjekt->currentData().toString());
-        m_settings.setValue("projekte", projekte);
-    }
-
-    if(!ui->comboBoxSubprojekt->currentText().trimmed().isEmpty())
-    {
-        QStringList subprojekte = m_settings.value("subprojekte", QStringList()).toStringList();
-        subprojekte.removeAll(ui->comboBoxSubprojekt->currentText());
-        subprojekte.prepend(ui->comboBoxSubprojekt->currentText());
-        m_settings.setValue("subprojekte", subprojekte);
-    }
-
-    if(!ui->comboBoxWorkpackage->currentText().trimmed().isEmpty())
-    {
-        QStringList workpackages = m_settings.value("workpackages", QStringList()).toStringList();
-        workpackages.removeAll(ui->comboBoxWorkpackage->currentText());
-        workpackages.prepend(ui->comboBoxWorkpackage->currentText());
-        m_settings.setValue("workpackages", workpackages);
-    }
-
-    if(!ui->comboBoxText->currentText().trimmed().isEmpty())
-    {
-        QStringList texte = m_settings.value("texte", QStringList()).toStringList();
-        texte.removeAll(ui->comboBoxText->currentText());
-        texte.prepend(ui->comboBoxText->currentText());
-        m_settings.setValue("texte", texte);
-    }
+    addPreferedEntry("projekte", ui->comboBoxProjekt->currentData().toString());
+    addPreferedEntry("subprojekte", ui->comboBoxSubprojekt->currentText());
+    addPreferedEntry("workpackages", ui->comboBoxWorkpackage->currentText());
+    addPreferedEntry("texte", ui->comboBoxText->currentText());
 
     updateComboboxes();
 
@@ -817,6 +801,17 @@ void MainWindow::pushButtonEndPressed()
     }
 
     refresh();
+}
+
+void MainWindow::addPreferedEntry(const QString &name, const QString &value)
+{
+    if(value.trimmed().isEmpty())
+        return;
+
+    QStringList entries = m_settings.value(name, QStringList()).toStringList();
+    entries.removeAll(value);
+    entries.prepend(value);
+    m_settings.setValue(name, entries);
 }
 
 void MainWindow::validateEntries()
