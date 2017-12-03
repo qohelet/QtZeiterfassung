@@ -4,7 +4,6 @@
 #include <QUrl>
 #include <QLineEdit>
 #include <QMessageBox>
-#include <QSettings>
 #include <QStandardItem>
 #include <QStringBuilder>
 #include <QMenu>
@@ -15,6 +14,7 @@
 #include <QRegularExpression>
 #include <QDebug>
 
+#include "zeiterfassungsettings.h"
 #include "eventloopwithstatus.h"
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/buchungdialog.h"
@@ -24,7 +24,7 @@
 #include "models/buchungenmodel.h"
 #include "models/kontierungenmodel.h"
 
-MainWindow::MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent) :
+MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_settings(settings),
@@ -522,10 +522,10 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewKontierungen->setEnabled(false);
 
-                    addPreferedEntry("projekte", dialog.getProjekt());
-                    addPreferedEntry("subprojekte", dialog.getSubprojekt());
-                    addPreferedEntry("workpackages", dialog.getWorkpackage());
-                    addPreferedEntry("texte", dialog.getText());
+                    m_settings.prependProjekt(dialog.getProjekt());
+                    m_settings.prependSubprojekt(dialog.getSubprojekt());
+                    m_settings.prependWorkpackage(dialog.getWorkpackage());
+                    m_settings.prependText(dialog.getText());
 
                     clearStrips();
 
@@ -639,10 +639,10 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewKontierungen->setEnabled(false);
 
-                    addPreferedEntry("projekte", dialog.getProjekt());
-                    addPreferedEntry("subprojekte", dialog.getSubprojekt());
-                    addPreferedEntry("workpackages", dialog.getWorkpackage());
-                    addPreferedEntry("texte", dialog.getText());
+                    m_settings.prependProjekt(dialog.getProjekt());
+                    m_settings.prependSubprojekt(dialog.getSubprojekt());
+                    m_settings.prependWorkpackage(dialog.getWorkpackage());
+                    m_settings.prependText(dialog.getText());
 
                     clearStrips();
 
@@ -745,10 +745,10 @@ void MainWindow::pushButtonStartPressed()
         return;
     }
 
-    addPreferedEntry("projekte", ui->comboBoxProjekt->currentData().toString());
-    addPreferedEntry("subprojekte", ui->comboBoxSubprojekt->currentText());
-    addPreferedEntry("workpackages", ui->comboBoxWorkpackage->currentText());
-    addPreferedEntry("texte", ui->comboBoxText->currentText());
+    m_settings.prependProjekt(ui->comboBoxProjekt->currentData().toString());
+    m_settings.prependSubprojekt(ui->comboBoxSubprojekt->currentText());
+    m_settings.prependWorkpackage(ui->comboBoxWorkpackage->currentText());
+    m_settings.prependText(ui->comboBoxText->currentText());
 
     updateComboboxes();
 
@@ -800,17 +800,6 @@ void MainWindow::pushButtonEndPressed()
     }
 
     refresh();
-}
-
-void MainWindow::addPreferedEntry(const QString &name, const QString &value)
-{
-    if(value.trimmed().isEmpty())
-        return;
-
-    QStringList entries = m_settings.value(name, QStringList()).toStringList();
-    entries.removeAll(value);
-    entries.prepend(value);
-    m_settings.setValue(name, entries);
 }
 
 void MainWindow::validateEntries()
@@ -1082,7 +1071,7 @@ void MainWindow::updateComboboxes()
     ui->comboBoxProjekt->clear();
 
     {
-        auto preferedProjekte = m_settings.value("projekte", QStringList()).toStringList();
+        auto preferedProjekte = m_settings.projekte();
 
         for(const auto &preferedProjekt : preferedProjekte)
         {
@@ -1108,7 +1097,7 @@ void MainWindow::updateComboboxes()
     ui->comboBoxSubprojekt->clear();
 
     {
-        auto subprojekte = m_settings.value("subprojekte", QStringList()).toStringList();
+        auto subprojekte = m_settings.subprojekte();
         for(const auto &subprojekt : subprojekte)
             ui->comboBoxSubprojekt->addItem(subprojekt);
         if(subprojekte.count())
@@ -1118,7 +1107,7 @@ void MainWindow::updateComboboxes()
     ui->comboBoxWorkpackage->clear();
 
     {
-        auto workpackages = m_settings.value("workpackages", QStringList()).toStringList();
+        auto workpackages = m_settings.workpackages();
         for(const auto &workpackage : workpackages)
             ui->comboBoxWorkpackage->addItem(workpackage);
         if(workpackages.count())
@@ -1128,7 +1117,7 @@ void MainWindow::updateComboboxes()
     ui->comboBoxText->clear();
 
     {
-        auto texte = m_settings.value("texte", QStringList()).toStringList();
+        auto texte = m_settings.texte();
         for(const auto &text : texte)
             ui->comboBoxText->addItem(text);
         if(texte.count())

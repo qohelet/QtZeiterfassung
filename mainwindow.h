@@ -6,10 +6,10 @@
 
 #include "zeiterfassung.h"
 
-class QSettings;
 class QLabel;
 
 namespace Ui { class MainWindow; }
+class ZeiterfassungSettings;
 class BuchungenModel;
 class KontierungenModel;
 
@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent = 0);
+    explicit MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent = 0);
     ~MainWindow();
 
     static int timeToSeconds(const QTime &time);
@@ -40,7 +40,6 @@ private Q_SLOTS:
     void pushButtonEndPressed();
 
 private:
-    void addPreferedEntry(const QString &name, const QString &value);
     void validateEntries();
     void updateComboboxes();
     void updateAuswertung();
@@ -49,7 +48,7 @@ private:
     QString buildProjektString(const QString &projekt);
 
     Ui::MainWindow *ui;
-    QSettings &m_settings;
+    ZeiterfassungSettings &m_settings;
     Zeiterfassung &m_erfassung;
     const Zeiterfassung::UserInfo &m_userInfo;
     QMap<QString, QString> m_projekte;

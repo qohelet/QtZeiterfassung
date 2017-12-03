@@ -5,7 +5,8 @@
 #include <QTime>
 
 template <class Key, class T> class QMap;
-class QSettings;
+
+class ZeiterfassungSettings;
 
 namespace Ui { class KontierungDialog; }
 
@@ -14,7 +15,7 @@ class KontierungDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit KontierungDialog(const QMap<QString, QString> &projekte, const QSettings &settings,
+    explicit KontierungDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
                               QWidget *parent = 0);
     ~KontierungDialog();
 

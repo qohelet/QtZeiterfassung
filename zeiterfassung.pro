@@ -27,7 +27,8 @@ SOURCES += main.cpp \
     models/kontierungenmodel.cpp \
     eventloopwithstatus.cpp \
     strips/buchungstrip.cpp \
-    strips/kontierungstrip.cpp
+    strips/kontierungstrip.cpp \
+    zeiterfassungsettings.cpp
 
 HEADERS += \
     zeiterfassung.h \
@@ -40,7 +41,8 @@ HEADERS += \
     models/kontierungenmodel.h \
     eventloopwithstatus.h \
     strips/buchungstrip.h \
-    strips/kontierungstrip.h
+    strips/kontierungstrip.h \
+    zeiterfassungsettings.h
 
 RESOURCES += \
     resources.qrc
