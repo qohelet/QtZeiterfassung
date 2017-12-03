@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>45</height>
+    <height>50</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,6 +29,9 @@
       <font>
        <pointsize>15</pointsize>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #EEEEEE, stop:1 #BBBBBB); }</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
