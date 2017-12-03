@@ -2,11 +2,12 @@
 #include "ui_kontierungdialog.h"
 
 #include <QMap>
-#include <QSettings>
 #include <QStringBuilder>
 #include <QDebug>
 
-KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const QSettings &settings,
+#include "zeiterfassungsettings.h"
+
+KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
                                    QWidget *parent) :
     QDialog(parent),
     ui(new Ui::KontierungDialog)
@@ -14,9 +15,7 @@ KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const
     ui->setupUi(this);
 
     {
-        auto preferedProjekte = settings.value("projekte", QStringList()).toStringList();
-
-        for(const auto &preferedProjekt : preferedProjekte)
+        for(const auto &preferedProjekt : settings.projekte())
         {
             if(!projekte.contains(preferedProjekt))
             {
@@ -27,25 +26,25 @@ KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const
             ui->comboBoxProjekt->addItem(projekte.value(preferedProjekt) % " (" % preferedProjekt % ')', preferedProjekt);
         }
 
-        if(preferedProjekte.count())
+        if(settings.projekte().count())
             ui->comboBoxProjekt->insertSeparator(ui->comboBoxProjekt->count());
 
         for(auto iter = projekte.constBegin(); iter != projekte.constEnd(); iter++)
         {
-            if(!preferedProjekte.contains(iter.key()))
+            if(!settings.projekte().contains(iter.key()))
                 ui->comboBoxProjekt->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
         }
     }
 
-    for(const auto &subprojekt : settings.value("subprojekte", QStringList()).toStringList())
+    for(const auto &subprojekt : settings.subprojekte())
         ui->comboBoxSubprojekt->addItem(subprojekt);
     ui->comboBoxSubprojekt->clearEditText();
 
-    for(const auto &workpackage : settings.value("workpackages", QStringList()).toStringList())
+    for(const auto &workpackage : settings.workpackages())
         ui->comboBoxWorkpackage->addItem(workpackage);
     ui->comboBoxWorkpackage->clearEditText();
 
-    for(const auto &text : settings.value("texte", QStringList()).toStringList())
+    for(const auto &text : settings.texte())
         ui->comboBoxText->addItem(text);
     ui->comboBoxText->clearEditText();
 }
