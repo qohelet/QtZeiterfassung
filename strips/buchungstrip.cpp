@@ -15,17 +15,17 @@ BuchungStrip::BuchungStrip(int id, const QTime &time, const QString &type, QWidg
     ui->labelTime->setText(time.toString("HH:mm"));
     if(type == QStringLiteral("K"))
     {
-        setStyleSheet("background-color: #7FFF7F;");
+        setStyleSheet("BuchungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFF7F, stop:1 #6FBF6F); }");
         ui->labelType->setText(tr("KOMMEN"));
     }
     else if(type == QStringLiteral("G"))
     {
-        setStyleSheet("background-color: #FF7F7F;");
+        setStyleSheet("BuchungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FF7F7F, stop:1 #BF6F6F); }");
         ui->labelType->setText(tr("GEHEN"));
     }
     else
     {
-        setStyleSheet("background-color: #FFFF7F;");
+        setStyleSheet("BuchungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FFFF7F, stop:1 #BFBF6F); }");
         ui->labelType->setText(tr("UNKNOWN"));
     }
 
