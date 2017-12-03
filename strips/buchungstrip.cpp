@@ -2,8 +2,11 @@
 #include "ui_buchungstrip.h"
 
 #include <QTime>
+#include <QStringBuilder>
 
-BuchungStrip::BuchungStrip(int id, const QTime &time, const QString &type, QWidget *parent) :
+#include "zeiterfassungsettings.h"
+
+BuchungStrip::BuchungStrip(int id, const QTime &time, const QString &type, const ZeiterfassungSettings &settings, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::BuchungStrip)
 {
@@ -12,20 +15,20 @@ BuchungStrip::BuchungStrip(int id, const QTime &time, const QString &type, QWidg
     setMinimumHeight(minimumSizeHint().height());
     setMaximumHeight(minimumSizeHint().height());
 
-    ui->labelTime->setText(time.toString("HH:mm"));
+    ui->labelTime->setText(time.toString(QStringLiteral("HH:mm")));
     if(type == QStringLiteral("K"))
     {
-        setStyleSheet("BuchungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFF7F, stop:1 #6FBF6F); }");
+        setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.buchungKommenBackgroundColor()));
         ui->labelType->setText(tr("KOMMEN"));
     }
     else if(type == QStringLiteral("G"))
     {
-        setStyleSheet("BuchungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FF7F7F, stop:1 #BF6F6F); }");
+        setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.buchungGehenBackgroundColor()));
         ui->labelType->setText(tr("GEHEN"));
     }
     else
     {
-        setStyleSheet("BuchungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FFFF7F, stop:1 #BFBF6F); }");
+        setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.buchungOtherBackgroundColor()));
         ui->labelType->setText(tr("UNKNOWN"));
     }
 

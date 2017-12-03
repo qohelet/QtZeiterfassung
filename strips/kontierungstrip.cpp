@@ -4,10 +4,11 @@
 #include <QTime>
 #include <QStringBuilder>
 
-#include "mainwindow.h"
+#include "zeiterfassungsettings.h"
 
 KontierungStrip::KontierungStrip(int id, const QTime &duration, const QString &projekt, const QString &subprojekt,
-                                 const QString &workpackage, const QString &text, QWidget *parent) :
+                                 const QString &workpackage, const QString &text, const ZeiterfassungSettings &settings,
+                                 QWidget *parent) :
     QFrame(parent),
     ui(new Ui::KontierungStrip)
 {
@@ -16,9 +17,9 @@ KontierungStrip::KontierungStrip(int id, const QTime &duration, const QString &p
     setMinimumHeight(minimumSizeHint().height());
     setMaximumHeight(minimumSizeHint().height());
 
-    setStyleSheet("KontierungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFFFF, stop:1 #6FBFBF); }");
+    setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.kontierungBackgroundColor()));
 
-    ui->labelTime->setText(duration == QTime(0, 0) ? tr("Open") : duration.toString("HH:mm"));
+    ui->labelTime->setText(duration == QTime(0, 0) ? tr("Open") : duration.toString(QStringLiteral("HH:mm")));
     ui->labelProjekt->setText(projekt);
     ui->labelId->setText(QString::number(id));
 

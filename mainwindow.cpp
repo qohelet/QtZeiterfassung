@@ -850,7 +850,7 @@ void MainWindow::validateEntries()
         }
 
         m_lastKontierungStart = startBuchung.time;
-        ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.id, startBuchung.time, startBuchung.type, ui->scrollAreaWidgetContents));
+        ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.id, startBuchung.time, startBuchung.type, m_settings, ui->scrollAreaWidgetContents));
 
         if(kontierungenIter == m_kontierungenModel->constEnd())
         {
@@ -870,7 +870,7 @@ void MainWindow::validateEntries()
 
         ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
                                                            kontierung.subprojekt, kontierung.workpackage, kontierung.text,
-                                                           ui->scrollAreaWidgetContents));
+                                                           m_settings, ui->scrollAreaWidgetContents));
 
         if(kontierung.timespan == QTime(0, 0))
         {
@@ -923,7 +923,7 @@ void MainWindow::validateEntries()
 
                     ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
                                                                        kontierung.subprojekt, kontierung.workpackage, kontierung.text,
-                                                                       ui->scrollAreaWidgetContents));
+                                                                       m_settings, ui->scrollAreaWidgetContents));
 
                     if(kontierung.timespan == QTime(0, 0))
                     {
@@ -984,7 +984,7 @@ void MainWindow::validateEntries()
 
                     ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
                                                                        kontierung.subprojekt, kontierung.workpackage, kontierung.text,
-                                                                       ui->scrollAreaWidgetContents));
+                                                                       m_settings, ui->scrollAreaWidgetContents));
 
                     if(kontierung.timespan == QTime(0, 0))
                     {
@@ -1024,7 +1024,7 @@ void MainWindow::validateEntries()
                     label->setMaximumHeight(20);
                 }
 
-                ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, ui->scrollAreaWidgetContents));
+                ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, m_settings, ui->scrollAreaWidgetContents));
 
                 if(m_kontierungTime > buchungTimespan)
                 {
