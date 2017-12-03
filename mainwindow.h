@@ -40,6 +40,7 @@ private Q_SLOTS:
     void pushButtonEndPressed();
 
 private:
+    void addPreferedEntry(const QString &name, const QString &value);
     void validateEntries();
     void updateComboboxes();
     void updateAuswertung();

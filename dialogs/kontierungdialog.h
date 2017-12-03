@@ -2,8 +2,10 @@
 #define KONTIERUNGDIALOG_H
 
 #include <QDialog>
+#include <QTime>
 
-#include "zeiterfassung.h"
+template <class Key, class T> class QMap;
+class QSettings;
 
 namespace Ui { class KontierungDialog; }
 
@@ -12,8 +14,8 @@ class KontierungDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit KontierungDialog(Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo,
-                              const QMap<QString, QString> &projekte, QWidget *parent = 0);
+    explicit KontierungDialog(const QMap<QString, QString> &projekte, const QSettings &settings,
+                              QWidget *parent = 0);
     ~KontierungDialog();
 
     QTime getTime() const;
@@ -36,8 +38,6 @@ public:
 
 private:
     Ui::KontierungDialog *ui;
-    Zeiterfassung &m_erfassung;
-    const Zeiterfassung::UserInfo &m_userInfo;
 };
 
 #endif // KONTIERUNGDIALOG_H
