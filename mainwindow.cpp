@@ -5,7 +5,6 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QSettings>
-#include <QStandardItemModel>
 #include <QStandardItem>
 #include <QStringBuilder>
 #include <QMenu>
@@ -130,7 +129,7 @@ QTime MainWindow::timeAdd(const QTime &l, const QTime &r)
 
 QTime MainWindow::timeNormalise(const QTime &time)
 {
-    return time.addSecs(-time.second());
+    return QTime(time.hour(), time.minute());
 }
 
 void MainWindow::refresh()
@@ -419,7 +418,7 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
         if(selectedAction == createAction)
         {
             BuchungDialog dialog(this);
-            dialog.setTime(QTime::currentTime());
+            dialog.setTime(timeNormalise(QTime::currentTime()));
             again2:
             if(dialog.exec() == QDialog::Accepted)
             {
@@ -1097,13 +1096,7 @@ void MainWindow::updateComboboxes()
         }
 
         if(preferedProjekte.count())
-        {
-            ui->comboBoxProjekt->addItem(QStringLiteral("--------------"));
-
-            auto model = qobject_cast<const QStandardItemModel*>(ui->comboBoxProjekt->model());
-            auto item = model->item(ui->comboBoxProjekt->count() - 1);
-            item->setFlags(item->flags() & ~(Qt::ItemIsSelectable|Qt::ItemIsEnabled));
-        }
+            ui->comboBoxProjekt->insertSeparator(ui->comboBoxProjekt->count());
 
         for(auto iter = m_projekte.constBegin(); iter != m_projekte.constEnd(); iter++)
         {
