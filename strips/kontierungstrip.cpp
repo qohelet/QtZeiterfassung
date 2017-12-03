@@ -16,7 +16,7 @@ KontierungStrip::KontierungStrip(int id, const QTime &duration, const QString &p
     setMinimumHeight(minimumSizeHint().height());
     setMaximumHeight(minimumSizeHint().height());
 
-    setStyleSheet("background-color: #7FFFFF;");
+    setStyleSheet("KontierungStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFFFF, stop:1 #6FBFBF); }");
 
     ui->labelTime->setText(duration == QTime(0, 0) ? tr("Open") : duration.toString("HH:mm"));
     ui->labelProjekt->setText(projekt);
