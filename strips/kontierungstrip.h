@@ -5,6 +5,7 @@
 
 class QTime;
 
+class ZeiterfassungSettings;
 namespace Ui { class KontierungStrip; }
 
 class KontierungStrip : public QFrame
@@ -13,7 +14,8 @@ class KontierungStrip : public QFrame
 
 public:
     explicit KontierungStrip(int id, const QTime &duration, const QString &projekt, const QString &subprojekt,
-                             const QString &workpackage, const QString &text, QWidget *parent = 0);
+                             const QString &workpackage, const QString &text, const ZeiterfassungSettings &settings,
+                             QWidget *parent = 0);
     ~KontierungStrip();
 
 private:
