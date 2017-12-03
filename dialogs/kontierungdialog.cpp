@@ -5,7 +5,6 @@
 #include <QSettings>
 #include <QStringBuilder>
 #include <QDebug>
-#include <QStandardItemModel>
 
 KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const QSettings &settings,
                                    QWidget *parent) :
@@ -29,13 +28,7 @@ KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const
         }
 
         if(preferedProjekte.count())
-        {
-            ui->comboBoxProjekt->addItem(QStringLiteral("--------------"));
-
-            auto model = qobject_cast<const QStandardItemModel*>(ui->comboBoxProjekt->model());
-            auto item = model->item(ui->comboBoxProjekt->count() - 1);
-            item->setFlags(item->flags() & ~(Qt::ItemIsSelectable|Qt::ItemIsEnabled));
-        }
+            ui->comboBoxProjekt->insertSeparator(ui->comboBoxProjekt->count());
 
         for(auto iter = projekte.constBegin(); iter != projekte.constEnd(); iter++)
         {

@@ -6,7 +6,6 @@ BuchungDialog::BuchungDialog(QWidget *parent) :
     ui(new Ui::BuchungDialog)
 {
     ui->setupUi(this);
-    ui->timeEditTime->setTime(QTime::currentTime());
 }
 
 BuchungDialog::~BuchungDialog()
