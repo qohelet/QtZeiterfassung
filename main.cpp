@@ -1,10 +1,10 @@
 #include <QApplication>
 #include <QSplashScreen>
 #include <QPixmap>
-#include <QSettings>
 #include <QInputDialog>
 #include <QMessageBox>
 
+#include "zeiterfassungsettings.h"
 #include "zeiterfassung.h"
 #include "eventloopwithstatus.h"
 #include "dialogs/authenticationdialog.h"
@@ -36,22 +36,11 @@ int main(int argc, char *argv[])
     splashScreen.showMessage(QObject::tr("Loading settings..."));
     splashScreen.show();
 
-    QSettings settings;
-
-    if(settings.value("url").isNull())
-    {
-        bool ok;
-        auto url = QInputDialog::getText(&splashScreen, QObject::tr("Base url"),
-                                         QObject::tr("Please enter the base url to the Zeiterfassung:"),
-                                         QLineEdit::Normal, QString(), &ok);
-        if(!ok)
-            return -1;
-        settings.setValue("url", url);
-    }
+    ZeiterfassungSettings settings(&app);
 
     splashScreen.showMessage(QObject::tr("Loading login page..."));
 
-    Zeiterfassung erfassung(settings.value("url").toString());
+    Zeiterfassung erfassung(settings.url(), &app);
 
     {
         EventLoopWithStatus eventLoop;
@@ -69,10 +58,10 @@ int main(int argc, char *argv[])
 
             auto url = QInputDialog::getText(&splashScreen, QObject::tr("Base url"),
                                              QObject::tr("Please enter the base url to the Zeiterfassung:"),
-                                             QLineEdit::Normal, settings.value("url").toString(), &ok);
+                                             QLineEdit::Normal, settings.url(), &ok);
             if(!ok)
                 return -1;
-            settings.setValue("url", url);
+            settings.setUrl(url);
             erfassung.setUrl(url);
             goto again1;
         }
@@ -80,13 +69,13 @@ int main(int argc, char *argv[])
 
     splashScreen.showMessage(QObject::tr("Authenticating..."));
 
-    if(settings.value("username").isNull() || settings.value("password").isNull())
+    if(settings.username().isNull() || settings.password().isNull())
     {
         AuthenticationDialog dialog(&splashScreen);
         if(dialog.exec() != QDialog::Accepted)
             return -1;
-        settings.setValue("username", dialog.username());
-        settings.setValue("password", dialog.password());
+        settings.setUsername(dialog.username());
+        settings.setPassword(dialog.password());
     }
 
     {
@@ -94,7 +83,7 @@ int main(int argc, char *argv[])
         QObject::connect(&erfassung, &Zeiterfassung::loginFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         again2:
-        erfassung.doLogin(settings.value("username").toString(), settings.value("password").toString());
+        erfassung.doLogin(settings.username(), settings.password());
         eventLoop.exec();
 
         if(!eventLoop.success())
@@ -103,12 +92,12 @@ int main(int argc, char *argv[])
                                  QObject::tr("The Zeiterfassung authentication was not successful:\n\n%0").arg(eventLoop.message()));
 
             AuthenticationDialog dialog(&splashScreen);
-            dialog.setUsername(settings.value("username").toString());
-            dialog.setPassword(settings.value("password").toString());
+            dialog.setUsername(settings.username());
+            dialog.setPassword(settings.password());
             if(dialog.exec() != QDialog::Accepted)
                 return -1;
-            settings.setValue("username", dialog.username());
-            settings.setValue("password", dialog.password());
+            settings.setUsername(dialog.username());
+            settings.setPassword(dialog.password());
 
             goto again2;
         }
