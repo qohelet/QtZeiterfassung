@@ -2,10 +2,9 @@
 #define BUCHUNGDIALOG_H
 
 #include <QDialog>
+#include <QTime>
 
-namespace Ui {
-class BuchungDialog;
-}
+namespace Ui { class BuchungDialog; }
 
 class BuchungDialog : public QDialog
 {
