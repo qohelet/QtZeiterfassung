@@ -7,5 +7,6 @@
         <file>images/quit.png</file>
         <file>images/refresh.png</file>
         <file>images/today.png</file>
+        <file>images/icon.png</file>
     </qresource>
 </RCC>
