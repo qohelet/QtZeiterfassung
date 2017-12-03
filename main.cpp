@@ -25,6 +25,8 @@ int main(int argc, char *argv[])
                        "%{function}(): "
                        "%{message}");
 
+    QLocale::setDefault(QLocale(QLocale::German, QLocale::Austria));
+
     QCoreApplication::setOrganizationDomain(QStringLiteral("brunner.ninja"));
     QCoreApplication::setOrganizationName(QStringLiteral("db-software"));
     QCoreApplication::setApplicationName(QStringLiteral("zeiterfassung"));
