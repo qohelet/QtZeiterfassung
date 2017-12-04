@@ -199,7 +199,7 @@
           <x>0</x>
           <y>0</y>
           <width>1220</width>
-          <height>454</height>
+          <height>438</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout2">
@@ -261,7 +261,7 @@
      <x>0</x>
      <y>0</y>
      <width>1242</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -273,8 +273,10 @@
    <widget class="QMenu" name="menu_About">
     <property name="title">
      <string>&amp;About</string>
-    </property>
+    </property>v
     <addaction name="actionAboutMe"/>
+    <addaction name="actionSettings"/>
+    <addaction name="separator"/>
     <addaction name="actionAboutzeiterfassung"/>
     <addaction name="actionAboutQt"/>
    </widget>
@@ -351,6 +353,11 @@
    </property>
    <property name="text">
     <string>&amp;Auswertung</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>&amp;Settings</string>
    </property>
   </action>
  </widget>
