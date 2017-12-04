@@ -44,7 +44,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     connect(ui->actionToday, &QAction::triggered, [=](){ ui->dateEditDate->setDate(QDate::currentDate()); });
 
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
-    connect(ui->actionRefresh, &QAction::triggered, this, &MainWindow::refresh);
+    connect(ui->actionRefresh, &QAction::triggered, this, [=](){ refresh(true); });
 
     connect(ui->actionAuswertung, &QAction::triggered, [=](){
         QTemporaryFile file(QDir::temp().absoluteFilePath("auswertungXXXXXX.pdf"));
@@ -72,8 +72,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     connect(ui->actionAboutQt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this); });
 
     ui->dateEditDate->setDate(QDate::currentDate());
-    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, &MainWindow::refresh);
-    refresh();
+    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, [=](){ refresh(); });
 
     connect(ui->pushButtonPrev, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
     connect(ui->pushButtonNext, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
@@ -105,7 +104,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
 
     ui->statusbar->addPermanentWidget(m_auswertungLabel = new QLabel(ui->statusbar));
 
-    updateAuswertung();
+    refresh(true);
 }
 
 MainWindow::~MainWindow()
@@ -135,7 +134,7 @@ QTime MainWindow::timeNormalise(const QTime &time)
     return QTime(time.hour(), time.minute());
 }
 
-void MainWindow::refresh()
+void MainWindow::refresh(bool forceAuswertung)
 {
     ui->actionToday->setEnabled(false);
     ui->actionRefresh->setEnabled(false);
@@ -181,6 +180,30 @@ void MainWindow::refresh()
     }
 
     clearStrips();
+
+    auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
+    if(forceAuswertung || m_auswertungDate != auswertungDate)
+    {
+        m_auswertungLabel->setText(tr("Urlaubsanspruch: %0 Gleitzeit: %1")
+                                   .arg(QStringLiteral("???"))
+                                   .arg(QStringLiteral("???")));
+
+        ui->actionAuswertung->setEnabled(false);
+        m_auswertung.clear();
+
+        if(m_erfassung.doGetAuswertung(m_userInfo.userId, auswertungDate))
+        {
+            m_auswertungDate = auswertungDate;
+            connect(&m_erfassung, &Zeiterfassung::getAuswertungFinished,
+                    this,         &MainWindow::getAuswertungFinished);
+
+        }
+        else
+        {
+            m_auswertungDate = QDate();
+            QMessageBox::warning(this, tr("Unknown error occured."), tr("An unknown error occured."));
+        }
+    }
 }
 
 void MainWindow::getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte)
@@ -209,6 +232,7 @@ void MainWindow::getAuswertungFinished(bool success, const QString &message, con
 
     if(!success)
     {
+        m_auswertungDate = QDate();
         QMessageBox::warning(this, tr("Could not load Auswertung!"), tr("Could not load Auswertung:\n\n%0").arg(message));
         return;
     }
@@ -690,7 +714,7 @@ void MainWindow::pushButtonStartPressed()
         if(!eventLoop.success())
         {
             QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung:\n\n%0").arg(eventLoop.message()));
-            refresh();
+            refresh(true);
             return;
         }
     }
@@ -716,7 +740,7 @@ void MainWindow::pushButtonStartPressed()
             else
             {
                 QMessageBox::warning(this, tr("Could not update Kontierung!"), tr("Could not update Kontierung:\n\n%0").arg(eventLoop.message()));
-                refresh();
+                refresh(true);
                 return;
             }
         }
@@ -734,7 +758,7 @@ void MainWindow::pushButtonStartPressed()
     if(!eventLoop.success())
     {
         QMessageBox::warning(this, tr("Could not create Kontierung!"), tr("Could not create Kontierung:\n\n%0").arg(eventLoop.message()));
-        refresh();
+        refresh(true);
         return;
     }
 
@@ -745,7 +769,7 @@ void MainWindow::pushButtonStartPressed()
 
     updateComboboxes();
 
-    refresh();
+    refresh(true);
 }
 
 void MainWindow::pushButtonEndPressed()
@@ -762,7 +786,7 @@ void MainWindow::pushButtonEndPressed()
         if(!eventLoop.success())
         {
             QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung:\n\n%0").arg(eventLoop.message()));
-            refresh();
+            refresh(true);
             return;
         }
     }
@@ -787,12 +811,12 @@ void MainWindow::pushButtonEndPressed()
         else
         {
             QMessageBox::warning(this, tr("Could not update Kontierung!"), tr("Could not update Kontierung:\n\n%0").arg(eventLoop.message()));
-            refresh();
+            refresh(true);
             return;
         }
     }
 
-    refresh();
+    refresh(true);
 }
 
 void MainWindow::validateEntries()
@@ -1118,22 +1142,6 @@ void MainWindow::updateComboboxes()
     }
 }
 
-void MainWindow::updateAuswertung()
-{
-    m_auswertungLabel->setText(tr("Urlaubsanspruch: %0 Gleitzeit: %1")
-                               .arg(QStringLiteral("???"))
-                               .arg(QStringLiteral("???")));
-
-    ui->actionAuswertung->setEnabled(false);
-    m_auswertung.clear();
-
-    if(m_erfassung.doGetAuswertung(m_userInfo.userId, QDate::currentDate()))
-        connect(&m_erfassung, &Zeiterfassung::getAuswertungFinished,
-                this,         &MainWindow::getAuswertungFinished);
-    else
-        QMessageBox::warning(this, tr("Unknown error occured."), tr("An unknown error occured."));
-}
-
 void MainWindow::clearStrips()
 {
     QLayoutItem *item;
@@ -1149,5 +1157,8 @@ QString MainWindow::buildProjektString(const QString &projekt)
     if(m_projekte.contains(projekt))
         return m_projekte.value(projekt) % " (" % projekt % ")";
     else
+    {
+        qWarning() << "could not find projekt" << projekt;
         return projekt;
+    }
 }
