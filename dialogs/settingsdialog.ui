@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>647</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
+   <item>
+    <widget class="QLabel" name="labelTitle">
+     <property name="text">
+      <string>&lt;h1&gt;Settings&lt;/h1&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelbuchungKommenBackgroundColor">
+       <property name="text">
+        <string>buchungKommenBackgroundColor</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEditBuchungKommenBackgroundColor</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelbuchungGehenBackgroundColor">
+       <property name="text">
+        <string>buchungGehenBackgroundColor</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEditBuchungGehenBackgroundColor</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelbuchungOtherBackgroundColor">
+       <property name="text">
+        <string>buchungOtherBackgroundColor</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEditBuchungOtherBackgroundColor</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="kontierungBackgroundColor">
+       <property name="text">
+        <string>kontierungBackgroundColor</string>
+       </property>
+       <property name="buddy">
+        <cstring>lineEditKontierungBackgroundColor</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="lineEditBuchungKommenBackgroundColor"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="lineEditBuchungGehenBackgroundColor"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="lineEditBuchungOtherBackgroundColor"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="lineEditKontierungBackgroundColor"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>SettingsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -34,8 +34,6 @@ private Q_SLOTS:
     void refreshKontierungenFinished(bool success, const QString &message);
     void contextMenuBuchung(const QPoint &pos);
     void contextMenuKontierung(const QPoint &pos);
-    void pushButtonPrevPressed();
-    void pushButtonNextPressed();
     void pushButtonStartPressed();
     void pushButtonEndPressed();
 
