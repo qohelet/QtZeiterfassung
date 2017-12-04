@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     eventloopwithstatus.cpp \
     strips/buchungstrip.cpp \
     strips/kontierungstrip.cpp \
-    zeiterfassungsettings.cpp
+    zeiterfassungsettings.cpp \
+    dialogs/settingsdialog.cpp
 
 HEADERS += \
     zeiterfassung.h \
@@ -42,7 +43,8 @@ HEADERS += \
     eventloopwithstatus.h \
     strips/buchungstrip.h \
     strips/kontierungstrip.h \
-    zeiterfassungsettings.h
+    zeiterfassungsettings.h \
+    dialogs/settingsdialog.h
 
 RESOURCES += \
     resources.qrc
@@ -54,4 +56,5 @@ FORMS += \
     dialogs/buchungdialog.ui \
     dialogs/kontierungdialog.ui \
     strips/buchungstrip.ui \
-    strips/kontierungstrip.ui
+    strips/kontierungstrip.ui \
+    dialogs/settingsdialog.ui

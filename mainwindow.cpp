@@ -19,6 +19,7 @@
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/buchungdialog.h"
 #include "dialogs/kontierungdialog.h"
+#include "dialogs/settingsdialog.h"
 #include "strips/buchungstrip.h"
 #include "strips/kontierungstrip.h"
 #include "models/buchungenmodel.h"
@@ -66,14 +67,16 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     });
 
     connect(ui->actionAboutMe, &QAction::triggered, [=](){ AboutMeDialog(userInfo, this).exec(); });
+    connect(ui->actionSettings, &QAction::triggered, [=](){ SettingsDialog(m_settings, this).exec(); });
+
     connect(ui->actionAboutQt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this); });
 
     ui->dateEditDate->setDate(QDate::currentDate());
     connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, &MainWindow::refresh);
     refresh();
 
-    connect(ui->pushButtonPrev, &QAbstractButton::pressed, this, &MainWindow::pushButtonPrevPressed);
-    connect(ui->pushButtonNext, &QAbstractButton::pressed, this, &MainWindow::pushButtonNextPressed);
+    connect(ui->pushButtonPrev, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
+    connect(ui->pushButtonNext, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
 
     ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
 
@@ -669,16 +672,6 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
             }
         }
     }
-}
-
-void MainWindow::pushButtonPrevPressed()
-{
-    ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1));
-}
-
-void MainWindow::pushButtonNextPressed()
-{
-    ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1));
 }
 
 void MainWindow::pushButtonStartPressed()
