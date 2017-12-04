@@ -27,7 +27,7 @@ public:
     static QTime timeNormalise(const QTime &time);
 
 private Q_SLOTS:
-    void refresh();
+    void refresh(bool forceAuswertung = false);
     void getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte);
     void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
     void refreshBuchungenFinished(bool success, const QString &message);
@@ -40,7 +40,6 @@ private Q_SLOTS:
 private:
     void validateEntries();
     void updateComboboxes();
-    void updateAuswertung();
     void clearStrips();
 
     QString buildProjektString(const QString &projekt);
@@ -50,6 +49,7 @@ private:
     Zeiterfassung &m_erfassung;
     const Zeiterfassung::UserInfo &m_userInfo;
     QMap<QString, QString> m_projekte;
+    QDate m_auswertungDate;
     QByteArray m_auswertung;
     QLabel *m_auswertungLabel;
 
