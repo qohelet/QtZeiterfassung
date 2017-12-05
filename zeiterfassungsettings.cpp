@@ -162,14 +162,14 @@ void ZeiterfassungSettings::setBuchungOtherBackgroundColor(const QString &buchun
     setValue("buchungOtherBackgroundColor", buchungOtherBackgroundColor);
 }
 
-QString ZeiterfassungSettings::kontierungBackgroundColor() const
+QString ZeiterfassungSettings::timeAssignmentBackgroundColor() const
 {
-    return value("kontierungBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFFFF, stop:1 #6FBFBF)")).toString();
+    return value("timeAssignmentBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFFFF, stop:1 #6FBFBF)")).toString();
 }
 
-void ZeiterfassungSettings::setKontierungBackgroundColor(const QString kontierungBackgroundColor)
+void ZeiterfassungSettings::setTimeAssignmentBackgroundColor(const QString timeAssignmentBackgroundColor)
 {
-    setValue("kontierungBackgroundColor", kontierungBackgroundColor);
+    setValue("timeAssignmentBackgroundColor", timeAssignmentBackgroundColor);
 }
 
 void ZeiterfassungSettings::prepentItem(const QString &name, const QString &item)

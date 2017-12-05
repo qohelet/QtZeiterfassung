@@ -13,7 +13,7 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent)
     ui->lineEditBuchungKommenBackgroundColor->setText(settings.buchungKommenBackgroundColor());
     ui->lineEditBuchungGehenBackgroundColor->setText(settings.buchungGehenBackgroundColor());
     ui->lineEditBuchungOtherBackgroundColor->setText(settings.buchungOtherBackgroundColor());
-    ui->lineEditKontierungBackgroundColor->setText(settings.kontierungBackgroundColor());
+    ui->lineEditTimeAssignmentBackgroundColor->setText(settings.timeAssignmentBackgroundColor());
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::submit);
 }
@@ -31,8 +31,8 @@ void SettingsDialog::submit()
         m_settings.setBuchungGehenBackgroundColor(ui->lineEditBuchungGehenBackgroundColor->text());
     if(ui->lineEditBuchungOtherBackgroundColor->text() != m_settings.buchungOtherBackgroundColor())
         m_settings.setBuchungOtherBackgroundColor(ui->lineEditBuchungOtherBackgroundColor->text());
-    if(ui->lineEditKontierungBackgroundColor->text() != m_settings.kontierungBackgroundColor())
-        m_settings.setKontierungBackgroundColor(ui->lineEditKontierungBackgroundColor->text());
+    if(ui->lineEditTimeAssignmentBackgroundColor->text() != m_settings.timeAssignmentBackgroundColor())
+        m_settings.setTimeAssignmentBackgroundColor(ui->lineEditTimeAssignmentBackgroundColor->text());
 
     accept();
 }

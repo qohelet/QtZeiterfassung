@@ -187,11 +187,11 @@ bool Zeiterfassung::doDeleteBuchung(int buchungId)
     return true;
 }
 
-bool Zeiterfassung::doGetKontierungen(int userId, const QDate &start, const QDate &end)
+bool Zeiterfassung::doGetTimeAssignments(int userId, const QDate &start, const QDate &end)
 {
-    if(m_replies.getKontierungen)
+    if(m_replies.getTimeAssignments)
     {
-        qWarning() << "another getKontierungen already processing!";
+        qWarning() << "another getTimeAssignments already processing!";
         return false;
     }
 
@@ -202,18 +202,20 @@ bool Zeiterfassung::doGetKontierungen(int userId, const QDate &start, const QDat
                                  .arg(userId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.getKontierungen = m_manager->get(request);
-    connect(m_replies.getKontierungen, &QNetworkReply::finished,
-            this,                      &Zeiterfassung::getKontierungenRequestFinished);
+    m_replies.getTimeAssignments = m_manager->get(request);
+    connect(m_replies.getTimeAssignments, &QNetworkReply::finished,
+            this,                      &Zeiterfassung::getTimeAssignmentsRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doCreateKontierung(int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &projekt, const QString &subprojekt, const QString &workpackage, const QString &text)
+bool Zeiterfassung::doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
+                                           const QString &projekt, const QString &subprojekt, const QString &workpackage,
+                                           const QString &text)
 {
-    if(m_replies.createKontierung)
+    if(m_replies.createTimeAssignment)
     {
-        qWarning() << "another createKontierung already processing!";
+        qWarning() << "another createTimeAssignment already processing!";
         return false;
     }
 
@@ -248,27 +250,29 @@ bool Zeiterfassung::doCreateKontierung(int userId, const QDate &date, const QTim
         obj[QStringLiteral("koWertList")] = koWertList;
     }
 
-    m_replies.createKontierung = m_manager->post(request, QJsonDocument(obj).toJson());
-    connect(m_replies.createKontierung, &QNetworkReply::finished,
-            this,                       &Zeiterfassung::createKontierungRequestFinished);
+    m_replies.createTimeAssignment = m_manager->post(request, QJsonDocument(obj).toJson());
+    connect(m_replies.createTimeAssignment, &QNetworkReply::finished,
+            this,                       &Zeiterfassung::createTimeAssignmentRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doUpdateKontierung(int kontierungId, int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &projekt, const QString &subprojekt, const QString &workpackage, const QString &text)
+bool Zeiterfassung::doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
+                                           const QTime &timespan, const QString &projekt, const QString &subprojekt,
+                                           const QString &workpackage, const QString &text)
 {
-    if(m_replies.updateKontierung)
+    if(m_replies.updateTimeAssignment)
     {
-        qWarning() << "another updateKontierung already processing!";
+        qWarning() << "another updateTimeAssignment already processing!";
         return false;
     }
 
-    QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1").arg(m_url).arg(kontierungId)));
+    QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1").arg(m_url).arg(timeAssignmentId)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
     QJsonObject obj;
-    obj[QStringLiteral("bookingNr")] = kontierungId;
+    obj[QStringLiteral("bookingNr")] = timeAssignmentId;
     obj[QStringLiteral("persNr")] = userId;
     obj[QStringLiteral("bookingDate")] = date.toString("yyyyMMdd").toInt();
     obj[QStringLiteral("bookingTime")] = time.toString("Hmmss").toInt();
@@ -299,29 +303,29 @@ bool Zeiterfassung::doUpdateKontierung(int kontierungId, int userId, const QDate
         obj[QStringLiteral("koWertList")] = koWertList;
     }
 
-    m_replies.updateKontierung = m_manager->put(request, QJsonDocument(obj).toJson());
-    connect(m_replies.updateKontierung, &QNetworkReply::finished,
-            this,                       &Zeiterfassung::updateKontierungRequestFinished);
+    m_replies.updateTimeAssignment = m_manager->put(request, QJsonDocument(obj).toJson());
+    connect(m_replies.updateTimeAssignment, &QNetworkReply::finished,
+            this,                       &Zeiterfassung::updateTimeAssignmentRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doDeleteKontierung(int kontierungId)
+bool Zeiterfassung::doDeleteTimeAssignment(int timeAssignmentId)
 {
-    if(m_replies.deleteKontierung)
+    if(m_replies.deleteTimeAssignment)
     {
-        qWarning() << "another deleteKontierung already processing!";
+        qWarning() << "another deleteTimeAssignment already processing!";
         return false;
     }
 
     QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1")
                                  .arg(m_url)
-                                 .arg(kontierungId)));
+                                 .arg(timeAssignmentId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.deleteKontierung = m_manager->deleteResource(request);
-    connect(m_replies.deleteKontierung, &QNetworkReply::finished,
-            this,                       &Zeiterfassung::deleteKontierungRequestFinished);
+    m_replies.deleteTimeAssignment = m_manager->deleteResource(request);
+    connect(m_replies.deleteTimeAssignment, &QNetworkReply::finished,
+            this,                       &Zeiterfassung::deleteTimeAssignmentRequestFinished);
 
     return true;
 }
@@ -627,31 +631,31 @@ void Zeiterfassung::deleteBuchungRequestFinished()
     m_replies.deleteBuchung = Q_NULLPTR;
 }
 
-void Zeiterfassung::getKontierungenRequestFinished()
+void Zeiterfassung::getTimeAssignmentsRequestFinished()
 {
-    if(m_replies.getKontierungen->error() != QNetworkReply::NoError)
+    if(m_replies.getTimeAssignments->error() != QNetworkReply::NoError)
     {
-        Q_EMIT getKontierungenFinished(false, tr("Request error occured: %0").arg(m_replies.getKontierungen->error()), {});
+        Q_EMIT getTimeAssignmentsFinished(false, tr("Request error occured: %0").arg(m_replies.getTimeAssignments->error()), {});
         goto end;
     }
 
     {
         QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.getKontierungen->readAll(), &error);
+        QJsonDocument document = QJsonDocument::fromJson(m_replies.getTimeAssignments->readAll(), &error);
         if(error.error != QJsonParseError::NoError)
         {
-            Q_EMIT getKontierungenFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), {});
+            Q_EMIT getTimeAssignmentsFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), {});
             goto end;
         }
 
         if(!document.isArray())
         {
-            Q_EMIT getKontierungenFinished(false, tr("JSON document is not an array!"), {});
+            Q_EMIT getTimeAssignmentsFinished(false, tr("JSON document is not an array!"), {});
             goto end;
         }
 
         auto arr = document.array();
-        QVector<Kontierung> kontierungen;
+        QVector<TimeAssignment> timeAssignments;
 
         for(const auto &val : arr)
         {
@@ -659,7 +663,7 @@ void Zeiterfassung::getKontierungenRequestFinished()
 
             auto koWertList = obj.value(QStringLiteral("koWertList")).toArray();
 
-            kontierungen.append({
+            timeAssignments.append({
                                     obj.value(QStringLiteral("bookingNr")).toInt(),
                                     QDate::fromString(QString::number(obj.value(QStringLiteral("bookingDate")).toInt()), QStringLiteral("yyyyMMdd")),
                                     QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
@@ -671,34 +675,34 @@ void Zeiterfassung::getKontierungenRequestFinished()
                                });
         }
 
-        Q_EMIT getKontierungenFinished(true, QString(), kontierungen);
+        Q_EMIT getTimeAssignmentsFinished(true, QString(), timeAssignments);
     }
 
     end:
-    m_replies.getKontierungen->deleteLater();
-    m_replies.getKontierungen = Q_NULLPTR;
+    m_replies.getTimeAssignments->deleteLater();
+    m_replies.getTimeAssignments = Q_NULLPTR;
 }
 
-void Zeiterfassung::createKontierungRequestFinished()
+void Zeiterfassung::createTimeAssignmentRequestFinished()
 {
-    if(m_replies.createKontierung->error() != QNetworkReply::NoError)
+    if(m_replies.createTimeAssignment->error() != QNetworkReply::NoError)
     {
-        Q_EMIT createKontierungFinished(false, tr("Request error occured: %0").arg(m_replies.createKontierung->error()), -1);
+        Q_EMIT createTimeAssignmentFinished(false, tr("Request error occured: %0").arg(m_replies.createTimeAssignment->error()), -1);
         goto end;
     }
 
     {
         QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.createKontierung->readAll(), &error);
+        QJsonDocument document = QJsonDocument::fromJson(m_replies.createTimeAssignment->readAll(), &error);
         if(error.error != QJsonParseError::NoError)
         {
-            Q_EMIT createKontierungFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), -1);
+            Q_EMIT createTimeAssignmentFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), -1);
             goto end;
         }
 
         if(!document.isObject())
         {
-            Q_EMIT createKontierungFinished(false, tr("JSON document is not an object!"), -1);
+            Q_EMIT createTimeAssignmentFinished(false, tr("JSON document is not an object!"), -1);
             goto end;
         }
 
@@ -706,40 +710,40 @@ void Zeiterfassung::createKontierungRequestFinished()
 
         if(!obj.contains(QStringLiteral("bookingNr")))
         {
-            Q_EMIT createKontierungFinished(false, tr("JSON does not contain bookingNr!"), -1);
+            Q_EMIT createTimeAssignmentFinished(false, tr("JSON does not contain bookingNr!"), -1);
             goto end;
         }
 
-        auto kontierungId = obj.value(QStringLiteral("bookingNr")).toInt();
+        auto timeAssignmentId = obj.value(QStringLiteral("bookingNr")).toInt();
 
-        Q_EMIT createKontierungFinished(true, QString(), kontierungId);
+        Q_EMIT createTimeAssignmentFinished(true, QString(), timeAssignmentId);
     }
 
     end:
-    m_replies.createKontierung->deleteLater();
-    m_replies.createKontierung = Q_NULLPTR;
+    m_replies.createTimeAssignment->deleteLater();
+    m_replies.createTimeAssignment = Q_NULLPTR;
 }
 
-void Zeiterfassung::updateKontierungRequestFinished()
+void Zeiterfassung::updateTimeAssignmentRequestFinished()
 {
-    if(m_replies.updateKontierung->error() != QNetworkReply::NoError)
+    if(m_replies.updateTimeAssignment->error() != QNetworkReply::NoError)
     {
-        Q_EMIT updateKontierungFinished(false, tr("Request error occured: %0").arg(m_replies.updateKontierung->error()), -1);
+        Q_EMIT updateTimeAssignmentFinished(false, tr("Request error occured: %0").arg(m_replies.updateTimeAssignment->error()), -1);
         goto end;
     }
 
     {
         QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.updateKontierung->readAll(), &error);
+        QJsonDocument document = QJsonDocument::fromJson(m_replies.updateTimeAssignment->readAll(), &error);
         if(error.error != QJsonParseError::NoError)
         {
-            Q_EMIT updateKontierungFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), -1);
+            Q_EMIT updateTimeAssignmentFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), -1);
             goto end;
         }
 
         if(!document.isObject())
         {
-            Q_EMIT updateKontierungFinished(false, tr("JSON document is not an object!"), 0);
+            Q_EMIT updateTimeAssignmentFinished(false, tr("JSON document is not an object!"), 0);
             goto end;
         }
 
@@ -747,34 +751,34 @@ void Zeiterfassung::updateKontierungRequestFinished()
 
         if(!obj.contains(QStringLiteral("bookingNr")))
         {
-            Q_EMIT updateKontierungFinished(false, tr("JSON does not contain bookingNr!"), 0);
+            Q_EMIT updateTimeAssignmentFinished(false, tr("JSON does not contain bookingNr!"), 0);
             goto end;
         }
 
-        auto kontierungId = obj.value(QStringLiteral("bookingNr")).toInt();
+        auto timeAssignmentId = obj.value(QStringLiteral("bookingNr")).toInt();
 
-        Q_EMIT updateKontierungFinished(true, QString(), kontierungId);
+        Q_EMIT updateTimeAssignmentFinished(true, QString(), timeAssignmentId);
     }
 
     end:
-    m_replies.updateKontierung->deleteLater();
-    m_replies.updateKontierung = Q_NULLPTR;
+    m_replies.updateTimeAssignment->deleteLater();
+    m_replies.updateTimeAssignment = Q_NULLPTR;
 }
 
-void Zeiterfassung::deleteKontierungRequestFinished()
+void Zeiterfassung::deleteTimeAssignmentRequestFinished()
 {
-    if(m_replies.deleteKontierung->error() != QNetworkReply::NoError)
+    if(m_replies.deleteTimeAssignment->error() != QNetworkReply::NoError)
     {
-        Q_EMIT deleteKontierungFinished(false, tr("Request error occured: %0").arg(m_replies.deleteKontierung->error()));
+        Q_EMIT deleteTimeAssignmentFinished(false, tr("Request error occured: %0").arg(m_replies.deleteTimeAssignment->error()));
         goto end;
     }
 
     //only contains deleted id, so nothing to check here
-    Q_EMIT deleteKontierungFinished(true, QString());
+    Q_EMIT deleteTimeAssignmentFinished(true, QString());
 
     end:
-    m_replies.deleteKontierung->deleteLater();
-    m_replies.deleteKontierung = Q_NULLPTR;
+    m_replies.deleteTimeAssignment->deleteLater();
+    m_replies.deleteTimeAssignment = Q_NULLPTR;
 }
 
 void Zeiterfassung::getProjekteRequestFinished()
