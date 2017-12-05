@@ -10,8 +10,8 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent)
 {
     ui->setupUi(this);
 
-    ui->lineEditBuchungKommenBackgroundColor->setText(settings.buchungKommenBackgroundColor());
-    ui->lineEditBuchungGehenBackgroundColor->setText(settings.buchungGehenBackgroundColor());
+    ui->lineEditBuchungStartBackgroundColor->setText(settings.buchungStartBackgroundColor());
+    ui->lineEditBuchungEndBackgroundColor->setText(settings.buchungEndBackgroundColor());
     ui->lineEditBuchungOtherBackgroundColor->setText(settings.buchungOtherBackgroundColor());
     ui->lineEditTimeAssignmentBackgroundColor->setText(settings.timeAssignmentBackgroundColor());
 
@@ -25,10 +25,10 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::submit()
 {
-    if(ui->lineEditBuchungKommenBackgroundColor->text() != m_settings.buchungKommenBackgroundColor())
-        m_settings.setBuchungKommenBackgroundColor(ui->lineEditBuchungKommenBackgroundColor->text());
-    if(ui->lineEditBuchungGehenBackgroundColor->text() != m_settings.buchungGehenBackgroundColor())
-        m_settings.setBuchungGehenBackgroundColor(ui->lineEditBuchungGehenBackgroundColor->text());
+    if(ui->lineEditBuchungStartBackgroundColor->text() != m_settings.buchungStartBackgroundColor())
+        m_settings.setBuchungStartBackgroundColor(ui->lineEditBuchungStartBackgroundColor->text());
+    if(ui->lineEditBuchungEndBackgroundColor->text() != m_settings.buchungEndBackgroundColor())
+        m_settings.setBuchungEndBackgroundColor(ui->lineEditBuchungEndBackgroundColor->text());
     if(ui->lineEditBuchungOtherBackgroundColor->text() != m_settings.buchungOtherBackgroundColor())
         m_settings.setBuchungOtherBackgroundColor(ui->lineEditBuchungOtherBackgroundColor->text());
     if(ui->lineEditTimeAssignmentBackgroundColor->text() != m_settings.timeAssignmentBackgroundColor())

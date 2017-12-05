@@ -10,9 +10,6 @@
     <height>581</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>MainWindow</string>
-  </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
     <normaloff>:/zeiterfassung/images/icon.png</normaloff>:/zeiterfassung/images/icon.png</iconset>
