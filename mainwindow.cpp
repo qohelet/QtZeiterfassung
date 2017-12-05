@@ -102,6 +102,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     connect(ui->treeViewKontierungen, &QWidget::customContextMenuRequested,
             this,                     &MainWindow::contextMenuKontierung);
 
+    ui->statusbar->addPermanentWidget(m_kontierungLabel = new QLabel(ui->statusbar));
     ui->statusbar->addPermanentWidget(m_auswertungLabel = new QLabel(ui->statusbar));
 
     refresh(true);
@@ -150,6 +151,8 @@ void MainWindow::refresh(bool forceAuswertung)
     ui->pushButtonEnd->setEnabled(false);
     ui->treeViewBuchungen->setEnabled(false);
     ui->treeViewKontierungen->setEnabled(false);
+
+    m_kontierungLabel->setText(tr("Kontierung time: ???"));
 
     auto waitForBuchugen = m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
     if(waitForBuchugen)
@@ -841,6 +844,9 @@ void MainWindow::validateEntries()
     m_kontierungTime = QTime(0, 0);
     auto buchungTimespan = QTime(0, 0);
 
+    const Zeiterfassung::Buchung *lastBuchung = Q_NULLPTR;
+    const Zeiterfassung::Kontierung *lastKontierung = Q_NULLPTR;
+
     QString errorMessage;
 
     while(true)
@@ -866,6 +872,16 @@ void MainWindow::validateEntries()
             goto after;
         }
 
+        if(lastBuchung)
+        {
+            auto label = new QLabel(tr("Pause: %0h").arg(timeBetween(lastBuchung->time, startBuchung.time).toString(QStringLiteral("HH:mm"))), ui->scrollAreaWidgetContents);
+            ui->verticalLayout2->addWidget(label);
+            label->setMinimumHeight(20);
+            label->setMaximumHeight(20);
+        }
+
+        lastBuchung = &startBuchung;
+
         m_lastKontierungStart = startBuchung.time;
         ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.id, startBuchung.time, startBuchung.type, m_settings, ui->scrollAreaWidgetContents));
 
@@ -884,6 +900,8 @@ void MainWindow::validateEntries()
                     .arg(kontierung.id);
             goto after;
         }
+
+        lastKontierung = &kontierung;
 
         ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
                                                            kontierung.subprojekt, kontierung.workpackage, kontierung.text,
@@ -938,6 +956,8 @@ void MainWindow::validateEntries()
                         goto after;
                     }
 
+                    lastKontierung = &kontierung;
+
                     ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
                                                                        kontierung.subprojekt, kontierung.workpackage, kontierung.text,
                                                                        m_settings, ui->scrollAreaWidgetContents));
@@ -976,6 +996,8 @@ void MainWindow::validateEntries()
                     goto after;
                 }
 
+                lastBuchung = &endBuchung;
+
                 buchungTimespan = timeAdd(buchungTimespan, timeBetween(startBuchung.time, endBuchung.time));
                 ui->timeEditTime->setMinimumTime(timeAdd(endBuchung.time, QTime(0, 1)));
 
@@ -1007,6 +1029,8 @@ void MainWindow::validateEntries()
                                 .arg(kontierung.id);
                         goto after;
                     }
+
+                    lastKontierung = &kontierung;
 
                     ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
                                                                        kontierung.subprojekt, kontierung.workpackage, kontierung.text,
@@ -1058,15 +1082,17 @@ void MainWindow::validateEntries()
 
                 if(m_kontierungTime > buchungTimespan)
                     goto after;
-                else
-                    ui->verticalLayout2->addSpacing(17);
             }
         }
     }
 
     after:
-    if(!errorMessage.isEmpty())
+    if(errorMessage.isEmpty())
+        m_kontierungLabel->setText(tr("Kontierung time: %0h").arg(m_kontierungTime.toString(QStringLiteral("HH:mm"))));
+    else
     {
+        m_kontierungLabel->setText(tr("Kontierung time: ???"));
+
         auto label = new QLabel(tr("Strip rendering aborted due error."), ui->scrollAreaWidgetContents);
         ui->verticalLayout2->addWidget(label);
         label->setMinimumHeight(20);
