@@ -48,9 +48,6 @@ HEADERS += \
     dialogs/settingsdialog.h \
     dialogs/languageselectiondialog.h
 
-RESOURCES += \
-    resources.qrc
-
 FORMS += \
     mainwindow.ui \
     dialogs/aboutmedialog.ui \
@@ -61,6 +58,13 @@ FORMS += \
     strips/kontierungstrip.ui \
     dialogs/settingsdialog.ui \
     dialogs/languageselectiondialog.ui
+
+RESOURCES += \
+    resources.qrc
+
+TRANSLATIONS += \
+    translations/zeiterfassung_en.ts \
+    translations/zeiterfassung_de.ts
 
 win32 {
     CONFIG(debug, release|debug) {

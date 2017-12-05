@@ -1,12 +1,14 @@
 <RCC>
     <qresource prefix="/zeiterfassung">
-        <file>images/splash.png</file>
         <file>images/authentication.png</file>
+        <file>images/icon.png</file>
         <file>images/next.png</file>
         <file>images/previous.png</file>
         <file>images/quit.png</file>
         <file>images/refresh.png</file>
+        <file>images/splash.png</file>
         <file>images/today.png</file>
-        <file>images/icon.png</file>
+        <file>translations/zeiterfassung_de.qm</file>
+        <file>translations/zeiterfassung_en.qm</file>
     </qresource>
 </RCC>
