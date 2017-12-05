@@ -1,8 +1,10 @@
 #include <QApplication>
+#include <QTranslator>
+#include <QMessageBox>
 #include <QSplashScreen>
 #include <QPixmap>
+#include <QDir>
 #include <QInputDialog>
-#include <QMessageBox>
 
 #include <QDebug>
 
@@ -12,6 +14,28 @@
 #include "eventloopwithstatus.h"
 #include "dialogs/authenticationdialog.h"
 #include "mainwindow.h"
+
+bool loadAndInstallTranslator(QTranslator &translator,
+                              const QLocale &locale,
+                              const QString &filename,
+                              const QString &prefix = QString(),
+                              const QString &directory = QString(),
+                              const QString &suffix = QString())
+{
+    if(!translator.load(locale, filename, prefix, directory, suffix))
+    {
+        qDebug() << "could not load translation" << filename;
+        return false;
+    }
+
+    if(!QCoreApplication::installTranslator(&translator))
+    {
+        qDebug() << "could not install translation" << filename;
+        return false;
+    }
+
+    return true;
+}
 
 int main(int argc, char *argv[])
 {
@@ -57,6 +81,14 @@ int main(int argc, char *argv[])
     }
 
     QLocale::setDefault(QLocale(settings.language(), QLocale::Austria));
+
+    QTranslator qtTranslator(&app);
+    loadAndInstallTranslator(qtTranslator, QLocale(), QStringLiteral("qt"), QStringLiteral("_"),
+                             QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("translations"));
+
+    QTranslator zeiterfassungTranslator(&app);
+    loadAndInstallTranslator(zeiterfassungTranslator, QLocale(), QStringLiteral("zeiterfassung"),
+                             QStringLiteral("_"), QStringLiteral(":/zeiterfassung/translations"));
 
     splashScreen.showMessage(QObject::tr("Loading login page..."));
 
