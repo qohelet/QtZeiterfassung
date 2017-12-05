@@ -40,7 +40,7 @@ public:
         QString text;
     };
 
-    struct Kontierung
+    struct TimeAssignment
     {
         int id;
         QDate date;
@@ -70,14 +70,14 @@ public Q_SLOTS:
                          const QTime &timespan, const QString &type, const QString &text);
     bool doDeleteBuchung(int buchungId);
 
-    bool doGetKontierungen(int userId, const QDate &start, const QDate &end);
-    bool doCreateKontierung(int userId, const QDate &date, const QTime &time, const QTime &timespan,
-                            const QString &projekt, const QString &subprojekt, const QString &workpackage,
-                            const QString &text);
-    bool doUpdateKontierung(int kontierungId, int userId, const QDate &date, const QTime &time,
-                            const QTime &timespan, const QString &projekt, const QString &subprojekt,
-                            const QString &workpackage, const QString &text);
-    bool doDeleteKontierung(int kontierungId);
+    bool doGetTimeAssignments(int userId, const QDate &start, const QDate &end);
+    bool doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
+                                const QString &projekt, const QString &subprojekt, const QString &workpackage,
+                                const QString &text);
+    bool doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
+                                const QTime &timespan, const QString &projekt, const QString &subprojekt,
+                                const QString &workpackage, const QString &text);
+    bool doDeleteTimeAssignment(int timeAssignmentId);
 
     bool doGetProjekte(int userId, const QDate &date);
     bool doGetAuswertung(int userId, const QDate &date);
@@ -94,10 +94,10 @@ Q_SIGNALS:
     void updateBuchungFinished(bool success, const QString &message, int buchungId);
     void deleteBuchungFinished(bool success, const QString &message);
 
-    void getKontierungenFinished(bool success, const QString &message, const QVector<Kontierung> &kontierungen);
-    void createKontierungFinished(bool success, const QString &message, int buchungId);
-    void updateKontierungFinished(bool success, const QString &message, int buchungId);
-    void deleteKontierungFinished(bool success, const QString &message);
+    void getTimeAssignmentsFinished(bool success, const QString &message, const QVector<TimeAssignment> &timeAssignments);
+    void createTimeAssignmentFinished(bool success, const QString &message, int timeAssignmentId);
+    void updateTimeAssignmentFinished(bool success, const QString &message, int timeAssignmentId);
+    void deleteTimeAssignmentFinished(bool success, const QString &message);
 
     void getProjekteFinished(bool success, const QString &message, const QVector<Projekt> &projekte);
     void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
@@ -112,10 +112,10 @@ private Q_SLOTS:
     void updateBuchungRequestFinished();
     void deleteBuchungRequestFinished();
 
-    void getKontierungenRequestFinished();
-    void createKontierungRequestFinished();
-    void updateKontierungRequestFinished();
-    void deleteKontierungRequestFinished();
+    void getTimeAssignmentsRequestFinished();
+    void createTimeAssignmentRequestFinished();
+    void updateTimeAssignmentRequestFinished();
+    void deleteTimeAssignmentRequestFinished();
 
     void getProjekteRequestFinished();
     void getAuswertungRequest0Finished();
@@ -135,10 +135,10 @@ private:
         QNetworkReply *updateBuchung;
         QNetworkReply *deleteBuchung;
 
-        QNetworkReply *getKontierungen;
-        QNetworkReply *createKontierung;
-        QNetworkReply *updateKontierung;
-        QNetworkReply *deleteKontierung;
+        QNetworkReply *getTimeAssignments;
+        QNetworkReply *createTimeAssignment;
+        QNetworkReply *updateTimeAssignment;
+        QNetworkReply *deleteTimeAssignment;
 
         QNetworkReply *getProjekte;
         QNetworkReply *getAuswertung;

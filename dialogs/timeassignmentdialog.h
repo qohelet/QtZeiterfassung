@@ -1,5 +1,5 @@
-#ifndef KONTIERUNGDIALOG_H
-#define KONTIERUNGDIALOG_H
+#ifndef TIMEASSIGNMENTDIALOG_H
+#define TIMEASSIGNMENTDIALOG_H
 
 #include <QDialog>
 #include <QTime>
@@ -8,16 +8,16 @@ template <class Key, class T> class QMap;
 
 class ZeiterfassungSettings;
 
-namespace Ui { class KontierungDialog; }
+namespace Ui { class TimeAssignmentDialog; }
 
-class KontierungDialog : public QDialog
+class TimeAssignmentDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit KontierungDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
-                              QWidget *parent = 0);
-    ~KontierungDialog();
+    explicit TimeAssignmentDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
+                                  QWidget *parent = 0);
+    ~TimeAssignmentDialog();
 
     QTime getTime() const;
     void setTime(const QTime &time);
@@ -38,7 +38,7 @@ public:
     void setText(const QString &text);
 
 private:
-    Ui::KontierungDialog *ui;
+    Ui::TimeAssignmentDialog *ui;
 };
 
-#endif // KONTIERUNGDIALOG_H
+#endif // TIMEASSIGNMENTDIALOG_H

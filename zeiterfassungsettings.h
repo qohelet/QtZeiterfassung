@@ -55,8 +55,8 @@ public:
     QString buchungOtherBackgroundColor() const;
     void setBuchungOtherBackgroundColor(const QString &buchungOtherBackgroundColor);
 
-    QString kontierungBackgroundColor() const;
-    void setKontierungBackgroundColor(const QString kontierungBackgroundColor);
+    QString timeAssignmentBackgroundColor() const;
+    void setTimeAssignmentBackgroundColor(const QString timeAssignmentBackgroundColor);
 
 private:
     void prepentItem(const QString &name, const QString &item);

@@ -11,7 +11,7 @@ class QLabel;
 namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
 class BuchungenModel;
-class KontierungenModel;
+class TimeAssignmentsModel;
 
 class MainWindow : public QMainWindow
 {
@@ -31,9 +31,9 @@ private Q_SLOTS:
     void getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte);
     void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
     void refreshBuchungenFinished(bool success, const QString &message);
-    void refreshKontierungenFinished(bool success, const QString &message);
+    void refreshTimeAssignmentsFinished(bool success, const QString &message);
     void contextMenuBuchung(const QPoint &pos);
-    void contextMenuKontierung(const QPoint &pos);
+    void contextMenuTimeAssignment(const QPoint &pos);
     void pushButtonStartPressed();
     void pushButtonEndPressed();
 
@@ -56,11 +56,11 @@ private:
     QLabel *m_holidaysLabel;
 
     BuchungenModel *m_buchungenModel;
-    KontierungenModel *m_kontierungenModel;
+    TimeAssignmentsModel *m_timeAssignmentsModel;
 
     bool m_flag;
-    QTime m_kontierungTime;
-    QTime m_lastKontierungStart;
+    QTime m_timeAssignmentTime;
+    QTime m_lastTimeAssignmentStart;
 };
 
 #endif // MAINWINDOW_H

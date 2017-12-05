@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>KontierungDialog</class>
- <widget class="QDialog" name="KontierungDialog">
+ <class>TimeAssignmentDialog</class>
+ <widget class="QDialog" name="TimeAssignmentDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>307</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -17,7 +23,7 @@
    <item>
     <widget class="QLabel" name="labelTitle">
      <property name="text">
-      <string>&lt;h1&gt;Kontierung&lt;/h1&gt;</string>
+      <string>&lt;h1&gt;Time assignment&lt;/h1&gt;</string>
      </property>
     </widget>
    </item>
@@ -140,7 +146,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>KontierungDialog</receiver>
+   <receiver>TimeAssignmentDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -156,7 +162,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>KontierungDialog</receiver>
+   <receiver>TimeAssignmentDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

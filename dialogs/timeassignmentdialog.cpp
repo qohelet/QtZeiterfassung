@@ -1,5 +1,5 @@
-#include "kontierungdialog.h"
-#include "ui_kontierungdialog.h"
+#include "timeassignmentdialog.h"
+#include "ui_timeassignmentdialog.h"
 
 #include <QMap>
 #include <QStringBuilder>
@@ -7,10 +7,10 @@
 
 #include "zeiterfassungsettings.h"
 
-KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
+TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
                                    QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::KontierungDialog)
+    ui(new Ui::TimeAssignmentDialog)
 {
     ui->setupUi(this);
 
@@ -49,37 +49,37 @@ KontierungDialog::KontierungDialog(const QMap<QString, QString> &projekte, const
     ui->comboBoxText->clearEditText();
 }
 
-KontierungDialog::~KontierungDialog()
+TimeAssignmentDialog::~TimeAssignmentDialog()
 {
     delete ui;
 }
 
-QTime KontierungDialog::getTime() const
+QTime TimeAssignmentDialog::getTime() const
 {
     return ui->timeEditTime->time();
 }
 
-void KontierungDialog::setTime(const QTime &time)
+void TimeAssignmentDialog::setTime(const QTime &time)
 {
     ui->timeEditTime->setTime(time);
 }
 
-QTime KontierungDialog::getTimespan() const
+QTime TimeAssignmentDialog::getTimespan() const
 {
     return ui->timeEditTimespan->time();
 }
 
-void KontierungDialog::setTimespan(const QTime &timespan)
+void TimeAssignmentDialog::setTimespan(const QTime &timespan)
 {
     ui->timeEditTimespan->setTime(timespan);
 }
 
-QString KontierungDialog::getProjekt() const
+QString TimeAssignmentDialog::getProjekt() const
 {
     return ui->comboBoxProjekt->currentData().toString();
 }
 
-void KontierungDialog::setProjekt(const QString &projekt)
+void TimeAssignmentDialog::setProjekt(const QString &projekt)
 {
     auto index = ui->comboBoxProjekt->findData(projekt);
     if(index >= 0)
@@ -88,32 +88,32 @@ void KontierungDialog::setProjekt(const QString &projekt)
         qWarning() << "could not find projekt" << projekt;
 }
 
-QString KontierungDialog::getSubprojekt() const
+QString TimeAssignmentDialog::getSubprojekt() const
 {
     return ui->comboBoxSubprojekt->currentText();
 }
 
-void KontierungDialog::setSubprojekt(const QString &subprojekt)
+void TimeAssignmentDialog::setSubprojekt(const QString &subprojekt)
 {
     ui->comboBoxSubprojekt->setCurrentText(subprojekt);
 }
 
-QString KontierungDialog::getWorkpackage() const
+QString TimeAssignmentDialog::getWorkpackage() const
 {
     return ui->comboBoxWorkpackage->currentText();
 }
 
-void KontierungDialog::setWorkpackage(const QString &workpackage)
+void TimeAssignmentDialog::setWorkpackage(const QString &workpackage)
 {
     ui->comboBoxWorkpackage->setCurrentText(workpackage);
 }
 
-QString KontierungDialog::getText() const
+QString TimeAssignmentDialog::getText() const
 {
     return ui->comboBoxText->currentText();
 }
 
-void KontierungDialog::setText(const QString &text)
+void TimeAssignmentDialog::setText(const QString &text)
 {
     ui->comboBoxText->setCurrentText(text);
 }
