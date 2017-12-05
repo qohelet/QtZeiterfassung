@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>394</width>
-    <height>169</height>
+    <height>181</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
         </size>
        </property>
        <property name="pixmap">
-        <pixmap resource="resources.qrc">:/zeiterfassung/images/authentication.png</pixmap>
+        <pixmap resource="../resources.qrc">:/zeiterfassung/images/authentication.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -94,7 +94,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections>
   <connection>
