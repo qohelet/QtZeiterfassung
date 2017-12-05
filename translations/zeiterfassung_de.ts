@@ -402,6 +402,26 @@ Buchung ID: %1</source>
         <source>timeAssignmentBackgroundColor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>language</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>Englisch</translation>
+    </message>
+    <message>
+        <source>German</source>
+        <translation>Deutsch</translation>
+    </message>
+    <message>
+        <source>Restart required!</source>
+        <translation>Neustart erforderlich!</translation>
+    </message>
+    <message>
+        <source>To apply the new language a restart is required!</source>
+        <translation>Um die neue Sprache anzuwenden ist ein Neustart erforderlich!</translation>
+    </message>
 </context>
 <context>
     <name>TimeAssignmentDialog</name>
