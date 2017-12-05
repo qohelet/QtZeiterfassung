@@ -11,6 +11,7 @@ mkdir build_QtZeiterfassung
 cd build_QtZeiterfassung
 qmake ../QtZeiterfassung
 make
+make install # to copy Qt's translations
 ```
 
 ## Launching
