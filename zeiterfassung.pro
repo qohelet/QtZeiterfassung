@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     strips/buchungstrip.cpp \
     strips/kontierungstrip.cpp \
     zeiterfassungsettings.cpp \
-    dialogs/settingsdialog.cpp
+    dialogs/settingsdialog.cpp \
+    dialogs/languageselectiondialog.cpp
 
 HEADERS += \
     zeiterfassung.h \
@@ -44,7 +45,8 @@ HEADERS += \
     strips/buchungstrip.h \
     strips/kontierungstrip.h \
     zeiterfassungsettings.h \
-    dialogs/settingsdialog.h
+    dialogs/settingsdialog.h \
+    dialogs/languageselectiondialog.h
 
 RESOURCES += \
     resources.qrc
@@ -57,4 +59,5 @@ FORMS += \
     dialogs/kontierungdialog.ui \
     strips/buchungstrip.ui \
     strips/kontierungstrip.ui \
-    dialogs/settingsdialog.ui
+    dialogs/settingsdialog.ui \
+    dialogs/languageselectiondialog.ui

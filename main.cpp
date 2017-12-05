@@ -4,7 +4,10 @@
 #include <QInputDialog>
 #include <QMessageBox>
 
+#include <QDebug>
+
 #include "zeiterfassungsettings.h"
+#include "dialogs/languageselectiondialog.h"
 #include "zeiterfassung.h"
 #include "eventloopwithstatus.h"
 #include "dialogs/authenticationdialog.h"
@@ -25,18 +28,35 @@ int main(int argc, char *argv[])
                        "%{function}(): "
                        "%{message}");
 
-    QLocale::setDefault(QLocale(QLocale::German, QLocale::Austria));
-
     QCoreApplication::setOrganizationDomain(QStringLiteral("brunner.ninja"));
     QCoreApplication::setOrganizationName(QStringLiteral("db-software"));
     QCoreApplication::setApplicationName(QStringLiteral("zeiterfassung"));
-    QCoreApplication::setApplicationVersion(QStringLiteral("1.0"));
+    QCoreApplication::setApplicationVersion(QStringLiteral("1.1"));
 
     QSplashScreen splashScreen(QPixmap(":/zeiterfassung/images/splash.png"));
     splashScreen.showMessage(QObject::tr("Loading settings..."));
     splashScreen.show();
 
     ZeiterfassungSettings settings(&app);
+
+    if(settings.language() == QLocale::AnyLanguage)
+    {
+        LanguageSelectionDialog dialog(&splashScreen);
+
+        again0:
+        if(dialog.exec() != QDialog::Accepted)
+            return -1;
+
+        if(dialog.language() == QLocale::AnyLanguage)
+        {
+            QMessageBox::warning(&splashScreen, QObject::tr("Invalid language selection!"), QObject::tr("You did not select a valid language!"));
+            goto again0;
+        }
+
+        settings.setLanguage(dialog.language());
+    }
+
+    QLocale::setDefault(QLocale(settings.language(), QLocale::Austria));
 
     splashScreen.showMessage(QObject::tr("Loading login page..."));
 

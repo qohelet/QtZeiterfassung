@@ -32,6 +32,16 @@ ZeiterfassungSettings::ZeiterfassungSettings(QObject *parent) :
 
 }
 
+QLocale::Language ZeiterfassungSettings::language() const
+{
+    return value("language").value<QLocale::Language>();
+}
+
+void ZeiterfassungSettings::setLanguage(QLocale::Language language)
+{
+    setValue("language", language);
+}
+
 QString ZeiterfassungSettings::url() const
 {
     return value("url", QStringLiteral("http://10.1.0.11:8080/evoApps/")).toString();
