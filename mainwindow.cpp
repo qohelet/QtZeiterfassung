@@ -983,9 +983,18 @@ void MainWindow::validateEntries()
                 {
                     if(kontierungenIter == m_kontierungenModel->constEnd())
                     {
-                        errorMessage = tr("Missing Kontierung! Time not filled: %0 - %1")
-                                .arg(m_kontierungTime.toString("HH:mm:ss"))
-                                .arg(buchungTimespan.toString("HH:mm:ss"));
+                        errorMessage = tr("Missing Kontierung! Missing: %0h")
+                                .arg(timeBetween(m_kontierungTime, buchungTimespan).toString("HH:mm:ss"));
+
+                        {
+                            auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
+                            ui->verticalLayout2->addWidget(label);
+                            label->setMinimumHeight(20);
+                            label->setMaximumHeight(20);
+                        }
+
+                        ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, m_settings, ui->scrollAreaWidgetContents));
+
                         goto after;
                     }
 
@@ -1035,7 +1044,11 @@ void MainWindow::validateEntries()
 
                 if(m_kontierungTime > buchungTimespan)
                 {
-                    auto label = new QLabel(tr("Kontierung timespan too long!"), ui->scrollAreaWidgetContents);
+                    errorMessage = tr("Kontierung time longer than Buchung time! Kontierung: %0 Buchung: %1")
+                            .arg(m_kontierungTime.toString("HH:mm:ss"))
+                            .arg(buchungTimespan.toString("HH:mm:ss"));
+
+                    auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
                     ui->verticalLayout2->addWidget(label);
                     label->setMinimumHeight(20);
                     label->setMaximumHeight(20);
@@ -1044,13 +1057,7 @@ void MainWindow::validateEntries()
                 ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, m_settings, ui->scrollAreaWidgetContents));
 
                 if(m_kontierungTime > buchungTimespan)
-                {
-                    errorMessage = tr("The Kontierung timespan is longer than the Kommen-Gehen timespan. "
-                                      "The tool does not support this yet!\nKontierung: %0\nBuchung: %1")
-                            .arg(m_kontierungTime.toString("HH:mm:ss"))
-                            .arg(buchungTimespan.toString("HH:mm:ss"));
                     goto after;
-                }
                 else
                     ui->verticalLayout2->addSpacing(17);
             }
