@@ -2,6 +2,7 @@
 #define ZEITERFASSUNGSETTINGS_H
 
 #include <QSettings>
+#include <QLocale>
 
 class ZeiterfassungSettings : public QSettings
 {
@@ -16,6 +17,9 @@ public:
                           const QString &application = QString(), QObject *parent = Q_NULLPTR);
     ZeiterfassungSettings(const QString &fileName, Format format, QObject *parent = Q_NULLPTR);
     explicit ZeiterfassungSettings(QObject *parent = Q_NULLPTR);
+
+    QLocale::Language language() const;
+    void setLanguage(QLocale::Language language);
 
     QString url() const;
     void setUrl(const QString &url);
