@@ -45,32 +45,32 @@
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="labelbuchungStartBackgroundColor">
+      <widget class="QLabel" name="labelbookingStartBackgroundColor">
        <property name="text">
-        <string>buchungStartBackgroundColor</string>
+        <string>bookingStartBackgroundColor</string>
        </property>
        <property name="buddy">
-        <cstring>lineEditBuchungStartBackgroundColor</cstring>
+        <cstring>lineEditBookingStartBackgroundColor</cstring>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="labelbuchungEndBackgroundColor">
+      <widget class="QLabel" name="labelbookingEndBackgroundColor">
        <property name="text">
-        <string>buchungEndBackgroundColor</string>
+        <string>bookingEndBackgroundColor</string>
        </property>
        <property name="buddy">
-        <cstring>lineEditBuchungEndBackgroundColor</cstring>
+        <cstring>lineEditBookingEndBackgroundColor</cstring>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="labelbuchungOtherBackgroundColor">
+      <widget class="QLabel" name="labelbookingOtherBackgroundColor">
        <property name="text">
-        <string>buchungOtherBackgroundColor</string>
+        <string>bookingOtherBackgroundColor</string>
        </property>
        <property name="buddy">
-        <cstring>lineEditBuchungOtherBackgroundColor</cstring>
+        <cstring>lineEditBookingOtherBackgroundColor</cstring>
        </property>
       </widget>
      </item>
@@ -88,13 +88,13 @@
       <widget class="QComboBox" name="comboBoxLanguage"/>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEditBuchungStartBackgroundColor"/>
+      <widget class="QLineEdit" name="lineEditBookingStartBackgroundColor"/>
      </item>
      <item row="2" column="1">
-      <widget class="QLineEdit" name="lineEditBuchungEndBackgroundColor"/>
+      <widget class="QLineEdit" name="lineEditBookingEndBackgroundColor"/>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEditBuchungOtherBackgroundColor"/>
+      <widget class="QLineEdit" name="lineEditBookingOtherBackgroundColor"/>
      </item>
      <item row="4" column="1">
       <widget class="QLineEdit" name="lineEditTimeAssignmentBackgroundColor"/>

@@ -17,12 +17,12 @@
 #include "zeiterfassungsettings.h"
 #include "eventloopwithstatus.h"
 #include "dialogs/aboutmedialog.h"
-#include "dialogs/buchungdialog.h"
+#include "dialogs/bookingdialog.h"
 #include "dialogs/timeassignmentdialog.h"
 #include "dialogs/settingsdialog.h"
-#include "strips/buchungstrip.h"
+#include "strips/bookingstrip.h"
 #include "strips/timeassignmentstrip.h"
-#include "models/buchungenmodel.h"
+#include "models/bookingsmodel.h"
 #include "models/timeassignmentsmodel.h"
 
 MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent) :
@@ -31,7 +31,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     m_settings(settings),
     m_erfassung(erfassung),
     m_userInfo(userInfo),
-    m_buchungenModel(new BuchungenModel(erfassung, this)),
+    m_bookingsModel(new BookingsModel(erfassung, this)),
     m_timeAssignmentsModel(new TimeAssignmentsModel(erfassung, this)),
     m_flag(false)
 {
@@ -93,11 +93,11 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     connect(ui->pushButtonStart, &QAbstractButton::pressed, this, &MainWindow::pushButtonStartPressed);
     connect(ui->pushButtonEnd, &QAbstractButton::pressed, this, &MainWindow::pushButtonEndPressed);
 
-    ui->treeViewBuchungen->setModel(m_buchungenModel);
+    ui->treeViewBookings->setModel(m_bookingsModel);
     ui->treeViewTimeAssignments->setModel(m_timeAssignmentsModel);
 
-    connect(ui->treeViewBuchungen, &QWidget::customContextMenuRequested,
-            this,                  &MainWindow::contextMenuBuchung);
+    connect(ui->treeViewBookings, &QWidget::customContextMenuRequested,
+            this,                 &MainWindow::contextMenuBooking);
     connect(ui->treeViewTimeAssignments, &QWidget::customContextMenuRequested,
             this,                        &MainWindow::contextMenuTimeAssignment);
 
@@ -155,16 +155,16 @@ void MainWindow::refresh(bool forceAuswertung)
     ui->comboBoxText->setEnabled(false);
     ui->pushButtonStart->setEnabled(false);
     ui->pushButtonEnd->setEnabled(false);
-    ui->treeViewBuchungen->setEnabled(false);
+    ui->treeViewBookings->setEnabled(false);
     ui->treeViewTimeAssignments->setEnabled(false);
 
     m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Assigned time")).arg(tr("???")));
 
-    auto waitForBuchugen = m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-    if(waitForBuchugen)
+    auto waitForBookings = m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
+    if(waitForBookings)
     {
-        connect(m_buchungenModel, &BuchungenModel::refreshFinished,
-                this,             &MainWindow::refreshBuchungenFinished);
+        connect(m_bookingsModel, &BookingsModel::refreshFinished,
+                this,             &MainWindow::refreshBookingsFinished);
     }
 
     auto waitForTimeAssignments = m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
@@ -174,11 +174,11 @@ void MainWindow::refresh(bool forceAuswertung)
                 this,                &MainWindow::refreshTimeAssignmentsFinished);
     }
 
-    if(!waitForBuchugen || !waitForTimeAssignments)
-        QMessageBox::warning(this, tr("Unknown error occured."), tr("An unknown error occured."));
+    if(!waitForBookings || !waitForTimeAssignments)
+        QMessageBox::warning(this, tr("Unknown error occured!"), tr("Unknown error occured!"));
 
-    if(waitForBuchugen || waitForTimeAssignments)
-        m_flag = waitForBuchugen == waitForTimeAssignments;
+    if(waitForBookings || waitForTimeAssignments)
+        m_flag = waitForBookings == waitForTimeAssignments;
     else
     {
         ui->actionToday->setEnabled(true);
@@ -209,7 +209,7 @@ void MainWindow::refresh(bool forceAuswertung)
         else
         {
             m_auswertungDate = QDate();
-            QMessageBox::warning(this, tr("Unknown error occured."), tr("An unknown error occured."));
+            QMessageBox::warning(this, tr("Unknown error occured!"), tr("Unknown error occured!"));
         }
     }
 }
@@ -221,7 +221,7 @@ void MainWindow::getProjekctsFinished(bool success, const QString &message, cons
 
     if(!success)
     {
-        QMessageBox::warning(this, tr("Could not load Buchungen!"), tr("Could not load Buchungen!") % "\n\n" % message);
+        QMessageBox::warning(this, tr("Could not load bookings!"), tr("Could not load bookings!") % "\n\n" % message);
         return;
     }
 
@@ -280,13 +280,13 @@ void MainWindow::getAuswertungFinished(bool success, const QString &message, con
     m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(urlaubsAnspruch));
 }
 
-void MainWindow::refreshBuchungenFinished(bool success, const QString &message)
+void MainWindow::refreshBookingsFinished(bool success, const QString &message)
 {
-    disconnect(m_buchungenModel, &BuchungenModel::refreshFinished,
-               this,             &MainWindow::refreshBuchungenFinished);
+    disconnect(m_bookingsModel, &BookingsModel::refreshFinished,
+               this,             &MainWindow::refreshBookingsFinished);
 
     if(success)
-        ui->treeViewBuchungen->setEnabled(true);
+        ui->treeViewBookings->setEnabled(true);
 
     if(m_flag)
         m_flag = false;
@@ -294,7 +294,7 @@ void MainWindow::refreshBuchungenFinished(bool success, const QString &message)
         validateEntries();
 
     if(!success)
-        QMessageBox::warning(Q_NULLPTR, tr("Could not refresh Buchungen!"), tr("Could not refresh Buchungen!") % "\n\n" % message);
+        QMessageBox::warning(Q_NULLPTR, tr("Could not load bookings!"), tr("Could not load bookings!") % "\n\n" % message);
 }
 
 void MainWindow::refreshTimeAssignmentsFinished(bool success, const QString &message)
@@ -311,35 +311,35 @@ void MainWindow::refreshTimeAssignmentsFinished(bool success, const QString &mes
         validateEntries();
 
     if(!success)
-        QMessageBox::warning(Q_NULLPTR, tr("Could not refresh time assignments!"), tr("Could not refresh time assignments!") % "\n\n" % message);
+        QMessageBox::warning(Q_NULLPTR, tr("Could not load time assignments!"), tr("Could not load time assignments!") % "\n\n" % message);
 }
 
-void MainWindow::contextMenuBuchung(const QPoint &pos)
+void MainWindow::contextMenuBooking(const QPoint &pos)
 {
-    auto index = ui->treeViewBuchungen->indexAt(pos);
+    auto index = ui->treeViewBookings->indexAt(pos);
 
     if(index.isValid())
     {
-        auto buchung = m_buchungenModel->getBuchung(index);
+        auto booking = m_bookingsModel->getBooking(index);
 
         QMenu menu;
-        auto editAction = menu.addAction(tr("Edit"));
-        auto deleteAction = menu.addAction(tr("Delete"));
-        auto selectedAction = menu.exec(ui->treeViewBuchungen->viewport()->mapToGlobal(pos));
+        auto editAction = menu.addAction(tr("Edit booking"));
+        auto deleteAction = menu.addAction(tr("Delete booking"));
+        auto selectedAction = menu.exec(ui->treeViewBookings->viewport()->mapToGlobal(pos));
         if(selectedAction == editAction)
         {
-            BuchungDialog dialog(this);
-            dialog.setTime(buchung.time);
-            dialog.setTimespan(buchung.timespan);
-            dialog.setType(buchung.type);
-            dialog.setText(buchung.text);
+            BookingDialog dialog(this);
+            dialog.setTime(booking.time);
+            dialog.setTimespan(booking.timespan);
+            dialog.setType(booking.type);
+            dialog.setText(booking.text);
             again1:
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::updateBuchungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &Zeiterfassung::updateBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-                m_erfassung.doUpdateBuchung(buchung.id, m_userInfo.userId, ui->dateEditDate->date(),
+                m_erfassung.doUpdateBooking(booking.id, m_userInfo.userId, ui->dateEditDate->date(),
                                             dialog.getTime(), dialog.getTimespan(),
                                             dialog.getType(), dialog.getText());
                 eventLoop.exec();
@@ -358,14 +358,14 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewBuchungen->setEnabled(false);
+                    ui->treeViewBookings->setEnabled(false);
 
                     clearStrips();
 
-                    if(m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
+                    if(m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
-                        connect(m_buchungenModel, &BuchungenModel::refreshFinished,
-                                this,             &MainWindow::refreshBuchungenFinished);
+                        connect(m_bookingsModel, &BookingsModel::refreshFinished,
+                                this,             &MainWindow::refreshBookingsFinished);
                         m_flag = false;
                     }
                     else
@@ -379,7 +379,7 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                 }
                 else
                 {
-                    QMessageBox::warning(this, tr("Could not update Buchung!"), tr("Could not update Buchung!") % "\n\n" % eventLoop.message());
+                    QMessageBox::warning(this, tr("Could not edit booking!"), tr("Could not edit booking!") % "\n\n" % eventLoop.message());
                     goto again1;
                 }
             }
@@ -387,15 +387,15 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
         else if(selectedAction == deleteAction)
         {
             QMessageBox msgBox;
-            msgBox.setText("Do you really want to delete the Buchung?");
+            msgBox.setText("Do you really want to delete the booking?");
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
             msgBox.setDefaultButton(QMessageBox::Cancel);
             if(msgBox.exec() == QMessageBox::Yes)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::deleteBuchungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &Zeiterfassung::deleteBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-                m_erfassung.doDeleteBuchung(buchung.id);
+                m_erfassung.doDeleteBooking(booking.id);
                 eventLoop.exec();
 
                 if(eventLoop.success())
@@ -412,14 +412,14 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewBuchungen->setEnabled(false);
+                    ui->treeViewBookings->setEnabled(false);
 
                     clearStrips();
 
-                    if(m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
+                    if(m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
-                        connect(m_buchungenModel, &BuchungenModel::refreshFinished,
-                                this,             &MainWindow::refreshBuchungenFinished);
+                        connect(m_bookingsModel, &BookingsModel::refreshFinished,
+                                this,             &MainWindow::refreshBookingsFinished);
                         m_flag = false;
                     }
                     else
@@ -432,26 +432,26 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     }
                 }
                 else
-                    QMessageBox::warning(this, tr("Could not delete Buchung!"), tr("Could not delete Buchung!") % "\n\n" % eventLoop.message());
+                    QMessageBox::warning(this, tr("Could not delete booking!"), tr("Could not delete booking!") % "\n\n" % eventLoop.message());
             }
         }
     }
     else
     {
         QMenu menu;
-        auto createAction = menu.addAction(tr("Create"));
-        auto selectedAction = menu.exec(ui->treeViewBuchungen->viewport()->mapToGlobal(pos));
+        auto createAction = menu.addAction(tr("Create booking"));
+        auto selectedAction = menu.exec(ui->treeViewBookings->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
-            BuchungDialog dialog(this);
+            BookingDialog dialog(this);
             dialog.setTime(timeNormalise(QTime::currentTime()));
             again2:
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::createBuchungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-                m_erfassung.doCreateBuchung(m_userInfo.userId, ui->dateEditDate->date(),
+                m_erfassung.doCreateBooking(m_userInfo.userId, ui->dateEditDate->date(),
                                             dialog.getTime(), dialog.getTimespan(),
                                             dialog.getType(), dialog.getText());
                 eventLoop.exec();
@@ -470,14 +470,14 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewBuchungen->setEnabled(false);
+                    ui->treeViewBookings->setEnabled(false);
 
                     clearStrips();
 
-                    if(m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
+                    if(m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
-                        connect(m_buchungenModel, &BuchungenModel::refreshFinished,
-                                this,             &MainWindow::refreshBuchungenFinished);
+                        connect(m_bookingsModel, &BookingsModel::refreshFinished,
+                                this,             &MainWindow::refreshBookingsFinished);
                         m_flag = false;
                     }
                     else
@@ -491,7 +491,7 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                 }
                 else
                 {
-                    QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung!") % "\n\n" % eventLoop.message());
+                    QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % eventLoop.message());
                     goto again2;
                 }
             }
@@ -508,8 +508,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
         auto timeAssignment = m_timeAssignmentsModel->getTimeAssignment(index);
 
         QMenu menu;
-        auto editAction = menu.addAction(tr("Edit"));
-        auto deleteAction = menu.addAction(tr("Delete"));
+        auto editAction = menu.addAction(tr("Edit time assignment"));
+        auto deleteAction = menu.addAction(tr("Delete time assignment"));
         auto selectedAction = menu.exec(ui->treeViewTimeAssignments->viewport()->mapToGlobal(pos));
         if(selectedAction == editAction)
         {
@@ -572,7 +572,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                 }
                 else
                 {
-                    QMessageBox::warning(this, tr("Could not update time assignment!"), tr("Could not update time assignment!") % "\n\n" % eventLoop.message());
+                    QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % eventLoop.message());
                     goto again1;
                 }
             }
@@ -632,7 +632,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
     else
     {
         QMenu menu;
-        auto createAction = menu.addAction(tr("Create"));
+        auto createAction = menu.addAction(tr("Create time assignment"));
         auto selectedAction = menu.exec(ui->treeViewTimeAssignments->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
@@ -699,20 +699,20 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
 void MainWindow::pushButtonStartPressed()
 {
-    if(m_buchungenModel->rbegin() == m_buchungenModel->rend() ||
-       m_buchungenModel->rbegin()->type == QStringLiteral("G"))
+    if(m_bookingsModel->rbegin() == m_bookingsModel->rend() ||
+       m_bookingsModel->rbegin()->type == QStringLiteral("G"))
     {
         EventLoopWithStatus eventLoop;
-        connect(&m_erfassung, &Zeiterfassung::createBuchungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-        m_erfassung.doCreateBuchung(m_userInfo.userId, ui->dateEditDate->date(),
+        m_erfassung.doCreateBooking(m_userInfo.userId, ui->dateEditDate->date(),
                                     timeNormalise(ui->timeEditTime->time()), QTime(0, 0),
                                     QStringLiteral("K"), QStringLiteral(""));
         eventLoop.exec();
 
         if(!eventLoop.success())
         {
-            QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung!") % "\n\n" % eventLoop.message());
+            QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % eventLoop.message());
             refresh(true);
             return;
         }
@@ -738,7 +738,7 @@ void MainWindow::pushButtonStartPressed()
                 m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timespan);
             else
             {
-                QMessageBox::warning(this, tr("Could not update time assignment!"), tr("Could not update time assignment!") % "\n\n" % eventLoop.message());
+                QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % eventLoop.message());
                 refresh(true);
                 return;
             }
@@ -775,16 +775,16 @@ void MainWindow::pushButtonEndPressed()
 {
     {
         EventLoopWithStatus eventLoop;
-        connect(&m_erfassung, &Zeiterfassung::createBuchungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-        m_erfassung.doCreateBuchung(m_userInfo.userId, ui->dateEditDate->date(),
+        m_erfassung.doCreateBooking(m_userInfo.userId, ui->dateEditDate->date(),
                                     timeNormalise(ui->timeEditTime->time()), QTime(0, 0),
                                     QStringLiteral("G"), QStringLiteral(""));
         eventLoop.exec();
 
         if(!eventLoop.success())
         {
-            QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung!") % "\n\n" % eventLoop.message());
+            QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % eventLoop.message());
             refresh(true);
             return;
         }
@@ -809,7 +809,7 @@ void MainWindow::pushButtonEndPressed()
             m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timespan);
         else
         {
-            QMessageBox::warning(this, tr("Could not update time assignment!"), tr("Could not update time assignment!") % "\n\n" % eventLoop.message());
+            QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % eventLoop.message());
             refresh(true);
             return;
         }
@@ -828,65 +828,65 @@ void MainWindow::validateEntries()
     ui->pushButtonNext->setEnabled(true);
     ui->pushButtonStart->setText(tr("Start"));
 
-    if(!ui->treeViewBuchungen->isEnabled())
+    if(!ui->treeViewBookings->isEnabled())
         return;
 
     if(!ui->treeViewTimeAssignments->isEnabled())
         return;
 
-    auto buchungenIter = m_buchungenModel->constBegin();
+    auto bookingsIter = m_bookingsModel->constBegin();
     auto timeAssignmentsIter = m_timeAssignmentsModel->constBegin();
 
     m_timeAssignmentTime = QTime(0, 0);
-    auto buchungTimespan = QTime(0, 0);
+    auto bookingTimespan = QTime(0, 0);
 
-    const Zeiterfassung::Buchung *lastBuchung = Q_NULLPTR;
+    const Zeiterfassung::Booking *lastBooking = Q_NULLPTR;
     const Zeiterfassung::TimeAssignment *lastTimeAssignment = Q_NULLPTR;
 
     QString errorMessage;
 
     while(true)
     {
-        if(buchungenIter == m_buchungenModel->constEnd() &&
+        if(bookingsIter == m_bookingsModel->constEnd() &&
            timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
         {
             goto after;
         }
 
-        if(buchungenIter == m_buchungenModel->constEnd())
+        if(bookingsIter == m_bookingsModel->constEnd())
         {
-            errorMessage = tr("Missing Buchung.");
+            errorMessage = tr("Missing booking!");
             goto after;
         }
 
-        auto startBuchung = *buchungenIter++;
-        if(startBuchung.type != QStringLiteral("K"))
+        auto startBooking = *bookingsIter++;
+        if(startBooking.type != QStringLiteral("K"))
         {
-            errorMessage = tr("Expected start Buchung, instead got type %0\nBuchung ID: %1")
-                    .arg(startBuchung.type)
-                    .arg(startBuchung.id);
+            errorMessage = tr("Expected start booking, instead got type %0\nBooking ID: %1")
+                    .arg(startBooking.type)
+                    .arg(startBooking.id);
             goto after;
         }
 
-        if(lastBuchung)
+        if(lastBooking)
         {
             auto label = new QLabel(tr("%0: %1")
                                     .arg(tr("Break"))
-                                    .arg(tr("%0h").arg(timeBetween(lastBuchung->time, startBuchung.time).toString(QStringLiteral("HH:mm")))),
+                                    .arg(tr("%0h").arg(timeBetween(lastBooking->time, startBooking.time).toString(QStringLiteral("HH:mm")))),
                                     ui->scrollAreaWidgetContents);
             ui->verticalLayout2->addWidget(label);
             label->setMinimumHeight(20);
             label->setMaximumHeight(20);
         }
 
-        lastBuchung = &startBuchung;
+        lastBooking = &startBooking;
 
-        m_lastTimeAssignmentStart = startBuchung.time;
-        ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.id, startBuchung.time, startBuchung.type, m_settings, ui->scrollAreaWidgetContents));
+        m_lastTimeAssignmentStart = startBooking.time;
+        ui->verticalLayout2->addWidget(new BookingStrip(startBooking.id, startBooking.time, startBooking.type, m_settings, ui->scrollAreaWidgetContents));
 
         if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
         {
-            errorMessage = tr("Missing time assignment.");
+            errorMessage = tr("Missing time assignment!");
             goto after;
         }
 
@@ -908,10 +908,10 @@ void MainWindow::validateEntries()
 
         if(timeAssignment.timespan == QTime(0, 0))
         {
-            if(buchungenIter != m_buchungenModel->constEnd())
+            if(bookingsIter != m_bookingsModel->constEnd())
             {
-                errorMessage = tr("There is another Buchung after an unfinished time assignment.\nBuchung ID: %0\nTime assignment ID: %1")
-                        .arg(buchungenIter->id)
+                errorMessage = tr("There is another booking after an unfinished time assignment.\nBooking ID: %0\nTime assignment ID: %1")
+                        .arg(bookingsIter->id)
                         .arg(timeAssignment.id);
                 goto after;
             }
@@ -934,13 +934,13 @@ void MainWindow::validateEntries()
             m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
             m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
 
-            if(buchungenIter == m_buchungenModel->constEnd())
+            if(bookingsIter == m_bookingsModel->constEnd())
             {
                 while(true)
                 {
                     if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
                     {
-                        errorMessage = tr("The last time assignment is finished without end Buchung\nTime assignment ID: %0")
+                        errorMessage = tr("The last time assignment is finished without end booking\nTime assignment ID: %0")
                                 .arg(timeAssignment.id);
                         goto after;
                     }
@@ -986,26 +986,26 @@ void MainWindow::validateEntries()
             }
             else
             {
-                auto endBuchung = *buchungenIter++;
-                if(endBuchung.type != QStringLiteral("G"))
+                auto endBooking = *bookingsIter++;
+                if(endBooking.type != QStringLiteral("G"))
                 {
-                    errorMessage = tr("Expected end Buchung, instead got type %0\nBuchung ID: %1")
-                            .arg(endBuchung.type)
-                            .arg(endBuchung.id);
+                    errorMessage = tr("Expected end booking, instead got type %0\nBooking ID: %1")
+                            .arg(endBooking.type)
+                            .arg(endBooking.id);
                     goto after;
                 }
 
-                lastBuchung = &endBuchung;
+                lastBooking = &endBooking;
 
-                buchungTimespan = timeAdd(buchungTimespan, timeBetween(startBuchung.time, endBuchung.time));
-                ui->timeEditTime->setMinimumTime(timeAdd(endBuchung.time, QTime(0, 1)));
+                bookingTimespan = timeAdd(bookingTimespan, timeBetween(startBooking.time, endBooking.time));
+                ui->timeEditTime->setMinimumTime(timeAdd(endBooking.time, QTime(0, 1)));
 
-                while(m_timeAssignmentTime < buchungTimespan)
+                while(m_timeAssignmentTime < bookingTimespan)
                 {
                     if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
                     {
-                        errorMessage = tr("Missing time assignment(s)! Missing: %0h")
-                                .arg(timeBetween(m_timeAssignmentTime, buchungTimespan).toString("HH:mm:ss"));
+                        errorMessage = tr("Missing time assignment! Missing: %0h")
+                                .arg(timeBetween(m_timeAssignmentTime, bookingTimespan).toString("HH:mm:ss"));
 
                         {
                             auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
@@ -1014,7 +1014,7 @@ void MainWindow::validateEntries()
                             label->setMaximumHeight(20);
                         }
 
-                        ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, m_settings, ui->scrollAreaWidgetContents));
+                        ui->verticalLayout2->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, ui->scrollAreaWidgetContents));
 
                         goto after;
                     }
@@ -1037,11 +1037,11 @@ void MainWindow::validateEntries()
 
                     if(timeAssignment.timespan == QTime(0, 0))
                     {
-                        if(buchungenIter != m_buchungenModel->constEnd())
+                        if(bookingsIter != m_bookingsModel->constEnd())
                         {
-                            errorMessage = tr("There is another Buchung after an unfinished time assignment.\n"
-                                              "Buchung ID: %0\nTime assignment ID: %1")
-                                    .arg(buchungenIter->id)
+                            errorMessage = tr("There is another booking after an unfinished time assignment.\n"
+                                              "Booking ID: %0\nTime assignment ID: %1")
+                                    .arg(bookingsIter->id)
                                     .arg(timeAssignment.id);
                             goto after;
                         }
@@ -1065,11 +1065,11 @@ void MainWindow::validateEntries()
                     }
                 }
 
-                if(m_timeAssignmentTime > buchungTimespan)
+                if(m_timeAssignmentTime > bookingTimespan)
                 {
-                    errorMessage = tr("Time assignment time longer than Buchung time! Time assignment: %0 Buchung: %1")
+                    errorMessage = tr("Time assignment time longer than booking time! Time assignment: %0 Booking: %1")
                             .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
-                            .arg(buchungTimespan.toString("HH:mm:ss"));
+                            .arg(bookingTimespan.toString("HH:mm:ss"));
 
                     auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
                     ui->verticalLayout2->addWidget(label);
@@ -1077,9 +1077,9 @@ void MainWindow::validateEntries()
                     label->setMaximumHeight(20);
                 }
 
-                ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, m_settings, ui->scrollAreaWidgetContents));
+                ui->verticalLayout2->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, ui->scrollAreaWidgetContents));
 
-                if(m_timeAssignmentTime > buchungTimespan)
+                if(m_timeAssignmentTime > bookingTimespan)
                     goto after;
             }
         }
@@ -1100,8 +1100,7 @@ void MainWindow::validateEntries()
 
     if(!errorMessage.isEmpty())
     {
-        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and time assignments for this day are in an invalid state:\n\n%0")
-                             .arg(errorMessage));
+        QMessageBox::warning(this, tr("Illegal state!"), tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" % errorMessage);
         return;
     }
 

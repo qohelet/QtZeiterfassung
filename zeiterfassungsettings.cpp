@@ -132,34 +132,34 @@ void ZeiterfassungSettings::prependText(const QString &text)
     prepentItem("texte", text);
 }
 
-QString ZeiterfassungSettings::buchungStartBackgroundColor() const
+QString ZeiterfassungSettings::bookingStartBackgroundColor() const
 {
-    return value("buchungStartBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFF7F, stop:1 #6FBF6F)")).toString();
+    return value("bookingStartBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFF7F, stop:1 #6FBF6F)")).toString();
 }
 
-void ZeiterfassungSettings::setBuchungStartBackgroundColor(const QString &buchungStartBackgroundColor)
+void ZeiterfassungSettings::setBookingStartBackgroundColor(const QString &bookingStartBackgroundColor)
 {
-    setValue("buchungStartBackgroundColor", buchungStartBackgroundColor);
+    setValue("bookingStartBackgroundColor", bookingStartBackgroundColor);
 }
 
-QString ZeiterfassungSettings::buchungEndBackgroundColor() const
+QString ZeiterfassungSettings::bookingEndBackgroundColor() const
 {
-    return value("buchungEndBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FF7F7F, stop:1 #BF6F6F)")).toString();
+    return value("bookingEndBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FF7F7F, stop:1 #BF6F6F)")).toString();
 }
 
-void ZeiterfassungSettings::setBuchungEndBackgroundColor(const QString &buchungEndBackgroundColor)
+void ZeiterfassungSettings::setBookingEndBackgroundColor(const QString &bookingEndBackgroundColor)
 {
-    setValue("buchungEndBackgroundColor", buchungEndBackgroundColor);
+    setValue("bookingEndBackgroundColor", bookingEndBackgroundColor);
 }
 
-QString ZeiterfassungSettings::buchungOtherBackgroundColor() const
+QString ZeiterfassungSettings::bookingOtherBackgroundColor() const
 {
-    return value("buchungOtherBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FFFF7F, stop:1 #BFBF6F)")).toString();
+    return value("bookingOtherBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FFFF7F, stop:1 #BFBF6F)")).toString();
 }
 
-void ZeiterfassungSettings::setBuchungOtherBackgroundColor(const QString &buchungOtherBackgroundColor)
+void ZeiterfassungSettings::setBookingOtherBackgroundColor(const QString &bookingOtherBackgroundColor)
 {
-    setValue("buchungOtherBackgroundColor", buchungOtherBackgroundColor);
+    setValue("bookingOtherBackgroundColor", bookingOtherBackgroundColor);
 }
 
 QString ZeiterfassungSettings::timeAssignmentBackgroundColor() const
