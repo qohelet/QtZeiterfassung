@@ -22,8 +22,13 @@
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <item>
     <widget class="QLabel" name="labelTitle">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;h1&gt;About me&lt;/h1&gt;</string>
+      <string>About me</string>
      </property>
     </widget>
    </item>

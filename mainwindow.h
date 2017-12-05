@@ -28,7 +28,7 @@ public:
 
 private Q_SLOTS:
     void refresh(bool forceAuswertung = false);
-    void getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte);
+    void getProjekctsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Project> &projects);
     void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
     void refreshBuchungenFinished(bool success, const QString &message);
     void refreshTimeAssignmentsFinished(bool success, const QString &message);
@@ -42,13 +42,13 @@ private:
     void updateComboboxes();
     void clearStrips();
 
-    QString buildProjektString(const QString &projekt);
+    QString buildProjectString(const QString &project);
 
     Ui::MainWindow *ui;
     ZeiterfassungSettings &m_settings;
     Zeiterfassung &m_erfassung;
     const Zeiterfassung::UserInfo &m_userInfo;
-    QMap<QString, QString> m_projekte;
+    QMap<QString, QString> m_projects;
     QDate m_auswertungDate;
     QByteArray m_auswertung;
     QLabel *m_workingTimeLabel;

@@ -47,12 +47,12 @@ public:
         QTime time;
         QTime timespan;
         QString text;
-        QString projekt;
-        QString subprojekt;
+        QString project;
+        QString subproject;
         QString workpackage;
     };
 
-    struct Projekt
+    struct Project
     {
         QString label;
         QString value;
@@ -72,14 +72,14 @@ public Q_SLOTS:
 
     bool doGetTimeAssignments(int userId, const QDate &start, const QDate &end);
     bool doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
-                                const QString &projekt, const QString &subprojekt, const QString &workpackage,
+                                const QString &project, const QString &subproject, const QString &workpackage,
                                 const QString &text);
     bool doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
-                                const QTime &timespan, const QString &projekt, const QString &subprojekt,
+                                const QTime &timespan, const QString &project, const QString &subproject,
                                 const QString &workpackage, const QString &text);
     bool doDeleteTimeAssignment(int timeAssignmentId);
 
-    bool doGetProjekte(int userId, const QDate &date);
+    bool doGetProjects(int userId, const QDate &date);
     bool doGetAuswertung(int userId, const QDate &date);
 
 Q_SIGNALS:
@@ -99,7 +99,7 @@ Q_SIGNALS:
     void updateTimeAssignmentFinished(bool success, const QString &message, int timeAssignmentId);
     void deleteTimeAssignmentFinished(bool success, const QString &message);
 
-    void getProjekteFinished(bool success, const QString &message, const QVector<Projekt> &projekte);
+    void getProjectsFinished(bool success, const QString &message, const QVector<Project> &projects);
     void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
 
 private Q_SLOTS:
@@ -117,7 +117,7 @@ private Q_SLOTS:
     void updateTimeAssignmentRequestFinished();
     void deleteTimeAssignmentRequestFinished();
 
-    void getProjekteRequestFinished();
+    void getProjectsRequestFinished();
     void getAuswertungRequest0Finished();
     void getAuswertungRequest1Finished();
 
@@ -140,7 +140,7 @@ private:
         QNetworkReply *updateTimeAssignment;
         QNetworkReply *deleteTimeAssignment;
 
-        QNetworkReply *getProjekte;
+        QNetworkReply *getProjects;
         QNetworkReply *getAuswertung;
     } m_replies;
 };

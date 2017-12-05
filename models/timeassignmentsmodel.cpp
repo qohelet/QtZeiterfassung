@@ -35,8 +35,8 @@ QVariant TimeAssignmentsModel::data(const QModelIndex &index, int role) const
         case 0: return timeAssignment.id;
         case 1: return timeAssignment.time;
         case 2: return timeAssignment.timespan;
-        case 3: return timeAssignment.projekt;
-        case 4: return timeAssignment.subprojekt;
+        case 3: return timeAssignment.project;
+        case 4: return timeAssignment.subproject;
         case 5: return timeAssignment.workpackage;
         case 6: return timeAssignment.text;
         }
@@ -59,8 +59,8 @@ QVariant TimeAssignmentsModel::headerData(int section, Qt::Orientation orientati
             case 0: return tr("ID");
             case 1: return tr("Time");
             case 2: return tr("Timespan");
-            case 3: return tr("Projekt");
-            case 4: return tr("Subprojekt");
+            case 3: return tr("Project");
+            case 4: return tr("Subproject");
             case 5: return tr("Workpackage");
             case 6: return tr("Text");
             }

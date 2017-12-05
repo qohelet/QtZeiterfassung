@@ -22,8 +22,13 @@
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
    <item>
     <widget class="QLabel" name="labelTitle">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;h1&gt;Buchung&lt;/h1&gt;</string>
+      <string>Buchung</string>
      </property>
     </widget>
    </item>
@@ -72,14 +77,14 @@
      <item row="0" column="1">
       <widget class="QTimeEdit" name="timeEditTime">
        <property name="displayFormat">
-        <string>HH:mm:ss</string>
+        <string notr="true">HH:mm:ss</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QTimeEdit" name="timeEditTimespan">
        <property name="displayFormat">
-        <string>HH:mm:ss</string>
+        <string notr="true">HH:mm:ss</string>
        </property>
       </widget>
      </item>
@@ -96,12 +101,12 @@
        </property>
        <item>
         <property name="text">
-         <string>K</string>
+         <string notr="true">K</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>G</string>
+         <string notr="true">G</string>
         </property>
        </item>
       </widget>

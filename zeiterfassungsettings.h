@@ -30,13 +30,13 @@ public:
     QString password() const;
     void setPassword(const QString &password);
 
-    QStringList projekte() const;
-    void setProjekte(const QStringList &projekte);
-    void prependProjekt(const QString &projekt);
+    QStringList projects() const;
+    void setProjects(const QStringList &projects);
+    void prependProject(const QString &project);
 
-    QStringList subprojekte() const;
-    void setSubprojekte(const QStringList &subprojekte);
-    void prependSubprojekt(const QString &subprojekt);
+    QStringList subprojects() const;
+    void setSubprojects(const QStringList &subprojects);
+    void prependSubproject(const QString &subproject);
 
     QStringList workpackages() const;
     void setWorkpackages(const QStringList &workpackages);

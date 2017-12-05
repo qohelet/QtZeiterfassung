@@ -6,7 +6,7 @@
 
 #include "zeiterfassungsettings.h"
 
-TimeAssignmentStrip::TimeAssignmentStrip(int id, const QTime &duration, const QString &projekt, const QString &subprojekt,
+TimeAssignmentStrip::TimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject,
                                          const QString &workpackage, const QString &text, const ZeiterfassungSettings &settings,
                                          QWidget *parent) :
     QFrame(parent),
@@ -20,10 +20,10 @@ TimeAssignmentStrip::TimeAssignmentStrip(int id, const QTime &duration, const QS
     setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.timeAssignmentBackgroundColor()));
 
     ui->labelTime->setText(duration == QTime(0, 0) ? tr("Open") : duration.toString(QStringLiteral("HH:mm")));
-    ui->labelProjekt->setText(projekt);
+    ui->labelProject->setText(project);
     ui->labelId->setText(QString::number(id));
 
-    ui->labelSubprojekt->setText(subprojekt);
+    ui->labelSubproject->setText(subproject);
     ui->labelWorkpackage->setText(workpackage);
     ui->labelText->setText(text);
 }

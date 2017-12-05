@@ -5,7 +5,7 @@
 #include <QPixmap>
 #include <QDir>
 #include <QInputDialog>
-
+#include <QStringBuilder>
 #include <QDebug>
 
 #include "zeiterfassungsettings.h"
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(QStringLiteral("1.1"));
 
     QSplashScreen splashScreen(QPixmap(":/zeiterfassung/images/splash.png"));
-    splashScreen.showMessage(QObject::tr("Loading settings..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading settings..."));
     splashScreen.show();
 
     ZeiterfassungSettings settings(&app);
@@ -73,7 +73,9 @@ int main(int argc, char *argv[])
 
         if(dialog.language() == QLocale::AnyLanguage)
         {
-            QMessageBox::warning(&splashScreen, QObject::tr("Invalid language selection!"), QObject::tr("You did not select a valid language!"));
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Invalid language selection!"),
+                                 QCoreApplication::translate("main", "Invalid language selection!") % "\n\n" %
+                                 QCoreApplication::translate("main", "You did not select a valid language."));
             goto again0;
         }
 
@@ -91,7 +93,7 @@ int main(int argc, char *argv[])
     loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"),
                              QStringLiteral("_"), QStringLiteral(":/zeiterfassung/translations"));
 
-    splashScreen.showMessage(QObject::tr("Loading login page..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
 
     Zeiterfassung erfassung(settings.url(), &app);
 
@@ -106,11 +108,11 @@ int main(int argc, char *argv[])
         if(!eventLoop.success())
         {
             bool ok;
-            QMessageBox::warning(&splashScreen, QObject::tr("Could not access Zeiterfassung"),
-                                 QObject::tr("The Zeiterfassung could not be accessed:\n\n%0").arg(eventLoop.message()));
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not access Zeiterfassung!"),
+                                 QCoreApplication::translate("main", "Could not access Zeiterfassung!") % "\n\n" % eventLoop.message());
 
-            auto url = QInputDialog::getText(&splashScreen, QObject::tr("Base url"),
-                                             QObject::tr("Please enter the base url to the Zeiterfassung:"),
+            auto url = QInputDialog::getText(&splashScreen, QCoreApplication::translate("main", "Base url"),
+                                             QCoreApplication::translate("main", "Please enter the base url to the Zeiterfassung:"),
                                              QLineEdit::Normal, settings.url(), &ok);
             if(!ok)
                 return -1;
@@ -120,7 +122,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    splashScreen.showMessage(QObject::tr("Authenticating..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Authenticating..."));
 
     if(settings.username().isNull() || settings.password().isNull())
     {
@@ -141,8 +143,8 @@ int main(int argc, char *argv[])
 
         if(!eventLoop.success())
         {
-            QMessageBox::warning(&splashScreen, QObject::tr("Could not authenticate with Zeiterfassung"),
-                                 QObject::tr("The Zeiterfassung authentication was not successful:\n\n%0").arg(eventLoop.message()));
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!"),
+                                 QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!") % "\n\n" % eventLoop.message());
 
             AuthenticationDialog dialog(&splashScreen);
             dialog.setUsername(settings.username());
@@ -156,7 +158,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    splashScreen.showMessage(QObject::tr("Getting user information..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
 
     Zeiterfassung::UserInfo userInfo;
 
@@ -175,8 +177,8 @@ int main(int argc, char *argv[])
 
         if(!eventLoop.success())
         {
-            QMessageBox::warning(&splashScreen, QObject::tr("Could not get user information!"),
-                                 QObject::tr("Could not get user information:\n\n%0").arg(eventLoop.message()));
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not get user information!"),
+                                 QCoreApplication::translate("main", "Could not get user information!") % "\n\n" % eventLoop.message());
 
             return -1;
         }

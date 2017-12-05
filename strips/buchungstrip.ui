@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>52</height>
+    <height>54</height>
    </rect>
   </property>
   <property name="frameShape">
@@ -37,7 +37,7 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">9:99</string>
      </property>
     </widget>
    </item>
@@ -49,14 +49,14 @@
       </font>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TYPE</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="labelId">
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">0123456</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
