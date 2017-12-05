@@ -30,7 +30,7 @@ public:
         QString username;
     };
 
-    struct Buchung
+    struct Booking
     {
         int id;
         QDate date;
@@ -63,12 +63,12 @@ public Q_SLOTS:
     bool doLogin(const QString &username, const QString &password);
     bool doUserInfo();
 
-    bool doGetBuchungen(int userId, const QDate &start, const QDate &end);
-    bool doCreateBuchung(int userId, const QDate &date, const QTime &time, const QTime &timespan,
+    bool doGetBookings(int userId, const QDate &start, const QDate &end);
+    bool doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan,
                          const QString &type, const QString &text);
-    bool doUpdateBuchung(int buchungId, int userId, const QDate &date, const QTime &time,
+    bool doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time,
                          const QTime &timespan, const QString &type, const QString &text);
-    bool doDeleteBuchung(int buchungId);
+    bool doDeleteBooking(int bookingId);
 
     bool doGetTimeAssignments(int userId, const QDate &start, const QDate &end);
     bool doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
@@ -89,10 +89,10 @@ Q_SIGNALS:
     void loginFinished(bool success, const QString &message);
     void userInfoFinished(bool success, const QString &message, const UserInfo &userInfo);
 
-    void getBuchungenFinished(bool success, const QString &message, const QVector<Buchung> &buchungen);
-    void createBuchungFinished(bool success, const QString &message, int buchungId);
-    void updateBuchungFinished(bool success, const QString &message, int buchungId);
-    void deleteBuchungFinished(bool success, const QString &message);
+    void getBookingsFinished(bool success, const QString &message, const QVector<Booking> &bookings);
+    void createBookingFinished(bool success, const QString &message, int bookingId);
+    void updateBookingFinished(bool success, const QString &message, int bookingId);
+    void deleteBookingFinished(bool success, const QString &message);
 
     void getTimeAssignmentsFinished(bool success, const QString &message, const QVector<TimeAssignment> &timeAssignments);
     void createTimeAssignmentFinished(bool success, const QString &message, int timeAssignmentId);
@@ -107,10 +107,10 @@ private Q_SLOTS:
     void loginRequestFinished();
     void userInfoRequestFinished();
 
-    void getBuchungenRequestFinished();
-    void createBuchungRequestFinished();
-    void updateBuchungRequestFinished();
-    void deleteBuchungRequestFinished();
+    void getBookingsRequestFinished();
+    void createBookingRequestFinished();
+    void updateBookingRequestFinished();
+    void deleteBookingRequestFinished();
 
     void getTimeAssignmentsRequestFinished();
     void createTimeAssignmentRequestFinished();
@@ -130,10 +130,10 @@ private:
         QNetworkReply *login;
         QNetworkReply *userInfo;
 
-        QNetworkReply *getBuchungen;
-        QNetworkReply *createBuchung;
-        QNetworkReply *updateBuchung;
-        QNetworkReply *deleteBuchung;
+        QNetworkReply *getBookings;
+        QNetworkReply *createBooking;
+        QNetworkReply *updateBooking;
+        QNetworkReply *deleteBooking;
 
         QNetworkReply *getTimeAssignments;
         QNetworkReply *createTimeAssignment;

@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
         {
             QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Invalid language selection!"),
                                  QCoreApplication::translate("main", "Invalid language selection!") % "\n\n" %
-                                 QCoreApplication::translate("main", "You did not select a valid language."));
+                                 QCoreApplication::translate("main", "You did not select a valid language!"));
             goto again0;
         }
 

@@ -46,14 +46,14 @@ public:
     void setTexte(const QStringList &texte);
     void prependText(const QString &text);
 
-    QString buchungStartBackgroundColor() const;
-    void setBuchungStartBackgroundColor(const QString &buchungStartBackgroundColor);
+    QString bookingStartBackgroundColor() const;
+    void setBookingStartBackgroundColor(const QString &bookingStartBackgroundColor);
 
-    QString buchungEndBackgroundColor() const;
-    void setBuchungEndBackgroundColor(const QString &buchungEndBackgroundColor);
+    QString bookingEndBackgroundColor() const;
+    void setBookingEndBackgroundColor(const QString &bookingEndBackgroundColor);
 
-    QString buchungOtherBackgroundColor() const;
-    void setBuchungOtherBackgroundColor(const QString &buchungOtherBackgroundColor);
+    QString bookingOtherBackgroundColor() const;
+    void setBookingOtherBackgroundColor(const QString &bookingOtherBackgroundColor);
 
     QString timeAssignmentBackgroundColor() const;
     void setTimeAssignmentBackgroundColor(const QString timeAssignmentBackgroundColor);

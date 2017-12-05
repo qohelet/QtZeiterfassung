@@ -1,18 +1,18 @@
-#ifndef BUCHUNGDIALOG_H
-#define BUCHUNGDIALOG_H
+#ifndef BOOKINGDIALOG_H
+#define BOOKINGDIALOG_H
 
 #include <QDialog>
 #include <QTime>
 
-namespace Ui { class BuchungDialog; }
+namespace Ui { class BookingDialog; }
 
-class BuchungDialog : public QDialog
+class BookingDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit BuchungDialog(QWidget *parent = 0);
-    ~BuchungDialog();
+    explicit BookingDialog(QWidget *parent = 0);
+    ~BookingDialog();
 
     QTime getTime() const;
     void setTime(const QTime &time);
@@ -27,7 +27,7 @@ public:
     void setText(const QString &text);
 
 private:
-    Ui::BuchungDialog *ui;
+    Ui::BookingDialog *ui;
 };
 
-#endif // BUCHUNGDIALOG_H
+#endif // BOOKINGDIALOG_H

@@ -10,7 +10,7 @@ class QLabel;
 
 namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
-class BuchungenModel;
+class BookingsModel;
 class TimeAssignmentsModel;
 
 class MainWindow : public QMainWindow
@@ -30,9 +30,9 @@ private Q_SLOTS:
     void refresh(bool forceAuswertung = false);
     void getProjekctsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Project> &projects);
     void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
-    void refreshBuchungenFinished(bool success, const QString &message);
+    void refreshBookingsFinished(bool success, const QString &message);
     void refreshTimeAssignmentsFinished(bool success, const QString &message);
-    void contextMenuBuchung(const QPoint &pos);
+    void contextMenuBooking(const QPoint &pos);
     void contextMenuTimeAssignment(const QPoint &pos);
     void pushButtonStartPressed();
     void pushButtonEndPressed();
@@ -55,7 +55,7 @@ private:
     QLabel *m_balanceLabel;
     QLabel *m_holidaysLabel;
 
-    BuchungenModel *m_buchungenModel;
+    BookingsModel *m_bookingsModel;
     TimeAssignmentsModel *m_timeAssignmentsModel;
 
     bool m_flag;

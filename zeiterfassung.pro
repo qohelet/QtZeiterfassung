@@ -21,43 +21,43 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     dialogs/aboutmedialog.cpp \
     dialogs/authenticationdialog.cpp \
-    dialogs/buchungdialog.cpp \
-    models/buchungenmodel.cpp \
     eventloopwithstatus.cpp \
-    strips/buchungstrip.cpp \
     zeiterfassungsettings.cpp \
     dialogs/settingsdialog.cpp \
     dialogs/languageselectiondialog.cpp \
     dialogs/timeassignmentdialog.cpp \
     models/timeassignmentsmodel.cpp \
-    strips/timeassignmentstrip.cpp
+    strips/timeassignmentstrip.cpp \
+    dialogs/bookingdialog.cpp \
+    models/bookingsmodel.cpp \
+    strips/bookingstrip.cpp
 
 HEADERS += \
     zeiterfassung.h \
     mainwindow.h \
     dialogs/aboutmedialog.h \
     dialogs/authenticationdialog.h \
-    dialogs/buchungdialog.h \
-    models/buchungenmodel.h \
     eventloopwithstatus.h \
-    strips/buchungstrip.h \
     zeiterfassungsettings.h \
     dialogs/settingsdialog.h \
     dialogs/languageselectiondialog.h \
     dialogs/timeassignmentdialog.h \
     models/timeassignmentsmodel.h \
-    strips/timeassignmentstrip.h
+    strips/timeassignmentstrip.h \
+    dialogs/bookingdialog.h \
+    models/bookingsmodel.h \
+    strips/bookingstrip.h
 
 FORMS += \
     mainwindow.ui \
     dialogs/aboutmedialog.ui \
     dialogs/authenticationdialog.ui \
-    dialogs/buchungdialog.ui \
-    strips/buchungstrip.ui \
     dialogs/settingsdialog.ui \
     dialogs/languageselectiondialog.ui \
     dialogs/timeassignmentdialog.ui \
-    strips/timeassignmentstrip.ui
+    strips/timeassignmentstrip.ui \
+    dialogs/bookingdialog.ui \
+    strips/bookingstrip.ui
 
 RESOURCES += \
     resources.qrc
