@@ -61,3 +61,28 @@ FORMS += \
     strips/kontierungstrip.ui \
     dialogs/settingsdialog.ui \
     dialogs/languageselectiondialog.ui
+
+win32 {
+    CONFIG(debug, release|debug) {
+        translationsinstall.path = $${OUT_PWD}/debug/translations
+    } else {
+        translationsinstall.path = $${OUT_PWD}/release/translations
+    }
+}
+unix {
+    translationsinstall.path = $${OUT_PWD}/translations
+}
+
+translationsinstall.files = $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtbase_en.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtmultimedia_en.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtquick1_en.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtscript_nen.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_en.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qt_de.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtmultimedia_de.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtquick1_de.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtscript_de.qm \
+                            $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_de.qm
+INSTALLS *= translationsinstall
