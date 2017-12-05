@@ -102,8 +102,15 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     connect(ui->treeViewKontierungen, &QWidget::customContextMenuRequested,
             this,                     &MainWindow::contextMenuKontierung);
 
-    ui->statusbar->addPermanentWidget(m_kontierungLabel = new QLabel(ui->statusbar));
-    ui->statusbar->addPermanentWidget(m_auswertungLabel = new QLabel(ui->statusbar));
+    ui->statusbar->addPermanentWidget(m_workingTimeLabel = new QLabel(ui->statusbar));
+    m_workingTimeLabel->setFrameShape(QFrame::Panel);
+    m_workingTimeLabel->setFrameShadow(QFrame::Sunken);
+    ui->statusbar->addPermanentWidget(m_balanceLabel = new QLabel(ui->statusbar));
+    m_balanceLabel->setFrameShape(QFrame::Panel);
+    m_balanceLabel->setFrameShadow(QFrame::Sunken);
+    ui->statusbar->addPermanentWidget(m_holidaysLabel = new QLabel(ui->statusbar));
+    m_holidaysLabel->setFrameShape(QFrame::Panel);
+    m_holidaysLabel->setFrameShadow(QFrame::Sunken);
 
     refresh(true);
 }
@@ -152,7 +159,7 @@ void MainWindow::refresh(bool forceAuswertung)
     ui->treeViewBuchungen->setEnabled(false);
     ui->treeViewKontierungen->setEnabled(false);
 
-    m_kontierungLabel->setText(tr("Kontierung time: ???"));
+    m_workingTimeLabel->setText(tr("Working time: %0").arg(tr("???")));
 
     auto waitForBuchugen = m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
     if(waitForBuchugen)
@@ -187,9 +194,8 @@ void MainWindow::refresh(bool forceAuswertung)
     auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
     if(forceAuswertung || m_auswertungDate != auswertungDate)
     {
-        m_auswertungLabel->setText(tr("Urlaubsanspruch: %0 Gleitzeit: %1")
-                                   .arg(QStringLiteral("???"))
-                                   .arg(QStringLiteral("???")));
+        m_balanceLabel->setText(tr("Balance: %0").arg(tr("???")));
+        m_holidaysLabel->setText(tr("Holidays: %0").arg(tr("???")));
 
         ui->actionAuswertung->setEnabled(false);
         m_auswertung.clear();
@@ -243,45 +249,28 @@ void MainWindow::getAuswertungFinished(bool success, const QString &message, con
     ui->actionAuswertung->setEnabled(true);
     m_auswertung = content;
 
-    QString normalArbeitszeit = QStringLiteral("???");
-    QString urlaubsAnspruch = QStringLiteral("???");
-    QString gleitzeit = QStringLiteral("???");
+    auto urlaubsAnspruch = tr("???");
+    auto gleitzeit = tr("???");
 
     {
-        static QRegularExpression regex("Normalarbeitsze +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)");
+        static QRegularExpression regex(QStringLiteral("Urlaubsanspruch +([0-9]+\\.[0-9]+\\-?) +([0-9]+\\.[0-9]+\\-?)"));
         auto match = regex.match(content);
         if(match.hasMatch())
-        {
-            normalArbeitszeit = match.captured(2);
-            qDebug() << "Normalarbeitszeit" << match.captured(1) << match.captured(2);
-        }
-        else
-            qWarning() << "Normalarbeitszeit not found";
-    }
-    {
-        static QRegularExpression regex("Urlaubsanspruch +([0-9]+\\.[0-9]+\\-?) +([0-9]+\\.[0-9]+\\-?)");
-        auto match = regex.match(content);
-        if(match.hasMatch())
-        {
             urlaubsAnspruch = match.captured(2);
-            qDebug() << "Urlaubsanspruch" << match.captured(1) << match.captured(2);
-        }
         else
             qWarning() << "Urlaubsanspruch not found";
     }
     {
-        static QRegularExpression regex("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)");
+        static QRegularExpression regex(QStringLiteral("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)"));
         auto match = regex.match(content);
         if(match.hasMatch())
-        {
             gleitzeit = match.captured(2);
-            qDebug() << "Gleitzeit" << match.captured(1) << match.captured(2);
-        }
         else
             qWarning() << "Gleitzeit not found";
     }
 
-    m_auswertungLabel->setText(tr("Urlaubsanspruch: %0 Gleitzeit: %1").arg(urlaubsAnspruch).arg(gleitzeit));
+    m_balanceLabel->setText(tr("Balance: %0").arg(gleitzeit));
+    m_holidaysLabel->setText(tr("Holidays: %0").arg(urlaubsAnspruch));
 }
 
 void MainWindow::refreshBuchungenFinished(bool success, const QString &message)
@@ -1088,11 +1077,9 @@ void MainWindow::validateEntries()
 
     after:
     if(errorMessage.isEmpty())
-        m_kontierungLabel->setText(tr("Kontierung time: %0h").arg(m_kontierungTime.toString(QStringLiteral("HH:mm"))));
+        m_workingTimeLabel->setText(tr("Working time: %0").arg(m_kontierungTime.toString(QStringLiteral("HH:mm"))));
     else
     {
-        m_kontierungLabel->setText(tr("Kontierung time: ???"));
-
         auto label = new QLabel(tr("Strip rendering aborted due error."), ui->scrollAreaWidgetContents);
         ui->verticalLayout2->addWidget(label);
         label->setMinimumHeight(20);

@@ -51,8 +51,9 @@ private:
     QMap<QString, QString> m_projekte;
     QDate m_auswertungDate;
     QByteArray m_auswertung;
-    QLabel *m_kontierungLabel;
-    QLabel *m_auswertungLabel;
+    QLabel *m_workingTimeLabel;
+    QLabel *m_balanceLabel;
+    QLabel *m_holidaysLabel;
 
     BuchungenModel *m_buchungenModel;
     KontierungenModel *m_kontierungenModel;
