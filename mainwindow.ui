@@ -68,7 +68,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBoxProjekt">
+       <widget class="QComboBox" name="comboBoxProject">
         <property name="enabled">
          <bool>false</bool>
         </property>
@@ -81,7 +81,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBoxSubprojekt">
+       <widget class="QComboBox" name="comboBoxSubproject">
         <property name="enabled">
          <bool>false</bool>
         </property>

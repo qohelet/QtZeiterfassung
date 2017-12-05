@@ -78,13 +78,13 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
 
     ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
 
-    connect(&m_erfassung, &Zeiterfassung::getProjekteFinished,
-            this, &MainWindow::getProjekteFinished);
-    erfassung.doGetProjekte(userInfo.userId, QDate::currentDate());
+    connect(&m_erfassung, &Zeiterfassung::getProjectsFinished,
+            this, &MainWindow::getProjekctsFinished);
+    erfassung.doGetProjects(userInfo.userId, QDate::currentDate());
 
-    ui->comboBoxProjekt->setMaxVisibleItems(10);
+    ui->comboBoxProject->setMaxVisibleItems(10);
 
-    ui->comboBoxSubprojekt->lineEdit()->setPlaceholderText(tr("Subprojekt"));
+    ui->comboBoxSubproject->lineEdit()->setPlaceholderText(tr("Subproject"));
     ui->comboBoxWorkpackage->lineEdit()->setPlaceholderText(tr("Workpackage"));
     ui->comboBoxText->lineEdit()->setPlaceholderText(tr("Text"));
 
@@ -149,8 +149,8 @@ void MainWindow::refresh(bool forceAuswertung)
     ui->pushButtonPrev->setEnabled(false);
     ui->pushButtonNext->setEnabled(false);
     ui->timeEditTime->setEnabled(false);
-    ui->comboBoxProjekt->setEnabled(false);
-    ui->comboBoxSubprojekt->setEnabled(false);
+    ui->comboBoxProject->setEnabled(false);
+    ui->comboBoxSubproject->setEnabled(false);
     ui->comboBoxWorkpackage->setEnabled(false);
     ui->comboBoxText->setEnabled(false);
     ui->pushButtonStart->setEnabled(false);
@@ -158,7 +158,7 @@ void MainWindow::refresh(bool forceAuswertung)
     ui->treeViewBuchungen->setEnabled(false);
     ui->treeViewTimeAssignments->setEnabled(false);
 
-    m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Working time")).arg(tr("???")));
+    m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Assigned time")).arg(tr("???")));
 
     auto waitForBuchugen = m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
     if(waitForBuchugen)
@@ -214,10 +214,10 @@ void MainWindow::refresh(bool forceAuswertung)
     }
 }
 
-void MainWindow::getProjekteFinished(bool success, const QString &message, const QVector<Zeiterfassung::Projekt> &projekte)
+void MainWindow::getProjekctsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Project> &projects)
 {
-    disconnect(&m_erfassung, &Zeiterfassung::getProjekteFinished,
-               this, &MainWindow::getProjekteFinished);
+    disconnect(&m_erfassung, &Zeiterfassung::getProjectsFinished,
+               this, &MainWindow::getProjekctsFinished);
 
     if(!success)
     {
@@ -225,10 +225,10 @@ void MainWindow::getProjekteFinished(bool success, const QString &message, const
         return;
     }
 
-    m_projekte.clear();
+    m_projects.clear();
 
-    for(const auto &projekt : projekte)
-        m_projekte.insert(projekt.value, projekt.label);
+    for(const auto &project : projects)
+        m_projects.insert(project.value, project.label);
 
     updateComboboxes();
 }
@@ -352,8 +352,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
                     ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProjekt->setEnabled(false);
-                    ui->comboBoxSubprojekt->setEnabled(false);
+                    ui->comboBoxProject->setEnabled(false);
+                    ui->comboBoxSubproject->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
@@ -406,8 +406,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
                     ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProjekt->setEnabled(false);
-                    ui->comboBoxSubprojekt->setEnabled(false);
+                    ui->comboBoxProject->setEnabled(false);
+                    ui->comboBoxSubproject->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
@@ -464,8 +464,8 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
                     ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProjekt->setEnabled(false);
-                    ui->comboBoxSubprojekt->setEnabled(false);
+                    ui->comboBoxProject->setEnabled(false);
+                    ui->comboBoxSubproject->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
@@ -513,11 +513,11 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
         auto selectedAction = menu.exec(ui->treeViewTimeAssignments->viewport()->mapToGlobal(pos));
         if(selectedAction == editAction)
         {
-            TimeAssignmentDialog dialog(m_projekte, m_settings, this);
+            TimeAssignmentDialog dialog(m_projects, m_settings, this);
             dialog.setTime(timeAssignment.time);
             dialog.setTimespan(timeAssignment.timespan);
-            dialog.setProjekt(timeAssignment.projekt);
-            dialog.setSubprojekt(timeAssignment.subprojekt);
+            dialog.setProject(timeAssignment.project);
+            dialog.setSubproject(timeAssignment.subproject);
             dialog.setWorkpackage(timeAssignment.workpackage);
             dialog.setText(timeAssignment.text);
             again1:
@@ -528,7 +528,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, ui->dateEditDate->date(),
                                                dialog.getTime(), dialog.getTimespan(),
-                                               dialog.getProjekt(), dialog.getSubprojekt(),
+                                               dialog.getProject(), dialog.getSubproject(),
                                                dialog.getWorkpackage(), dialog.getText());
                 eventLoop.exec();
 
@@ -540,16 +540,16 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
                     ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProjekt->setEnabled(false);
-                    ui->comboBoxSubprojekt->setEnabled(false);
+                    ui->comboBoxProject->setEnabled(false);
+                    ui->comboBoxSubproject->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewTimeAssignments->setEnabled(false);
 
-                    m_settings.prependProjekt(dialog.getProjekt());
-                    m_settings.prependSubprojekt(dialog.getSubprojekt());
+                    m_settings.prependProject(dialog.getProject());
+                    m_settings.prependSubproject(dialog.getSubproject());
                     m_settings.prependWorkpackage(dialog.getWorkpackage());
                     m_settings.prependText(dialog.getText());
 
@@ -599,8 +599,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
                     ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProjekt->setEnabled(false);
-                    ui->comboBoxSubprojekt->setEnabled(false);
+                    ui->comboBoxProject->setEnabled(false);
+                    ui->comboBoxSubproject->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
@@ -636,7 +636,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
         auto selectedAction = menu.exec(ui->treeViewTimeAssignments->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
-            TimeAssignmentDialog dialog(m_projekte, m_settings, this);
+            TimeAssignmentDialog dialog(m_projects, m_settings, this);
             again2:
             if(dialog.exec() == QDialog::Accepted)
             {
@@ -645,7 +645,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
                                                dialog.getTime(), dialog.getTimespan(),
-                                               dialog.getProjekt(), dialog.getSubprojekt(),
+                                               dialog.getProject(), dialog.getSubproject(),
                                                dialog.getWorkpackage(), dialog.getText());
                 eventLoop.exec();
 
@@ -657,16 +657,16 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                     ui->pushButtonPrev->setEnabled(false);
                     ui->pushButtonNext->setEnabled(false);
                     ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProjekt->setEnabled(false);
-                    ui->comboBoxSubprojekt->setEnabled(false);
+                    ui->comboBoxProject->setEnabled(false);
+                    ui->comboBoxSubproject->setEnabled(false);
                     ui->comboBoxWorkpackage->setEnabled(false);
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewTimeAssignments->setEnabled(false);
 
-                    m_settings.prependProjekt(dialog.getProjekt());
-                    m_settings.prependSubprojekt(dialog.getSubprojekt());
+                    m_settings.prependProject(dialog.getProject());
+                    m_settings.prependSubproject(dialog.getSubproject());
                     m_settings.prependWorkpackage(dialog.getWorkpackage());
                     m_settings.prependText(dialog.getText());
 
@@ -730,7 +730,7 @@ void MainWindow::pushButtonStartPressed()
 
             m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
                                            timeAssignment.time, timespan,
-                                           timeAssignment.projekt, timeAssignment.subprojekt,
+                                           timeAssignment.project, timeAssignment.subproject,
                                            timeAssignment.workpackage, timeAssignment.text);
             eventLoop.exec();
 
@@ -750,7 +750,7 @@ void MainWindow::pushButtonStartPressed()
 
     m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
                                    m_timeAssignmentTime, QTime(0, 0),
-                                   ui->comboBoxProjekt->currentData().toString(), ui->comboBoxSubprojekt->currentText(),
+                                   ui->comboBoxProject->currentData().toString(), ui->comboBoxSubproject->currentText(),
                                    ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
     eventLoop.exec();
 
@@ -761,8 +761,8 @@ void MainWindow::pushButtonStartPressed()
         return;
     }
 
-    m_settings.prependProjekt(ui->comboBoxProjekt->currentData().toString());
-    m_settings.prependSubprojekt(ui->comboBoxSubprojekt->currentText());
+    m_settings.prependProject(ui->comboBoxProject->currentData().toString());
+    m_settings.prependSubproject(ui->comboBoxSubproject->currentText());
     m_settings.prependWorkpackage(ui->comboBoxWorkpackage->currentText());
     m_settings.prependText(ui->comboBoxText->currentText());
 
@@ -801,7 +801,7 @@ void MainWindow::pushButtonEndPressed()
 
         m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
                                        timeAssignment.time, timespan,
-                                       timeAssignment.projekt, timeAssignment.subprojekt,
+                                       timeAssignment.project, timeAssignment.subproject,
                                        timeAssignment.workpackage, timeAssignment.text);
         eventLoop.exec();
 
@@ -902,8 +902,8 @@ void MainWindow::validateEntries()
 
         lastTimeAssignment = &timeAssignment;
 
-        ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjektString(timeAssignment.projekt),
-                                                           timeAssignment.subprojekt, timeAssignment.workpackage, timeAssignment.text,
+        ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                                                           timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
                                                            m_settings, ui->scrollAreaWidgetContents));
 
         if(timeAssignment.timespan == QTime(0, 0))
@@ -957,8 +957,8 @@ void MainWindow::validateEntries()
 
                     lastTimeAssignment = &timeAssignment;
 
-                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjektString(timeAssignment.projekt),
-                                                                       timeAssignment.subprojekt, timeAssignment.workpackage, timeAssignment.text,
+                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                                                                       timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
                                                                        m_settings, ui->scrollAreaWidgetContents));
 
                     if(timeAssignment.timespan == QTime(0, 0))
@@ -1031,8 +1031,8 @@ void MainWindow::validateEntries()
 
                     lastTimeAssignment = &timeAssignment;
 
-                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjektString(timeAssignment.projekt),
-                                                                       timeAssignment.subprojekt, timeAssignment.workpackage, timeAssignment.text,
+                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                                                                       timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
                                                                        m_settings, ui->scrollAreaWidgetContents));
 
                     if(timeAssignment.timespan == QTime(0, 0))
@@ -1087,7 +1087,7 @@ void MainWindow::validateEntries()
 
     after:
     if(errorMessage.isEmpty())
-        m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Working time")).arg(tr("%0h").arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm")))));
+        m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Assigned time")).arg(tr("%0h").arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm")))));
     else
     {
         auto label = new QLabel(tr("Strip rendering aborted due error."), ui->scrollAreaWidgetContents);
@@ -1106,8 +1106,8 @@ void MainWindow::validateEntries()
     }
 
     ui->timeEditTime->setEnabled(true);
-    ui->comboBoxProjekt->setEnabled(true);
-    ui->comboBoxSubprojekt->setEnabled(true);
+    ui->comboBoxProject->setEnabled(true);
+    ui->comboBoxSubproject->setEnabled(true);
     ui->comboBoxWorkpackage->setEnabled(true);
     ui->comboBoxText->setEnabled(true);
     ui->pushButtonStart->setEnabled(true);
@@ -1115,40 +1115,40 @@ void MainWindow::validateEntries()
 
 void MainWindow::updateComboboxes()
 {
-    ui->comboBoxProjekt->clear();
+    ui->comboBoxProject->clear();
 
     {
-        auto preferedProjekte = m_settings.projekte();
+        auto preferedProjects = m_settings.projects();
 
-        for(const auto &preferedProjekt : preferedProjekte)
+        for(const auto &preferedProject : preferedProjects)
         {
-            if(!m_projekte.contains(preferedProjekt))
+            if(!m_projects.contains(preferedProject))
             {
-                qWarning() << "cannot find projekt" << preferedProjekt;
+                qWarning() << "cannot find project" << preferedProject;
                 continue;
             }
 
-            ui->comboBoxProjekt->addItem(m_projekte.value(preferedProjekt) % " (" % preferedProjekt % ')', preferedProjekt);
+            ui->comboBoxProject->addItem(m_projects.value(preferedProject) % " (" % preferedProject % ')', preferedProject);
         }
 
-        if(preferedProjekte.count())
-            ui->comboBoxProjekt->insertSeparator(ui->comboBoxProjekt->count());
+        if(preferedProjects.count())
+            ui->comboBoxProject->insertSeparator(ui->comboBoxProject->count());
 
-        for(auto iter = m_projekte.constBegin(); iter != m_projekte.constEnd(); iter++)
+        for(auto iter = m_projects.constBegin(); iter != m_projects.constEnd(); iter++)
         {
-            if(!preferedProjekte.contains(iter.key()))
-                ui->comboBoxProjekt->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
+            if(!preferedProjects.contains(iter.key()))
+                ui->comboBoxProject->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
         }
     }
 
-    ui->comboBoxSubprojekt->clear();
+    ui->comboBoxSubproject->clear();
 
     {
-        auto subprojekte = m_settings.subprojekte();
-        for(const auto &subprojekt : subprojekte)
-            ui->comboBoxSubprojekt->addItem(subprojekt);
-        if(subprojekte.count())
-            ui->comboBoxSubprojekt->setCurrentText(QString());
+        auto subprojects = m_settings.subprojects();
+        for(const auto &subproject : subprojects)
+            ui->comboBoxSubproject->addItem(subproject);
+        if(subprojects.count())
+            ui->comboBoxSubproject->setCurrentText(QString());
     }
 
     ui->comboBoxWorkpackage->clear();
@@ -1182,13 +1182,13 @@ void MainWindow::clearStrips()
     }
 }
 
-QString MainWindow::buildProjektString(const QString &projekt)
+QString MainWindow::buildProjectString(const QString &project)
 {
-    if(m_projekte.contains(projekt))
-        return m_projekte.value(projekt) % " (" % projekt % ")";
+    if(m_projects.contains(project))
+        return m_projects.value(project) % " (" % project % ")";
     else
     {
-        qWarning() << "could not find projekt" << projekt;
-        return projekt;
+        qWarning() << "could not find project" << project;
+        return project;
     }
 }

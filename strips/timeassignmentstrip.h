@@ -13,7 +13,7 @@ class TimeAssignmentStrip : public QFrame
     Q_OBJECT
 
 public:
-    explicit TimeAssignmentStrip(int id, const QTime &duration, const QString &projekt, const QString &subprojekt,
+    explicit TimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject,
                                  const QString &workpackage, const QString &text, const ZeiterfassungSettings &settings,
                                  QWidget *parent = 0);
     ~TimeAssignmentStrip();

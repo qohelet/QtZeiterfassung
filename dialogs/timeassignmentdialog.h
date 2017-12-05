@@ -15,7 +15,7 @@ class TimeAssignmentDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TimeAssignmentDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
+    explicit TimeAssignmentDialog(const QMap<QString, QString> &projects, const ZeiterfassungSettings &settings,
                                   QWidget *parent = 0);
     ~TimeAssignmentDialog();
 
@@ -25,11 +25,11 @@ public:
     QTime getTimespan() const;
     void setTimespan(const QTime &timespan);
 
-    QString getProjekt() const;
-    void setProjekt(const QString &projekt);
+    QString getProject() const;
+    void setProject(const QString &project);
 
-    QString getSubprojekt() const;
-    void setSubprojekt(const QString &subprojekt);
+    QString getSubproject() const;
+    void setSubproject(const QString &subproject);
 
     QString getWorkpackage() const;
     void setWorkpackage(const QString &workpackage);

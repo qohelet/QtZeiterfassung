@@ -22,8 +22,13 @@
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
    <item>
     <widget class="QLabel" name="labelTitle">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;h1&gt;Time assignment&lt;/h1&gt;</string>
+      <string>Time assignment</string>
      </property>
     </widget>
    </item>
@@ -50,19 +55,19 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="labelProjekt">
+      <widget class="QLabel" name="labelProject">
        <property name="text">
-        <string>Projekt:</string>
+        <string>Project:</string>
        </property>
        <property name="buddy">
-        <cstring>comboBoxProjekt</cstring>
+        <cstring>comboBoxProject</cstring>
        </property>
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="labelSubprojekt">
+      <widget class="QLabel" name="labelSubproject">
        <property name="text">
-        <string>Subprojekt:</string>
+        <string>Subproject:</string>
        </property>
       </widget>
      </item>
@@ -83,22 +88,22 @@
      <item row="0" column="1">
       <widget class="QTimeEdit" name="timeEditTime">
        <property name="displayFormat">
-        <string>HH:mm:ss</string>
+        <string notr="true">HH:mm:ss</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
       <widget class="QTimeEdit" name="timeEditTimespan">
        <property name="displayFormat">
-        <string>HH:mm:ss</string>
+        <string notr="true">HH:mm:ss</string>
        </property>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QComboBox" name="comboBoxProjekt"/>
+      <widget class="QComboBox" name="comboBoxProject"/>
      </item>
      <item row="3" column="1">
-      <widget class="QComboBox" name="comboBoxSubprojekt">
+      <widget class="QComboBox" name="comboBoxSubproject">
        <property name="editable">
         <bool>true</bool>
        </property>
