@@ -80,14 +80,15 @@ int main(int argc, char *argv[])
         settings.setLanguage(dialog.language());
     }
 
-    QLocale::setDefault(QLocale(settings.language(), QLocale::Austria));
+    QLocale locale(settings.language(), QLocale::Austria);
+    QLocale::setDefault(locale);
 
     QTranslator qtTranslator(&app);
-    loadAndInstallTranslator(qtTranslator, QLocale(), QStringLiteral("qt"), QStringLiteral("_"),
+    loadAndInstallTranslator(qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"),
                              QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("translations"));
 
     QTranslator zeiterfassungTranslator(&app);
-    loadAndInstallTranslator(zeiterfassungTranslator, QLocale(), QStringLiteral("zeiterfassung"),
+    loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"),
                              QStringLiteral("_"), QStringLiteral(":/zeiterfassung/translations"));
 
     splashScreen.showMessage(QObject::tr("Loading login page..."));
