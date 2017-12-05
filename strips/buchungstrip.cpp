@@ -18,13 +18,13 @@ BuchungStrip::BuchungStrip(int id, const QTime &time, const QString &type, const
     ui->labelTime->setText(time.toString(QStringLiteral("HH:mm")));
     if(type == QStringLiteral("K"))
     {
-        setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.buchungKommenBackgroundColor()));
-        ui->labelType->setText(tr("KOMMEN"));
+        setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.buchungStartBackgroundColor()));
+        ui->labelType->setText(tr("START"));
     }
     else if(type == QStringLiteral("G"))
     {
-        setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.buchungGehenBackgroundColor()));
-        ui->labelType->setText(tr("GEHEN"));
+        setStyleSheet(QStringLiteral("%0 { background-color: %1; }").arg(staticMetaObject.className()).arg(settings.buchungEndBackgroundColor()));
+        ui->labelType->setText(tr("END"));
     }
     else
     {

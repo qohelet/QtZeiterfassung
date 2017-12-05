@@ -862,7 +862,7 @@ void MainWindow::validateEntries()
         auto startBuchung = *buchungenIter++;
         if(startBuchung.type != QStringLiteral("K"))
         {
-            errorMessage = tr("Expected Buchung for Kommen, instead got type %0\nBuchung ID: %1")
+            errorMessage = tr("Expected start Buchung, instead got type %0\nBuchung ID: %1")
                     .arg(startBuchung.type)
                     .arg(startBuchung.id);
             goto after;
@@ -940,7 +940,7 @@ void MainWindow::validateEntries()
                 {
                     if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
                     {
-                        errorMessage = tr("The last time assignment is finished without Gehen-Buchung\nTime assignment ID: %0")
+                        errorMessage = tr("The last time assignment is finished without end Buchung\nTime assignment ID: %0")
                                 .arg(timeAssignment.id);
                         goto after;
                     }
@@ -989,7 +989,7 @@ void MainWindow::validateEntries()
                 auto endBuchung = *buchungenIter++;
                 if(endBuchung.type != QStringLiteral("G"))
                 {
-                    errorMessage = tr("Expected Buchung for Gehen, instead got type %0\nBuchung ID: %1")
+                    errorMessage = tr("Expected end Buchung, instead got type %0\nBuchung ID: %1")
                             .arg(endBuchung.type)
                             .arg(endBuchung.id);
                     goto after;
