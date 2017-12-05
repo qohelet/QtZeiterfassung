@@ -4,6 +4,9 @@ This tool helps me assigning my working hours to various accounts at work.
 ## Building from source
 ```
 git clone https://github.com/0xFEEDC0DE64/QtZeiterfassung.git
+pushd QtZeiterfassung
+lrelease translations/zeiterfassung_*.ts
+popd
 mkdir build_QtZeiterfassung
 cd build_QtZeiterfassung
 qmake ../QtZeiterfassung
