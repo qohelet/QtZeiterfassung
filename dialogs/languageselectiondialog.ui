@@ -22,8 +22,13 @@
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0">
    <item>
     <widget class="QLabel" name="labelTitle">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;h1&gt;Language selection&lt;/h1&gt;</string>
+      <string>Language selection</string>
      </property>
     </widget>
    </item>

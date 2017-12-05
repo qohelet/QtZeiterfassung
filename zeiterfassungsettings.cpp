@@ -72,34 +72,34 @@ void ZeiterfassungSettings::setPassword(const QString &password)
     setValue("password", password);
 }
 
-QStringList ZeiterfassungSettings::projekte() const
+QStringList ZeiterfassungSettings::projects() const
 {
-    return value("projekte").toStringList();
+    return value("projects").toStringList();
 }
 
-void ZeiterfassungSettings::setProjekte(const QStringList &projekte)
+void ZeiterfassungSettings::setProjects(const QStringList &projects)
 {
-    setValue("projekte", projekte);
+    setValue("projects", projects);
 }
 
-void ZeiterfassungSettings::prependProjekt(const QString &projekt)
+void ZeiterfassungSettings::prependProject(const QString &project)
 {
-    prepentItem("projekte", projekt);
+    prepentItem("projects", project);
 }
 
-QStringList ZeiterfassungSettings::subprojekte() const
+QStringList ZeiterfassungSettings::subprojects() const
 {
-    return value("subprojekte").toStringList();
+    return value("subprojects").toStringList();
 }
 
-void ZeiterfassungSettings::setSubprojekte(const QStringList &subprojekte)
+void ZeiterfassungSettings::setSubprojects(const QStringList &subprojects)
 {
-    setValue("subprojekte", subprojekte);
+    setValue("subprojects", subprojects);
 }
 
-void ZeiterfassungSettings::prependSubprojekt(const QString &subprojekt)
+void ZeiterfassungSettings::prependSubproject(const QString &subproject)
 {
-    prepentItem("subprojekte", subprojekt);
+    prepentItem("subprojects", subproject);
 }
 
 QStringList ZeiterfassungSettings::workpackages() const

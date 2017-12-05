@@ -46,8 +46,13 @@
      </item>
      <item>
       <widget class="QLabel" name="labelTitle">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>&lt;h1&gt;Authentication&lt;/h1&gt;</string>
+        <string>Authentication</string>
        </property>
       </widget>
      </item>

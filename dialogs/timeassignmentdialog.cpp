@@ -7,7 +7,7 @@
 
 #include "zeiterfassungsettings.h"
 
-TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &projekte, const ZeiterfassungSettings &settings,
+TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &projects, const ZeiterfassungSettings &settings,
                                    QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TimeAssignmentDialog)
@@ -15,30 +15,30 @@ TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &projekt
     ui->setupUi(this);
 
     {
-        for(const auto &preferedProjekt : settings.projekte())
+        for(const auto &preferedProject : settings.projects())
         {
-            if(!projekte.contains(preferedProjekt))
+            if(!projects.contains(preferedProject))
             {
-                qWarning() << "cannot find projekt" << preferedProjekt;
+                qWarning() << "cannot find project" << preferedProject;
                 continue;
             }
 
-            ui->comboBoxProjekt->addItem(projekte.value(preferedProjekt) % " (" % preferedProjekt % ')', preferedProjekt);
+            ui->comboBoxProject->addItem(projects.value(preferedProject) % " (" % preferedProject % ')', preferedProject);
         }
 
-        if(settings.projekte().count())
-            ui->comboBoxProjekt->insertSeparator(ui->comboBoxProjekt->count());
+        if(settings.projects().count())
+            ui->comboBoxProject->insertSeparator(ui->comboBoxProject->count());
 
-        for(auto iter = projekte.constBegin(); iter != projekte.constEnd(); iter++)
+        for(auto iter = projects.constBegin(); iter != projects.constEnd(); iter++)
         {
-            if(!settings.projekte().contains(iter.key()))
-                ui->comboBoxProjekt->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
+            if(!settings.projects().contains(iter.key()))
+                ui->comboBoxProject->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
         }
     }
 
-    for(const auto &subprojekt : settings.subprojekte())
-        ui->comboBoxSubprojekt->addItem(subprojekt);
-    ui->comboBoxSubprojekt->clearEditText();
+    for(const auto &subproject : settings.subprojects())
+        ui->comboBoxSubproject->addItem(subproject);
+    ui->comboBoxSubproject->clearEditText();
 
     for(const auto &workpackage : settings.workpackages())
         ui->comboBoxWorkpackage->addItem(workpackage);
@@ -74,28 +74,28 @@ void TimeAssignmentDialog::setTimespan(const QTime &timespan)
     ui->timeEditTimespan->setTime(timespan);
 }
 
-QString TimeAssignmentDialog::getProjekt() const
+QString TimeAssignmentDialog::getProject() const
 {
-    return ui->comboBoxProjekt->currentData().toString();
+    return ui->comboBoxProject->currentData().toString();
 }
 
-void TimeAssignmentDialog::setProjekt(const QString &projekt)
+void TimeAssignmentDialog::setProject(const QString &project)
 {
-    auto index = ui->comboBoxProjekt->findData(projekt);
+    auto index = ui->comboBoxProject->findData(project);
     if(index >= 0)
-        ui->comboBoxProjekt->setCurrentIndex(index);
+        ui->comboBoxProject->setCurrentIndex(index);
     else
-        qWarning() << "could not find projekt" << projekt;
+        qWarning() << "could not find project" << project;
 }
 
-QString TimeAssignmentDialog::getSubprojekt() const
+QString TimeAssignmentDialog::getSubproject() const
 {
-    return ui->comboBoxSubprojekt->currentText();
+    return ui->comboBoxSubproject->currentText();
 }
 
-void TimeAssignmentDialog::setSubprojekt(const QString &subprojekt)
+void TimeAssignmentDialog::setSubproject(const QString &subproject)
 {
-    ui->comboBoxSubprojekt->setCurrentText(subprojekt);
+    ui->comboBoxSubproject->setCurrentText(subproject);
 }
 
 QString TimeAssignmentDialog::getWorkpackage() const

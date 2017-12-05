@@ -210,7 +210,7 @@ bool Zeiterfassung::doGetTimeAssignments(int userId, const QDate &start, const Q
 }
 
 bool Zeiterfassung::doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
-                                           const QString &projekt, const QString &subprojekt, const QString &workpackage,
+                                           const QString &project, const QString &subproject, const QString &workpackage,
                                            const QString &text)
 {
     if(m_replies.createTimeAssignment)
@@ -234,12 +234,12 @@ bool Zeiterfassung::doCreateTimeAssignment(int userId, const QDate &date, const 
         QJsonArray koWertList;
         {
             QJsonObject obj;
-            obj[QStringLiteral("value")] = projekt;
+            obj[QStringLiteral("value")] = project;
             koWertList << obj;
         }
         {
             QJsonObject obj;
-            obj[QStringLiteral("value")] = subprojekt;
+            obj[QStringLiteral("value")] = subproject;
             koWertList << obj;
         }
         {
@@ -258,7 +258,7 @@ bool Zeiterfassung::doCreateTimeAssignment(int userId, const QDate &date, const 
 }
 
 bool Zeiterfassung::doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
-                                           const QTime &timespan, const QString &projekt, const QString &subprojekt,
+                                           const QTime &timespan, const QString &project, const QString &subproject,
                                            const QString &workpackage, const QString &text)
 {
     if(m_replies.updateTimeAssignment)
@@ -287,12 +287,12 @@ bool Zeiterfassung::doUpdateTimeAssignment(int timeAssignmentId, int userId, con
         QJsonArray koWertList;
         {
             QJsonObject obj;
-            obj[QStringLiteral("value")] = projekt;
+            obj[QStringLiteral("value")] = project;
             koWertList << obj;
         }
         {
             QJsonObject obj;
-            obj[QStringLiteral("value")] = subprojekt;
+            obj[QStringLiteral("value")] = subproject;
             koWertList << obj;
         }
         {
@@ -330,11 +330,11 @@ bool Zeiterfassung::doDeleteTimeAssignment(int timeAssignmentId)
     return true;
 }
 
-bool Zeiterfassung::doGetProjekte(int userId, const QDate &date)
+bool Zeiterfassung::doGetProjects(int userId, const QDate &date)
 {
-    if(m_replies.getProjekte)
+    if(m_replies.getProjects)
     {
-        qWarning() << "another getProjekte already processing!";
+        qWarning() << "another getProjects already processing!";
         return false;
     }
 
@@ -344,8 +344,8 @@ bool Zeiterfassung::doGetProjekte(int userId, const QDate &date)
                                  .arg(date.toString(QStringLiteral("yyyyMMdd")))));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.getProjekte = m_manager->get(request);
-    connect(m_replies.getProjekte, &QNetworkReply::finished, this, &Zeiterfassung::getProjekteRequestFinished);
+    m_replies.getProjects = m_manager->get(request);
+    connect(m_replies.getProjects, &QNetworkReply::finished, this, &Zeiterfassung::getProjectsRequestFinished);
 
     return true;
 }
@@ -781,26 +781,26 @@ void Zeiterfassung::deleteTimeAssignmentRequestFinished()
     m_replies.deleteTimeAssignment = Q_NULLPTR;
 }
 
-void Zeiterfassung::getProjekteRequestFinished()
+void Zeiterfassung::getProjectsRequestFinished()
 {
-    if(m_replies.getProjekte->error() != QNetworkReply::NoError)
+    if(m_replies.getProjects->error() != QNetworkReply::NoError)
     {
-        Q_EMIT getProjekteFinished(false, tr("Request error occured: %0").arg(m_replies.getProjekte->error()), {});
+        Q_EMIT getProjectsFinished(false, tr("Request error occured: %0").arg(m_replies.getProjects->error()), {});
         goto end;
     }
 
     {
         QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.getProjekte->readAll(), &error);
+        QJsonDocument document = QJsonDocument::fromJson(m_replies.getProjects->readAll(), &error);
         if(error.error != QJsonParseError::NoError)
         {
-            Q_EMIT getProjekteFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), {});
+            Q_EMIT getProjectsFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), {});
             goto end;
         }
 
         if(!document.isObject())
         {
-            Q_EMIT getProjekteFinished(false, tr("JSON document is not an object!"), {});
+            Q_EMIT getProjectsFinished(false, tr("JSON document is not an object!"), {});
             goto end;
         }
 
@@ -808,7 +808,7 @@ void Zeiterfassung::getProjekteRequestFinished()
 
         if(!rootObj.contains(QStringLiteral("elements")))
         {
-            Q_EMIT getProjekteFinished(false, tr("JSON does not contain elements!"), {});
+            Q_EMIT getProjectsFinished(false, tr("JSON does not contain elements!"), {});
             goto end;
         }
 
@@ -816,29 +816,29 @@ void Zeiterfassung::getProjekteRequestFinished()
 
         if(!elements.isArray())
         {
-            Q_EMIT getProjekteFinished(false, tr("elements is not an array!"), {});
+            Q_EMIT getProjectsFinished(false, tr("elements is not an array!"), {});
             goto end;
         }
 
         auto elementsArr = elements.toArray();
-        QVector<Projekt> projekte;
+        QVector<Project> projects;
 
         for(const auto &val : elementsArr)
         {
             auto obj = val.toObject();
 
-            projekte.append({
+            projects.append({
                                 obj.value(QStringLiteral("label")).toString(),
                                 obj.value(QStringLiteral("value")).toString()
                             });
         }
 
-        Q_EMIT getProjekteFinished(true, QString(), projekte);
+        Q_EMIT getProjectsFinished(true, QString(), projects);
     }
 
     end:
-    m_replies.getProjekte->deleteLater();
-    m_replies.getProjekte = Q_NULLPTR;
+    m_replies.getProjects->deleteLater();
+    m_replies.getProjects = Q_NULLPTR;
 }
 
 void Zeiterfassung::getAuswertungRequest0Finished()

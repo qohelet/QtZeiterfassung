@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>80</height>
+    <height>82</height>
    </rect>
   </property>
   <property name="frameShape">
@@ -42,26 +42,26 @@
         <enum>QFrame::Sunken</enum>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">9:99</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="labelProjekt">
+      <widget class="QLabel" name="labelProject">
        <property name="font">
         <font>
          <pointsize>15</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">PROJECT 1 (12345)</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="labelId">
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">0123456</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
@@ -73,7 +73,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,1">
      <item>
-      <widget class="QLabel" name="labelSubprojekt">
+      <widget class="QLabel" name="labelSubproject">
        <property name="minimumSize">
         <size>
          <width>120</width>
@@ -81,7 +81,7 @@
         </size>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">Subproject</string>
        </property>
       </widget>
      </item>
@@ -94,14 +94,14 @@
         </size>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">Workpackage</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="labelText">
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">Text</string>
        </property>
       </widget>
      </item>
