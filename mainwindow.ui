@@ -233,13 +233,13 @@
          </item>
         </layout>
        </widget>
-       <widget class="QGroupBox" name="groupBoxKontierungen">
+       <widget class="QGroupBox" name="groupBoxTimeAssignments">
         <property name="title">
-         <string>Kontierungen</string>
+         <string>Time assignments</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QTreeView" name="treeViewKontierungen">
+          <widget class="QTreeView" name="treeViewTimeAssignments">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -273,7 +273,7 @@
    <widget class="QMenu" name="menu_About">
     <property name="title">
      <string>&amp;About</string>
-    </property>v
+    </property>
     <addaction name="actionAboutMe"/>
     <addaction name="actionSettings"/>
     <addaction name="separator"/>

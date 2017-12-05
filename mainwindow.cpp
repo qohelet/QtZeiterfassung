@@ -18,12 +18,12 @@
 #include "eventloopwithstatus.h"
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/buchungdialog.h"
-#include "dialogs/kontierungdialog.h"
+#include "dialogs/timeassignmentdialog.h"
 #include "dialogs/settingsdialog.h"
 #include "strips/buchungstrip.h"
-#include "strips/kontierungstrip.h"
+#include "strips/timeassignmentstrip.h"
 #include "models/buchungenmodel.h"
-#include "models/kontierungenmodel.h"
+#include "models/timeassignmentsmodel.h"
 
 MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent) :
     QMainWindow(parent),
@@ -32,7 +32,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     m_erfassung(erfassung),
     m_userInfo(userInfo),
     m_buchungenModel(new BuchungenModel(erfassung, this)),
-    m_kontierungenModel(new KontierungenModel(erfassung, this)),
+    m_timeAssignmentsModel(new TimeAssignmentsModel(erfassung, this)),
     m_flag(false)
 {
     ui->setupUi(this);
@@ -51,8 +51,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
         file.setAutoRemove(false);
         if(!file.open())
         {
-            QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Auswertung could not be written:\n\n%0")
-                                 .arg(file.errorString()));
+            QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open auswertung!") % "\n\n" % file.errorString());
             return;
         }
 
@@ -95,12 +94,12 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     connect(ui->pushButtonEnd, &QAbstractButton::pressed, this, &MainWindow::pushButtonEndPressed);
 
     ui->treeViewBuchungen->setModel(m_buchungenModel);
-    ui->treeViewKontierungen->setModel(m_kontierungenModel);
+    ui->treeViewTimeAssignments->setModel(m_timeAssignmentsModel);
 
     connect(ui->treeViewBuchungen, &QWidget::customContextMenuRequested,
             this,                  &MainWindow::contextMenuBuchung);
-    connect(ui->treeViewKontierungen, &QWidget::customContextMenuRequested,
-            this,                     &MainWindow::contextMenuKontierung);
+    connect(ui->treeViewTimeAssignments, &QWidget::customContextMenuRequested,
+            this,                        &MainWindow::contextMenuTimeAssignment);
 
     ui->statusbar->addPermanentWidget(m_workingTimeLabel = new QLabel(ui->statusbar));
     m_workingTimeLabel->setFrameShape(QFrame::Panel);
@@ -157,9 +156,9 @@ void MainWindow::refresh(bool forceAuswertung)
     ui->pushButtonStart->setEnabled(false);
     ui->pushButtonEnd->setEnabled(false);
     ui->treeViewBuchungen->setEnabled(false);
-    ui->treeViewKontierungen->setEnabled(false);
+    ui->treeViewTimeAssignments->setEnabled(false);
 
-    m_workingTimeLabel->setText(tr("Working time: %0").arg(tr("???")));
+    m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Working time")).arg(tr("???")));
 
     auto waitForBuchugen = m_buchungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
     if(waitForBuchugen)
@@ -168,18 +167,18 @@ void MainWindow::refresh(bool forceAuswertung)
                 this,             &MainWindow::refreshBuchungenFinished);
     }
 
-    auto waitForKontierungen = m_kontierungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-    if(waitForKontierungen)
+    auto waitForTimeAssignments = m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
+    if(waitForTimeAssignments)
     {
-        connect(m_kontierungenModel, &KontierungenModel::refreshFinished,
-                this,                &MainWindow::refreshKontierungenFinished);
+        connect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
+                this,                &MainWindow::refreshTimeAssignmentsFinished);
     }
 
-    if(!waitForBuchugen || !waitForKontierungen)
+    if(!waitForBuchugen || !waitForTimeAssignments)
         QMessageBox::warning(this, tr("Unknown error occured."), tr("An unknown error occured."));
 
-    if(waitForBuchugen || waitForKontierungen)
-        m_flag = waitForBuchugen == waitForKontierungen;
+    if(waitForBuchugen || waitForTimeAssignments)
+        m_flag = waitForBuchugen == waitForTimeAssignments;
     else
     {
         ui->actionToday->setEnabled(true);
@@ -194,8 +193,8 @@ void MainWindow::refresh(bool forceAuswertung)
     auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
     if(forceAuswertung || m_auswertungDate != auswertungDate)
     {
-        m_balanceLabel->setText(tr("Balance: %0").arg(tr("???")));
-        m_holidaysLabel->setText(tr("Holidays: %0").arg(tr("???")));
+        m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
+        m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
 
         ui->actionAuswertung->setEnabled(false);
         m_auswertung.clear();
@@ -222,7 +221,7 @@ void MainWindow::getProjekteFinished(bool success, const QString &message, const
 
     if(!success)
     {
-        QMessageBox::warning(this, tr("Could not load Buchungen!"), tr("Could not load Buchungen:\n\n%0").arg(message));
+        QMessageBox::warning(this, tr("Could not load Buchungen!"), tr("Could not load Buchungen!") % "\n\n" % message);
         return;
     }
 
@@ -242,7 +241,7 @@ void MainWindow::getAuswertungFinished(bool success, const QString &message, con
     if(!success)
     {
         m_auswertungDate = QDate();
-        QMessageBox::warning(this, tr("Could not load Auswertung!"), tr("Could not load Auswertung:\n\n%0").arg(message));
+        QMessageBox::warning(this, tr("Could not load Auswertung!"), tr("Could not load Auswertung!") % "\n\n" % message);
         return;
     }
 
@@ -264,13 +263,21 @@ void MainWindow::getAuswertungFinished(bool success, const QString &message, con
         static QRegularExpression regex(QStringLiteral("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)"));
         auto match = regex.match(content);
         if(match.hasMatch())
+        {
             gleitzeit = match.captured(2);
+            if(gleitzeit.endsWith(QChar('-')))
+            {
+                gleitzeit.chop(1);
+                gleitzeit = QChar('-') % gleitzeit;
+            }
+            gleitzeit = tr("%0h").arg(gleitzeit);
+        }
         else
             qWarning() << "Gleitzeit not found";
     }
 
-    m_balanceLabel->setText(tr("Balance: %0").arg(gleitzeit));
-    m_holidaysLabel->setText(tr("Holidays: %0").arg(urlaubsAnspruch));
+    m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(gleitzeit));
+    m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(urlaubsAnspruch));
 }
 
 void MainWindow::refreshBuchungenFinished(bool success, const QString &message)
@@ -287,16 +294,16 @@ void MainWindow::refreshBuchungenFinished(bool success, const QString &message)
         validateEntries();
 
     if(!success)
-        QMessageBox::warning(Q_NULLPTR, tr("Could not refresh Buchungen!"), tr("Could not refresh Buchungen:\n\n%0").arg(message));
+        QMessageBox::warning(Q_NULLPTR, tr("Could not refresh Buchungen!"), tr("Could not refresh Buchungen!") % "\n\n" % message);
 }
 
-void MainWindow::refreshKontierungenFinished(bool success, const QString &message)
+void MainWindow::refreshTimeAssignmentsFinished(bool success, const QString &message)
 {
-    disconnect(m_kontierungenModel, &KontierungenModel::refreshFinished,
-               this,                &MainWindow::refreshKontierungenFinished);
+    disconnect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
+               this,                &MainWindow::refreshTimeAssignmentsFinished);
 
     if(success)
-        ui->treeViewKontierungen->setEnabled(true);
+        ui->treeViewTimeAssignments->setEnabled(true);
 
     if(m_flag)
         m_flag = false;
@@ -304,7 +311,7 @@ void MainWindow::refreshKontierungenFinished(bool success, const QString &messag
         validateEntries();
 
     if(!success)
-        QMessageBox::warning(Q_NULLPTR, tr("Could not refresh Kontierungen!"), tr("Could not refresh Kontierungen:\n\n%0").arg(message));
+        QMessageBox::warning(Q_NULLPTR, tr("Could not refresh time assignments!"), tr("Could not refresh time assignments!") % "\n\n" % message);
 }
 
 void MainWindow::contextMenuBuchung(const QPoint &pos)
@@ -372,7 +379,7 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                 }
                 else
                 {
-                    QMessageBox::warning(this, tr("Could not update Buchung!"), tr("Could not update Buchung:\n\n%0").arg(eventLoop.message()));
+                    QMessageBox::warning(this, tr("Could not update Buchung!"), tr("Could not update Buchung!") % "\n\n" % eventLoop.message());
                     goto again1;
                 }
             }
@@ -425,7 +432,7 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                     }
                 }
                 else
-                    QMessageBox::warning(this, tr("Could not delete Buchung!"), tr("Could not delete Buchung:\n\n%0").arg(eventLoop.message()));
+                    QMessageBox::warning(this, tr("Could not delete Buchung!"), tr("Could not delete Buchung!") % "\n\n" % eventLoop.message());
             }
         }
     }
@@ -484,7 +491,7 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
                 }
                 else
                 {
-                    QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung:\n\n%0").arg(eventLoop.message()));
+                    QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung!") % "\n\n" % eventLoop.message());
                     goto again2;
                 }
             }
@@ -492,34 +499,34 @@ void MainWindow::contextMenuBuchung(const QPoint &pos)
     }
 }
 
-void MainWindow::contextMenuKontierung(const QPoint &pos)
+void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 {
-    auto index = ui->treeViewKontierungen->indexAt(pos);
+    auto index = ui->treeViewTimeAssignments->indexAt(pos);
 
     if(index.isValid())
     {
-        auto kontierung = m_kontierungenModel->getKontierung(index);
+        auto timeAssignment = m_timeAssignmentsModel->getTimeAssignment(index);
 
         QMenu menu;
         auto editAction = menu.addAction(tr("Edit"));
         auto deleteAction = menu.addAction(tr("Delete"));
-        auto selectedAction = menu.exec(ui->treeViewKontierungen->viewport()->mapToGlobal(pos));
+        auto selectedAction = menu.exec(ui->treeViewTimeAssignments->viewport()->mapToGlobal(pos));
         if(selectedAction == editAction)
         {
-            KontierungDialog dialog(m_projekte, m_settings, this);
-            dialog.setTime(kontierung.time);
-            dialog.setTimespan(kontierung.timespan);
-            dialog.setProjekt(kontierung.projekt);
-            dialog.setSubprojekt(kontierung.subprojekt);
-            dialog.setWorkpackage(kontierung.workpackage);
-            dialog.setText(kontierung.text);
+            TimeAssignmentDialog dialog(m_projekte, m_settings, this);
+            dialog.setTime(timeAssignment.time);
+            dialog.setTimespan(timeAssignment.timespan);
+            dialog.setProjekt(timeAssignment.projekt);
+            dialog.setSubprojekt(timeAssignment.subprojekt);
+            dialog.setWorkpackage(timeAssignment.workpackage);
+            dialog.setText(timeAssignment.text);
             again1:
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::updateKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-                m_erfassung.doUpdateKontierung(kontierung.id, m_userInfo.userId, ui->dateEditDate->date(),
+                m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, ui->dateEditDate->date(),
                                                dialog.getTime(), dialog.getTimespan(),
                                                dialog.getProjekt(), dialog.getSubprojekt(),
                                                dialog.getWorkpackage(), dialog.getText());
@@ -539,7 +546,7 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewKontierungen->setEnabled(false);
+                    ui->treeViewTimeAssignments->setEnabled(false);
 
                     m_settings.prependProjekt(dialog.getProjekt());
                     m_settings.prependSubprojekt(dialog.getSubprojekt());
@@ -548,10 +555,10 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
 
                     clearStrips();
 
-                    if(m_kontierungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
+                    if(m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
-                        connect(m_kontierungenModel, &KontierungenModel::refreshFinished,
-                                this,                &MainWindow::refreshKontierungenFinished);
+                        connect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
+                                this,                &MainWindow::refreshTimeAssignmentsFinished);
                         m_flag = false;
                     }
                     else
@@ -565,7 +572,7 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                 }
                 else
                 {
-                    QMessageBox::warning(this, tr("Could not update Kontierung!"), tr("Could not update Kontierung:\n\n%0").arg(eventLoop.message()));
+                    QMessageBox::warning(this, tr("Could not update time assignment!"), tr("Could not update time assignment!") % "\n\n" % eventLoop.message());
                     goto again1;
                 }
             }
@@ -573,15 +580,15 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
         else if(selectedAction == deleteAction)
         {
             QMessageBox msgBox;
-            msgBox.setText("Do you really want to delete the Kontierung?");
+            msgBox.setText("Do you really want to delete the time assignment?");
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
             msgBox.setDefaultButton(QMessageBox::Cancel);
             if(msgBox.exec() == QMessageBox::Yes)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::deleteKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &Zeiterfassung::deleteTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-                m_erfassung.doDeleteKontierung(kontierung.id);
+                m_erfassung.doDeleteTimeAssignment(timeAssignment.id);
                 eventLoop.exec();
 
                 if(eventLoop.success())
@@ -598,14 +605,14 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewKontierungen->setEnabled(false);
+                    ui->treeViewTimeAssignments->setEnabled(false);
 
                     clearStrips();
 
-                    if(m_kontierungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
+                    if(m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
-                        connect(m_kontierungenModel, &KontierungenModel::refreshFinished,
-                                this,                &MainWindow::refreshKontierungenFinished);
+                        connect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
+                                this,                &MainWindow::refreshTimeAssignmentsFinished);
                         m_flag = false;
                     }
                     else
@@ -618,7 +625,7 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     }
                 }
                 else
-                    QMessageBox::warning(this, tr("Could not delete Kontierung!"), tr("Could not delete Kontierung:\n\n%0").arg(eventLoop.message()));
+                    QMessageBox::warning(this, tr("Could not delete time assignment!"), tr("Could not delete time assignment!") % "\n\n" % eventLoop.message());
             }
         }
     }
@@ -626,17 +633,17 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
     {
         QMenu menu;
         auto createAction = menu.addAction(tr("Create"));
-        auto selectedAction = menu.exec(ui->treeViewKontierungen->viewport()->mapToGlobal(pos));
+        auto selectedAction = menu.exec(ui->treeViewTimeAssignments->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
-            KontierungDialog dialog(m_projekte, m_settings, this);
+            TimeAssignmentDialog dialog(m_projekte, m_settings, this);
             again2:
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::createKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &Zeiterfassung::createTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-                m_erfassung.doCreateKontierung(m_userInfo.userId, ui->dateEditDate->date(),
+                m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
                                                dialog.getTime(), dialog.getTimespan(),
                                                dialog.getProjekt(), dialog.getSubprojekt(),
                                                dialog.getWorkpackage(), dialog.getText());
@@ -656,7 +663,7 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                     ui->comboBoxText->setEnabled(false);
                     ui->pushButtonStart->setEnabled(false);
                     ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewKontierungen->setEnabled(false);
+                    ui->treeViewTimeAssignments->setEnabled(false);
 
                     m_settings.prependProjekt(dialog.getProjekt());
                     m_settings.prependSubprojekt(dialog.getSubprojekt());
@@ -665,10 +672,10 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
 
                     clearStrips();
 
-                    if(m_kontierungenModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
+                    if(m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
-                        connect(m_kontierungenModel, &KontierungenModel::refreshFinished,
-                                this,                &MainWindow::refreshKontierungenFinished);
+                        connect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
+                                this,                &MainWindow::refreshTimeAssignmentsFinished);
                         m_flag = false;
                     }
                     else
@@ -682,7 +689,7 @@ void MainWindow::contextMenuKontierung(const QPoint &pos)
                 }
                 else
                 {
-                    QMessageBox::warning(this, tr("Could not create Kontierung!"), tr("Could not create Kontierung:\n\n%0").arg(eventLoop.message()));
+                    QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % eventLoop.message());
                     goto again2;
                 }
             }
@@ -705,33 +712,33 @@ void MainWindow::pushButtonStartPressed()
 
         if(!eventLoop.success())
         {
-            QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung:\n\n%0").arg(eventLoop.message()));
+            QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung!") % "\n\n" % eventLoop.message());
             refresh(true);
             return;
         }
     }
 
-    if(m_kontierungenModel->rbegin() != m_kontierungenModel->rend())
+    if(m_timeAssignmentsModel->rbegin() != m_timeAssignmentsModel->rend())
     {
-        auto kontierung = *m_kontierungenModel->rbegin();
-        if(kontierung.timespan == QTime(0, 0))
+        auto timeAssignment = *m_timeAssignmentsModel->rbegin();
+        if(timeAssignment.timespan == QTime(0, 0))
         {
             EventLoopWithStatus eventLoop;
-            connect(&m_erfassung, &Zeiterfassung::updateKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+            connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-            auto timespan = timeBetween(m_lastKontierungStart, ui->timeEditTime->time());
+            auto timespan = timeBetween(m_lastTimeAssignmentStart, ui->timeEditTime->time());
 
-            m_erfassung.doUpdateKontierung(kontierung.id, m_userInfo.userId, kontierung.date,
-                                           kontierung.time, timespan,
-                                           kontierung.projekt, kontierung.subprojekt,
-                                           kontierung.workpackage, kontierung.text);
+            m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
+                                           timeAssignment.time, timespan,
+                                           timeAssignment.projekt, timeAssignment.subprojekt,
+                                           timeAssignment.workpackage, timeAssignment.text);
             eventLoop.exec();
 
             if(eventLoop.success())
-                m_kontierungTime = timeAdd(m_kontierungTime, timespan);
+                m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timespan);
             else
             {
-                QMessageBox::warning(this, tr("Could not update Kontierung!"), tr("Could not update Kontierung:\n\n%0").arg(eventLoop.message()));
+                QMessageBox::warning(this, tr("Could not update time assignment!"), tr("Could not update time assignment!") % "\n\n" % eventLoop.message());
                 refresh(true);
                 return;
             }
@@ -739,17 +746,17 @@ void MainWindow::pushButtonStartPressed()
     }
 
     EventLoopWithStatus eventLoop;
-    connect(&m_erfassung, &Zeiterfassung::createKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+    connect(&m_erfassung, &Zeiterfassung::createTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-    m_erfassung.doCreateKontierung(m_userInfo.userId, ui->dateEditDate->date(),
-                                   m_kontierungTime, QTime(0, 0),
+    m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
+                                   m_timeAssignmentTime, QTime(0, 0),
                                    ui->comboBoxProjekt->currentData().toString(), ui->comboBoxSubprojekt->currentText(),
                                    ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
     eventLoop.exec();
 
     if(!eventLoop.success())
     {
-        QMessageBox::warning(this, tr("Could not create Kontierung!"), tr("Could not create Kontierung:\n\n%0").arg(eventLoop.message()));
+        QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % eventLoop.message());
         refresh(true);
         return;
     }
@@ -777,32 +784,32 @@ void MainWindow::pushButtonEndPressed()
 
         if(!eventLoop.success())
         {
-            QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung:\n\n%0").arg(eventLoop.message()));
+            QMessageBox::warning(this, tr("Could not create Buchung!"), tr("Could not create Buchung!") % "\n\n" % eventLoop.message());
             refresh(true);
             return;
         }
     }
 
     {
-        auto kontierung = *m_kontierungenModel->rbegin();
-        Q_ASSERT(kontierung.timespan == QTime(0, 0));
+        auto timeAssignment = *m_timeAssignmentsModel->rbegin();
+        Q_ASSERT(timeAssignment.timespan == QTime(0, 0));
 
         EventLoopWithStatus eventLoop;
-        connect(&m_erfassung, &Zeiterfassung::updateKontierungFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-        auto timespan = timeBetween(m_lastKontierungStart, ui->timeEditTime->time());
+        auto timespan = timeBetween(m_lastTimeAssignmentStart, ui->timeEditTime->time());
 
-        m_erfassung.doUpdateKontierung(kontierung.id, m_userInfo.userId, kontierung.date,
-                                       kontierung.time, timespan,
-                                       kontierung.projekt, kontierung.subprojekt,
-                                       kontierung.workpackage, kontierung.text);
+        m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
+                                       timeAssignment.time, timespan,
+                                       timeAssignment.projekt, timeAssignment.subprojekt,
+                                       timeAssignment.workpackage, timeAssignment.text);
         eventLoop.exec();
 
         if(eventLoop.success())
-            m_kontierungTime = timeAdd(m_kontierungTime, timespan);
+            m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timespan);
         else
         {
-            QMessageBox::warning(this, tr("Could not update Kontierung!"), tr("Could not update Kontierung:\n\n%0").arg(eventLoop.message()));
+            QMessageBox::warning(this, tr("Could not update time assignment!"), tr("Could not update time assignment!") % "\n\n" % eventLoop.message());
             refresh(true);
             return;
         }
@@ -824,24 +831,24 @@ void MainWindow::validateEntries()
     if(!ui->treeViewBuchungen->isEnabled())
         return;
 
-    if(!ui->treeViewKontierungen->isEnabled())
+    if(!ui->treeViewTimeAssignments->isEnabled())
         return;
 
     auto buchungenIter = m_buchungenModel->constBegin();
-    auto kontierungenIter = m_kontierungenModel->constBegin();
+    auto timeAssignmentsIter = m_timeAssignmentsModel->constBegin();
 
-    m_kontierungTime = QTime(0, 0);
+    m_timeAssignmentTime = QTime(0, 0);
     auto buchungTimespan = QTime(0, 0);
 
     const Zeiterfassung::Buchung *lastBuchung = Q_NULLPTR;
-    const Zeiterfassung::Kontierung *lastKontierung = Q_NULLPTR;
+    const Zeiterfassung::TimeAssignment *lastTimeAssignment = Q_NULLPTR;
 
     QString errorMessage;
 
     while(true)
     {
         if(buchungenIter == m_buchungenModel->constEnd() &&
-           kontierungenIter == m_kontierungenModel->constEnd())
+           timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
         {
             goto after;
         }
@@ -863,7 +870,10 @@ void MainWindow::validateEntries()
 
         if(lastBuchung)
         {
-            auto label = new QLabel(tr("Pause: %0h").arg(timeBetween(lastBuchung->time, startBuchung.time).toString(QStringLiteral("HH:mm"))), ui->scrollAreaWidgetContents);
+            auto label = new QLabel(tr("%0: %1")
+                                    .arg(tr("Break"))
+                                    .arg(tr("%0h").arg(timeBetween(lastBuchung->time, startBuchung.time).toString(QStringLiteral("HH:mm")))),
+                                    ui->scrollAreaWidgetContents);
             ui->verticalLayout2->addWidget(label);
             label->setMinimumHeight(20);
             label->setMaximumHeight(20);
@@ -871,106 +881,106 @@ void MainWindow::validateEntries()
 
         lastBuchung = &startBuchung;
 
-        m_lastKontierungStart = startBuchung.time;
+        m_lastTimeAssignmentStart = startBuchung.time;
         ui->verticalLayout2->addWidget(new BuchungStrip(startBuchung.id, startBuchung.time, startBuchung.type, m_settings, ui->scrollAreaWidgetContents));
 
-        if(kontierungenIter == m_kontierungenModel->constEnd())
+        if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
         {
-            errorMessage = tr("Missing Kontierung.");
+            errorMessage = tr("Missing time assignment.");
             goto after;
         }
 
-        auto kontierung = *kontierungenIter++;
-        if(kontierung.time != m_kontierungTime)
+        auto timeAssignment = *timeAssignmentsIter++;
+        if(timeAssignment.time != m_timeAssignmentTime)
         {
-            errorMessage = tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
-                    .arg(m_kontierungTime.toString("HH:mm:ss"))
-                    .arg(kontierung.time.toString("HH:mm:ss"))
-                    .arg(kontierung.id);
+            errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
+                    .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
+                    .arg(timeAssignment.time.toString("HH:mm:ss"))
+                    .arg(timeAssignment.id);
             goto after;
         }
 
-        lastKontierung = &kontierung;
+        lastTimeAssignment = &timeAssignment;
 
-        ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
-                                                           kontierung.subprojekt, kontierung.workpackage, kontierung.text,
+        ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjektString(timeAssignment.projekt),
+                                                           timeAssignment.subprojekt, timeAssignment.workpackage, timeAssignment.text,
                                                            m_settings, ui->scrollAreaWidgetContents));
 
-        if(kontierung.timespan == QTime(0, 0))
+        if(timeAssignment.timespan == QTime(0, 0))
         {
             if(buchungenIter != m_buchungenModel->constEnd())
             {
-                errorMessage = tr("There is another Buchung after an unfinished Kontierung.\nBuchung ID: %0\nKontierung ID: %1")
+                errorMessage = tr("There is another Buchung after an unfinished time assignment.\nBuchung ID: %0\nTime assignment ID: %1")
                         .arg(buchungenIter->id)
-                        .arg(kontierung.id);
+                        .arg(timeAssignment.id);
                 goto after;
             }
 
-            if(kontierungenIter != m_kontierungenModel->constEnd())
+            if(timeAssignmentsIter != m_timeAssignmentsModel->constEnd())
             {
-                errorMessage = tr("There is another Kontierung after an unfinished Kontierung.\nKontierung ID: %0\nKontierung ID: %1")
-                        .arg(kontierungenIter->id)
-                        .arg(kontierung.id);
+                errorMessage = tr("There is another time assignment after an unfinished time assignment.\nTime assignment ID: %0\nTime assignment ID: %1")
+                        .arg(timeAssignmentsIter->id)
+                        .arg(timeAssignment.id);
                 goto after;
             }
 
-            ui->timeEditTime->setMinimumTime(timeAdd(m_lastKontierungStart, QTime(0, 1)));
+            ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
             ui->pushButtonStart->setText(tr("Switch"));
             ui->pushButtonEnd->setEnabled(true);
             goto after;
         }
         else
         {
-            m_kontierungTime = timeAdd(m_kontierungTime, kontierung.timespan);
-            m_lastKontierungStart = timeAdd(m_lastKontierungStart, kontierung.timespan);
+            m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
+            m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
 
             if(buchungenIter == m_buchungenModel->constEnd())
             {
                 while(true)
                 {
-                    if(kontierungenIter == m_kontierungenModel->constEnd())
+                    if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
                     {
-                        errorMessage = tr("The last Kontierung is finished without Gehen-Buchung\nKontierung ID: %0")
-                                .arg(kontierung.id);
+                        errorMessage = tr("The last time assignment is finished without Gehen-Buchung\nTime assignment ID: %0")
+                                .arg(timeAssignment.id);
                         goto after;
                     }
 
-                    kontierung = *kontierungenIter++;
-                    if(kontierung.time != m_kontierungTime)
+                    timeAssignment = *timeAssignmentsIter++;
+                    if(timeAssignment.time != m_timeAssignmentTime)
                     {
-                        errorMessage = tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
-                                .arg(m_kontierungTime.toString("HH:mm:ss"))
-                                .arg(kontierung.time.toString("HH:mm:ss"))
-                                .arg(kontierung.id);
+                        errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
+                                .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
+                                .arg(timeAssignment.time.toString("HH:mm:ss"))
+                                .arg(timeAssignment.id);
                         goto after;
                     }
 
-                    lastKontierung = &kontierung;
+                    lastTimeAssignment = &timeAssignment;
 
-                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
-                                                                       kontierung.subprojekt, kontierung.workpackage, kontierung.text,
+                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjektString(timeAssignment.projekt),
+                                                                       timeAssignment.subprojekt, timeAssignment.workpackage, timeAssignment.text,
                                                                        m_settings, ui->scrollAreaWidgetContents));
 
-                    if(kontierung.timespan == QTime(0, 0))
+                    if(timeAssignment.timespan == QTime(0, 0))
                     {
-                        if(kontierungenIter != m_kontierungenModel->constEnd())
+                        if(timeAssignmentsIter != m_timeAssignmentsModel->constEnd())
                         {
-                            errorMessage = tr("There is another Kontierung after an unfinished Kontierung.\n"
-                                              "Kontierung ID: %0\nKontierung ID: %1")
-                                    .arg(kontierung.id)
-                                    .arg(kontierungenIter->id);
+                            errorMessage = tr("There is another time assignment after an unfinished time assignment.\n"
+                                              "Time assignment ID: %0\nTime assignment ID: %1")
+                                    .arg(timeAssignment.id)
+                                    .arg(timeAssignmentsIter->id);
                             goto after;
                         }
 
-                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastKontierungStart, QTime(0, 1)));
+                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
                         ui->pushButtonStart->setText(tr("Switch"));
                         ui->pushButtonEnd->setEnabled(true);
                         goto after;
                     }
                     else
                     {
-                        m_kontierungTime = timeAdd(m_kontierungTime, kontierung.timespan);
-                        m_lastKontierungStart = timeAdd(m_lastKontierungStart, kontierung.timespan);
+                        m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
+                        m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
                     }
                 }
             }
@@ -990,12 +1000,12 @@ void MainWindow::validateEntries()
                 buchungTimespan = timeAdd(buchungTimespan, timeBetween(startBuchung.time, endBuchung.time));
                 ui->timeEditTime->setMinimumTime(timeAdd(endBuchung.time, QTime(0, 1)));
 
-                while(m_kontierungTime < buchungTimespan)
+                while(m_timeAssignmentTime < buchungTimespan)
                 {
-                    if(kontierungenIter == m_kontierungenModel->constEnd())
+                    if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
                     {
-                        errorMessage = tr("Missing Kontierung! Missing: %0h")
-                                .arg(timeBetween(m_kontierungTime, buchungTimespan).toString("HH:mm:ss"));
+                        errorMessage = tr("Missing time assignment(s)! Missing: %0h")
+                                .arg(timeBetween(m_timeAssignmentTime, buchungTimespan).toString("HH:mm:ss"));
 
                         {
                             auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
@@ -1009,56 +1019,56 @@ void MainWindow::validateEntries()
                         goto after;
                     }
 
-                    kontierung = *kontierungenIter++;
-                    if(kontierung.time != m_kontierungTime)
+                    timeAssignment = *timeAssignmentsIter++;
+                    if(timeAssignment.time != m_timeAssignmentTime)
                     {
-                        errorMessage = tr("Expected time %0 but got %1 Kontierung.\nKontierung ID: %2")
-                                .arg(m_kontierungTime.toString("HH:mm:ss"))
-                                .arg(kontierung.time.toString("HH:mm:ss"))
-                                .arg(kontierung.id);
+                        errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
+                                .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
+                                .arg(timeAssignment.time.toString("HH:mm:ss"))
+                                .arg(timeAssignment.id);
                         goto after;
                     }
 
-                    lastKontierung = &kontierung;
+                    lastTimeAssignment = &timeAssignment;
 
-                    ui->verticalLayout2->addWidget(new KontierungStrip(kontierung.id, kontierung.timespan, buildProjektString(kontierung.projekt),
-                                                                       kontierung.subprojekt, kontierung.workpackage, kontierung.text,
+                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjektString(timeAssignment.projekt),
+                                                                       timeAssignment.subprojekt, timeAssignment.workpackage, timeAssignment.text,
                                                                        m_settings, ui->scrollAreaWidgetContents));
 
-                    if(kontierung.timespan == QTime(0, 0))
+                    if(timeAssignment.timespan == QTime(0, 0))
                     {
                         if(buchungenIter != m_buchungenModel->constEnd())
                         {
-                            errorMessage = tr("There is another Buchung after an unfinished Kontierung.\n"
-                                              "Buchung ID: %0\nKontierung ID: %1")
+                            errorMessage = tr("There is another Buchung after an unfinished time assignment.\n"
+                                              "Buchung ID: %0\nTime assignment ID: %1")
                                     .arg(buchungenIter->id)
-                                    .arg(kontierung.id);
+                                    .arg(timeAssignment.id);
                             goto after;
                         }
 
-                        if(kontierungenIter != m_kontierungenModel->constEnd())
+                        if(timeAssignmentsIter != m_timeAssignmentsModel->constEnd())
                         {
-                            errorMessage = tr("There is another Kontierung after an unfinished Kontierung.\nKontierung ID: %0\nKontierung ID: %1")
-                                    .arg(kontierungenIter->id)
-                                    .arg(kontierung.id);
+                            errorMessage = tr("There is another time assignment after an unfinished time assignment.\nTime assignment ID: %0\nTime assignment ID: %1")
+                                    .arg(timeAssignmentsIter->id)
+                                    .arg(timeAssignment.id);
                             goto after;
                         }
 
-                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastKontierungStart, QTime(0, 1)));
+                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
                         ui->pushButtonStart->setText(tr("Switch"));
                         ui->pushButtonEnd->setEnabled(true);
                         goto after;
                     }
                     else
                     {
-                        m_kontierungTime = timeAdd(m_kontierungTime, kontierung.timespan);
+                        m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
                     }
                 }
 
-                if(m_kontierungTime > buchungTimespan)
+                if(m_timeAssignmentTime > buchungTimespan)
                 {
-                    errorMessage = tr("Kontierung time longer than Buchung time! Kontierung: %0 Buchung: %1")
-                            .arg(m_kontierungTime.toString("HH:mm:ss"))
+                    errorMessage = tr("Time assignment time longer than Buchung time! Time assignment: %0 Buchung: %1")
+                            .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
                             .arg(buchungTimespan.toString("HH:mm:ss"));
 
                     auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
@@ -1069,7 +1079,7 @@ void MainWindow::validateEntries()
 
                 ui->verticalLayout2->addWidget(new BuchungStrip(endBuchung.id, endBuchung.time, endBuchung.type, m_settings, ui->scrollAreaWidgetContents));
 
-                if(m_kontierungTime > buchungTimespan)
+                if(m_timeAssignmentTime > buchungTimespan)
                     goto after;
             }
         }
@@ -1077,7 +1087,7 @@ void MainWindow::validateEntries()
 
     after:
     if(errorMessage.isEmpty())
-        m_workingTimeLabel->setText(tr("Working time: %0").arg(m_kontierungTime.toString(QStringLiteral("HH:mm"))));
+        m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Working time")).arg(tr("%0h").arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm")))));
     else
     {
         auto label = new QLabel(tr("Strip rendering aborted due error."), ui->scrollAreaWidgetContents);
@@ -1090,7 +1100,7 @@ void MainWindow::validateEntries()
 
     if(!errorMessage.isEmpty())
     {
-        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and Kontierungen for this day are in an invalid state:\n\n%0")
+        QMessageBox::warning(this, tr("Illegal state!"), tr("Your Buchungen and time assignments for this day are in an invalid state:\n\n%0")
                              .arg(errorMessage));
         return;
     }

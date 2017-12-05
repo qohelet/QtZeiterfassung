@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>647</width>
-    <height>300</height>
+    <height>235</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -54,12 +60,12 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="kontierungBackgroundColor">
+      <widget class="QLabel" name="labelTimeAssignmentBackgroundColor">
        <property name="text">
-        <string>kontierungBackgroundColor</string>
+        <string>timeAssignmentBackgroundColor</string>
        </property>
        <property name="buddy">
-        <cstring>lineEditKontierungBackgroundColor</cstring>
+        <cstring>lineEditTimeAssignmentBackgroundColor</cstring>
        </property>
       </widget>
      </item>
@@ -73,7 +79,7 @@
       <widget class="QLineEdit" name="lineEditBuchungOtherBackgroundColor"/>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="lineEditKontierungBackgroundColor"/>
+      <widget class="QLineEdit" name="lineEditTimeAssignmentBackgroundColor"/>
      </item>
     </layout>
    </item>
