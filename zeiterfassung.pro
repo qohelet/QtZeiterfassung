@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     strips/timeassignmentstrip.cpp \
     dialogs/bookingdialog.cpp \
     models/bookingsmodel.cpp \
-    strips/bookingstrip.cpp
+    strips/bookingstrip.cpp \
+    dialogs/updatedialog.cpp
 
 HEADERS += \
     zeiterfassung.h \
@@ -46,7 +47,8 @@ HEADERS += \
     strips/timeassignmentstrip.h \
     dialogs/bookingdialog.h \
     models/bookingsmodel.h \
-    strips/bookingstrip.h
+    strips/bookingstrip.h \
+    dialogs/updatedialog.h
 
 FORMS += \
     mainwindow.ui \
@@ -57,7 +59,8 @@ FORMS += \
     dialogs/timeassignmentdialog.ui \
     strips/timeassignmentstrip.ui \
     dialogs/bookingdialog.ui \
-    strips/bookingstrip.ui
+    strips/bookingstrip.ui \
+    dialogs/updatedialog.ui
 
 RESOURCES += \
     resources.qrc

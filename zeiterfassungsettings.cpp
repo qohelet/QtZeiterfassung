@@ -172,6 +172,16 @@ void ZeiterfassungSettings::setTimeAssignmentBackgroundColor(const QString timeA
     setValue("timeAssignmentBackgroundColor", timeAssignmentBackgroundColor);
 }
 
+QDate ZeiterfassungSettings::lastUpdateCheck() const
+{
+    return value("lastUpdateCheck").toDate();
+}
+
+void ZeiterfassungSettings::setLastUpdateCheck(const QDate &lastUpdateCheck)
+{
+    setValue("lastUpdateCheck", lastUpdateCheck);
+}
+
 void ZeiterfassungSettings::prepentItem(const QString &name, const QString &item)
 {
     if(item.trimmed().isEmpty())
