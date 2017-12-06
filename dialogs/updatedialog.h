@@ -2,6 +2,7 @@
 #define UPDATEDIALOG_H
 
 #include <QDialog>
+#include <QUrl>
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -19,11 +20,14 @@ public:
 
 private Q_SLOTS:
     void finished();
+    void submit();
 
 private:
     Ui::UpdateDialog *ui;
     ZeiterfassungSettings &m_settings;
     QNetworkReply *m_reply;
+
+    QUrl m_url;
 };
 
 #endif // UPDATEDIALOG_H
