@@ -5,6 +5,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QDebug>
+#include <QVersionNumber>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -50,10 +51,15 @@ void UpdateDialog::finished()
         return;
     }
 
+    auto appVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion());
+
     auto array = document.array();
 
     for(const auto &releaseVal : array)
     {
-        qDebug() << releaseVal;
+        auto releaseObj = releaseVal.toObject();
+        auto version = QVersionNumber::fromString(releaseObj.value("tag_name").toString());
+
+        qDebug() << version << (appVersion < version);
     }
 }
