@@ -21,6 +21,8 @@ public:
     const QString &url() const;
     void setUrl(const QString &url);
 
+    QNetworkAccessManager *manager() const;
+
     struct UserInfo
     {
         int userId;
