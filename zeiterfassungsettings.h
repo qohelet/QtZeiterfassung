@@ -3,6 +3,9 @@
 
 #include <QSettings>
 #include <QLocale>
+#include <QString>
+#include <QStringList>
+#include <QDate>
 
 class ZeiterfassungSettings : public QSettings
 {
@@ -57,6 +60,9 @@ public:
 
     QString timeAssignmentBackgroundColor() const;
     void setTimeAssignmentBackgroundColor(const QString timeAssignmentBackgroundColor);
+
+    QDate lastUpdateCheck() const;
+    void setLastUpdateCheck(const QDate &lastUpdateCheck);
 
 private:
     void prepentItem(const QString &name, const QString &item);

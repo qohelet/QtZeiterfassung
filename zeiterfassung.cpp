@@ -33,6 +33,11 @@ void Zeiterfassung::setUrl(const QString &url)
         Q_EMIT urlChanged(m_url = url);
 }
 
+QNetworkAccessManager *Zeiterfassung::manager() const
+{
+    return m_manager;
+}
+
 bool Zeiterfassung::doLoginPage()
 {
     if(m_replies.login)

@@ -20,6 +20,7 @@
 #include "dialogs/bookingdialog.h"
 #include "dialogs/timeassignmentdialog.h"
 #include "dialogs/settingsdialog.h"
+#include "dialogs/updatedialog.h"
 #include "strips/bookingstrip.h"
 #include "strips/timeassignmentstrip.h"
 #include "models/bookingsmodel.h"
@@ -112,6 +113,9 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     m_holidaysLabel->setFrameShadow(QFrame::Sunken);
 
     refresh(true);
+
+    if(settings.lastUpdateCheck().isNull() || settings.lastUpdateCheck() < QDate::currentDate())
+        new UpdateDialog(settings, erfassung.manager(), this);
 }
 
 MainWindow::~MainWindow()
