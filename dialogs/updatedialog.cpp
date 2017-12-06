@@ -11,6 +11,10 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QJsonObject>
+#include <QDesktopServices>
+#include <QMessageBox>
+
+#include "zeiterfassungsettings.h"
 
 UpdateDialog::UpdateDialog(ZeiterfassungSettings &settings, QNetworkAccessManager *manager, QWidget *parent) :
     QDialog(parent),
@@ -18,6 +22,15 @@ UpdateDialog::UpdateDialog(ZeiterfassungSettings &settings, QNetworkAccessManage
     m_settings(settings)
 {
     ui->setupUi(this);
+
+    setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &UpdateDialog::submit);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, [=](){
+        if(ui->checkBoxDontShow->isChecked())
+            m_settings.setLastUpdateCheck(QDate::currentDate());
+        reject();
+    });
 
     m_reply = manager->get(QNetworkRequest(QUrl(QStringLiteral("https://api.github.com/repos/0xFEEDC0DE64/QtZeiterfassung/releases"))));
     connect(m_reply, &QNetworkReply::finished, this, &UpdateDialog::finished);
@@ -60,6 +73,26 @@ void UpdateDialog::finished()
         auto releaseObj = releaseVal.toObject();
         auto version = QVersionNumber::fromString(releaseObj.value("tag_name").toString());
 
-        qDebug() << version << (appVersion < version);
+        if(appVersion < version)
+        {
+            m_url = QUrl(releaseObj.value("html_url").toString());
+            ui->labelDescription->setText(releaseObj.value("body").toString());
+
+            show();
+            return;
+        }
     }
+
+    deleteLater();
+}
+
+void UpdateDialog::submit()
+{
+    if(ui->checkBoxDontShow->isChecked())
+        m_settings.setLastUpdateCheck(QDate::currentDate());
+
+    if(!QDesktopServices::openUrl(m_url))
+        QMessageBox::warning(this, tr("Could not open default webbrowser!"), tr("Could not open default webbrowser!"));
+
+    accept();
 }
