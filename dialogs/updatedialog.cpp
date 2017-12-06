@@ -5,6 +5,11 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QDebug>
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <QJsonObject>
 
 UpdateDialog::UpdateDialog(ZeiterfassungSettings &settings, QNetworkAccessManager *manager, QWidget *parent) :
     QDialog(parent),
@@ -26,9 +31,29 @@ void UpdateDialog::finished()
 {
     if(m_reply->error() != QNetworkReply::NoError)
     {
-        qWarning() << m_reply->error() << m_reply->errorString();
+        qWarning() << "request error" << m_reply->error() << m_reply->errorString();
         return;
     }
 
-    qDebug() << m_reply->readAll();
+    QJsonParseError error;
+    auto document = QJsonDocument::fromJson(m_reply->readAll(), &error);
+
+    if(error.error != QJsonParseError::NoError)
+    {
+        qWarning() << "parse error" << error.error << error.errorString();
+        return;
+    }
+
+    if(!document.isArray())
+    {
+        qWarning() << "document is not an array!";
+        return;
+    }
+
+    auto array = document.array();
+
+    for(const auto &releaseVal : array)
+    {
+        qDebug() << releaseVal;
+    }
 }
