@@ -162,7 +162,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="146"/>
-        <location filename="../mainwindow.cpp" line="829"/>
+        <location filename="../mainwindow.cpp" line="833"/>
         <source>Start</source>
         <translation>Kommen</translation>
     </message>
@@ -252,255 +252,255 @@
         <translation>&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="40"/>
+        <location filename="../mainwindow.cpp" line="41"/>
         <source>Zeiterfassung - %0 (%1)</source>
         <translation>Zeiterfassung - %0 (%1)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="54"/>
-        <location filename="../mainwindow.cpp" line="63"/>
+        <location filename="../mainwindow.cpp" line="55"/>
+        <location filename="../mainwindow.cpp" line="64"/>
         <source>Could not open auswertung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="63"/>
+        <location filename="../mainwindow.cpp" line="64"/>
         <source>Could not open default PDF viewer!</source>
         <translation>Konnte den PDF-Anzeiger nicht öffnen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="87"/>
+        <location filename="../mainwindow.cpp" line="88"/>
         <source>Subproject</source>
         <translation>Subprojekt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="88"/>
+        <location filename="../mainwindow.cpp" line="89"/>
         <source>Workpackage</source>
         <translation>Arbeitspaket</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="89"/>
+        <location filename="../mainwindow.cpp" line="90"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="161"/>
-        <location filename="../mainwindow.cpp" line="196"/>
-        <location filename="../mainwindow.cpp" line="197"/>
-        <location filename="../mainwindow.cpp" line="279"/>
-        <location filename="../mainwindow.cpp" line="280"/>
-        <location filename="../mainwindow.cpp" line="873"/>
-        <location filename="../mainwindow.cpp" line="1090"/>
+        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <location filename="../mainwindow.cpp" line="283"/>
+        <location filename="../mainwindow.cpp" line="284"/>
+        <location filename="../mainwindow.cpp" line="877"/>
+        <location filename="../mainwindow.cpp" line="1094"/>
         <source>%0: %1</source>
         <translation>%0: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="161"/>
-        <location filename="../mainwindow.cpp" line="1090"/>
+        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="1094"/>
         <source>Assigned time</source>
         <translation>Kontierte Zeit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="161"/>
-        <location filename="../mainwindow.cpp" line="196"/>
-        <location filename="../mainwindow.cpp" line="197"/>
-        <location filename="../mainwindow.cpp" line="251"/>
-        <location filename="../mainwindow.cpp" line="252"/>
+        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <location filename="../mainwindow.cpp" line="255"/>
+        <location filename="../mainwindow.cpp" line="256"/>
         <source>???</source>
         <translation>???</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="196"/>
-        <location filename="../mainwindow.cpp" line="279"/>
+        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.cpp" line="283"/>
         <source>Balance</source>
         <translation>Saldo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="197"/>
-        <location filename="../mainwindow.cpp" line="280"/>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <location filename="../mainwindow.cpp" line="284"/>
         <source>Holidays</source>
         <translation>Urlaubstage</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="224"/>
-        <location filename="../mainwindow.cpp" line="297"/>
+        <location filename="../mainwindow.cpp" line="228"/>
+        <location filename="../mainwindow.cpp" line="301"/>
         <source>Could not load bookings!</source>
         <translation>Konnte Buchungen nicht laden!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="244"/>
+        <location filename="../mainwindow.cpp" line="248"/>
         <source>Could not load Auswertung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="273"/>
-        <location filename="../mainwindow.cpp" line="875"/>
-        <location filename="../mainwindow.cpp" line="1090"/>
+        <location filename="../mainwindow.cpp" line="277"/>
+        <location filename="../mainwindow.cpp" line="879"/>
+        <location filename="../mainwindow.cpp" line="1094"/>
         <source>%0h</source>
         <translation>%0h</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="889"/>
+        <location filename="../mainwindow.cpp" line="893"/>
         <source>Missing time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1007"/>
+        <location filename="../mainwindow.cpp" line="1011"/>
         <source>Missing time assignment! Missing: %0h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="178"/>
-        <location filename="../mainwindow.cpp" line="212"/>
+        <location filename="../mainwindow.cpp" line="182"/>
+        <location filename="../mainwindow.cpp" line="216"/>
         <source>Unknown error occured!</source>
         <translation>Unbekannter Fehler aufgetreten!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="314"/>
+        <location filename="../mainwindow.cpp" line="318"/>
         <source>Could not load time assignments!</source>
         <translation>Konnte Kontierungen nicht laden!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="435"/>
+        <location filename="../mainwindow.cpp" line="439"/>
         <source>Could not delete booking!</source>
         <translation>Konnte Buchung nicht löschen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="326"/>
+        <location filename="../mainwindow.cpp" line="330"/>
         <source>Edit booking</source>
         <translation>Buchung bearbeiten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="327"/>
+        <location filename="../mainwindow.cpp" line="331"/>
         <source>Delete booking</source>
         <translation>Buchung löschen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="382"/>
+        <location filename="../mainwindow.cpp" line="386"/>
         <source>Could not edit booking!</source>
         <translation>Konnte Buchung nicht bearbeiten!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="442"/>
+        <location filename="../mainwindow.cpp" line="446"/>
         <source>Create booking</source>
         <translation>Buchung erstellen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="494"/>
-        <location filename="../mainwindow.cpp" line="715"/>
-        <location filename="../mainwindow.cpp" line="787"/>
+        <location filename="../mainwindow.cpp" line="498"/>
+        <location filename="../mainwindow.cpp" line="719"/>
+        <location filename="../mainwindow.cpp" line="791"/>
         <source>Could not create booking!</source>
         <translation>Konnte Buchung nicht erstellen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="511"/>
+        <location filename="../mainwindow.cpp" line="515"/>
         <source>Edit time assignment</source>
         <translation>Kontierung bearbeiten</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="512"/>
+        <location filename="../mainwindow.cpp" line="516"/>
         <source>Delete time assignment</source>
         <translation>Kontierung löschen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="575"/>
-        <location filename="../mainwindow.cpp" line="741"/>
-        <location filename="../mainwindow.cpp" line="812"/>
+        <location filename="../mainwindow.cpp" line="579"/>
+        <location filename="../mainwindow.cpp" line="745"/>
+        <location filename="../mainwindow.cpp" line="816"/>
         <source>Could not edit time assignment!</source>
         <translation>Konnte Kontierung nicht bearbeiten!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="628"/>
+        <location filename="../mainwindow.cpp" line="632"/>
         <source>Could not delete time assignment!</source>
         <translation>Konnte Kontierung nicht löschen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="635"/>
+        <location filename="../mainwindow.cpp" line="639"/>
         <source>Create time assignment</source>
         <translation>Kontierung erstellen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="692"/>
-        <location filename="../mainwindow.cpp" line="759"/>
+        <location filename="../mainwindow.cpp" line="696"/>
+        <location filename="../mainwindow.cpp" line="763"/>
         <source>Could not create time assignment!</source>
         <translation>Konnte Kontierung nicht erstellen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="858"/>
+        <location filename="../mainwindow.cpp" line="862"/>
         <source>Missing booking!</source>
         <translation>Kontierung fehlend!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="865"/>
+        <location filename="../mainwindow.cpp" line="869"/>
         <source>Expected start booking, instead got type %0
 Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="874"/>
+        <location filename="../mainwindow.cpp" line="878"/>
         <source>Break</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="896"/>
-        <location filename="../mainwindow.cpp" line="951"/>
-        <location filename="../mainwindow.cpp" line="1025"/>
+        <location filename="../mainwindow.cpp" line="900"/>
+        <location filename="../mainwindow.cpp" line="955"/>
+        <location filename="../mainwindow.cpp" line="1029"/>
         <source>Expected %0 but received %1 in time assignment.
 Time assignment ID: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="913"/>
-        <location filename="../mainwindow.cpp" line="1042"/>
+        <location filename="../mainwindow.cpp" line="917"/>
+        <location filename="../mainwindow.cpp" line="1046"/>
         <source>There is another booking after an unfinished time assignment.
 Booking ID: %0
 Time assignment ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="921"/>
-        <location filename="../mainwindow.cpp" line="968"/>
-        <location filename="../mainwindow.cpp" line="1051"/>
+        <location filename="../mainwindow.cpp" line="925"/>
+        <location filename="../mainwindow.cpp" line="972"/>
+        <location filename="../mainwindow.cpp" line="1055"/>
         <source>There is another time assignment after an unfinished time assignment.
 Time assignment ID: %0
 Time assignment ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="928"/>
-        <location filename="../mainwindow.cpp" line="976"/>
-        <location filename="../mainwindow.cpp" line="1058"/>
+        <location filename="../mainwindow.cpp" line="932"/>
+        <location filename="../mainwindow.cpp" line="980"/>
+        <location filename="../mainwindow.cpp" line="1062"/>
         <source>Switch</source>
         <translation>Wechseln</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="943"/>
+        <location filename="../mainwindow.cpp" line="947"/>
         <source>The last time assignment is finished without end booking
 Time assignment ID: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="992"/>
+        <location filename="../mainwindow.cpp" line="996"/>
         <source>Expected end booking, instead got type %0
 Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1070"/>
+        <location filename="../mainwindow.cpp" line="1074"/>
         <source>Time assignment time longer than booking time! Time assignment: %0 Booking: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1093"/>
+        <location filename="../mainwindow.cpp" line="1097"/>
         <source>Strip rendering aborted due error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1103"/>
+        <location filename="../mainwindow.cpp" line="1107"/>
         <source>Illegal state!</source>
         <translation>Ungültiger Zustand!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1103"/>
+        <location filename="../mainwindow.cpp" line="1107"/>
         <source>Your bookings and time assignments for this day are in an illegal state!</source>
         <translation>Ihre Buchungen und Kontierungen für diesen Tag sind in einem ungültigen Zustand!</translation>
     </message>
@@ -645,98 +645,122 @@ Booking ID: %1</source>
     </message>
 </context>
 <context>
+    <name>UpdateDialog</name>
+    <message>
+        <location filename="../dialogs/updatedialog.ui" line="14"/>
+        <location filename="../dialogs/updatedialog.ui" line="25"/>
+        <source>New update available!</source>
+        <translation>Neues Update verfügbar!</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/updatedialog.ui" line="32"/>
+        <source>There is a new release available to download!</source>
+        <translation>Es ist ein neues Update verfügbar zum Download!</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/updatedialog.ui" line="70"/>
+        <source>Dont show today anymore</source>
+        <translation>Heute nicht mehr anzeigen</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/updatedialog.cpp" line="95"/>
+        <source>Could not open default webbrowser!</source>
+        <translation>Konnte den Standard-Browser nicht öffnen!</translation>
+    </message>
+</context>
+<context>
     <name>Zeiterfassung</name>
     <message>
-        <location filename="../zeiterfassung.cpp" line="379"/>
-        <location filename="../zeiterfassung.cpp" line="400"/>
-        <location filename="../zeiterfassung.cpp" line="439"/>
-        <location filename="../zeiterfassung.cpp" line="494"/>
-        <location filename="../zeiterfassung.cpp" line="542"/>
-        <location filename="../zeiterfassung.cpp" line="583"/>
-        <location filename="../zeiterfassung.cpp" line="624"/>
-        <location filename="../zeiterfassung.cpp" line="640"/>
-        <location filename="../zeiterfassung.cpp" line="692"/>
-        <location filename="../zeiterfassung.cpp" line="733"/>
-        <location filename="../zeiterfassung.cpp" line="774"/>
-        <location filename="../zeiterfassung.cpp" line="790"/>
-        <location filename="../zeiterfassung.cpp" line="850"/>
-        <location filename="../zeiterfassung.cpp" line="870"/>
+        <location filename="../zeiterfassung.cpp" line="384"/>
+        <location filename="../zeiterfassung.cpp" line="405"/>
+        <location filename="../zeiterfassung.cpp" line="444"/>
+        <location filename="../zeiterfassung.cpp" line="499"/>
+        <location filename="../zeiterfassung.cpp" line="547"/>
+        <location filename="../zeiterfassung.cpp" line="588"/>
+        <location filename="../zeiterfassung.cpp" line="629"/>
+        <location filename="../zeiterfassung.cpp" line="645"/>
+        <location filename="../zeiterfassung.cpp" line="697"/>
+        <location filename="../zeiterfassung.cpp" line="738"/>
+        <location filename="../zeiterfassung.cpp" line="779"/>
+        <location filename="../zeiterfassung.cpp" line="795"/>
+        <location filename="../zeiterfassung.cpp" line="855"/>
+        <location filename="../zeiterfassung.cpp" line="875"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="385"/>
+        <location filename="../zeiterfassung.cpp" line="390"/>
         <source>Could not find necessary keywords in login page!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="406"/>
+        <location filename="../zeiterfassung.cpp" line="411"/>
         <source>Request did not contain a Location header.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="420"/>
+        <location filename="../zeiterfassung.cpp" line="425"/>
         <source>Authentication failure. Please check username and password.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="425"/>
+        <location filename="../zeiterfassung.cpp" line="430"/>
         <source>An unknown authentication failure occured. Redirected to: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="448"/>
-        <location filename="../zeiterfassung.cpp" line="503"/>
-        <location filename="../zeiterfassung.cpp" line="551"/>
-        <location filename="../zeiterfassung.cpp" line="592"/>
-        <location filename="../zeiterfassung.cpp" line="649"/>
-        <location filename="../zeiterfassung.cpp" line="701"/>
-        <location filename="../zeiterfassung.cpp" line="742"/>
-        <location filename="../zeiterfassung.cpp" line="799"/>
+        <location filename="../zeiterfassung.cpp" line="453"/>
+        <location filename="../zeiterfassung.cpp" line="508"/>
+        <location filename="../zeiterfassung.cpp" line="556"/>
+        <location filename="../zeiterfassung.cpp" line="597"/>
+        <location filename="../zeiterfassung.cpp" line="654"/>
+        <location filename="../zeiterfassung.cpp" line="706"/>
+        <location filename="../zeiterfassung.cpp" line="747"/>
+        <location filename="../zeiterfassung.cpp" line="804"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="454"/>
-        <location filename="../zeiterfassung.cpp" line="557"/>
-        <location filename="../zeiterfassung.cpp" line="598"/>
-        <location filename="../zeiterfassung.cpp" line="707"/>
-        <location filename="../zeiterfassung.cpp" line="748"/>
-        <location filename="../zeiterfassung.cpp" line="805"/>
+        <location filename="../zeiterfassung.cpp" line="459"/>
+        <location filename="../zeiterfassung.cpp" line="562"/>
+        <location filename="../zeiterfassung.cpp" line="603"/>
+        <location filename="../zeiterfassung.cpp" line="712"/>
+        <location filename="../zeiterfassung.cpp" line="753"/>
+        <location filename="../zeiterfassung.cpp" line="810"/>
         <source>JSON document is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="462"/>
+        <location filename="../zeiterfassung.cpp" line="467"/>
         <source>JSON does not contain evoAppsUser!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="470"/>
+        <location filename="../zeiterfassung.cpp" line="475"/>
         <source>evoAppsUser is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="509"/>
-        <location filename="../zeiterfassung.cpp" line="655"/>
+        <location filename="../zeiterfassung.cpp" line="514"/>
+        <location filename="../zeiterfassung.cpp" line="660"/>
         <source>JSON document is not an array!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="565"/>
-        <location filename="../zeiterfassung.cpp" line="606"/>
-        <location filename="../zeiterfassung.cpp" line="715"/>
-        <location filename="../zeiterfassung.cpp" line="756"/>
+        <location filename="../zeiterfassung.cpp" line="570"/>
+        <location filename="../zeiterfassung.cpp" line="611"/>
+        <location filename="../zeiterfassung.cpp" line="720"/>
+        <location filename="../zeiterfassung.cpp" line="761"/>
         <source>JSON does not contain bookingNr!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="813"/>
+        <location filename="../zeiterfassung.cpp" line="818"/>
         <source>JSON does not contain elements!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../zeiterfassung.cpp" line="821"/>
+        <location filename="../zeiterfassung.cpp" line="826"/>
         <source>elements is not an array!</source>
         <translation type="unfinished"></translation>
     </message>
