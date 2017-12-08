@@ -15,9 +15,9 @@
     <normaloff>:/zeiterfassung/images/icon.png</normaloff>:/zeiterfassung/images/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+   <layout class="QVBoxLayout" stretch="0,0">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <layout class="QHBoxLayout">
       <item>
        <widget class="QDateEdit" name="dateEditDate">
         <property name="readOnly">
@@ -48,7 +48,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <spacer>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -148,7 +148,7 @@
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer">
+       <spacer>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -190,19 +190,233 @@
        <attribute name="title">
         <string>Optimized view</string>
        </attribute>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
+       <widget class="QWidget" name="widget">
         <property name="geometry">
          <rect>
           <x>0</x>
           <y>0</y>
           <width>1220</width>
-          <height>454</height>
+          <height>438</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout2">
-         <property name="spacing">
-          <number>3</number>
-         </property>
+        <layout class="QHBoxLayout" stretch="1,1,1,1,1,1,1">
+        <item>
+         <layout class="QVBoxLayout" stretch="0,0,1">
+          <item>
+           <widget class="QLabel">
+            <property name="text">
+             <string>Monday</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layoutMonday">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" stretch="0,0,1">
+          <item>
+           <widget class="QLabel">
+            <property name="text">
+             <string>Tuesday</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layoutTuesday">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" stretch="0,0,1">
+          <item>
+           <widget class="QLabel">
+            <property name="text">
+             <string>Wednesday</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layoutWednesday">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" stretch="0,0,1">
+          <item>
+           <widget class="QLabel">
+            <property name="text">
+             <string>Thursday</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layoutThursday">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" stretch="0,0,1">
+          <item>
+           <widget class="QLabel">
+            <property name="text">
+             <string>Friday</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layoutFriday">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" stretch="0,0,1">
+          <item>
+           <widget class="QLabel">
+            <property name="text">
+             <string>Saturday</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layoutSaturday">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" stretch="0,0,1">
+          <item>
+           <widget class="QLabel">
+            <property name="text">
+             <string>Sunday</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layoutSunday">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
         </layout>
        </widget>
       </widget>
@@ -217,7 +431,7 @@
         <property name="title">
          <string>Bookings</string>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+        <layout class="QHBoxLayout">
          <item>
           <widget class="QTreeView" name="treeViewBookings">
            <property name="enabled">
@@ -234,7 +448,7 @@
         <property name="title">
          <string>Time assignments</string>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout">
          <item>
           <widget class="QTreeView" name="treeViewTimeAssignments">
            <property name="enabled">
@@ -258,7 +472,7 @@
      <x>0</x>
      <y>0</y>
      <width>1242</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

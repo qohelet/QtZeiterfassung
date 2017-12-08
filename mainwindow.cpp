@@ -877,8 +877,8 @@ void MainWindow::validateEntries()
             auto label = new QLabel(tr("%0: %1")
                                     .arg(tr("Break"))
                                     .arg(tr("%0h").arg(timeBetween(lastBooking->time, startBooking.time).toString(QStringLiteral("HH:mm")))),
-                                    ui->scrollAreaWidgetContents);
-            ui->verticalLayout2->addWidget(label);
+                                    /*parent*/nullptr);
+            ui->layoutWednesday->addWidget(label);
             label->setMinimumHeight(20);
             label->setMaximumHeight(20);
         }
@@ -886,7 +886,7 @@ void MainWindow::validateEntries()
         lastBooking = &startBooking;
 
         m_lastTimeAssignmentStart = startBooking.time;
-        ui->verticalLayout2->addWidget(new BookingStrip(startBooking.id, startBooking.time, startBooking.type, m_settings, ui->scrollAreaWidgetContents));
+        ui->layoutWednesday->addWidget(new BookingStrip(startBooking.id, startBooking.time, startBooking.type, m_settings, /*parent*/nullptr));
 
         if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
         {
@@ -906,9 +906,9 @@ void MainWindow::validateEntries()
 
         lastTimeAssignment = &timeAssignment;
 
-        ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+        ui->layoutWednesday->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                                            timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                           m_settings, ui->scrollAreaWidgetContents));
+                                                           m_settings, /*parent*/nullptr));
 
         if(timeAssignment.timespan == QTime(0, 0))
         {
@@ -961,9 +961,9 @@ void MainWindow::validateEntries()
 
                     lastTimeAssignment = &timeAssignment;
 
-                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                    ui->layoutWednesday->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                                                        timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                                       m_settings, ui->scrollAreaWidgetContents));
+                                                                       m_settings, /*parent*/nullptr));
 
                     if(timeAssignment.timespan == QTime(0, 0))
                     {
@@ -1012,13 +1012,13 @@ void MainWindow::validateEntries()
                                 .arg(timeBetween(m_timeAssignmentTime, bookingTimespan).toString("HH:mm:ss"));
 
                         {
-                            auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
-                            ui->verticalLayout2->addWidget(label);
+                            auto label = new QLabel(errorMessage, /*parent*/nullptr);
+                            ui->layoutWednesday->addWidget(label);
                             label->setMinimumHeight(20);
                             label->setMaximumHeight(20);
                         }
 
-                        ui->verticalLayout2->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, ui->scrollAreaWidgetContents));
+                        ui->layoutWednesday->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
 
                         goto after;
                     }
@@ -1035,9 +1035,9 @@ void MainWindow::validateEntries()
 
                     lastTimeAssignment = &timeAssignment;
 
-                    ui->verticalLayout2->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                    ui->layoutWednesday->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                                                        timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                                       m_settings, ui->scrollAreaWidgetContents));
+                                                                       m_settings, /*parent*/nullptr));
 
                     if(timeAssignment.timespan == QTime(0, 0))
                     {
@@ -1075,13 +1075,13 @@ void MainWindow::validateEntries()
                             .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
                             .arg(bookingTimespan.toString("HH:mm:ss"));
 
-                    auto label = new QLabel(errorMessage, ui->scrollAreaWidgetContents);
-                    ui->verticalLayout2->addWidget(label);
+                    auto label = new QLabel(errorMessage, /*parent*/nullptr);
+                    ui->layoutWednesday->addWidget(label);
                     label->setMinimumHeight(20);
                     label->setMaximumHeight(20);
                 }
 
-                ui->verticalLayout2->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, ui->scrollAreaWidgetContents));
+                ui->layoutWednesday->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
 
                 if(m_timeAssignmentTime > bookingTimespan)
                     goto after;
@@ -1094,13 +1094,13 @@ void MainWindow::validateEntries()
         m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Assigned time")).arg(tr("%0h").arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm")))));
     else
     {
-        auto label = new QLabel(tr("Strip rendering aborted due error."), ui->scrollAreaWidgetContents);
-        ui->verticalLayout2->addWidget(label);
+        auto label = new QLabel(tr("Strip rendering aborted due error."), /*parent*/nullptr);
+        ui->layoutWednesday->addWidget(label);
         label->setMinimumHeight(20);
         label->setMaximumHeight(20);
     }
 
-    ui->verticalLayout2->addStretch(1);
+    ui->layoutWednesday->addStretch(1);
 
     if(!errorMessage.isEmpty())
     {
@@ -1178,7 +1178,7 @@ void MainWindow::updateComboboxes()
 void MainWindow::clearStrips()
 {
     QLayoutItem *item;
-    while(item = ui->verticalLayout2->takeAt(0))
+    while(item = ui->layoutWednesday->takeAt(0))
     {
         delete item->widget();
         delete item;
