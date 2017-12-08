@@ -38,6 +38,14 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
 {
     ui->setupUi(this);
 
+    m_weekLayouts[0] = ui->layoutMonday;
+    m_weekLayouts[1] = ui->layoutTuesday;
+    m_weekLayouts[2] = ui->layoutWednesday;
+    m_weekLayouts[3] = ui->layoutThursday;
+    m_weekLayouts[4] = ui->layoutFriday;
+    m_weekLayouts[5] = ui->layoutSaturday;
+    m_weekLayouts[6] = ui->layoutSunday;
+
     setWindowTitle(tr("Zeiterfassung - %0 (%1)").arg(m_userInfo.text).arg(m_userInfo.email));
 
     ui->actionQuit->setShortcut(QKeySequence::Quit);
@@ -849,6 +857,8 @@ void MainWindow::validateEntries()
 
     QString errorMessage;
 
+    auto layout = m_weekLayouts[ui->dateEditDate->date().dayOfWeek() - 1];
+
     while(true)
     {
         if(bookingsIter == m_bookingsModel->constEnd() &&
@@ -878,7 +888,7 @@ void MainWindow::validateEntries()
                                     .arg(tr("Break"))
                                     .arg(tr("%0h").arg(timeBetween(lastBooking->time, startBooking.time).toString(QStringLiteral("HH:mm")))),
                                     /*parent*/nullptr);
-            ui->layoutWednesday->addWidget(label);
+            layout->addWidget(label);
             label->setMinimumHeight(20);
             label->setMaximumHeight(20);
         }
@@ -886,7 +896,7 @@ void MainWindow::validateEntries()
         lastBooking = &startBooking;
 
         m_lastTimeAssignmentStart = startBooking.time;
-        ui->layoutWednesday->addWidget(new BookingStrip(startBooking.id, startBooking.time, startBooking.type, m_settings, /*parent*/nullptr));
+        layout->addWidget(new BookingStrip(startBooking.id, startBooking.time, startBooking.type, m_settings, /*parent*/nullptr));
 
         if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
         {
@@ -906,7 +916,7 @@ void MainWindow::validateEntries()
 
         lastTimeAssignment = &timeAssignment;
 
-        ui->layoutWednesday->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+        layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                                            timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
                                                            m_settings, /*parent*/nullptr));
 
@@ -961,7 +971,7 @@ void MainWindow::validateEntries()
 
                     lastTimeAssignment = &timeAssignment;
 
-                    ui->layoutWednesday->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                    layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                                                        timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
                                                                        m_settings, /*parent*/nullptr));
 
@@ -1013,12 +1023,12 @@ void MainWindow::validateEntries()
 
                         {
                             auto label = new QLabel(errorMessage, /*parent*/nullptr);
-                            ui->layoutWednesday->addWidget(label);
+                            layout->addWidget(label);
                             label->setMinimumHeight(20);
                             label->setMaximumHeight(20);
                         }
 
-                        ui->layoutWednesday->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
+                        layout->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
 
                         goto after;
                     }
@@ -1035,7 +1045,7 @@ void MainWindow::validateEntries()
 
                     lastTimeAssignment = &timeAssignment;
 
-                    ui->layoutWednesday->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                    layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                                                        timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
                                                                        m_settings, /*parent*/nullptr));
 
@@ -1076,12 +1086,12 @@ void MainWindow::validateEntries()
                             .arg(bookingTimespan.toString("HH:mm:ss"));
 
                     auto label = new QLabel(errorMessage, /*parent*/nullptr);
-                    ui->layoutWednesday->addWidget(label);
+                    layout->addWidget(label);
                     label->setMinimumHeight(20);
                     label->setMaximumHeight(20);
                 }
 
-                ui->layoutWednesday->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
+                layout->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
 
                 if(m_timeAssignmentTime > bookingTimespan)
                     goto after;
@@ -1095,12 +1105,12 @@ void MainWindow::validateEntries()
     else
     {
         auto label = new QLabel(tr("Strip rendering aborted due error."), /*parent*/nullptr);
-        ui->layoutWednesday->addWidget(label);
+        layout->addWidget(label);
         label->setMinimumHeight(20);
         label->setMaximumHeight(20);
     }
 
-    ui->layoutWednesday->addStretch(1);
+    layout->addStretch(1);
 
     if(!errorMessage.isEmpty())
     {
@@ -1177,12 +1187,12 @@ void MainWindow::updateComboboxes()
 
 void MainWindow::clearStrips()
 {
-    QLayoutItem *item;
-    while(item = ui->layoutWednesday->takeAt(0))
-    {
-        delete item->widget();
-        delete item;
-    }
+    for(quint8 i = 0; i < 7; i++)
+        while(QLayoutItem *item = m_weekLayouts[i]->takeAt(0))
+        {
+            delete item->widget();
+            delete item;
+        }
 }
 
 QString MainWindow::buildProjectString(const QString &project)

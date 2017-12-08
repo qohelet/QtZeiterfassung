@@ -7,6 +7,7 @@
 #include "zeiterfassung.h"
 
 class QLabel;
+class QBoxLayout;
 
 namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
@@ -61,6 +62,8 @@ private:
     bool m_flag;
     QTime m_timeAssignmentTime;
     QTime m_lastTimeAssignmentStart;
+
+    QBoxLayout *m_weekLayouts[7];
 };
 
 #endif // MAINWINDOW_H
