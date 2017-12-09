@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BookingStrip</class>
- <widget class="QFrame" name="BookingStrip">
+ <class>bookingStartStrip</class>
+ <widget class="QFrame" name="bookingStartStrip">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>54</height>
+    <height>44</height>
    </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#bookingStartStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFF7F, stop:1 #6FBF6F); }</string>
   </property>
   <property name="frameShape">
    <enum>QFrame::WinPanel</enum>
@@ -24,7 +27,7 @@
     <widget class="QLabel" name="labelTime">
      <property name="font">
       <font>
-       <pointsize>15</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -45,11 +48,11 @@
     <widget class="QLabel" name="labelType">
      <property name="font">
       <font>
-       <pointsize>15</pointsize>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
-      <string notr="true">TYPE</string>
+      <string>START</string>
      </property>
     </widget>
    </item>

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TimeAssignmentStrip</class>
- <widget class="QFrame" name="TimeAssignmentStrip">
+ <class>timeAssignmentStrip</class>
+ <widget class="QFrame" name="timeAssignmentStrip">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>82</height>
+    <height>68</height>
    </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#timeAssignmentStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFFFF, stop:1 #6FBFBF); }</string>
   </property>
   <property name="frameShape">
    <enum>QFrame::WinPanel</enum>
@@ -29,7 +32,7 @@
       <widget class="QLabel" name="labelTime">
        <property name="font">
         <font>
-         <pointsize>15</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -50,7 +53,7 @@
       <widget class="QLabel" name="labelProject">
        <property name="font">
         <font>
-         <pointsize>15</pointsize>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="text">

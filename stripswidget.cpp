@@ -9,14 +9,12 @@
 #include <QDebug>
 
 #include "timeutils.h"
-#include "zeiterfassungsettings.h"
-#include "strips/bookingstrip.h"
-#include "strips/timeassignmentstrip.h"
+#include "stripfactory.h"
 
-StripsWidget::StripsWidget(const ZeiterfassungSettings &settings, const QMap<QString, QString> &projects,
+StripsWidget::StripsWidget(StripFactory *stripFactory, const QMap<QString, QString> &projects,
                            QWidget *parent) :
     QWidget(parent),
-    m_settings(settings),
+    m_stripFactory(stripFactory),
     m_projects(projects),
     m_layout(new QVBoxLayout(this))
 {
@@ -74,7 +72,7 @@ bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
         lastBooking = &startBooking;
 
         m_lastTimeAssignmentStart = startBooking.time;
-        m_layout->addWidget(new BookingStrip(startBooking.id, startBooking.time, startBooking.type, m_settings, this));
+        appendBookingStartStrip(startBooking.id, startBooking.time);
 
         if(timeAssignmentsIter == timeAssignments.constEnd())
         {
@@ -94,9 +92,8 @@ bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
 
         lastTimeAssignment = &timeAssignment;
 
-        m_layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
-                                                           timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                           m_settings, this));
+        appendTimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                                  timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text);
 
         if(timeAssignment.timespan == QTime(0, 0))
         {
@@ -149,9 +146,8 @@ bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
 
                     lastTimeAssignment = &timeAssignment;
 
-                    m_layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
-                                                                       timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                                       m_settings, this));
+                    appendTimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                                              timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text);
 
                     if(timeAssignment.timespan == QTime(0, 0))
                     {
@@ -206,7 +202,7 @@ bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
                             label->setMaximumHeight(20);
                         }
 
-                        m_layout->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, this));
+                        appendBookingEndStrip(endBooking.id, endBooking.time);
 
                         goto after;
                     }
@@ -223,9 +219,8 @@ bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
 
                     lastTimeAssignment = &timeAssignment;
 
-                    m_layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
-                                                                       timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                                       m_settings, this));
+                    appendTimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
+                                              timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text);
 
                     if(timeAssignment.timespan == QTime(0, 0))
                     {
@@ -269,7 +264,7 @@ bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
                     label->setMaximumHeight(20);
                 }
 
-                m_layout->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, this));
+                appendBookingEndStrip(endBooking.id, endBooking.time);
 
                 if(m_timeAssignmentTime > bookingTimespan)
                     goto after;
@@ -321,4 +316,81 @@ QString StripsWidget::buildProjectString(const QString &project)
         qWarning() << "could not find project" << project;
         return project;
     }
+}
+
+QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
+{
+    auto widget = m_stripFactory->createBookingStartStrip(this);
+
+    if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
+        labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
+    else
+        qWarning() << "no labelTime found!";
+
+    if(auto labelId = widget->findChild<QWidget*>("labelId"))
+        labelId->setProperty("text", QString::number(id));
+    else
+        qWarning() << "no labelId found!";
+
+    m_layout->addWidget(widget);
+
+    return widget;
+}
+
+QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
+{
+    auto widget = m_stripFactory->createBookingEndStrip(this);
+
+    if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
+        labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
+    else
+        qWarning() << "no labelTime found!";
+
+    if(auto labelId = widget->findChild<QWidget*>("labelId"))
+        labelId->setProperty("text", QString::number(id));
+    else
+        qWarning() << "no labelId found!";
+
+    m_layout->addWidget(widget);
+
+    return widget;
+}
+
+QWidget *StripsWidget::appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject, const QString &workpackage, const QString &text)
+{
+    auto widget = m_stripFactory->createTimeAssignmentStrip(this);
+
+    if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
+        labelTime->setProperty("text", duration == QTime(0, 0) ? tr("Open") : duration.toString(QStringLiteral("HH:mm")));
+    else
+        qWarning() << "no labelTime found!";
+
+    if(auto labelProject = widget->findChild<QWidget*>("labelProject"))
+        labelProject->setProperty("text", project);
+    else
+        qWarning() << "no labelProject found!";
+
+    if(auto labelId = widget->findChild<QWidget*>("labelId"))
+        labelId->setProperty("text", QString::number(id));
+    else
+        qWarning() << "no labelId found!";
+
+    if(auto labelSubproject = widget->findChild<QWidget*>("labelSubproject"))
+        labelSubproject->setProperty("text", subproject);
+    else
+        qWarning() << "no labelSubproject found!";
+
+    if(auto labelWorkpackage = widget->findChild<QWidget*>("labelWorkpackage"))
+        labelWorkpackage->setProperty("text", workpackage);
+    else
+        qWarning() << "no labelWorkpackage found!";
+
+    if(auto labelText = widget->findChild<QWidget*>("labelText"))
+        labelText->setProperty("text", text);
+    else
+        qWarning() << "no labelText found!";
+
+    m_layout->addWidget(widget);
+
+    return widget;
 }

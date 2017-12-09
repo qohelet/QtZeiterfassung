@@ -8,7 +8,5 @@
         <file>images/refresh.png</file>
         <file>images/splash.png</file>
         <file>images/today.png</file>
-        <file>translations/zeiterfassung_de.qm</file>
-        <file>translations/zeiterfassung_en.qm</file>
     </qresource>
 </RCC>

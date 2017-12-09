@@ -10,14 +10,14 @@ class QBoxLayout;
 template <class Key, class T> class QMap;
 template <typename T> class QVector;
 
-class ZeiterfassungSettings;
+class StripFactory;
 
 class StripsWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit StripsWidget(const ZeiterfassungSettings &settings, const QMap<QString, QString> &projects,
+    explicit StripsWidget(StripFactory *stripFactory, const QMap<QString, QString> &projects,
                           QWidget *parent = 0);
 
     bool createStrips(const QVector<Zeiterfassung::Booking> &bookings,
@@ -30,7 +30,12 @@ public:
 private:
     QString buildProjectString(const QString &project);
 
-    const ZeiterfassungSettings &m_settings;
+    QWidget *appendBookingStartStrip(int id, const QTime &time);
+    QWidget *appendBookingEndStrip(int id, const QTime &time);
+    QWidget *appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject,
+                                       const QString &workpackage, const QString &text);
+
+    StripFactory *m_stripFactory;
     const QMap<QString, QString> &m_projects;
 
     QBoxLayout *m_layout;

@@ -16,6 +16,7 @@
 
 #include "timeutils.h"
 #include "zeiterfassungsettings.h"
+#include "stripfactory.h"
 #include "stripswidget.h"
 #include "eventloopwithstatus.h"
 #include "dialogs/aboutmedialog.h"
@@ -34,7 +35,8 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     m_userInfo(userInfo),
     m_flag(false),
     m_bookingsModel(new BookingsModel(erfassung, this)),
-    m_timeAssignmentsModel(new TimeAssignmentsModel(erfassung, this))
+    m_timeAssignmentsModel(new TimeAssignmentsModel(erfassung, this)),
+    m_stripFactory(new StripFactory(this))
 {
     ui->setupUi(this);
 
@@ -54,7 +56,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
             layout->addWidget(label);
         }
 
-        m_stripsWidgets[i] = new StripsWidget(m_settings, m_projects, widget);
+        m_stripsWidgets[i] = new StripsWidget(m_stripFactory, m_projects, widget);
         layout->addWidget(m_stripsWidgets[i++]);
 
         layout->addStretch(1);
@@ -137,6 +139,13 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     ui->statusbar->addPermanentWidget(m_holidaysLabel = new QLabel(ui->statusbar));
     m_holidaysLabel->setFrameShape(QFrame::Panel);
     m_holidaysLabel->setFrameShadow(QFrame::Sunken);
+
+    if(!m_stripFactory->load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("strips")))
+    {
+        QMessageBox::warning(this, tr("Could not load strips!"), tr("Could not load strips!") % "\n\n" % m_stripFactory->errorString());
+        qApp->exit(-1);
+        return;
+    }
 
     refresh(true);
 

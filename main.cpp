@@ -90,8 +90,8 @@ int main(int argc, char *argv[])
                              QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("translations"));
 
     QTranslator zeiterfassungTranslator(&app);
-    loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"),
-                             QStringLiteral("_"), QStringLiteral(":/zeiterfassung/translations"));
+    loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"),
+                             QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("translations"));
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
 

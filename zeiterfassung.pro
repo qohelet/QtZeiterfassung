@@ -1,4 +1,4 @@
-QT += network gui widgets
+QT += network gui widgets uitools
 
 CONFIG += c++11
 CONFIG -= app_bundle
@@ -27,13 +27,12 @@ SOURCES += main.cpp \
     dialogs/languageselectiondialog.cpp \
     dialogs/timeassignmentdialog.cpp \
     models/timeassignmentsmodel.cpp \
-    strips/timeassignmentstrip.cpp \
     dialogs/bookingdialog.cpp \
     models/bookingsmodel.cpp \
-    strips/bookingstrip.cpp \
     dialogs/updatedialog.cpp \
     stripswidget.cpp \
-    timeutils.cpp
+    timeutils.cpp \
+    stripfactory.cpp
 
 HEADERS += \
     zeiterfassung.h \
@@ -46,13 +45,12 @@ HEADERS += \
     dialogs/languageselectiondialog.h \
     dialogs/timeassignmentdialog.h \
     models/timeassignmentsmodel.h \
-    strips/timeassignmentstrip.h \
     dialogs/bookingdialog.h \
     models/bookingsmodel.h \
-    strips/bookingstrip.h \
     dialogs/updatedialog.h \
     stripswidget.h \
-    timeutils.h
+    timeutils.h \
+    stripfactory.h
 
 FORMS += \
     mainwindow.ui \
@@ -61,9 +59,7 @@ FORMS += \
     dialogs/settingsdialog.ui \
     dialogs/languageselectiondialog.ui \
     dialogs/timeassignmentdialog.ui \
-    strips/timeassignmentstrip.ui \
     dialogs/bookingdialog.ui \
-    strips/bookingstrip.ui \
     dialogs/updatedialog.ui
 
 RESOURCES += \
@@ -76,12 +72,15 @@ TRANSLATIONS += \
 win32 {
     CONFIG(debug, release|debug) {
         translationsinstall.path = $${OUT_PWD}/debug/translations
+        stripsinstall.path = $${OUT_PWD}/debug/strips
     } else {
         translationsinstall.path = $${OUT_PWD}/release/translations
+        stripsinstall.path = $${OUT_PWD}/release/strips
     }
 }
 unix {
     translationsinstall.path = $${OUT_PWD}/translations
+    stripsinstall.path = $${OUT_PWD}/strips
 }
 
 translationsinstall.files = $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm \
@@ -95,5 +94,13 @@ translationsinstall.files = $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm \
                             $$[QT_INSTALL_TRANSLATIONS]/qtmultimedia_de.qm \
                             $$[QT_INSTALL_TRANSLATIONS]/qtquick1_de.qm \
                             $$[QT_INSTALL_TRANSLATIONS]/qtscript_de.qm \
-                            $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_de.qm
+                            $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_de.qm \
+                            translations/zeiterfassung_en.qm \
+                            translations/zeiterfassung_de.qm
+
+stripsinstall.files = strips/bookingstartstrip.ui \
+                      strips/bookingendstrip.ui \
+                      strips/timeassignmentstrip.ui
+
 INSTALLS *= translationsinstall
+INSTALLS *= stripsinstall

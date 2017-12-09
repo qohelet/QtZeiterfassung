@@ -132,46 +132,6 @@ void ZeiterfassungSettings::prependText(const QString &text)
     prepentItem("texte", text);
 }
 
-QString ZeiterfassungSettings::bookingStartBackgroundColor() const
-{
-    return value("bookingStartBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFF7F, stop:1 #6FBF6F)")).toString();
-}
-
-void ZeiterfassungSettings::setBookingStartBackgroundColor(const QString &bookingStartBackgroundColor)
-{
-    setValue("bookingStartBackgroundColor", bookingStartBackgroundColor);
-}
-
-QString ZeiterfassungSettings::bookingEndBackgroundColor() const
-{
-    return value("bookingEndBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FF7F7F, stop:1 #BF6F6F)")).toString();
-}
-
-void ZeiterfassungSettings::setBookingEndBackgroundColor(const QString &bookingEndBackgroundColor)
-{
-    setValue("bookingEndBackgroundColor", bookingEndBackgroundColor);
-}
-
-QString ZeiterfassungSettings::bookingOtherBackgroundColor() const
-{
-    return value("bookingOtherBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FFFF7F, stop:1 #BFBF6F)")).toString();
-}
-
-void ZeiterfassungSettings::setBookingOtherBackgroundColor(const QString &bookingOtherBackgroundColor)
-{
-    setValue("bookingOtherBackgroundColor", bookingOtherBackgroundColor);
-}
-
-QString ZeiterfassungSettings::timeAssignmentBackgroundColor() const
-{
-    return value("timeAssignmentBackgroundColor", QStringLiteral("qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #7FFFFF, stop:1 #6FBFBF)")).toString();
-}
-
-void ZeiterfassungSettings::setTimeAssignmentBackgroundColor(const QString timeAssignmentBackgroundColor)
-{
-    setValue("timeAssignmentBackgroundColor", timeAssignmentBackgroundColor);
-}
-
 QDate ZeiterfassungSettings::lastUpdateCheck() const
 {
     return value("lastUpdateCheck").toDate();

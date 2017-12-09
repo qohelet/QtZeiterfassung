@@ -49,18 +49,6 @@ public:
     void setTexte(const QStringList &texte);
     void prependText(const QString &text);
 
-    QString bookingStartBackgroundColor() const;
-    void setBookingStartBackgroundColor(const QString &bookingStartBackgroundColor);
-
-    QString bookingEndBackgroundColor() const;
-    void setBookingEndBackgroundColor(const QString &bookingEndBackgroundColor);
-
-    QString bookingOtherBackgroundColor() const;
-    void setBookingOtherBackgroundColor(const QString &bookingOtherBackgroundColor);
-
-    QString timeAssignmentBackgroundColor() const;
-    void setTimeAssignmentBackgroundColor(const QString timeAssignmentBackgroundColor);
-
     QDate lastUpdateCheck() const;
     void setLastUpdateCheck(const QDate &lastUpdateCheck);
 

@@ -13,6 +13,7 @@ namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
 class BookingsModel;
 class TimeAssignmentsModel;
+class StripFactory;
 class StripsWidget;
 
 class MainWindow : public QMainWindow
@@ -55,6 +56,7 @@ private:
     BookingsModel *m_bookingsModel;
     TimeAssignmentsModel *m_timeAssignmentsModel;
 
+    StripFactory *m_stripFactory;
     StripsWidget *m_stripsWidgets[7];
 };
 
