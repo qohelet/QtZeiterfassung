@@ -13,6 +13,7 @@ namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
 class BookingsModel;
 class TimeAssignmentsModel;
+class StripsWidget;
 
 class MainWindow : public QMainWindow
 {
@@ -21,11 +22,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent = 0);
     ~MainWindow();
-
-    static int timeToSeconds(const QTime &time);
-    static QTime timeBetween(const QTime &l, const QTime &r);
-    static QTime timeAdd(const QTime &l, const QTime &r);
-    static QTime timeNormalise(const QTime &time);
 
 private Q_SLOTS:
     void refresh(bool forceAuswertung = false);
@@ -39,31 +35,27 @@ private Q_SLOTS:
     void pushButtonEndPressed();
 
 private:
-    void validateEntries();
     void updateComboboxes();
-    void clearStrips();
-
-    QString buildProjectString(const QString &project);
+    void createStrips();
 
     Ui::MainWindow *ui;
     ZeiterfassungSettings &m_settings;
     Zeiterfassung &m_erfassung;
     const Zeiterfassung::UserInfo &m_userInfo;
     QMap<QString, QString> m_projects;
+
     QDate m_auswertungDate;
     QByteArray m_auswertung;
+
     QLabel *m_workingTimeLabel;
     QLabel *m_balanceLabel;
     QLabel *m_holidaysLabel;
 
+    bool m_flag;
     BookingsModel *m_bookingsModel;
     TimeAssignmentsModel *m_timeAssignmentsModel;
 
-    bool m_flag;
-    QTime m_timeAssignmentTime;
-    QTime m_lastTimeAssignmentStart;
-
-    QBoxLayout *m_weekLayouts[7];
+    StripsWidget *m_stripsWidgets[7];
 };
 
 #endif // MAINWINDOW_H

@@ -94,6 +94,11 @@ bool TimeAssignmentsModel::refresh(int userId, const QDate &from, const QDate &t
     return true;
 }
 
+const QVector<Zeiterfassung::TimeAssignment> TimeAssignmentsModel::timeAssignments() const
+{
+    return m_timeAssignments;
+}
+
 void TimeAssignmentsModel::getTimeAssignmentsFinished(bool success, const QString &message, const QVector<Zeiterfassung::TimeAssignment> &timeAssignments)
 {
     disconnect(&m_erfassung, &Zeiterfassung::getTimeAssignmentsFinished,

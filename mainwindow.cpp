@@ -14,15 +14,15 @@
 #include <QRegularExpression>
 #include <QDebug>
 
+#include "timeutils.h"
 #include "zeiterfassungsettings.h"
+#include "stripswidget.h"
 #include "eventloopwithstatus.h"
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/bookingdialog.h"
 #include "dialogs/timeassignmentdialog.h"
 #include "dialogs/settingsdialog.h"
 #include "dialogs/updatedialog.h"
-#include "strips/bookingstrip.h"
-#include "strips/timeassignmentstrip.h"
 #include "models/bookingsmodel.h"
 #include "models/timeassignmentsmodel.h"
 
@@ -32,19 +32,37 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
     m_settings(settings),
     m_erfassung(erfassung),
     m_userInfo(userInfo),
+    m_flag(false),
     m_bookingsModel(new BookingsModel(erfassung, this)),
-    m_timeAssignmentsModel(new TimeAssignmentsModel(erfassung, this)),
-    m_flag(false)
+    m_timeAssignmentsModel(new TimeAssignmentsModel(erfassung, this))
 {
     ui->setupUi(this);
 
-    m_weekLayouts[0] = ui->layoutMonday;
-    m_weekLayouts[1] = ui->layoutTuesday;
-    m_weekLayouts[2] = ui->layoutWednesday;
-    m_weekLayouts[3] = ui->layoutThursday;
-    m_weekLayouts[4] = ui->layoutFriday;
-    m_weekLayouts[5] = ui->layoutSaturday;
-    m_weekLayouts[6] = ui->layoutSunday;
+    quint8 i = 0;
+    for(const auto &dayName : QStringList { tr("Monday"), tr("Tuesday"), tr("Wednesday"), tr("Thursday"),
+                                            tr("Friday"), tr("Saturday"), tr("Sunday")})
+    {
+        auto widget = new QWidget(ui->widgetWeek);
+
+        auto layout = new QVBoxLayout(widget);
+
+        {
+            auto label = new QLabel(dayName, widget);
+            auto font = label->font();
+            font.setBold(true);
+            label->setFont(font);
+            layout->addWidget(label);
+        }
+
+        m_stripsWidgets[i] = new StripsWidget(m_settings, m_projects, widget);
+        layout->addWidget(m_stripsWidgets[i++]);
+
+        layout->addStretch(1);
+
+        widget->setLayout(layout);
+
+        ui->layoutWeek->addWidget(widget, 1);
+    }
 
     setWindowTitle(tr("Zeiterfassung - %0 (%1)").arg(m_userInfo.text).arg(m_userInfo.email));
 
@@ -131,28 +149,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-int MainWindow::timeToSeconds(const QTime &time)
-{
-    return QTime(0, 0).secsTo(time);
-}
-
-QTime MainWindow::timeBetween(const QTime &l, const QTime &r)
-{
-    Q_ASSERT(l <= r);
-    return QTime(0, 0).addSecs(l.secsTo(r));
-}
-
-QTime MainWindow::timeAdd(const QTime &l, const QTime &r)
-{
-    Q_ASSERT(timeToSeconds(l) + timeToSeconds(r) < 86400);
-    return l.addSecs(QTime(0, 0).secsTo(r));
-}
-
-QTime MainWindow::timeNormalise(const QTime &time)
-{
-    return QTime(time.hour(), time.minute());
-}
-
 void MainWindow::refresh(bool forceAuswertung)
 {
     ui->actionToday->setEnabled(false);
@@ -200,7 +196,8 @@ void MainWindow::refresh(bool forceAuswertung)
         ui->pushButtonNext->setEnabled(true);
     }
 
-    clearStrips();
+    for(quint8 i = 0; i < 7; i++)
+        m_stripsWidgets[i]->clearStrips();
 
     auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
     if(forceAuswertung || m_auswertungDate != auswertungDate)
@@ -303,7 +300,9 @@ void MainWindow::refreshBookingsFinished(bool success, const QString &message)
     if(m_flag)
         m_flag = false;
     else
-        validateEntries();
+    {
+        createStrips();
+    }
 
     if(!success)
         QMessageBox::warning(Q_NULLPTR, tr("Could not load bookings!"), tr("Could not load bookings!") % "\n\n" % message);
@@ -320,7 +319,9 @@ void MainWindow::refreshTimeAssignmentsFinished(bool success, const QString &mes
     if(m_flag)
         m_flag = false;
     else
-        validateEntries();
+    {
+        createStrips();
+    }
 
     if(!success)
         QMessageBox::warning(Q_NULLPTR, tr("Could not load time assignments!"), tr("Could not load time assignments!") % "\n\n" % message);
@@ -372,7 +373,8 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewBookings->setEnabled(false);
 
-                    clearStrips();
+                    for(quint8 i = 0; i < 7; i++)
+                        m_stripsWidgets[i]->clearStrips();
 
                     if(m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -426,7 +428,8 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewBookings->setEnabled(false);
 
-                    clearStrips();
+                    for(quint8 i = 0; i < 7; i++)
+                        m_stripsWidgets[i]->clearStrips();
 
                     if(m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -484,7 +487,8 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewBookings->setEnabled(false);
 
-                    clearStrips();
+                    for(quint8 i = 0; i < 7; i++)
+                        m_stripsWidgets[i]->clearStrips();
 
                     if(m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -565,7 +569,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                     m_settings.prependWorkpackage(dialog.getWorkpackage());
                     m_settings.prependText(dialog.getText());
 
-                    clearStrips();
+                    for(quint8 i = 0; i < 7; i++)
+                        m_stripsWidgets[i]->clearStrips();
 
                     if(m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -619,7 +624,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                     ui->pushButtonEnd->setEnabled(false);
                     ui->treeViewTimeAssignments->setEnabled(false);
 
-                    clearStrips();
+                    for(quint8 i = 0; i < 7; i++)
+                        m_stripsWidgets[i]->clearStrips();
 
                     if(m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -682,7 +688,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                     m_settings.prependWorkpackage(dialog.getWorkpackage());
                     m_settings.prependText(dialog.getText());
 
-                    clearStrips();
+                    for(quint8 i = 0; i < 7; i++)
+                        m_stripsWidgets[i]->clearStrips();
 
                     if(m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date()))
                     {
@@ -711,8 +718,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
 void MainWindow::pushButtonStartPressed()
 {
-    if(m_bookingsModel->rbegin() == m_bookingsModel->rend() ||
-       m_bookingsModel->rbegin()->type == QStringLiteral("G"))
+    if(m_bookingsModel->bookings().rbegin() == m_bookingsModel->bookings().rend() ||
+       m_bookingsModel->bookings().rbegin()->type == QStringLiteral("G"))
     {
         EventLoopWithStatus eventLoop;
         connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
@@ -730,15 +737,17 @@ void MainWindow::pushButtonStartPressed()
         }
     }
 
-    if(m_timeAssignmentsModel->rbegin() != m_timeAssignmentsModel->rend())
+    auto timeAssignmentTime = m_stripsWidgets[0]->timeAssignmentTime();
+
+    if(m_timeAssignmentsModel->timeAssignments().rbegin() != m_timeAssignmentsModel->timeAssignments().rend())
     {
-        auto timeAssignment = *m_timeAssignmentsModel->rbegin();
+        auto timeAssignment = *m_timeAssignmentsModel->timeAssignments().rbegin();
         if(timeAssignment.timespan == QTime(0, 0))
         {
             EventLoopWithStatus eventLoop;
             connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
-            auto timespan = timeBetween(m_lastTimeAssignmentStart, ui->timeEditTime->time());
+            auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
 
             m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
                                            timeAssignment.time, timespan,
@@ -747,7 +756,7 @@ void MainWindow::pushButtonStartPressed()
             eventLoop.exec();
 
             if(eventLoop.success())
-                m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timespan);
+                timeAssignmentTime = timeAdd(timeAssignmentTime, timespan);
             else
             {
                 QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % eventLoop.message());
@@ -761,7 +770,7 @@ void MainWindow::pushButtonStartPressed()
     connect(&m_erfassung, &Zeiterfassung::createTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
     m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
-                                   m_timeAssignmentTime, QTime(0, 0),
+                                   timeAssignmentTime, QTime(0, 0),
                                    ui->comboBoxProject->currentData().toString(), ui->comboBoxSubproject->currentText(),
                                    ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
     eventLoop.exec();
@@ -786,6 +795,29 @@ void MainWindow::pushButtonStartPressed()
 void MainWindow::pushButtonEndPressed()
 {
     {
+        auto timeAssignment = *m_timeAssignmentsModel->timeAssignments().rbegin();
+        Q_ASSERT(timeAssignment.timespan == QTime(0, 0));
+
+        EventLoopWithStatus eventLoop;
+        connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+
+        auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
+
+        m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
+                                       timeAssignment.time, timespan,
+                                       timeAssignment.project, timeAssignment.subproject,
+                                       timeAssignment.workpackage, timeAssignment.text);
+        eventLoop.exec();
+
+        if(!eventLoop.success())
+        {
+            QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % eventLoop.message());
+            refresh(true);
+            return;
+        }
+    }
+
+    {
         EventLoopWithStatus eventLoop;
         connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
@@ -802,328 +834,7 @@ void MainWindow::pushButtonEndPressed()
         }
     }
 
-    {
-        auto timeAssignment = *m_timeAssignmentsModel->rbegin();
-        Q_ASSERT(timeAssignment.timespan == QTime(0, 0));
-
-        EventLoopWithStatus eventLoop;
-        connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
-
-        auto timespan = timeBetween(m_lastTimeAssignmentStart, ui->timeEditTime->time());
-
-        m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
-                                       timeAssignment.time, timespan,
-                                       timeAssignment.project, timeAssignment.subproject,
-                                       timeAssignment.workpackage, timeAssignment.text);
-        eventLoop.exec();
-
-        if(eventLoop.success())
-            m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timespan);
-        else
-        {
-            QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % eventLoop.message());
-            refresh(true);
-            return;
-        }
-    }
-
     refresh(true);
-}
-
-void MainWindow::validateEntries()
-{
-    ui->timeEditTime->setMinimumTime(QTime(0, 0));
-    ui->actionToday->setEnabled(true);
-    ui->actionRefresh->setEnabled(true);
-    ui->dateEditDate->setReadOnly(false);
-    ui->pushButtonPrev->setEnabled(true);
-    ui->pushButtonNext->setEnabled(true);
-    ui->pushButtonStart->setText(tr("Start"));
-
-    if(!ui->treeViewBookings->isEnabled())
-        return;
-
-    if(!ui->treeViewTimeAssignments->isEnabled())
-        return;
-
-    auto bookingsIter = m_bookingsModel->constBegin();
-    auto timeAssignmentsIter = m_timeAssignmentsModel->constBegin();
-
-    m_timeAssignmentTime = QTime(0, 0);
-    auto bookingTimespan = QTime(0, 0);
-
-    const Zeiterfassung::Booking *lastBooking = Q_NULLPTR;
-    const Zeiterfassung::TimeAssignment *lastTimeAssignment = Q_NULLPTR;
-
-    QString errorMessage;
-
-    auto layout = m_weekLayouts[ui->dateEditDate->date().dayOfWeek() - 1];
-
-    while(true)
-    {
-        if(bookingsIter == m_bookingsModel->constEnd() &&
-           timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
-        {
-            goto after;
-        }
-
-        if(bookingsIter == m_bookingsModel->constEnd())
-        {
-            errorMessage = tr("Missing booking!");
-            goto after;
-        }
-
-        auto startBooking = *bookingsIter++;
-        if(startBooking.type != QStringLiteral("K"))
-        {
-            errorMessage = tr("Expected start booking, instead got type %0\nBooking ID: %1")
-                    .arg(startBooking.type)
-                    .arg(startBooking.id);
-            goto after;
-        }
-
-        if(lastBooking)
-        {
-            auto label = new QLabel(tr("%0: %1")
-                                    .arg(tr("Break"))
-                                    .arg(tr("%0h").arg(timeBetween(lastBooking->time, startBooking.time).toString(QStringLiteral("HH:mm")))),
-                                    /*parent*/nullptr);
-            layout->addWidget(label);
-            label->setMinimumHeight(20);
-            label->setMaximumHeight(20);
-        }
-
-        lastBooking = &startBooking;
-
-        m_lastTimeAssignmentStart = startBooking.time;
-        layout->addWidget(new BookingStrip(startBooking.id, startBooking.time, startBooking.type, m_settings, /*parent*/nullptr));
-
-        if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
-        {
-            errorMessage = tr("Missing time assignment!");
-            goto after;
-        }
-
-        auto timeAssignment = *timeAssignmentsIter++;
-        if(timeAssignment.time != m_timeAssignmentTime)
-        {
-            errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                    .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
-                    .arg(timeAssignment.time.toString("HH:mm:ss"))
-                    .arg(timeAssignment.id);
-            goto after;
-        }
-
-        lastTimeAssignment = &timeAssignment;
-
-        layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
-                                                           timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                           m_settings, /*parent*/nullptr));
-
-        if(timeAssignment.timespan == QTime(0, 0))
-        {
-            if(bookingsIter != m_bookingsModel->constEnd())
-            {
-                errorMessage = tr("There is another booking after an unfinished time assignment.\nBooking ID: %0\nTime assignment ID: %1")
-                        .arg(bookingsIter->id)
-                        .arg(timeAssignment.id);
-                goto after;
-            }
-
-            if(timeAssignmentsIter != m_timeAssignmentsModel->constEnd())
-            {
-                errorMessage = tr("There is another time assignment after an unfinished time assignment.\nTime assignment ID: %0\nTime assignment ID: %1")
-                        .arg(timeAssignmentsIter->id)
-                        .arg(timeAssignment.id);
-                goto after;
-            }
-
-            ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
-            ui->pushButtonStart->setText(tr("Switch"));
-            ui->pushButtonEnd->setEnabled(true);
-            goto after;
-        }
-        else
-        {
-            m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
-            m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
-
-            if(bookingsIter == m_bookingsModel->constEnd())
-            {
-                while(true)
-                {
-                    if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
-                    {
-                        errorMessage = tr("The last time assignment is finished without end booking\nTime assignment ID: %0")
-                                .arg(timeAssignment.id);
-                        goto after;
-                    }
-
-                    timeAssignment = *timeAssignmentsIter++;
-                    if(timeAssignment.time != m_timeAssignmentTime)
-                    {
-                        errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
-                                .arg(timeAssignment.time.toString("HH:mm:ss"))
-                                .arg(timeAssignment.id);
-                        goto after;
-                    }
-
-                    lastTimeAssignment = &timeAssignment;
-
-                    layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
-                                                                       timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                                       m_settings, /*parent*/nullptr));
-
-                    if(timeAssignment.timespan == QTime(0, 0))
-                    {
-                        if(timeAssignmentsIter != m_timeAssignmentsModel->constEnd())
-                        {
-                            errorMessage = tr("There is another time assignment after an unfinished time assignment.\n"
-                                              "Time assignment ID: %0\nTime assignment ID: %1")
-                                    .arg(timeAssignment.id)
-                                    .arg(timeAssignmentsIter->id);
-                            goto after;
-                        }
-
-                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
-                        ui->pushButtonStart->setText(tr("Switch"));
-                        ui->pushButtonEnd->setEnabled(true);
-                        goto after;
-                    }
-                    else
-                    {
-                        m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
-                        m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
-                    }
-                }
-            }
-            else
-            {
-                auto endBooking = *bookingsIter++;
-                if(endBooking.type != QStringLiteral("G"))
-                {
-                    errorMessage = tr("Expected end booking, instead got type %0\nBooking ID: %1")
-                            .arg(endBooking.type)
-                            .arg(endBooking.id);
-                    goto after;
-                }
-
-                lastBooking = &endBooking;
-
-                bookingTimespan = timeAdd(bookingTimespan, timeBetween(startBooking.time, endBooking.time));
-                ui->timeEditTime->setMinimumTime(timeAdd(endBooking.time, QTime(0, 1)));
-
-                while(m_timeAssignmentTime < bookingTimespan)
-                {
-                    if(timeAssignmentsIter == m_timeAssignmentsModel->constEnd())
-                    {
-                        errorMessage = tr("Missing time assignment! Missing: %0h")
-                                .arg(timeBetween(m_timeAssignmentTime, bookingTimespan).toString("HH:mm:ss"));
-
-                        {
-                            auto label = new QLabel(errorMessage, /*parent*/nullptr);
-                            layout->addWidget(label);
-                            label->setMinimumHeight(20);
-                            label->setMaximumHeight(20);
-                        }
-
-                        layout->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
-
-                        goto after;
-                    }
-
-                    timeAssignment = *timeAssignmentsIter++;
-                    if(timeAssignment.time != m_timeAssignmentTime)
-                    {
-                        errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
-                                .arg(timeAssignment.time.toString("HH:mm:ss"))
-                                .arg(timeAssignment.id);
-                        goto after;
-                    }
-
-                    lastTimeAssignment = &timeAssignment;
-
-                    layout->addWidget(new TimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
-                                                                       timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text,
-                                                                       m_settings, /*parent*/nullptr));
-
-                    if(timeAssignment.timespan == QTime(0, 0))
-                    {
-                        if(bookingsIter != m_bookingsModel->constEnd())
-                        {
-                            errorMessage = tr("There is another booking after an unfinished time assignment.\n"
-                                              "Booking ID: %0\nTime assignment ID: %1")
-                                    .arg(bookingsIter->id)
-                                    .arg(timeAssignment.id);
-                            goto after;
-                        }
-
-                        if(timeAssignmentsIter != m_timeAssignmentsModel->constEnd())
-                        {
-                            errorMessage = tr("There is another time assignment after an unfinished time assignment.\nTime assignment ID: %0\nTime assignment ID: %1")
-                                    .arg(timeAssignmentsIter->id)
-                                    .arg(timeAssignment.id);
-                            goto after;
-                        }
-
-                        ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
-                        ui->pushButtonStart->setText(tr("Switch"));
-                        ui->pushButtonEnd->setEnabled(true);
-                        goto after;
-                    }
-                    else
-                    {
-                        m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
-                    }
-                }
-
-                if(m_timeAssignmentTime > bookingTimespan)
-                {
-                    errorMessage = tr("Time assignment time longer than booking time! Time assignment: %0 Booking: %1")
-                            .arg(m_timeAssignmentTime.toString("HH:mm:ss"))
-                            .arg(bookingTimespan.toString("HH:mm:ss"));
-
-                    auto label = new QLabel(errorMessage, /*parent*/nullptr);
-                    layout->addWidget(label);
-                    label->setMinimumHeight(20);
-                    label->setMaximumHeight(20);
-                }
-
-                layout->addWidget(new BookingStrip(endBooking.id, endBooking.time, endBooking.type, m_settings, /*parent*/nullptr));
-
-                if(m_timeAssignmentTime > bookingTimespan)
-                    goto after;
-            }
-        }
-    }
-
-    after:
-    if(errorMessage.isEmpty())
-        m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Assigned time")).arg(tr("%0h").arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm")))));
-    else
-    {
-        auto label = new QLabel(tr("Strip rendering aborted due error."), /*parent*/nullptr);
-        layout->addWidget(label);
-        label->setMinimumHeight(20);
-        label->setMaximumHeight(20);
-    }
-
-    layout->addStretch(1);
-
-    if(!errorMessage.isEmpty())
-    {
-        QMessageBox::warning(this, tr("Illegal state!"), tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" % errorMessage);
-        return;
-    }
-
-    ui->timeEditTime->setEnabled(true);
-    ui->comboBoxProject->setEnabled(true);
-    ui->comboBoxSubproject->setEnabled(true);
-    ui->comboBoxWorkpackage->setEnabled(true);
-    ui->comboBoxText->setEnabled(true);
-    ui->pushButtonStart->setEnabled(true);
 }
 
 void MainWindow::updateComboboxes()
@@ -1185,23 +896,34 @@ void MainWindow::updateComboboxes()
     }
 }
 
-void MainWindow::clearStrips()
+void MainWindow::createStrips()
 {
-    for(quint8 i = 0; i < 7; i++)
-        while(QLayoutItem *item = m_weekLayouts[i]->takeAt(0))
-        {
-            delete item->widget();
-            delete item;
-        }
-}
+    ui->timeEditTime->setMinimumTime(QTime(0, 0));
+    ui->actionToday->setEnabled(true);
+    ui->actionRefresh->setEnabled(true);
+    ui->dateEditDate->setReadOnly(false);
+    ui->pushButtonPrev->setEnabled(true);
+    ui->pushButtonNext->setEnabled(true);
+    ui->pushButtonStart->setText(tr("Start"));
 
-QString MainWindow::buildProjectString(const QString &project)
-{
-    if(m_projects.contains(project))
-        return m_projects.value(project) % " (" % project % ")";
-    else
-    {
-        qWarning() << "could not find project" << project;
-        return project;
-    }
+    if(!ui->treeViewBookings->isEnabled())
+        return;
+
+    if(!ui->treeViewTimeAssignments->isEnabled())
+        return;
+
+    for(quint8 i = 0; i < 7; i++)
+        if(!m_stripsWidgets[i]->createStrips(m_bookingsModel->bookings(), m_timeAssignmentsModel->timeAssignments()))
+            return;
+
+    m_workingTimeLabel->setText(tr("%0: %1")
+                                .arg(tr("Assigned time"))
+                                .arg(tr("%0h").arg(m_stripsWidgets[0]->timeAssignmentTime().toString(QStringLiteral("HH:mm")))));
+
+    ui->timeEditTime->setEnabled(true);
+    ui->comboBoxProject->setEnabled(true);
+    ui->comboBoxSubproject->setEnabled(true);
+    ui->comboBoxWorkpackage->setEnabled(true);
+    ui->comboBoxText->setEnabled(true);
+    ui->pushButtonStart->setEnabled(true);
 }

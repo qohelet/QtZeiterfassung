@@ -90,6 +90,11 @@ bool BookingsModel::refresh(int userId, const QDate &from, const QDate &to)
     return true;
 }
 
+const QVector<Zeiterfassung::Booking> BookingsModel::bookings() const
+{
+    return m_bookings;
+}
+
 void BookingsModel::getBookingsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Booking> &bookings)
 {
     disconnect(&m_erfassung, &Zeiterfassung::getBookingsFinished,

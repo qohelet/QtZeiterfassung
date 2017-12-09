@@ -31,7 +31,9 @@ SOURCES += main.cpp \
     dialogs/bookingdialog.cpp \
     models/bookingsmodel.cpp \
     strips/bookingstrip.cpp \
-    dialogs/updatedialog.cpp
+    dialogs/updatedialog.cpp \
+    stripswidget.cpp \
+    timeutils.cpp
 
 HEADERS += \
     zeiterfassung.h \
@@ -48,7 +50,9 @@ HEADERS += \
     dialogs/bookingdialog.h \
     models/bookingsmodel.h \
     strips/bookingstrip.h \
-    dialogs/updatedialog.h
+    dialogs/updatedialog.h \
+    stripswidget.h \
+    timeutils.h
 
 FORMS += \
     mainwindow.ui \
