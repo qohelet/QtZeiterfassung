@@ -6,14 +6,14 @@
 
 #include "zeiterfassungapi.h"
 
-class GetBookingsReply;
+class StripsWidget;
 
 class BookingsModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit BookingsModel(ZeiterfassungApi &erfassung, QObject *parent = nullptr);
+    explicit BookingsModel(StripsWidget *stripsWidget);
 
     // QAbstractItemModel interface
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
@@ -21,22 +21,11 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
-    ZeiterfassungApi::Booking getBooking(const QModelIndex &index) const;
-
-    void refresh(int userId, const QDate &from, const QDate &to);
-
-    const QVector<ZeiterfassungApi::Booking> bookings() const;
-
-Q_SIGNALS:
-    void refreshFinished(bool success, const QString &message);
-
 private Q_SLOTS:
-    void finished();
+    void bookingsChanged();
 
 private:
-    ZeiterfassungApi &m_erfassung;
-    GetBookingsReply *m_reply;
-    QVector<ZeiterfassungApi::Booking> m_bookings;
+    StripsWidget *m_stripsWidget;
 };
 
 #endif // BOOKINGSMODEL_H

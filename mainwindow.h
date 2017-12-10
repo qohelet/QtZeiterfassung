@@ -13,8 +13,6 @@ namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
 class GetProjectsReply;
 class GetAuswertungReply;
-class BookingsModel;
-class TimeAssignmentsModel;
 class StripFactory;
 class StripsWidget;
 
@@ -30,16 +28,21 @@ private Q_SLOTS:
     void refresh(bool forceAuswertung = false);
     void getProjectsFinished();
     void getAuswertungFinished();
-    void refreshBookingsFinished(bool success, const QString &message);
-    void refreshTimeAssignmentsFinished(bool success, const QString &message);
     void contextMenuBooking(const QPoint &pos);
     void contextMenuTimeAssignment(const QPoint &pos);
     void pushButtonStartPressed();
     void pushButtonEndPressed();
+    void dateChanged();
+    void openAuswertung();
+
+    void timeAssignmentTimeChanged();
+    void minimumTimeChanged();
+
+    void startEnabledChanged();
+    void endEnabledChanged();
 
 private:
     void updateComboboxes();
-    void createStrips();
 
     Ui::MainWindow *ui;
     ZeiterfassungSettings &m_settings;
@@ -58,12 +61,9 @@ private:
     QLabel *m_balanceLabel;
     QLabel *m_holidaysLabel;
 
-    bool m_flag;
-    BookingsModel *m_bookingsModel;
-    TimeAssignmentsModel *m_timeAssignmentsModel;
-
     StripFactory *m_stripFactory;
     StripsWidget *m_stripsWidgets[7];
+    StripsWidget *m_currentStripWidget;
 };
 
 #endif // MAINWINDOW_H

@@ -8,26 +8,138 @@
 #include <QStringBuilder>
 #include <QDebug>
 
+#include "models/bookingsmodel.h"
+#include "models/timeassignmentsmodel.h"
+#include "replies/getbookingsreply.h"
+#include "replies/gettimeassignmentsreply.h"
 #include "timeutils.h"
 #include "stripfactory.h"
 
-StripsWidget::StripsWidget(StripFactory *stripFactory, const QMap<QString, QString> &projects,
-                           QWidget *parent) :
+StripsWidget::StripsWidget(ZeiterfassungApi &erfassung, StripFactory *stripFactory,
+                           int userId, const QMap<QString, QString> &projects, QWidget *parent) :
     QWidget(parent),
+    m_erfassung(erfassung),
     m_stripFactory(stripFactory),
+    m_userId(userId),
     m_projects(projects),
-    m_layout(new QVBoxLayout(this))
+    m_layout(new QVBoxLayout(this)),
+    m_bookingsModel(new BookingsModel(this)),
+    m_timeAssignmentsModel(new TimeAssignmentsModel(this)),
+    m_startEnabled(false),
+    m_endEnabled(false),
+    m_getBookingsReply(Q_NULLPTR),
+    m_getTimeAssignmentsReply(Q_NULLPTR)
 {
     setLayout(m_layout);
 }
 
-bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookings,
-                                const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments)
+BookingsModel *StripsWidget::bookingsModel() const
 {
-    auto bookingsIter = bookings.constBegin();
-    auto timeAssignmentsIter = timeAssignments.constBegin();
+    return m_bookingsModel;
+}
 
+TimeAssignmentsModel *StripsWidget::timeAssignmentsModel() const
+{
+    return m_timeAssignmentsModel;
+}
+
+const QDate &StripsWidget::date() const
+{
+    return m_date;
+}
+
+void StripsWidget::setDate(const QDate &date)
+{
+    if(m_date != date)
+    {
+        refresh();
+        m_date = date;
+    }
+}
+
+const QVector<ZeiterfassungApi::Booking> &StripsWidget::bookings() const
+{
+    return m_bookings;
+}
+
+const QVector<ZeiterfassungApi::TimeAssignment> &StripsWidget::timeAssignments() const
+{
+    return m_timeAssignments;
+}
+
+const QTime StripsWidget::timeAssignmentTime() const
+{
+    return m_timeAssignmentTime;
+}
+
+const QTime StripsWidget::lastTimeAssignmentStart() const
+{
+    return m_lastTimeAssignmentStart;
+}
+
+const QTime StripsWidget::minimumTime() const
+{
+    return m_minimumTime;
+}
+
+bool StripsWidget::startEnabled() const
+{
+    return m_startEnabled;
+}
+
+bool StripsWidget::endEnabled() const
+{
+    return m_endEnabled;
+}
+
+void StripsWidget::refresh()
+{
+    clearStrips();
+
+    m_layout->addWidget(new QLabel(tr("Loading..."), this));
+
+    refreshBookings();
+    refreshTimeAssignments();
+}
+
+void StripsWidget::refreshBookings()
+{
+    if(!m_date.isValid())
+    {
+        qWarning() << "invalid date";
+        return;
+    }
+
+    m_bookings.clear();
+
+    m_getBookingsReply = m_erfassung.doGetBookings(m_userId, m_date, m_date);
+    connect(m_getBookingsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getBookingsFinished);
+}
+
+void StripsWidget::refreshTimeAssignments()
+{
+    if(!m_date.isValid())
+    {
+        qWarning() << "invalid date";
+        return;
+    }
+
+    m_timeAssignments.clear();
+
+    m_getTimeAssignmentsReply = m_erfassung.doGetTimeAssignments(m_userId, m_date, m_date);
+    connect(m_getTimeAssignmentsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getTimeAssignmentsFinished);
+}
+
+bool StripsWidget::createStrips()
+{
     m_timeAssignmentTime = QTime(0, 0);
+    m_lastTimeAssignmentStart = QTime();
+    m_startEnabled = false;
+    m_endEnabled = false;
+
+    auto bookingsIter = m_bookings.constBegin();
+    auto timeAssignmentsIter = m_timeAssignments.constBegin();
+
     auto bookingTimespan = QTime(0, 0);
 
     const ZeiterfassungApi::Booking *lastBooking = Q_NULLPTR;
@@ -37,13 +149,13 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
 
     while(true)
     {
-        if(bookingsIter == bookings.constEnd() &&
-           timeAssignmentsIter == timeAssignments.constEnd())
+        if(bookingsIter == m_bookings.constEnd() &&
+           timeAssignmentsIter == m_timeAssignments.constEnd())
         {
             goto after;
         }
 
-        if(bookingsIter == bookings.constEnd())
+        if(bookingsIter == m_bookings.constEnd())
         {
             errorMessage = tr("Missing booking!");
             goto after;
@@ -74,7 +186,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
         m_lastTimeAssignmentStart = startBooking.time;
         appendBookingStartStrip(startBooking.id, startBooking.time);
 
-        if(timeAssignmentsIter == timeAssignments.constEnd())
+        if(timeAssignmentsIter == m_timeAssignments.constEnd())
         {
             errorMessage = tr("Missing time assignment!");
             goto after;
@@ -97,7 +209,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
 
         if(timeAssignment.timespan == QTime(0, 0))
         {
-            if(bookingsIter != bookings.constEnd())
+            if(bookingsIter != m_bookings.constEnd())
             {
                 errorMessage = tr("There is another booking after an unfinished time assignment.\nBooking ID: %0\nTime assignment ID: %1")
                         .arg(bookingsIter->id)
@@ -105,7 +217,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
                 goto after;
             }
 
-            if(timeAssignmentsIter != timeAssignments.constEnd())
+            if(timeAssignmentsIter != m_timeAssignments.constEnd())
             {
                 errorMessage = tr("There is another time assignment after an unfinished time assignment.\nTime assignment ID: %0\nTime assignment ID: %1")
                         .arg(timeAssignmentsIter->id)
@@ -113,9 +225,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
                 goto after;
             }
 
-            //ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
-            //ui->pushButtonStart->setText(tr("Switch"));
-            //ui->pushButtonEnd->setEnabled(true);
+            m_endEnabled = true;
             goto after;
         }
         else
@@ -123,11 +233,11 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
             m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
             m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
 
-            if(bookingsIter == bookings.constEnd())
+            if(bookingsIter == m_bookings.constEnd())
             {
                 while(true)
                 {
-                    if(timeAssignmentsIter == timeAssignments.constEnd())
+                    if(timeAssignmentsIter == m_timeAssignments.constEnd())
                     {
                         errorMessage = tr("The last time assignment is finished without end booking\nTime assignment ID: %0")
                                 .arg(timeAssignment.id);
@@ -151,7 +261,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
 
                     if(timeAssignment.timespan == QTime(0, 0))
                     {
-                        if(timeAssignmentsIter != timeAssignments.constEnd())
+                        if(timeAssignmentsIter != m_timeAssignments.constEnd())
                         {
                             errorMessage = tr("There is another time assignment after an unfinished time assignment.\n"
                                               "Time assignment ID: %0\nTime assignment ID: %1")
@@ -160,9 +270,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
                             goto after;
                         }
 
-                        //ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
-                        //ui->pushButtonStart->setText(tr("Switch"));
-                        //ui->pushButtonEnd->setEnabled(true);
+                        m_endEnabled = true;
                         goto after;
                     }
                     else
@@ -190,7 +298,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
 
                 while(m_timeAssignmentTime < bookingTimespan)
                 {
-                    if(timeAssignmentsIter == timeAssignments.constEnd())
+                    if(timeAssignmentsIter == m_timeAssignments.constEnd())
                     {
                         errorMessage = tr("Missing time assignment! Missing: %0h")
                                 .arg(timeBetween(m_timeAssignmentTime, bookingTimespan).toString(QStringLiteral("HH:mm:ss")));
@@ -224,7 +332,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
 
                     if(timeAssignment.timespan == QTime(0, 0))
                     {
-                        if(bookingsIter != bookings.constEnd())
+                        if(bookingsIter != m_bookings.constEnd())
                         {
                             errorMessage = tr("There is another booking after an unfinished time assignment.\n"
                                               "Booking ID: %0\nTime assignment ID: %1")
@@ -233,7 +341,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
                             goto after;
                         }
 
-                        if(timeAssignmentsIter != timeAssignments.constEnd())
+                        if(timeAssignmentsIter != m_timeAssignments.constEnd())
                         {
                             errorMessage = tr("There is another time assignment after an unfinished time assignment.\nTime assignment ID: %0\nTime assignment ID: %1")
                                     .arg(timeAssignmentsIter->id)
@@ -241,9 +349,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
                             goto after;
                         }
 
-                        //ui->timeEditTime->setMinimumTime(timeAdd(m_lastTimeAssignmentStart, QTime(0, 1)));
-                        //ui->pushButtonStart->setText(tr("Switch"));
-                        //ui->pushButtonEnd->setEnabled(true);
+                        m_endEnabled = true;
                         goto after;
                     }
                     else
@@ -273,6 +379,7 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
     }
 
     after:
+    m_startEnabled = !errorMessage.isEmpty();
     if(!errorMessage.isEmpty())
     {
         auto label = new QLabel(tr("Strip rendering aborted due error."), this);
@@ -281,7 +388,9 @@ bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookin
         label->setMaximumHeight(20);
 
         QMessageBox::warning(this, tr("Illegal state!"),
-                             tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" % errorMessage);
+                             tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" %
+                             m_date.toString("dd.MM.yyyy") % "\n\n" %
+                             errorMessage);
         return false;
     }
 
@@ -297,14 +406,26 @@ void StripsWidget::clearStrips()
     }
 }
 
-const QTime StripsWidget::timeAssignmentTime() const
+void StripsWidget::getBookingsFinished()
 {
-    return m_timeAssignmentTime;
+    m_bookings = m_getBookingsReply->bookings();
+
+    if(!m_getTimeAssignmentsReply)
+        createStrips();
+
+    m_getBookingsReply->deleteLater();
+    m_getBookingsReply = Q_NULLPTR;
 }
 
-const QTime StripsWidget::lastTimeAssignmentStart() const
+void StripsWidget::getTimeAssignmentsFinished()
 {
-    return m_lastTimeAssignmentStart;
+    m_timeAssignments = m_getTimeAssignmentsReply->timeAssignments();
+
+    if(!m_getBookingsReply)
+        createStrips();
+
+    m_getTimeAssignmentsReply->deleteLater();
+    m_getTimeAssignmentsReply = Q_NULLPTR;
 }
 
 QString StripsWidget::buildProjectString(const QString &project)

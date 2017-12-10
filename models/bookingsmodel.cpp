@@ -1,20 +1,19 @@
 #include "bookingsmodel.h"
 
-#include "replies/getbookingsreply.h"
+#include "stripswidget.h"
 
-BookingsModel::BookingsModel(ZeiterfassungApi &erfassung, QObject *parent) :
-    QAbstractListModel(parent),
-    m_erfassung(erfassung),
-    m_reply(Q_NULLPTR)
+BookingsModel::BookingsModel(StripsWidget *stripsWidget) :
+    QAbstractListModel(stripsWidget),
+    m_stripsWidget(stripsWidget)
 {
-
+    connect(stripsWidget, &StripsWidget::bookingsChanged, this, &BookingsModel::bookingsChanged);
 }
 
 int BookingsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return m_bookings.count();
+    return m_stripsWidget->bookings().count();
 }
 
 int BookingsModel::columnCount(const QModelIndex &parent) const
@@ -26,8 +25,8 @@ int BookingsModel::columnCount(const QModelIndex &parent) const
 
 QVariant BookingsModel::data(const QModelIndex &index, int role) const
 {
-    Q_ASSERT(index.row() < m_bookings.count());
-    const auto &booking = m_bookings.at(index.row());
+    Q_ASSERT(index.row() < m_stripsWidget->bookings().count());
+    const auto &booking = m_stripsWidget->bookings().at(index.row());
 
     switch(role)
     {
@@ -69,41 +68,8 @@ QVariant BookingsModel::headerData(int section, Qt::Orientation orientation, int
     return QVariant();
 }
 
-ZeiterfassungApi::Booking BookingsModel::getBooking(const QModelIndex &index) const
-{
-    if(!index.isValid())
-        return ZeiterfassungApi::Booking();
-
-    Q_ASSERT(index.row() <= m_bookings.count());
-    return m_bookings.at(index.row());
-}
-
-void BookingsModel::refresh(int userId, const QDate &from, const QDate &to)
+void BookingsModel::bookingsChanged()
 {
     beginResetModel();
-    m_bookings.clear();
     endResetModel();
-
-    m_reply = m_erfassung.doGetBookings(userId, from, to);
-    connect(m_reply, &ZeiterfassungReply::finished, this, &BookingsModel::finished);
-}
-
-const QVector<ZeiterfassungApi::Booking> BookingsModel::bookings() const
-{
-    return m_bookings;
-}
-
-void BookingsModel::finished()
-{
-    if(m_reply->success())
-    {
-        beginResetModel();
-        m_bookings = m_reply->bookings();
-        endResetModel();
-    }
-
-    Q_EMIT refreshFinished(m_reply->success(), m_reply->message());
-
-    m_reply->deleteLater();
-    m_reply = Q_NULLPTR;
 }

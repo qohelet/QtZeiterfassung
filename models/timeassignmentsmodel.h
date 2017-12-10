@@ -6,14 +6,14 @@
 
 #include "zeiterfassungapi.h"
 
-class GetTimeAssignmentsReply;
+class StripsWidget;
 
 class TimeAssignmentsModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit TimeAssignmentsModel(ZeiterfassungApi &erfassung, QObject *parent = nullptr);
+    explicit TimeAssignmentsModel(StripsWidget *stripsWidget);
 
     // QAbstractItemModel interface
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
@@ -21,22 +21,11 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
-    ZeiterfassungApi::TimeAssignment getTimeAssignment(const QModelIndex &index) const;
-
-    void refresh(int userId, const QDate &from, const QDate &to);
-
-    const QVector<ZeiterfassungApi::TimeAssignment> timeAssignments() const;
-
-Q_SIGNALS:
-    void refreshFinished(bool success, const QString &message);
-
 private Q_SLOTS:
-    void finished();
+    void timeAssignmentsChanged();
 
 private:
-    ZeiterfassungApi &m_erfassung;
-    GetTimeAssignmentsReply *m_reply;
-    QVector<ZeiterfassungApi::TimeAssignment> m_timeAssignments;
+    StripsWidget *m_stripsWidget;
 };
 
 #endif // TIMEASSIGNMENTSMODEL_H

@@ -42,10 +42,8 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_settings(settings),
     m_erfassung(erfassung),
     m_userInfo(userInfo),
-    m_flag(false),
-    m_bookingsModel(new BookingsModel(erfassung, this)),
-    m_timeAssignmentsModel(new TimeAssignmentsModel(erfassung, this)),
-    m_stripFactory(new StripFactory(this))
+    m_stripFactory(new StripFactory(this)),
+    m_currentStripWidget(Q_NULLPTR)
 {
     ui->setupUi(this);
 
@@ -65,7 +63,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
             layout->addWidget(label);
         }
 
-        m_stripsWidgets[i] = new StripsWidget(m_stripFactory, m_projects, widget);
+        m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_stripFactory, m_userInfo.userId, m_projects, widget);
         layout->addWidget(m_stripsWidgets[i++]);
 
         layout->addStretch(1);
@@ -84,24 +82,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
     connect(ui->actionRefresh, &QAction::triggered, this, [=](){ refresh(true); });
 
-    connect(ui->actionAuswertung, &QAction::triggered, [=](){
-        QTemporaryFile file(QDir::temp().absoluteFilePath("auswertungXXXXXX.pdf"));
-        file.setAutoRemove(false);
-        if(!file.open())
-        {
-            QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open auswertung!") % "\n\n" % file.errorString());
-            return;
-        }
-
-        file.write(m_auswertung);
-        file.close();
-
-        if(!QDesktopServices::openUrl(QUrl::fromLocalFile(file.fileName())))
-        {
-            QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open default PDF viewer!"));
-            return;
-        }
-    });
+    connect(ui->actionAuswertung, &QAction::triggered, this, &MainWindow::openAuswertung);
 
     connect(ui->actionAboutMe, &QAction::triggered, [=](){ AboutMeDialog(userInfo, this).exec(); });
     connect(ui->actionSettings, &QAction::triggered, [=](){ SettingsDialog(m_settings, this).exec(); });
@@ -109,7 +90,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->actionAboutQt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this); });
 
     ui->dateEditDate->setDate(QDate::currentDate());
-    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, [=](){ refresh(); });
+    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, &MainWindow::dateChanged);
 
     connect(ui->pushButtonPrev, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
     connect(ui->pushButtonNext, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
@@ -129,9 +110,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
     connect(ui->pushButtonStart, &QAbstractButton::pressed, this, &MainWindow::pushButtonStartPressed);
     connect(ui->pushButtonEnd, &QAbstractButton::pressed, this, &MainWindow::pushButtonEndPressed);
-
-    ui->treeViewBookings->setModel(m_bookingsModel);
-    ui->treeViewTimeAssignments->setModel(m_timeAssignmentsModel);
 
     connect(ui->treeViewBookings, &QWidget::customContextMenuRequested,
             this,                 &MainWindow::contextMenuBooking);
@@ -155,7 +133,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
         return;
     }
 
-    refresh(true);
+    dateChanged();
 
     if(settings.lastUpdateCheck().isNull() || settings.lastUpdateCheck() < QDate::currentDate())
         new UpdateDialog(settings, erfassung.manager(), this);
@@ -185,18 +163,8 @@ void MainWindow::refresh(bool forceAuswertung)
 
     m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Assigned time")).arg(tr("???")));
 
-    m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-    connect(m_bookingsModel, &BookingsModel::refreshFinished,
-            this,             &MainWindow::refreshBookingsFinished);
-
-    m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-    connect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
-            this,                &MainWindow::refreshTimeAssignmentsFinished);
-
-    m_flag = true;
-
     for(quint8 i = 0; i < 7; i++)
-        m_stripsWidgets[i]->clearStrips();
+        m_stripsWidgets[i]->refresh();
 
     auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
     if(forceAuswertung || m_auswertungDate != auswertungDate)
@@ -276,44 +244,6 @@ void MainWindow::getAuswertungFinished()
     m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(urlaubsAnspruch));
 }
 
-void MainWindow::refreshBookingsFinished(bool success, const QString &message)
-{
-    disconnect(m_bookingsModel, &BookingsModel::refreshFinished,
-               this,             &MainWindow::refreshBookingsFinished);
-
-    if(success)
-        ui->treeViewBookings->setEnabled(true);
-
-    if(m_flag)
-        m_flag = false;
-    else
-    {
-        createStrips();
-    }
-
-    if(!success)
-        QMessageBox::warning(Q_NULLPTR, tr("Could not load bookings!"), tr("Could not load bookings!") % "\n\n" % message);
-}
-
-void MainWindow::refreshTimeAssignmentsFinished(bool success, const QString &message)
-{
-    disconnect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
-               this,                &MainWindow::refreshTimeAssignmentsFinished);
-
-    if(success)
-        ui->treeViewTimeAssignments->setEnabled(true);
-
-    if(m_flag)
-        m_flag = false;
-    else
-    {
-        createStrips();
-    }
-
-    if(!success)
-        QMessageBox::warning(Q_NULLPTR, tr("Could not load time assignments!"), tr("Could not load time assignments!") % "\n\n" % message);
-}
-
 void MainWindow::contextMenuBooking(const QPoint &pos)
 {
     auto index = ui->treeViewBookings->indexAt(pos);
@@ -342,27 +272,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 
                 if(reply->success())
                 {
-                    ui->actionToday->setEnabled(false);
-                    ui->actionRefresh->setEnabled(false);
-                    ui->dateEditDate->setReadOnly(true);
-                    ui->pushButtonPrev->setEnabled(false);
-                    ui->pushButtonNext->setEnabled(false);
-                    ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProject->setEnabled(false);
-                    ui->comboBoxSubproject->setEnabled(false);
-                    ui->comboBoxWorkpackage->setEnabled(false);
-                    ui->comboBoxText->setEnabled(false);
-                    ui->pushButtonStart->setEnabled(false);
-                    ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewBookings->setEnabled(false);
-
-                    for(quint8 i = 0; i < 7; i++)
-                        m_stripsWidgets[i]->clearStrips();
-
-                    m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-                    connect(m_bookingsModel, &BookingsModel::refreshFinished,
-                            this,             &MainWindow::refreshBookingsFinished);
-                    m_flag = false;
+                    m_currentStripWidget->refreshBookings();
                 }
                 else
                 {
@@ -377,7 +287,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
     }
     else
     {
-        auto booking = m_bookingsModel->getBooking(index);
+        auto booking = m_currentStripWidget->bookings().at(index.row());
 
         QMenu menu;
         auto editAction = menu.addAction(tr("Edit booking"));
@@ -405,27 +315,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 
                 if(reply->success())
                 {
-                    ui->actionToday->setEnabled(false);
-                    ui->actionRefresh->setEnabled(false);
-                    ui->dateEditDate->setReadOnly(true);
-                    ui->pushButtonPrev->setEnabled(false);
-                    ui->pushButtonNext->setEnabled(false);
-                    ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProject->setEnabled(false);
-                    ui->comboBoxSubproject->setEnabled(false);
-                    ui->comboBoxWorkpackage->setEnabled(false);
-                    ui->comboBoxText->setEnabled(false);
-                    ui->pushButtonStart->setEnabled(false);
-                    ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewBookings->setEnabled(false);
-
-                    for(quint8 i = 0; i < 7; i++)
-                        m_stripsWidgets[i]->clearStrips();
-
-                    m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-                    connect(m_bookingsModel, &BookingsModel::refreshFinished,
-                            this,            &MainWindow::refreshBookingsFinished);
-                    m_flag = false;
+                    m_currentStripWidget->refreshBookings();
                 }
                 else
                 {
@@ -455,27 +345,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 
                 if(reply->success())
                 {
-                    ui->actionToday->setEnabled(false);
-                    ui->actionRefresh->setEnabled(false);
-                    ui->dateEditDate->setReadOnly(true);
-                    ui->pushButtonPrev->setEnabled(false);
-                    ui->pushButtonNext->setEnabled(false);
-                    ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProject->setEnabled(false);
-                    ui->comboBoxSubproject->setEnabled(false);
-                    ui->comboBoxWorkpackage->setEnabled(false);
-                    ui->comboBoxText->setEnabled(false);
-                    ui->pushButtonStart->setEnabled(false);
-                    ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewBookings->setEnabled(false);
-
-                    for(quint8 i = 0; i < 7; i++)
-                        m_stripsWidgets[i]->clearStrips();
-
-                    m_bookingsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-                    connect(m_bookingsModel, &BookingsModel::refreshFinished,
-                            this,             &MainWindow::refreshBookingsFinished);
-                    m_flag = false;
+                    m_currentStripWidget->refreshBookings();
                 }
                 else
                     QMessageBox::warning(this, tr("Could not delete booking!"), tr("Could not delete booking!") % "\n\n" % reply->message());
@@ -514,35 +384,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 if(reply->success())
                 {
-                    ui->actionToday->setEnabled(false);
-                    ui->actionRefresh->setEnabled(false);
-                    ui->dateEditDate->setReadOnly(true);
-                    ui->pushButtonPrev->setEnabled(false);
-                    ui->pushButtonNext->setEnabled(false);
-                    ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProject->setEnabled(false);
-                    ui->comboBoxSubproject->setEnabled(false);
-                    ui->comboBoxWorkpackage->setEnabled(false);
-                    ui->comboBoxText->setEnabled(false);
-                    ui->pushButtonStart->setEnabled(false);
-                    ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewTimeAssignments->setEnabled(false);
-
-                    m_settings.prependProject(dialog.getProject());
-                    m_settings.prependSubproject(dialog.getSubproject());
-                    m_settings.prependWorkpackage(dialog.getWorkpackage());
-                    m_settings.prependText(dialog.getText());
-
-                    for(quint8 i = 0; i < 7; i++)
-                        m_stripsWidgets[i]->clearStrips();
-
-                    m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-
-                    ui->actionToday->setEnabled(true);
-                    ui->actionRefresh->setEnabled(true);
-                    ui->dateEditDate->setReadOnly(false);
-                    ui->pushButtonPrev->setEnabled(true);
-                    ui->pushButtonNext->setEnabled(true);
+                    m_currentStripWidget->refreshTimeAssignments();
                 }
                 else
                 {
@@ -557,7 +399,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
     }
     else
     {
-        auto timeAssignment = m_timeAssignmentsModel->getTimeAssignment(index);
+        auto timeAssignment = m_currentStripWidget->timeAssignments().at(index.row());
 
         QMenu menu;
         auto editAction = menu.addAction(tr("Edit time assignment"));
@@ -588,32 +430,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 if(reply->success())
                 {
-                    ui->actionToday->setEnabled(false);
-                    ui->actionRefresh->setEnabled(false);
-                    ui->dateEditDate->setReadOnly(true);
-                    ui->pushButtonPrev->setEnabled(false);
-                    ui->pushButtonNext->setEnabled(false);
-                    ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProject->setEnabled(false);
-                    ui->comboBoxSubproject->setEnabled(false);
-                    ui->comboBoxWorkpackage->setEnabled(false);
-                    ui->comboBoxText->setEnabled(false);
-                    ui->pushButtonStart->setEnabled(false);
-                    ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewTimeAssignments->setEnabled(false);
-
-                    m_settings.prependProject(dialog.getProject());
-                    m_settings.prependSubproject(dialog.getSubproject());
-                    m_settings.prependWorkpackage(dialog.getWorkpackage());
-                    m_settings.prependText(dialog.getText());
-
-                    for(quint8 i = 0; i < 7; i++)
-                        m_stripsWidgets[i]->clearStrips();
-
-                    m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-                    connect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
-                            this,                &MainWindow::refreshTimeAssignmentsFinished);
-                    m_flag = false;
+                    m_currentStripWidget->refreshTimeAssignments();
                 }
                 else
                 {
@@ -643,27 +460,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 if(reply->success())
                 {
-                    ui->actionToday->setEnabled(false);
-                    ui->actionRefresh->setEnabled(false);
-                    ui->dateEditDate->setReadOnly(true);
-                    ui->pushButtonPrev->setEnabled(false);
-                    ui->pushButtonNext->setEnabled(false);
-                    ui->timeEditTime->setEnabled(false);
-                    ui->comboBoxProject->setEnabled(false);
-                    ui->comboBoxSubproject->setEnabled(false);
-                    ui->comboBoxWorkpackage->setEnabled(false);
-                    ui->comboBoxText->setEnabled(false);
-                    ui->pushButtonStart->setEnabled(false);
-                    ui->pushButtonEnd->setEnabled(false);
-                    ui->treeViewTimeAssignments->setEnabled(false);
-
-                    for(quint8 i = 0; i < 7; i++)
-                        m_stripsWidgets[i]->clearStrips();
-
-                    m_timeAssignmentsModel->refresh(m_userInfo.userId, ui->dateEditDate->date(), ui->dateEditDate->date());
-                    connect(m_timeAssignmentsModel, &TimeAssignmentsModel::refreshFinished,
-                            this,                &MainWindow::refreshTimeAssignmentsFinished);
-                    m_flag = false;
+                    m_currentStripWidget->refreshTimeAssignments();
                 }
                 else
                     QMessageBox::warning(this, tr("Could not delete time assignment!"), tr("Could not delete time assignment!") % "\n\n" % reply->message());
@@ -676,8 +473,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
 void MainWindow::pushButtonStartPressed()
 {
-    if(m_bookingsModel->bookings().rbegin() == m_bookingsModel->bookings().rend() ||
-       m_bookingsModel->bookings().rbegin()->type == QStringLiteral("G"))
+    if(m_currentStripWidget->bookings().rbegin() == m_currentStripWidget->bookings().rend() ||
+       m_currentStripWidget->bookings().rbegin()->type == QStringLiteral("G"))
     {
         auto reply = m_erfassung.doCreateBooking(m_userInfo.userId, ui->dateEditDate->date(),
                                                  timeNormalise(ui->timeEditTime->time()), QTime(0, 0),
@@ -702,9 +499,9 @@ void MainWindow::pushButtonStartPressed()
 
     auto timeAssignmentTime = m_stripsWidgets[0]->timeAssignmentTime();
 
-    if(m_timeAssignmentsModel->timeAssignments().rbegin() != m_timeAssignmentsModel->timeAssignments().rend())
+    if(m_currentStripWidget->timeAssignments().rbegin() != m_currentStripWidget->timeAssignments().rend())
     {
-        auto timeAssignment = *m_timeAssignmentsModel->timeAssignments().rbegin();
+        auto timeAssignment = *m_currentStripWidget->timeAssignments().rbegin();
         if(timeAssignment.timespan == QTime(0, 0))
         {
             auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
@@ -768,7 +565,7 @@ void MainWindow::pushButtonStartPressed()
 void MainWindow::pushButtonEndPressed()
 {
     {
-        auto timeAssignment = *m_timeAssignmentsModel->timeAssignments().rbegin();
+        auto timeAssignment = *m_currentStripWidget->timeAssignments().rbegin();
         Q_ASSERT(timeAssignment.timespan == QTime(0, 0));
 
         auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
@@ -818,6 +615,102 @@ void MainWindow::pushButtonEndPressed()
     }
 
     refresh(true);
+}
+
+void MainWindow::dateChanged()
+{
+    auto firstDayOfWeek = ui->dateEditDate->date().addDays(-ui->dateEditDate->date().dayOfWeek() - 1);
+
+    for(quint8 i = 0; i < 7; i++)
+    {
+        auto date = firstDayOfWeek.addDays(i);
+        m_stripsWidgets[i]->setDate(firstDayOfWeek.addDays(i));
+        if(date == ui->dateEditDate->date())
+        {
+            if(m_currentStripWidget)
+            {
+                disconnect(m_currentStripWidget, &StripsWidget::timeAssignmentTimeChanged, this, &MainWindow::timeAssignmentTimeChanged);
+                disconnect(m_currentStripWidget, &StripsWidget::minimumTimeChanged, this, &MainWindow::minimumTimeChanged);
+                disconnect(m_currentStripWidget, &StripsWidget::startEnabledChanged, this, &MainWindow::startEnabledChanged);
+                disconnect(m_currentStripWidget, &StripsWidget::endEnabledChanged, this, &MainWindow::endEnabledChanged);
+            }
+
+            m_currentStripWidget = m_stripsWidgets[i];
+
+            ui->treeViewBookings->setModel(m_currentStripWidget->bookingsModel());
+            ui->treeViewTimeAssignments->setModel(m_currentStripWidget->timeAssignmentsModel());
+
+            timeAssignmentTimeChanged();
+            minimumTimeChanged();
+            startEnabledChanged();
+            endEnabledChanged();
+
+            connect(m_currentStripWidget, &StripsWidget::timeAssignmentTimeChanged, this, &MainWindow::timeAssignmentTimeChanged);
+            connect(m_currentStripWidget, &StripsWidget::minimumTimeChanged, this, &MainWindow::minimumTimeChanged);
+            connect(m_currentStripWidget, &StripsWidget::startEnabledChanged, this, &MainWindow::startEnabledChanged);
+            connect(m_currentStripWidget, &StripsWidget::endEnabledChanged, this, &MainWindow::endEnabledChanged);
+        }
+    }
+}
+
+void MainWindow::openAuswertung()
+{
+    QTemporaryFile file(QDir::temp().absoluteFilePath("auswertungXXXXXX.pdf"));
+    file.setAutoRemove(false);
+    if(!file.open())
+    {
+        QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open auswertung!") % "\n\n" % file.errorString());
+        return;
+    }
+
+    file.write(m_auswertung);
+    file.close();
+
+    if(!QDesktopServices::openUrl(QUrl::fromLocalFile(file.fileName())))
+    {
+        QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open default PDF viewer!"));
+        return;
+    }
+}
+
+void MainWindow::timeAssignmentTimeChanged()
+{
+    auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
+
+    m_workingTimeLabel->setText(tr("%0: %1")
+                                .arg(tr("Assigned time"))
+                                .arg(timeAssignmentTime.isValid() ?
+                                         tr("%0h").arg(timeAssignmentTime.toString(QStringLiteral("HH:mm"))):
+                                         tr("???")));
+}
+
+void MainWindow::minimumTimeChanged()
+{
+    ui->timeEditTime->setMinimumTime(m_currentStripWidget->minimumTime());
+}
+
+void MainWindow::startEnabledChanged()
+{
+    ui->timeEditTime->setEnabled(m_currentStripWidget->startEnabled() ||
+                                 m_currentStripWidget->endEnabled());
+
+    auto startEnabled = m_currentStripWidget->startEnabled();
+
+    ui->comboBoxProject->setEnabled(startEnabled);
+    ui->comboBoxSubproject->setEnabled(startEnabled);
+    ui->comboBoxWorkpackage->setEnabled(startEnabled);
+    ui->comboBoxText->setEnabled(startEnabled);
+
+    ui->pushButtonStart->setEnabled(startEnabled);
+    ui->pushButtonStart->setText(m_currentStripWidget->endEnabled() ? tr("Switch") : tr("Start"));
+}
+
+void MainWindow::endEnabledChanged()
+{
+    ui->timeEditTime->setEnabled(m_currentStripWidget->startEnabled() ||
+                                 m_currentStripWidget->endEnabled());
+
+    ui->pushButtonStart->setText(m_currentStripWidget->endEnabled() ? tr("Switch") : tr("Start"));
 }
 
 void MainWindow::updateComboboxes()
@@ -877,36 +770,4 @@ void MainWindow::updateComboboxes()
         if(texte.count())
             ui->comboBoxText->setCurrentText(QString());
     }
-}
-
-void MainWindow::createStrips()
-{
-    ui->timeEditTime->setMinimumTime(QTime(0, 0));
-    ui->actionToday->setEnabled(true);
-    ui->actionRefresh->setEnabled(true);
-    ui->dateEditDate->setReadOnly(false);
-    ui->pushButtonPrev->setEnabled(true);
-    ui->pushButtonNext->setEnabled(true);
-    ui->pushButtonStart->setText(tr("Start"));
-
-    if(!ui->treeViewBookings->isEnabled())
-        return;
-
-    if(!ui->treeViewTimeAssignments->isEnabled())
-        return;
-
-    for(quint8 i = 0; i < 7; i++)
-        if(!m_stripsWidgets[i]->createStrips(m_bookingsModel->bookings(), m_timeAssignmentsModel->timeAssignments()))
-            return;
-
-    m_workingTimeLabel->setText(tr("%0: %1")
-                                .arg(tr("Assigned time"))
-                                .arg(tr("%0h").arg(m_stripsWidgets[0]->timeAssignmentTime().toString(QStringLiteral("HH:mm")))));
-
-    ui->timeEditTime->setEnabled(true);
-    ui->comboBoxProject->setEnabled(true);
-    ui->comboBoxSubproject->setEnabled(true);
-    ui->comboBoxWorkpackage->setEnabled(true);
-    ui->comboBoxText->setEnabled(true);
-    ui->pushButtonStart->setEnabled(true);
 }

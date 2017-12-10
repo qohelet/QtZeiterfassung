@@ -1,20 +1,19 @@
 #include "timeassignmentsmodel.h"
 
-#include "replies/gettimeassignmentsreply.h"
+#include "stripswidget.h"
 
-TimeAssignmentsModel::TimeAssignmentsModel(ZeiterfassungApi &erfassung, QObject *parent) :
-    QAbstractListModel(parent),
-    m_erfassung(erfassung),
-    m_reply(Q_NULLPTR)
+TimeAssignmentsModel::TimeAssignmentsModel(StripsWidget *stripsWidget) :
+    QAbstractListModel(stripsWidget),
+    m_stripsWidget(stripsWidget)
 {
-
+    connect(stripsWidget, &StripsWidget::timeAssignmentsChanged, this, &TimeAssignmentsModel::timeAssignmentsChanged);
 }
 
 int TimeAssignmentsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return m_timeAssignments.count();
+    return m_stripsWidget->timeAssignments().count();
 }
 
 int TimeAssignmentsModel::columnCount(const QModelIndex &parent) const
@@ -26,8 +25,8 @@ int TimeAssignmentsModel::columnCount(const QModelIndex &parent) const
 
 QVariant TimeAssignmentsModel::data(const QModelIndex &index, int role) const
 {
-    Q_ASSERT(index.row() < m_timeAssignments.count());
-    const auto &timeAssignment = m_timeAssignments.at(index.row());
+    Q_ASSERT(index.row() < m_stripsWidget->timeAssignments().count());
+    const auto &timeAssignment = m_stripsWidget->timeAssignments().at(index.row());
 
     switch(role)
     {
@@ -73,41 +72,8 @@ QVariant TimeAssignmentsModel::headerData(int section, Qt::Orientation orientati
     return QVariant();
 }
 
-ZeiterfassungApi::TimeAssignment TimeAssignmentsModel::getTimeAssignment(const QModelIndex &index) const
-{
-    if(!index.isValid())
-        return ZeiterfassungApi::TimeAssignment();
-
-    Q_ASSERT(index.row() <= m_timeAssignments.count());
-    return m_timeAssignments.at(index.row());
-}
-
-void TimeAssignmentsModel::refresh(int userId, const QDate &from, const QDate &to)
+void TimeAssignmentsModel::timeAssignmentsChanged()
 {
     beginResetModel();
-    m_timeAssignments.clear();
     endResetModel();
-
-    m_reply = m_erfassung.doGetTimeAssignments(userId, from, to);
-    connect(m_reply, &ZeiterfassungReply::finished, this, &TimeAssignmentsModel::finished);
-}
-
-const QVector<ZeiterfassungApi::TimeAssignment> TimeAssignmentsModel::timeAssignments() const
-{
-    return m_timeAssignments;
-}
-
-void TimeAssignmentsModel::finished()
-{
-    if(m_reply->success())
-    {
-        beginResetModel();
-        m_timeAssignments = m_reply->timeAssignments();
-        endResetModel();
-    }
-
-    Q_EMIT refreshFinished(m_reply->success(), m_reply->message());
-
-    m_reply->deleteLater();
-    m_reply = Q_NULLPTR;
 }
