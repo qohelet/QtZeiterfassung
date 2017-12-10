@@ -11,6 +11,12 @@ class LoginReply : public ZeiterfassungReply
 
 public:
     LoginReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+
+private Q_SLOTS:
+    void requestFinished();
+
+private:
+    QNetworkReply *m_reply;
 };
 
 #endif // LOGINREPLY_H

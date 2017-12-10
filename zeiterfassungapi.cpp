@@ -291,45 +291,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     return new GetAuswertungReply(reply, this);
 }
 
-void ZeiterfassungApi::loginRequestFinished()
-{
-    if(m_replies.login->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT loginFinished(false, tr("Request error occured: %0").arg(m_replies.login->error()));
-        goto end;
-    }
-
-    if(!m_replies.login->hasRawHeader(QByteArrayLiteral("Location")))
-    {
-        Q_EMIT loginFinished(false, tr("Request did not contain a Location header."));
-        goto end;
-    }
-
-    {
-        auto location = m_replies.login->rawHeader(QByteArrayLiteral("Location"));
-
-        if(location == QByteArrayLiteral("/evoApps/pages/home.jsp"))
-        {
-            Q_EMIT loginFinished(true, QString());
-            goto end;
-        }
-        else if(location == QByteArrayLiteral("/evoApps/pages/login.jsp?error=user"))
-        {
-            Q_EMIT loginFinished(false, tr("Authentication failure. Please check username and password."));
-            goto end;
-        }
-        else
-        {
-            Q_EMIT loginFinished(false, tr("An unknown authentication failure occured. Redirected to: %0").arg(QString(location)));
-            goto end;
-        }
-    }
-
-    end:
-    m_replies.login->deleteLater();
-    m_replies.login = Q_NULLPTR;
-}
-
 void ZeiterfassungApi::userInfoRequestFinished()
 {
     if(m_replies.userInfo->error() != QNetworkReply::NoError)
