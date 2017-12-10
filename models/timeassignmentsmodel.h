@@ -6,6 +6,8 @@
 
 #include "zeiterfassungapi.h"
 
+class GetTimeAssignmentsReply;
+
 class TimeAssignmentsModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -21,7 +23,7 @@ public:
 
     ZeiterfassungApi::TimeAssignment getTimeAssignment(const QModelIndex &index) const;
 
-    bool refresh(int userId, const QDate &from, const QDate &to);
+    void refresh(int userId, const QDate &from, const QDate &to);
 
     const QVector<ZeiterfassungApi::TimeAssignment> timeAssignments() const;
 
@@ -29,10 +31,11 @@ Q_SIGNALS:
     void refreshFinished(bool success, const QString &message);
 
 private Q_SLOTS:
-    void getTimeAssignmentsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments);
+    void finished();
 
 private:
     ZeiterfassungApi &m_erfassung;
+    GetTimeAssignmentsReply *m_reply;
     QVector<ZeiterfassungApi::TimeAssignment> m_timeAssignments;
 };
 

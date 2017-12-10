@@ -4,6 +4,10 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QStringBuilder>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonValue>
+#include <QJsonArray>
 
 #include "replies/createbookingreply.h"
 #include "replies/createtimeassignmentreply.h"
@@ -22,10 +26,7 @@
 ZeiterfassungApi::ZeiterfassungApi(const QString &url, QObject *parent) :
     QObject(parent),
     m_url(url),
-    m_manager(new QNetworkAccessManager(this)),
-    m_replies { Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR,
-                Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR, Q_NULLPTR,
-                Q_NULLPTR }
+    m_manager(new QNetworkAccessManager(this))
 {
 }
 
@@ -36,8 +37,7 @@ const QString &ZeiterfassungApi::url() const
 
 void ZeiterfassungApi::setUrl(const QString &url)
 {
-    if(m_url != url)
-        Q_EMIT urlChanged(m_url = url);
+    m_url = url;
 }
 
 QNetworkAccessManager *ZeiterfassungApi::manager() const
@@ -145,7 +145,7 @@ DeleteBookingReply *ZeiterfassungApi::doDeleteBooking(int bookingId)
                                  .arg(bookingId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.deleteBooking = m_manager->deleteResource(request);
+    auto reply = m_manager->deleteResource(request);
 
     return new DeleteBookingReply(reply, this);
 }

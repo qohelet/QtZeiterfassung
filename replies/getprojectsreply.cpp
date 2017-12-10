@@ -11,7 +11,7 @@ GetProjectsReply::GetProjectsReply(QNetworkReply *reply, ZeiterfassungApi *zeite
     ZeiterfassungReply(zeiterfassung),
     m_reply(reply)
 {
-    connect(reply, &QNetworkReply::finished, this, &ZeiterfassungReply::requestFinished);
+    connect(reply, &QNetworkReply::finished, this, &GetProjectsReply::requestFinished);
 }
 
 const QVector<ZeiterfassungApi::Project> &GetProjectsReply::projects() const

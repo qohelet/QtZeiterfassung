@@ -21,16 +21,16 @@ int CreateBookingReply::bookingId() const
 
 void CreateBookingReply::requestFinished()
 {
-    if(m_replies.createBooking->error() != QNetworkReply::NoError)
+    if(m_reply->error() != QNetworkReply::NoError)
     {
         setSuccess(false);
-        setMessage(tr("Request error occured: %0").arg(m_replies.createBooking->error()));
+        setMessage(tr("Request error occured: %0").arg(m_reply->error()));
         goto end;
     }
 
     {
         QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.createBooking->readAll(), &error);
+        QJsonDocument document = QJsonDocument::fromJson(m_reply->readAll(), &error);
         if(error.error != QJsonParseError::NoError)
         {
             setSuccess(false);
@@ -59,8 +59,8 @@ void CreateBookingReply::requestFinished()
     }
 
     end:
-    m_replies.createBooking->deleteLater();
-    m_replies.createBooking = Q_NULLPTR;
+    m_reply->deleteLater();
+    m_reply = Q_NULLPTR;
 
     Q_EMIT finished();
 }

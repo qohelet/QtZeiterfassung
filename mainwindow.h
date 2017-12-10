@@ -11,6 +11,8 @@ class QBoxLayout;
 
 namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
+class GetProjectsReply;
+class GetAuswertungReply;
 class BookingsModel;
 class TimeAssignmentsModel;
 class StripFactory;
@@ -26,8 +28,8 @@ public:
 
 private Q_SLOTS:
     void refresh(bool forceAuswertung = false);
-    void getProjekctsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::Project> &projects);
-    void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
+    void getProjectsFinished();
+    void getAuswertungFinished();
     void refreshBookingsFinished(bool success, const QString &message);
     void refreshTimeAssignmentsFinished(bool success, const QString &message);
     void contextMenuBooking(const QPoint &pos);
@@ -43,6 +45,10 @@ private:
     ZeiterfassungSettings &m_settings;
     ZeiterfassungApi &m_erfassung;
     const ZeiterfassungApi::UserInfo &m_userInfo;
+
+    GetProjectsReply *m_getProjectsReply;
+    GetAuswertungReply *m_getAuswertungReply;
+
     QMap<QString, QString> m_projects;
 
     QDate m_auswertungDate;

@@ -25,7 +25,6 @@ class GetAuswertungReply;
 class ZeiterfassungApi : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged)
 
 public:
     explicit ZeiterfassungApi(const QString &url, QObject *parent = Q_NULLPTR);

@@ -1,8 +1,11 @@
 #include "timeassignmentsmodel.h"
 
+#include "replies/gettimeassignmentsreply.h"
+
 TimeAssignmentsModel::TimeAssignmentsModel(ZeiterfassungApi &erfassung, QObject *parent) :
     QAbstractListModel(parent),
-    m_erfassung(erfassung)
+    m_erfassung(erfassung),
+    m_reply(Q_NULLPTR)
 {
 
 }
@@ -79,19 +82,14 @@ ZeiterfassungApi::TimeAssignment TimeAssignmentsModel::getTimeAssignment(const Q
     return m_timeAssignments.at(index.row());
 }
 
-bool TimeAssignmentsModel::refresh(int userId, const QDate &from, const QDate &to)
+void TimeAssignmentsModel::refresh(int userId, const QDate &from, const QDate &to)
 {
-    if(!m_erfassung.doGetTimeAssignments(userId, from, to))
-        return false;
-
     beginResetModel();
     m_timeAssignments.clear();
     endResetModel();
 
-    connect(&m_erfassung, &ZeiterfassungApi::getTimeAssignmentsFinished,
-            this,         &TimeAssignmentsModel::getTimeAssignmentsFinished);
-
-    return true;
+    m_reply = m_erfassung.doGetTimeAssignments(userId, from, to);
+    connect(m_reply, &ZeiterfassungReply::finished, this, &TimeAssignmentsModel::finished);
 }
 
 const QVector<ZeiterfassungApi::TimeAssignment> TimeAssignmentsModel::timeAssignments() const
@@ -99,17 +97,17 @@ const QVector<ZeiterfassungApi::TimeAssignment> TimeAssignmentsModel::timeAssign
     return m_timeAssignments;
 }
 
-void TimeAssignmentsModel::getTimeAssignmentsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments)
+void TimeAssignmentsModel::finished()
 {
-    disconnect(&m_erfassung, &ZeiterfassungApi::getTimeAssignmentsFinished,
-               this,         &TimeAssignmentsModel::getTimeAssignmentsFinished);
-
-    if(success)
+    if(m_reply->success())
     {
         beginResetModel();
-        m_timeAssignments = timeAssignments;
+        m_timeAssignments = m_reply->timeAssignments();
         endResetModel();
     }
 
-    Q_EMIT refreshFinished(success, message);
+    Q_EMIT refreshFinished(m_reply->success(), m_reply->message());
+
+    m_reply->deleteLater();
+    m_reply = Q_NULLPTR;
 }

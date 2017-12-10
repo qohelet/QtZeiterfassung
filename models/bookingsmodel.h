@@ -6,6 +6,8 @@
 
 #include "zeiterfassungapi.h"
 
+class GetBookingsReply;
+
 class BookingsModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -21,7 +23,7 @@ public:
 
     ZeiterfassungApi::Booking getBooking(const QModelIndex &index) const;
 
-    bool refresh(int userId, const QDate &from, const QDate &to);
+    void refresh(int userId, const QDate &from, const QDate &to);
 
     const QVector<ZeiterfassungApi::Booking> bookings() const;
 
@@ -29,10 +31,11 @@ Q_SIGNALS:
     void refreshFinished(bool success, const QString &message);
 
 private Q_SLOTS:
-    void getBookingsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::Booking> &bookings);
+    void finished();
 
 private:
     ZeiterfassungApi &m_erfassung;
+    GetBookingsReply *m_reply;
     QVector<ZeiterfassungApi::Booking> m_bookings;
 };
 

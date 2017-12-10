@@ -1,8 +1,11 @@
 #include "bookingsmodel.h"
 
+#include "replies/getbookingsreply.h"
+
 BookingsModel::BookingsModel(ZeiterfassungApi &erfassung, QObject *parent) :
     QAbstractListModel(parent),
-    m_erfassung(erfassung)
+    m_erfassung(erfassung),
+    m_reply(Q_NULLPTR)
 {
 
 }
@@ -75,19 +78,14 @@ ZeiterfassungApi::Booking BookingsModel::getBooking(const QModelIndex &index) co
     return m_bookings.at(index.row());
 }
 
-bool BookingsModel::refresh(int userId, const QDate &from, const QDate &to)
+void BookingsModel::refresh(int userId, const QDate &from, const QDate &to)
 {
-    if(!m_erfassung.doGetBookings(userId, from, to))
-        return false;
-
     beginResetModel();
     m_bookings.clear();
     endResetModel();
 
-    connect(&m_erfassung, &ZeiterfassungApi::getBookingsFinished,
-            this,         &BookingsModel::getBookingsFinished);
-
-    return true;
+    m_reply = m_erfassung.doGetBookings(userId, from, to);
+    connect(m_reply, &ZeiterfassungReply::finished, this, &BookingsModel::finished);
 }
 
 const QVector<ZeiterfassungApi::Booking> BookingsModel::bookings() const
@@ -95,17 +93,17 @@ const QVector<ZeiterfassungApi::Booking> BookingsModel::bookings() const
     return m_bookings;
 }
 
-void BookingsModel::getBookingsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::Booking> &bookings)
+void BookingsModel::finished()
 {
-    disconnect(&m_erfassung, &ZeiterfassungApi::getBookingsFinished,
-               this,         &BookingsModel::getBookingsFinished);
-
-    if(success)
+    if(m_reply->success())
     {
         beginResetModel();
-        m_bookings = bookings;
+        m_bookings = m_reply->bookings();
         endResetModel();
     }
 
-    Q_EMIT refreshFinished(success, message);
+    Q_EMIT refreshFinished(m_reply->success(), m_reply->message());
+
+    m_reply->deleteLater();
+    m_reply = Q_NULLPTR;
 }
