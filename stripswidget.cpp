@@ -21,8 +21,8 @@ StripsWidget::StripsWidget(StripFactory *stripFactory, const QMap<QString, QStri
     setLayout(m_layout);
 }
 
-bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
-                                const QVector<Zeiterfassung::TimeAssignment> &timeAssignments)
+bool StripsWidget::createStrips(const QVector<ZeiterfassungApi::Booking> &bookings,
+                                const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments)
 {
     auto bookingsIter = bookings.constBegin();
     auto timeAssignmentsIter = timeAssignments.constBegin();
@@ -30,8 +30,8 @@ bool StripsWidget::createStrips(const QVector<Zeiterfassung::Booking> &bookings,
     m_timeAssignmentTime = QTime(0, 0);
     auto bookingTimespan = QTime(0, 0);
 
-    const Zeiterfassung::Booking *lastBooking = Q_NULLPTR;
-    const Zeiterfassung::TimeAssignment *lastTimeAssignment = Q_NULLPTR;
+    const ZeiterfassungApi::Booking *lastBooking = Q_NULLPTR;
+    const ZeiterfassungApi::TimeAssignment *lastTimeAssignment = Q_NULLPTR;
 
     QString errorMessage;
 

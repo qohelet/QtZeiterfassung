@@ -1,6 +1,6 @@
 #include "timeassignmentsmodel.h"
 
-TimeAssignmentsModel::TimeAssignmentsModel(Zeiterfassung &erfassung, QObject *parent) :
+TimeAssignmentsModel::TimeAssignmentsModel(ZeiterfassungApi &erfassung, QObject *parent) :
     QAbstractListModel(parent),
     m_erfassung(erfassung)
 {
@@ -70,10 +70,10 @@ QVariant TimeAssignmentsModel::headerData(int section, Qt::Orientation orientati
     return QVariant();
 }
 
-Zeiterfassung::TimeAssignment TimeAssignmentsModel::getTimeAssignment(const QModelIndex &index) const
+ZeiterfassungApi::TimeAssignment TimeAssignmentsModel::getTimeAssignment(const QModelIndex &index) const
 {
     if(!index.isValid())
-        return Zeiterfassung::TimeAssignment();
+        return ZeiterfassungApi::TimeAssignment();
 
     Q_ASSERT(index.row() <= m_timeAssignments.count());
     return m_timeAssignments.at(index.row());
@@ -88,20 +88,20 @@ bool TimeAssignmentsModel::refresh(int userId, const QDate &from, const QDate &t
     m_timeAssignments.clear();
     endResetModel();
 
-    connect(&m_erfassung, &Zeiterfassung::getTimeAssignmentsFinished,
+    connect(&m_erfassung, &ZeiterfassungApi::getTimeAssignmentsFinished,
             this,         &TimeAssignmentsModel::getTimeAssignmentsFinished);
 
     return true;
 }
 
-const QVector<Zeiterfassung::TimeAssignment> TimeAssignmentsModel::timeAssignments() const
+const QVector<ZeiterfassungApi::TimeAssignment> TimeAssignmentsModel::timeAssignments() const
 {
     return m_timeAssignments;
 }
 
-void TimeAssignmentsModel::getTimeAssignmentsFinished(bool success, const QString &message, const QVector<Zeiterfassung::TimeAssignment> &timeAssignments)
+void TimeAssignmentsModel::getTimeAssignmentsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments)
 {
-    disconnect(&m_erfassung, &Zeiterfassung::getTimeAssignmentsFinished,
+    disconnect(&m_erfassung, &ZeiterfassungApi::getTimeAssignmentsFinished,
                this,         &TimeAssignmentsModel::getTimeAssignmentsFinished);
 
     if(success)

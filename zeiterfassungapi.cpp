@@ -1,4 +1,4 @@
-#include "zeiterfassung.h"
+#include "zeiterfassungapi.h"
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -12,7 +12,7 @@
 
 QString QJsonValue::toString() const{ return toString(QString()); }
 
-Zeiterfassung::Zeiterfassung(const QString &url, QObject *parent) :
+ZeiterfassungApi::ZeiterfassungApi(const QString &url, QObject *parent) :
     QObject(parent),
     m_url(url),
     m_manager(new QNetworkAccessManager(this)),
@@ -22,23 +22,23 @@ Zeiterfassung::Zeiterfassung(const QString &url, QObject *parent) :
 {
 }
 
-const QString &Zeiterfassung::url() const
+const QString &ZeiterfassungApi::url() const
 {
     return m_url;
 }
 
-void Zeiterfassung::setUrl(const QString &url)
+void ZeiterfassungApi::setUrl(const QString &url)
 {
     if(m_url != url)
         Q_EMIT urlChanged(m_url = url);
 }
 
-QNetworkAccessManager *Zeiterfassung::manager() const
+QNetworkAccessManager *ZeiterfassungApi::manager() const
 {
     return m_manager;
 }
 
-bool Zeiterfassung::doLoginPage()
+bool ZeiterfassungApi::doLoginPage()
 {
     if(m_replies.login)
     {
@@ -49,12 +49,12 @@ bool Zeiterfassung::doLoginPage()
     QNetworkRequest request(QUrl(m_url % "pages/login.jsp"));
 
     m_replies.loginPage = m_manager->get(request);
-    connect(m_replies.loginPage, &QNetworkReply::finished, this, &Zeiterfassung::loginPageRequestFinished);
+    connect(m_replies.loginPage, &QNetworkReply::finished, this, &ZeiterfassungApi::loginPageRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doLogin(const QString &username, const QString &password)
+bool ZeiterfassungApi::doLogin(const QString &username, const QString &password)
 {
     if(m_replies.login)
     {
@@ -67,12 +67,12 @@ bool Zeiterfassung::doLogin(const QString &username, const QString &password)
     request.setMaximumRedirectsAllowed(0);
 
     m_replies.login = m_manager->post(request, QStringLiteral("j_username=%0&j_password=%1&login=Anmelden").arg(username).arg(password).toUtf8());
-    connect(m_replies.login, &QNetworkReply::finished, this, &Zeiterfassung::loginRequestFinished);
+    connect(m_replies.login, &QNetworkReply::finished, this, &ZeiterfassungApi::loginRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doUserInfo()
+bool ZeiterfassungApi::doUserInfo()
 {
     if(m_replies.userInfo)
     {
@@ -84,14 +84,14 @@ bool Zeiterfassung::doUserInfo()
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("home"));
 
     m_replies.userInfo = m_manager->get(request);
-    connect(m_replies.userInfo, &QNetworkReply::finished, this, &Zeiterfassung::userInfoRequestFinished);
+    connect(m_replies.userInfo, &QNetworkReply::finished, this, &ZeiterfassungApi::userInfoRequestFinished);
 
     return true;
 }
 
 #define NAMEOF(x) #x
 
-bool Zeiterfassung::doGetBookings(int userId, const QDate &start, const QDate &end)
+bool ZeiterfassungApi::doGetBookings(int userId, const QDate &start, const QDate &end)
 {
     if(m_replies.getBookings)
     {
@@ -108,12 +108,12 @@ bool Zeiterfassung::doGetBookings(int userId, const QDate &start, const QDate &e
 
     m_replies.getBookings = m_manager->get(request);
     connect(m_replies.getBookings, &QNetworkReply::finished,
-            this,                   &Zeiterfassung::getBookingsRequestFinished);
+            this,                   &ZeiterfassungApi::getBookingsRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
+bool ZeiterfassungApi::doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
 {
     if(m_replies.createBooking)
     {
@@ -138,12 +138,12 @@ bool Zeiterfassung::doCreateBooking(int userId, const QDate &date, const QTime &
 
     m_replies.createBooking = m_manager->post(request, QJsonDocument(obj).toJson());
     connect(m_replies.createBooking, &QNetworkReply::finished,
-            this,                    &Zeiterfassung::createBookingRequestFinished);
+            this,                    &ZeiterfassungApi::createBookingRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
+bool ZeiterfassungApi::doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
 {
     if(m_replies.updateBooking)
     {
@@ -169,12 +169,12 @@ bool Zeiterfassung::doUpdateBooking(int bookingId, int userId, const QDate &date
 
     m_replies.updateBooking = m_manager->put(request, QJsonDocument(obj).toJson());
     connect(m_replies.updateBooking, &QNetworkReply::finished,
-            this,                    &Zeiterfassung::updateBookingRequestFinished);
+            this,                    &ZeiterfassungApi::updateBookingRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doDeleteBooking(int bookingId)
+bool ZeiterfassungApi::doDeleteBooking(int bookingId)
 {
     if(m_replies.deleteBooking)
     {
@@ -189,12 +189,12 @@ bool Zeiterfassung::doDeleteBooking(int bookingId)
 
     m_replies.deleteBooking = m_manager->deleteResource(request);
     connect(m_replies.deleteBooking, &QNetworkReply::finished,
-            this,                    &Zeiterfassung::deleteBookingRequestFinished);
+            this,                    &ZeiterfassungApi::deleteBookingRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doGetTimeAssignments(int userId, const QDate &start, const QDate &end)
+bool ZeiterfassungApi::doGetTimeAssignments(int userId, const QDate &start, const QDate &end)
 {
     if(m_replies.getTimeAssignments)
     {
@@ -211,12 +211,12 @@ bool Zeiterfassung::doGetTimeAssignments(int userId, const QDate &start, const Q
 
     m_replies.getTimeAssignments = m_manager->get(request);
     connect(m_replies.getTimeAssignments, &QNetworkReply::finished,
-            this,                      &Zeiterfassung::getTimeAssignmentsRequestFinished);
+            this,                      &ZeiterfassungApi::getTimeAssignmentsRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
+bool ZeiterfassungApi::doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
                                            const QString &project, const QString &subproject, const QString &workpackage,
                                            const QString &text)
 {
@@ -259,12 +259,12 @@ bool Zeiterfassung::doCreateTimeAssignment(int userId, const QDate &date, const 
 
     m_replies.createTimeAssignment = m_manager->post(request, QJsonDocument(obj).toJson());
     connect(m_replies.createTimeAssignment, &QNetworkReply::finished,
-            this,                       &Zeiterfassung::createTimeAssignmentRequestFinished);
+            this,                       &ZeiterfassungApi::createTimeAssignmentRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
+bool ZeiterfassungApi::doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
                                            const QTime &timespan, const QString &project, const QString &subproject,
                                            const QString &workpackage, const QString &text)
 {
@@ -312,12 +312,12 @@ bool Zeiterfassung::doUpdateTimeAssignment(int timeAssignmentId, int userId, con
 
     m_replies.updateTimeAssignment = m_manager->put(request, QJsonDocument(obj).toJson());
     connect(m_replies.updateTimeAssignment, &QNetworkReply::finished,
-            this,                       &Zeiterfassung::updateTimeAssignmentRequestFinished);
+            this,                       &ZeiterfassungApi::updateTimeAssignmentRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doDeleteTimeAssignment(int timeAssignmentId)
+bool ZeiterfassungApi::doDeleteTimeAssignment(int timeAssignmentId)
 {
     if(m_replies.deleteTimeAssignment)
     {
@@ -332,12 +332,12 @@ bool Zeiterfassung::doDeleteTimeAssignment(int timeAssignmentId)
 
     m_replies.deleteTimeAssignment = m_manager->deleteResource(request);
     connect(m_replies.deleteTimeAssignment, &QNetworkReply::finished,
-            this,                       &Zeiterfassung::deleteTimeAssignmentRequestFinished);
+            this,                       &ZeiterfassungApi::deleteTimeAssignmentRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doGetProjects(int userId, const QDate &date)
+bool ZeiterfassungApi::doGetProjects(int userId, const QDate &date)
 {
     if(m_replies.getProjects)
     {
@@ -352,12 +352,12 @@ bool Zeiterfassung::doGetProjects(int userId, const QDate &date)
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
     m_replies.getProjects = m_manager->get(request);
-    connect(m_replies.getProjects, &QNetworkReply::finished, this, &Zeiterfassung::getProjectsRequestFinished);
+    connect(m_replies.getProjects, &QNetworkReply::finished, this, &ZeiterfassungApi::getProjectsRequestFinished);
 
     return true;
 }
 
-bool Zeiterfassung::doGetAuswertung(int userId, const QDate &date)
+bool ZeiterfassungApi::doGetAuswertung(int userId, const QDate &date)
 {
     if(m_replies.getAuswertung)
     {
@@ -372,12 +372,12 @@ bool Zeiterfassung::doGetAuswertung(int userId, const QDate &date)
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
     m_replies.getAuswertung = m_manager->get(request);
-    connect(m_replies.getAuswertung, &QNetworkReply::finished, this, &Zeiterfassung::getAuswertungRequest0Finished);
+    connect(m_replies.getAuswertung, &QNetworkReply::finished, this, &ZeiterfassungApi::getAuswertungRequest0Finished);
 
     return true;
 }
 
-void Zeiterfassung::loginPageRequestFinished()
+void ZeiterfassungApi::loginPageRequestFinished()
 {
     if(m_replies.loginPage->error() != QNetworkReply::NoError)
     {
@@ -398,7 +398,7 @@ void Zeiterfassung::loginPageRequestFinished()
     m_replies.loginPage = Q_NULLPTR;
 }
 
-void Zeiterfassung::loginRequestFinished()
+void ZeiterfassungApi::loginRequestFinished()
 {
     if(m_replies.login->error() != QNetworkReply::NoError)
     {
@@ -437,7 +437,7 @@ void Zeiterfassung::loginRequestFinished()
     m_replies.login = Q_NULLPTR;
 }
 
-void Zeiterfassung::userInfoRequestFinished()
+void ZeiterfassungApi::userInfoRequestFinished()
 {
     if(m_replies.userInfo->error() != QNetworkReply::NoError)
     {
@@ -492,7 +492,7 @@ void Zeiterfassung::userInfoRequestFinished()
     m_replies.userInfo = Q_NULLPTR;
 }
 
-void Zeiterfassung::getBookingsRequestFinished()
+void ZeiterfassungApi::getBookingsRequestFinished()
 {
     if(m_replies.getBookings->error() != QNetworkReply::NoError)
     {
@@ -540,7 +540,7 @@ void Zeiterfassung::getBookingsRequestFinished()
     m_replies.getBookings = Q_NULLPTR;
 }
 
-void Zeiterfassung::createBookingRequestFinished()
+void ZeiterfassungApi::createBookingRequestFinished()
 {
     if(m_replies.createBooking->error() != QNetworkReply::NoError)
     {
@@ -581,7 +581,7 @@ void Zeiterfassung::createBookingRequestFinished()
     m_replies.createBooking = Q_NULLPTR;
 }
 
-void Zeiterfassung::updateBookingRequestFinished()
+void ZeiterfassungApi::updateBookingRequestFinished()
 {
     if(m_replies.updateBooking->error() != QNetworkReply::NoError)
     {
@@ -622,7 +622,7 @@ void Zeiterfassung::updateBookingRequestFinished()
     m_replies.updateBooking = Q_NULLPTR;
 }
 
-void Zeiterfassung::deleteBookingRequestFinished()
+void ZeiterfassungApi::deleteBookingRequestFinished()
 {
     if(m_replies.deleteBooking->error() != QNetworkReply::NoError)
     {
@@ -638,7 +638,7 @@ void Zeiterfassung::deleteBookingRequestFinished()
     m_replies.deleteBooking = Q_NULLPTR;
 }
 
-void Zeiterfassung::getTimeAssignmentsRequestFinished()
+void ZeiterfassungApi::getTimeAssignmentsRequestFinished()
 {
     if(m_replies.getTimeAssignments->error() != QNetworkReply::NoError)
     {
@@ -690,7 +690,7 @@ void Zeiterfassung::getTimeAssignmentsRequestFinished()
     m_replies.getTimeAssignments = Q_NULLPTR;
 }
 
-void Zeiterfassung::createTimeAssignmentRequestFinished()
+void ZeiterfassungApi::createTimeAssignmentRequestFinished()
 {
     if(m_replies.createTimeAssignment->error() != QNetworkReply::NoError)
     {
@@ -731,7 +731,7 @@ void Zeiterfassung::createTimeAssignmentRequestFinished()
     m_replies.createTimeAssignment = Q_NULLPTR;
 }
 
-void Zeiterfassung::updateTimeAssignmentRequestFinished()
+void ZeiterfassungApi::updateTimeAssignmentRequestFinished()
 {
     if(m_replies.updateTimeAssignment->error() != QNetworkReply::NoError)
     {
@@ -772,7 +772,7 @@ void Zeiterfassung::updateTimeAssignmentRequestFinished()
     m_replies.updateTimeAssignment = Q_NULLPTR;
 }
 
-void Zeiterfassung::deleteTimeAssignmentRequestFinished()
+void ZeiterfassungApi::deleteTimeAssignmentRequestFinished()
 {
     if(m_replies.deleteTimeAssignment->error() != QNetworkReply::NoError)
     {
@@ -788,7 +788,7 @@ void Zeiterfassung::deleteTimeAssignmentRequestFinished()
     m_replies.deleteTimeAssignment = Q_NULLPTR;
 }
 
-void Zeiterfassung::getProjectsRequestFinished()
+void ZeiterfassungApi::getProjectsRequestFinished()
 {
     if(m_replies.getProjects->error() != QNetworkReply::NoError)
     {
@@ -848,7 +848,7 @@ void Zeiterfassung::getProjectsRequestFinished()
     m_replies.getProjects = Q_NULLPTR;
 }
 
-void Zeiterfassung::getAuswertungRequest0Finished()
+void ZeiterfassungApi::getAuswertungRequest0Finished()
 {
     if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
     {
@@ -865,10 +865,10 @@ void Zeiterfassung::getAuswertungRequest0Finished()
 
     m_replies.getAuswertung = m_manager->get(QNetworkRequest(url));
     connect(m_replies.getAuswertung, &QNetworkReply::finished,
-            this,                    &Zeiterfassung::getAuswertungRequest1Finished);
+            this,                    &ZeiterfassungApi::getAuswertungRequest1Finished);
 }
 
-void Zeiterfassung::getAuswertungRequest1Finished()
+void ZeiterfassungApi::getAuswertungRequest1Finished()
 {
     if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
     {

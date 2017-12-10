@@ -1,6 +1,6 @@
 #include "bookingsmodel.h"
 
-BookingsModel::BookingsModel(Zeiterfassung &erfassung, QObject *parent) :
+BookingsModel::BookingsModel(ZeiterfassungApi &erfassung, QObject *parent) :
     QAbstractListModel(parent),
     m_erfassung(erfassung)
 {
@@ -66,10 +66,10 @@ QVariant BookingsModel::headerData(int section, Qt::Orientation orientation, int
     return QVariant();
 }
 
-Zeiterfassung::Booking BookingsModel::getBooking(const QModelIndex &index) const
+ZeiterfassungApi::Booking BookingsModel::getBooking(const QModelIndex &index) const
 {
     if(!index.isValid())
-        return Zeiterfassung::Booking();
+        return ZeiterfassungApi::Booking();
 
     Q_ASSERT(index.row() <= m_bookings.count());
     return m_bookings.at(index.row());
@@ -84,20 +84,20 @@ bool BookingsModel::refresh(int userId, const QDate &from, const QDate &to)
     m_bookings.clear();
     endResetModel();
 
-    connect(&m_erfassung, &Zeiterfassung::getBookingsFinished,
+    connect(&m_erfassung, &ZeiterfassungApi::getBookingsFinished,
             this,         &BookingsModel::getBookingsFinished);
 
     return true;
 }
 
-const QVector<Zeiterfassung::Booking> BookingsModel::bookings() const
+const QVector<ZeiterfassungApi::Booking> BookingsModel::bookings() const
 {
     return m_bookings;
 }
 
-void BookingsModel::getBookingsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Booking> &bookings)
+void BookingsModel::getBookingsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::Booking> &bookings)
 {
-    disconnect(&m_erfassung, &Zeiterfassung::getBookingsFinished,
+    disconnect(&m_erfassung, &ZeiterfassungApi::getBookingsFinished,
                this,         &BookingsModel::getBookingsFinished);
 
     if(success)

@@ -4,14 +4,14 @@
 #include <QAbstractListModel>
 #include <QVector>
 
-#include "zeiterfassung.h"
+#include "zeiterfassungapi.h"
 
 class BookingsModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
-    explicit BookingsModel(Zeiterfassung &erfassung, QObject *parent = nullptr);
+    explicit BookingsModel(ZeiterfassungApi &erfassung, QObject *parent = nullptr);
 
     // QAbstractItemModel interface
     int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
@@ -19,21 +19,21 @@ public:
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
-    Zeiterfassung::Booking getBooking(const QModelIndex &index) const;
+    ZeiterfassungApi::Booking getBooking(const QModelIndex &index) const;
 
     bool refresh(int userId, const QDate &from, const QDate &to);
 
-    const QVector<Zeiterfassung::Booking> bookings() const;
+    const QVector<ZeiterfassungApi::Booking> bookings() const;
 
 Q_SIGNALS:
     void refreshFinished(bool success, const QString &message);
 
 private Q_SLOTS:
-    void getBookingsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Booking> &bookings);
+    void getBookingsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::Booking> &bookings);
 
 private:
-    Zeiterfassung &m_erfassung;
-    QVector<Zeiterfassung::Booking> m_bookings;
+    ZeiterfassungApi &m_erfassung;
+    QVector<ZeiterfassungApi::Booking> m_bookings;
 };
 
 #endif // BOOKINGSMODEL_H

@@ -10,7 +10,7 @@
 
 #include "zeiterfassungsettings.h"
 #include "dialogs/languageselectiondialog.h"
-#include "zeiterfassung.h"
+#include "zeiterfassungapi.h"
 #include "eventloopwithstatus.h"
 #include "dialogs/authenticationdialog.h"
 #include "mainwindow.h"
@@ -95,11 +95,11 @@ int main(int argc, char *argv[])
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
 
-    Zeiterfassung erfassung(settings.url(), &app);
+    ZeiterfassungApi erfassung(settings.url(), &app);
 
     {
         EventLoopWithStatus eventLoop;
-        QObject::connect(&erfassung, &Zeiterfassung::loginPageFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        QObject::connect(&erfassung, &ZeiterfassungApi::loginPageFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         again1:
         erfassung.doLoginPage();
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 
     {
         EventLoopWithStatus eventLoop;
-        QObject::connect(&erfassung, &Zeiterfassung::loginFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        QObject::connect(&erfassung, &ZeiterfassungApi::loginFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         again2:
         erfassung.doLogin(settings.username(), settings.password());
@@ -160,17 +160,17 @@ int main(int argc, char *argv[])
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
 
-    Zeiterfassung::UserInfo userInfo;
+    ZeiterfassungApi::UserInfo userInfo;
 
     {
         EventLoopWithStatus eventLoop;
-        QObject::connect(&erfassung, &Zeiterfassung::userInfoFinished,
-                         [&](bool success, const QString &message, const Zeiterfassung::UserInfo &_userInfo) {
+        QObject::connect(&erfassung, &ZeiterfassungApi::userInfoFinished,
+                         [&](bool success, const QString &message, const ZeiterfassungApi::UserInfo &_userInfo) {
             Q_UNUSED(message)
             if(success)
                 userInfo = _userInfo;
         });
-        QObject::connect(&erfassung, &Zeiterfassung::userInfoFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        QObject::connect(&erfassung, &ZeiterfassungApi::userInfoFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         erfassung.doUserInfo();
         eventLoop.exec();

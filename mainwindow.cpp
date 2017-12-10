@@ -27,7 +27,7 @@
 #include "models/bookingsmodel.h"
 #include "models/timeassignmentsmodel.h"
 
-MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent) :
+MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_settings(settings),
@@ -107,7 +107,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung
 
     ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
 
-    connect(&m_erfassung, &Zeiterfassung::getProjectsFinished,
+    connect(&m_erfassung, &ZeiterfassungApi::getProjectsFinished,
             this, &MainWindow::getProjekctsFinished);
     erfassung.doGetProjects(userInfo.userId, QDate::currentDate());
 
@@ -220,7 +220,7 @@ void MainWindow::refresh(bool forceAuswertung)
         if(m_erfassung.doGetAuswertung(m_userInfo.userId, auswertungDate))
         {
             m_auswertungDate = auswertungDate;
-            connect(&m_erfassung, &Zeiterfassung::getAuswertungFinished,
+            connect(&m_erfassung, &ZeiterfassungApi::getAuswertungFinished,
                     this,         &MainWindow::getAuswertungFinished);
 
         }
@@ -232,9 +232,9 @@ void MainWindow::refresh(bool forceAuswertung)
     }
 }
 
-void MainWindow::getProjekctsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Project> &projects)
+void MainWindow::getProjekctsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::Project> &projects)
 {
-    disconnect(&m_erfassung, &Zeiterfassung::getProjectsFinished,
+    disconnect(&m_erfassung, &ZeiterfassungApi::getProjectsFinished,
                this, &MainWindow::getProjekctsFinished);
 
     if(!success)
@@ -253,7 +253,7 @@ void MainWindow::getProjekctsFinished(bool success, const QString &message, cons
 
 void MainWindow::getAuswertungFinished(bool success, const QString &message, const QByteArray &content)
 {
-    disconnect(&m_erfassung, &Zeiterfassung::getAuswertungFinished,
+    disconnect(&m_erfassung, &ZeiterfassungApi::getAuswertungFinished,
                this,         &MainWindow::getAuswertungFinished);
 
     if(!success)
@@ -359,7 +359,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::updateBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &ZeiterfassungApi::updateBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
                 m_erfassung.doUpdateBooking(booking.id, m_userInfo.userId, ui->dateEditDate->date(),
                                             dialog.getTime(), dialog.getTimespan(),
@@ -416,7 +416,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
             if(msgBox.exec() == QMessageBox::Yes)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::deleteBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &ZeiterfassungApi::deleteBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
                 m_erfassung.doDeleteBooking(booking.id);
                 eventLoop.exec();
@@ -473,7 +473,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &ZeiterfassungApi::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
                 m_erfassung.doCreateBooking(m_userInfo.userId, ui->dateEditDate->date(),
                                             dialog.getTime(), dialog.getTimespan(),
@@ -549,7 +549,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &ZeiterfassungApi::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
                 m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, ui->dateEditDate->date(),
                                                dialog.getTime(), dialog.getTimespan(),
@@ -612,7 +612,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
             if(msgBox.exec() == QMessageBox::Yes)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::deleteTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &ZeiterfassungApi::deleteTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
                 m_erfassung.doDeleteTimeAssignment(timeAssignment.id);
                 eventLoop.exec();
@@ -668,7 +668,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
             if(dialog.exec() == QDialog::Accepted)
             {
                 EventLoopWithStatus eventLoop;
-                connect(&m_erfassung, &Zeiterfassung::createTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+                connect(&m_erfassung, &ZeiterfassungApi::createTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
                 m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
                                                dialog.getTime(), dialog.getTimespan(),
@@ -731,7 +731,7 @@ void MainWindow::pushButtonStartPressed()
        m_bookingsModel->bookings().rbegin()->type == QStringLiteral("G"))
     {
         EventLoopWithStatus eventLoop;
-        connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        connect(&m_erfassung, &ZeiterfassungApi::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         m_erfassung.doCreateBooking(m_userInfo.userId, ui->dateEditDate->date(),
                                     timeNormalise(ui->timeEditTime->time()), QTime(0, 0),
@@ -754,7 +754,7 @@ void MainWindow::pushButtonStartPressed()
         if(timeAssignment.timespan == QTime(0, 0))
         {
             EventLoopWithStatus eventLoop;
-            connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+            connect(&m_erfassung, &ZeiterfassungApi::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
             auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
 
@@ -776,7 +776,7 @@ void MainWindow::pushButtonStartPressed()
     }
 
     EventLoopWithStatus eventLoop;
-    connect(&m_erfassung, &Zeiterfassung::createTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+    connect(&m_erfassung, &ZeiterfassungApi::createTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
     m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
                                    timeAssignmentTime, QTime(0, 0),
@@ -808,7 +808,7 @@ void MainWindow::pushButtonEndPressed()
         Q_ASSERT(timeAssignment.timespan == QTime(0, 0));
 
         EventLoopWithStatus eventLoop;
-        connect(&m_erfassung, &Zeiterfassung::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        connect(&m_erfassung, &ZeiterfassungApi::updateTimeAssignmentFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
 
@@ -828,7 +828,7 @@ void MainWindow::pushButtonEndPressed()
 
     {
         EventLoopWithStatus eventLoop;
-        connect(&m_erfassung, &Zeiterfassung::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        connect(&m_erfassung, &ZeiterfassungApi::createBookingFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
 
         m_erfassung.doCreateBooking(m_userInfo.userId, ui->dateEditDate->date(),
                                     timeNormalise(ui->timeEditTime->time()), QTime(0, 0),

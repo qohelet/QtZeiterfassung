@@ -17,7 +17,6 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 RC_ICONS = icon.ico
 
 SOURCES += main.cpp \
-    zeiterfassung.cpp \
     mainwindow.cpp \
     dialogs/aboutmedialog.cpp \
     dialogs/authenticationdialog.cpp \
@@ -32,10 +31,23 @@ SOURCES += main.cpp \
     dialogs/updatedialog.cpp \
     stripswidget.cpp \
     timeutils.cpp \
-    stripfactory.cpp
+    stripfactory.cpp \
+    zeiterfassungapi.cpp \
+    replies/loginpagereply.cpp \
+    replies/loginreply.cpp \
+    replies/userinforeply.cpp \
+    replies/getbookingsreply.cpp \
+    replies/createbookingreply.cpp \
+    replies/updatebookingreply.cpp \
+    replies/deletebookingreply.cpp \
+    replies/gettimeassignmentsreply.cpp \
+    replies/createtimeassignmentreply.cpp \
+    replies/updatetimeassignmentreply.cpp \
+    replies/deletetimeassignment.cpp \
+    replies/getprojectsreply.cpp \
+    replies/getauswertungreply.cpp
 
 HEADERS += \
-    zeiterfassung.h \
     mainwindow.h \
     dialogs/aboutmedialog.h \
     dialogs/authenticationdialog.h \
@@ -50,7 +62,21 @@ HEADERS += \
     dialogs/updatedialog.h \
     stripswidget.h \
     timeutils.h \
-    stripfactory.h
+    stripfactory.h \
+    zeiterfassungapi.h \
+    replies/loginpagereply.h \
+    replies/loginreply.h \
+    replies/userinforeply.h \
+    replies/getbookingsreply.h \
+    replies/createbookingreply.h \
+    replies/updatebookingreply.h \
+    replies/deletebookingreply.h \
+    replies/gettimeassignmentsreply.h \
+    replies/createtimeassignmentreply.h \
+    replies/updatetimeassignmentreply.h \
+    replies/deletetimeassignment.h \
+    replies/getprojectsreply.h \
+    replies/getauswertungreply.h
 
 FORMS += \
     mainwindow.ui \

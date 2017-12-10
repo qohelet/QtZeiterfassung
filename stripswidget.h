@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QTime>
 
-#include "zeiterfassung.h"
+#include "zeiterfassungapi.h"
 
 class QBoxLayout;
 template <class Key, class T> class QMap;
@@ -20,8 +20,8 @@ public:
     explicit StripsWidget(StripFactory *stripFactory, const QMap<QString, QString> &projects,
                           QWidget *parent = 0);
 
-    bool createStrips(const QVector<Zeiterfassung::Booking> &bookings,
-                      const QVector<Zeiterfassung::TimeAssignment> &timeAssignments);
+    bool createStrips(const QVector<ZeiterfassungApi::Booking> &bookings,
+                      const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments);
     void clearStrips();
 
     const QTime timeAssignmentTime() const;

@@ -1,5 +1,5 @@
-#ifndef ZEITERFASSUNG_H
-#define ZEITERFASSUNG_H
+#ifndef ZEITERFASSUNGAPI_H
+#define ZEITERFASSUNGAPI_H
 
 #include <QObject>
 #include <QString>
@@ -10,13 +10,13 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QByteArray;
 
-class Zeiterfassung : public QObject
+class ZeiterfassungApi : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged)
 
 public:
-    explicit Zeiterfassung(const QString &url, QObject *parent = 0);
+    explicit ZeiterfassungApi(const QString &url, QObject *parent = 0);
 
     const QString &url() const;
     void setUrl(const QString &url);
@@ -147,4 +147,4 @@ private:
     } m_replies;
 };
 
-#endif // ZEITERFASSUNG_H
+#endif // ZEITERFASSUNGAPI_H

@@ -1,7 +1,7 @@
 #include "aboutmedialog.h"
 #include "ui_aboutmedialog.h"
 
-AboutMeDialog::AboutMeDialog(const Zeiterfassung::UserInfo &userInfo, QWidget *parent) :
+AboutMeDialog::AboutMeDialog(const ZeiterfassungApi::UserInfo &userInfo, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AboutMeDialog),
     m_userInfo(userInfo)

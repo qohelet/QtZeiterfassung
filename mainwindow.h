@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QMap>
 
-#include "zeiterfassung.h"
+#include "zeiterfassungapi.h"
 
 class QLabel;
 class QBoxLayout;
@@ -21,12 +21,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(ZeiterfassungSettings &settings, Zeiterfassung &erfassung, const Zeiterfassung::UserInfo &userInfo, QWidget *parent = 0);
+    explicit MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo, QWidget *parent = 0);
     ~MainWindow();
 
 private Q_SLOTS:
     void refresh(bool forceAuswertung = false);
-    void getProjekctsFinished(bool success, const QString &message, const QVector<Zeiterfassung::Project> &projects);
+    void getProjekctsFinished(bool success, const QString &message, const QVector<ZeiterfassungApi::Project> &projects);
     void getAuswertungFinished(bool success, const QString &message, const QByteArray &content);
     void refreshBookingsFinished(bool success, const QString &message);
     void refreshTimeAssignmentsFinished(bool success, const QString &message);
@@ -41,8 +41,8 @@ private:
 
     Ui::MainWindow *ui;
     ZeiterfassungSettings &m_settings;
-    Zeiterfassung &m_erfassung;
-    const Zeiterfassung::UserInfo &m_userInfo;
+    ZeiterfassungApi &m_erfassung;
+    const ZeiterfassungApi::UserInfo &m_userInfo;
     QMap<QString, QString> m_projects;
 
     QDate m_auswertungDate;
