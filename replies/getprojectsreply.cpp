@@ -21,16 +21,16 @@ const QVector<ZeiterfassungApi::Project> &GetProjectsReply::projects() const
 
 void GetProjectsReply::requestFinished()
 {
-    if(m_replies.getProjects->error() != QNetworkReply::NoError)
+    if(m_reply->error() != QNetworkReply::NoError)
     {
         setSuccess(false);
-        setMessage(tr("Request error occured: %0").arg(m_replies.getProjects->error()));
+        setMessage(tr("Request error occured: %0").arg(m_reply->error()));
         goto end;
     }
 
     {
         QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.getProjects->readAll(), &error);
+        QJsonDocument document = QJsonDocument::fromJson(m_reply->readAll(), &error);
         if(error.error != QJsonParseError::NoError)
         {
             setSuccess(false);
@@ -79,8 +79,8 @@ void GetProjectsReply::requestFinished()
     }
 
     end:
-    m_replies.getProjects->deleteLater();
-    m_replies.getProjects = Q_NULLPTR;
+    m_reply->deleteLater();
+    m_reply = Q_NULLPTR;
 
     Q_EMIT finished();
 }

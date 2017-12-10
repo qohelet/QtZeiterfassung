@@ -1,6 +1,8 @@
 #ifndef GETPROJECTSREPLY_H
 #define GETPROJECTSREPLY_H
 
+#include <QVector>
+
 #include "zeiterfassungreply.h"
 #include "zeiterfassungapi.h"
 

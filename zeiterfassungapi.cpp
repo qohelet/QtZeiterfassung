@@ -290,38 +290,3 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
 
     return new GetAuswertungReply(reply, this);
 }
-
-void ZeiterfassungApi::getAuswertungRequest0Finished()
-{
-    if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getAuswertung->error()), QByteArray());
-        m_replies.getAuswertung->deleteLater();
-        m_replies.getAuswertung = Q_NULLPTR;
-        return;
-    }
-
-    QUrl url(m_url);
-    url.setPath(QString(m_replies.getAuswertung->readAll()));
-
-    m_replies.getAuswertung->deleteLater();
-
-    m_replies.getAuswertung = m_manager->get(QNetworkRequest(url));
-    connect(m_replies.getAuswertung, &QNetworkReply::finished,
-            this,                    &ZeiterfassungApi::getAuswertungRequest1Finished);
-}
-
-void ZeiterfassungApi::getAuswertungRequest1Finished()
-{
-    if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT getAuswertungFinished(false, tr("Request error occured: %0").arg(m_replies.getAuswertung->error()), QByteArray());
-        goto end;
-    }
-
-    Q_EMIT getAuswertungFinished(true, QString(), m_replies.getAuswertung->readAll());
-
-    end:
-    m_replies.getAuswertung->deleteLater();
-    m_replies.getAuswertung = Q_NULLPTR;
-}

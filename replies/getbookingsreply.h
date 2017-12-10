@@ -1,6 +1,8 @@
 #ifndef GETBOOKINGSREPLY_H
 #define GETBOOKINGSREPLY_H
 
+#include <QVector>
+
 #include "zeiterfassungreply.h"
 #include "zeiterfassungapi.h"
 

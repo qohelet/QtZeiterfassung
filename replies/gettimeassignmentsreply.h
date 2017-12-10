@@ -1,6 +1,8 @@
 #ifndef GETTIMEASSIGNMENTSREPLY_H
 #define GETTIMEASSIGNMENTSREPLY_H
 
+#include <QVector>
+
 #include "zeiterfassungreply.h"
 #include "zeiterfassungapi.h"
 
