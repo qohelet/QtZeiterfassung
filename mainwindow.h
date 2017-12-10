@@ -25,14 +25,13 @@ public:
     ~MainWindow();
 
 private Q_SLOTS:
-    void refresh(bool forceAuswertung = false);
     void getProjectsFinished();
     void getAuswertungFinished();
     void contextMenuBooking(const QPoint &pos);
     void contextMenuTimeAssignment(const QPoint &pos);
     void pushButtonStartPressed();
     void pushButtonEndPressed();
-    void dateChanged();
+    void dateChanged(bool force = false);
     void openAuswertung();
 
     void timeAssignmentTimeChanged();

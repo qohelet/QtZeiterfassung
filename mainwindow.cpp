@@ -80,7 +80,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->actionToday, &QAction::triggered, [=](){ ui->dateEditDate->setDate(QDate::currentDate()); });
 
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
-    connect(ui->actionRefresh, &QAction::triggered, this, [=](){ refresh(true); });
+    connect(ui->actionRefresh, &QAction::triggered, this, [=](){ dateChanged(true); });
 
     connect(ui->actionAuswertung, &QAction::triggered, this, &MainWindow::openAuswertung);
 
@@ -90,7 +90,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->actionAboutQt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this); });
 
     ui->dateEditDate->setDate(QDate::currentDate());
-    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, &MainWindow::dateChanged);
+    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, [=](){ dateChanged(false); });
 
     connect(ui->pushButtonPrev, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
     connect(ui->pushButtonNext, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
@@ -142,43 +142,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::refresh(bool forceAuswertung)
-{
-    ui->actionToday->setEnabled(false);
-    ui->actionRefresh->setEnabled(false);
-    ui->dateEditDate->setReadOnly(true);
-    ui->pushButtonPrev->setEnabled(false);
-    ui->pushButtonNext->setEnabled(false);
-    ui->timeEditTime->setEnabled(false);
-    ui->comboBoxProject->setEnabled(false);
-    ui->comboBoxSubproject->setEnabled(false);
-    ui->comboBoxWorkpackage->setEnabled(false);
-    ui->comboBoxText->setEnabled(false);
-    ui->pushButtonStart->setEnabled(false);
-    ui->pushButtonEnd->setEnabled(false);
-    ui->treeViewBookings->setEnabled(false);
-    ui->treeViewTimeAssignments->setEnabled(false);
-
-    m_workingTimeLabel->setText(tr("%0: %1").arg(tr("Assigned time")).arg(tr("???")));
-
-    for(quint8 i = 0; i < 7; i++)
-        m_stripsWidgets[i]->refresh();
-
-    auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
-    if(forceAuswertung || m_auswertungDate != auswertungDate)
-    {
-        m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
-        m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
-
-        ui->actionAuswertung->setEnabled(false);
-        m_auswertung.clear();
-
-        m_auswertungDate = auswertungDate;
-        m_getAuswertungReply = m_erfassung.doGetAuswertung(m_userInfo.userId, auswertungDate);
-        connect(m_getAuswertungReply, &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
-    }
 }
 
 void MainWindow::getProjectsFinished()
@@ -489,7 +452,7 @@ void MainWindow::pushButtonStartPressed()
         if(!reply->success())
         {
             QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % reply->message());
-            refresh(true);
+            m_currentStripWidget->refresh();
             reply->deleteLater();
             return;
         }
@@ -522,7 +485,7 @@ void MainWindow::pushButtonStartPressed()
             else
             {
                 QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
-                refresh(true);
+                m_currentStripWidget->refresh();
                 reply->deleteLater();
                 return;
             }
@@ -545,7 +508,7 @@ void MainWindow::pushButtonStartPressed()
     if(!reply->success())
     {
         QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % reply->message());
-        refresh(true);
+        m_currentStripWidget->refresh();
         reply->deleteLater();
         return;
     }
@@ -559,7 +522,7 @@ void MainWindow::pushButtonStartPressed()
 
     updateComboboxes();
 
-    refresh(true);
+    m_currentStripWidget->refresh();
 }
 
 void MainWindow::pushButtonEndPressed()
@@ -584,7 +547,7 @@ void MainWindow::pushButtonEndPressed()
         if(!reply->success())
         {
             QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
-            refresh(true);
+            m_currentStripWidget->refresh();
             reply->deleteLater();
             return;
         }
@@ -606,7 +569,7 @@ void MainWindow::pushButtonEndPressed()
         if(!reply->success())
         {
             QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % reply->message());
-            refresh(true);
+            m_currentStripWidget->refresh();
             reply->deleteLater();
             return;
         }
@@ -614,18 +577,21 @@ void MainWindow::pushButtonEndPressed()
         reply->deleteLater();
     }
 
-    refresh(true);
+    m_currentStripWidget->refresh();
 }
 
-void MainWindow::dateChanged()
+void MainWindow::dateChanged(bool force)
 {
-    auto firstDayOfWeek = ui->dateEditDate->date().addDays(-ui->dateEditDate->date().dayOfWeek() - 1);
+    auto firstDayOfWeek = ui->dateEditDate->date().addDays(-(ui->dateEditDate->date().dayOfWeek() - 1));
 
     for(quint8 i = 0; i < 7; i++)
     {
         auto date = firstDayOfWeek.addDays(i);
-        m_stripsWidgets[i]->setDate(firstDayOfWeek.addDays(i));
-        if(date == ui->dateEditDate->date())
+
+        if(force || m_stripsWidgets[i]->date() != date)
+            m_stripsWidgets[i]->setDate(date);
+
+        if(date == ui->dateEditDate->date() && (force || m_currentStripWidget != m_stripsWidgets[i]))
         {
             if(m_currentStripWidget)
             {
@@ -650,6 +616,20 @@ void MainWindow::dateChanged()
             connect(m_currentStripWidget, &StripsWidget::startEnabledChanged, this, &MainWindow::startEnabledChanged);
             connect(m_currentStripWidget, &StripsWidget::endEnabledChanged, this, &MainWindow::endEnabledChanged);
         }
+    }
+
+    auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
+    if(force || m_auswertungDate != auswertungDate)
+    {
+        m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
+        m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
+
+        ui->actionAuswertung->setEnabled(false);
+        m_auswertung.clear();
+
+        m_auswertungDate = auswertungDate;
+        m_getAuswertungReply = m_erfassung.doGetAuswertung(m_userInfo.userId, auswertungDate);
+        connect(m_getAuswertungReply, &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
     }
 }
 

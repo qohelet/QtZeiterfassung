@@ -50,11 +50,8 @@ const QDate &StripsWidget::date() const
 
 void StripsWidget::setDate(const QDate &date)
 {
-    if(m_date != date)
-    {
-        refresh();
-        m_date = date;
-    }
+    m_date = date;
+    refresh();
 }
 
 const QVector<ZeiterfassungApi::Booking> &StripsWidget::bookings() const
@@ -132,6 +129,8 @@ void StripsWidget::refreshTimeAssignments()
 
 bool StripsWidget::createStrips()
 {
+    clearStrips();
+
     m_timeAssignmentTime = QTime(0, 0);
     m_lastTimeAssignmentStart = QTime();
     m_startEnabled = false;

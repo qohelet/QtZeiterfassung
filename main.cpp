@@ -27,13 +27,13 @@ bool loadAndInstallTranslator(QTranslator &translator,
 {
     if(!translator.load(locale, filename, prefix, directory, suffix))
     {
-        qDebug() << "could not load translation" << filename;
+        qWarning() << "could not load translation" << filename;
         return false;
     }
 
     if(!QCoreApplication::installTranslator(&translator))
     {
-        qDebug() << "could not install translation" << filename;
+        qWarning() << "could not install translation" << filename;
         return false;
     }
 
