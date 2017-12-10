@@ -1,6 +1,7 @@
 #include "deletebookingreply.h"
 
-DeleteBookingReply::DeleteBookingReply()
+DeleteBookingReply::DeleteBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

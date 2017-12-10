@@ -1,10 +1,16 @@
 #ifndef GETAUSWERTUNGREPLY_H
 #define GETAUSWERTUNGREPLY_H
 
-class GetAuswertungReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class GetAuswertungReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    GetAuswertungReply();
+    GetAuswertungReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // GETAUSWERTUNGREPLY_H

@@ -1,10 +1,16 @@
 #ifndef CREATETIMEASSIGNMENTREPLY_H
 #define CREATETIMEASSIGNMENTREPLY_H
 
-class CreateTimeAssignmentReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class CreateTimeAssignmentReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    CreateTimeAssignmentReply();
+    CreateTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // CREATETIMEASSIGNMENTREPLY_H

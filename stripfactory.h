@@ -11,7 +11,7 @@ class StripFactory : public QObject
     Q_OBJECT
 
 public:
-    explicit StripFactory(QObject *parent = 0);
+    explicit StripFactory(QObject *parent = Q_NULLPTR);
 
     bool load(const QString &stripsPath);
     const QString &errorString() const;

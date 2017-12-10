@@ -1,10 +1,16 @@
 #ifndef GETPROJECTSREPLY_H
 #define GETPROJECTSREPLY_H
 
-class GetProjectsReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class GetProjectsReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    GetProjectsReply();
+    GetProjectsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // GETPROJECTSREPLY_H

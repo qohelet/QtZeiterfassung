@@ -15,7 +15,7 @@ class UpdateDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit UpdateDialog(ZeiterfassungSettings &settings, QNetworkAccessManager *manager, QWidget *parent = 0);
+    explicit UpdateDialog(ZeiterfassungSettings &settings, QNetworkAccessManager *manager, QWidget *parent = Q_NULLPTR);
     ~UpdateDialog();
 
 private Q_SLOTS:

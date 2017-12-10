@@ -1,6 +1,7 @@
 #include "userinforeply.h"
 
-UserInfoReply::UserInfoReply()
+UserInfoReply::UserInfoReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

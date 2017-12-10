@@ -1,6 +1,7 @@
 #include "deletetimeassignment.h"
 
-DeleteTimeAssignment::DeleteTimeAssignment()
+DeleteTimeAssignment::DeleteTimeAssignment(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

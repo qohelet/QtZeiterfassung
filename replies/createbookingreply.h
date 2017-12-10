@@ -1,10 +1,16 @@
 #ifndef CREATEBOOKINGREPLY_H
 #define CREATEBOOKINGREPLY_H
 
-class CreateBookingReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class CreateBookingReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    CreateBookingReply();
+    CreateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // CREATEBOOKINGREPLY_H

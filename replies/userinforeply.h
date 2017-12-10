@@ -1,10 +1,16 @@
 #ifndef USERINFOREPLY_H
 #define USERINFOREPLY_H
 
-class UserInfoReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class UserInfoReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    UserInfoReply();
+    UserInfoReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // USERINFOREPLY_H

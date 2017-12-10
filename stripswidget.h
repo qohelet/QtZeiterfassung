@@ -18,7 +18,7 @@ class StripsWidget : public QWidget
 
 public:
     explicit StripsWidget(StripFactory *stripFactory, const QMap<QString, QString> &projects,
-                          QWidget *parent = 0);
+                          QWidget *parent = Q_NULLPTR);
 
     bool createStrips(const QVector<ZeiterfassungApi::Booking> &bookings,
                       const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments);

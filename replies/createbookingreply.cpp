@@ -1,6 +1,7 @@
 #include "createbookingreply.h"
 
-CreateBookingReply::CreateBookingReply()
+CreateBookingReply::CreateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

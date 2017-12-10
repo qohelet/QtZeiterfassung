@@ -1,10 +1,16 @@
 #ifndef UPDATEBOOKINGREPLY_H
 #define UPDATEBOOKINGREPLY_H
 
-class UpdateBookingReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class UpdateBookingReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    UpdateBookingReply();
+    UpdateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // UPDATEBOOKINGREPLY_H

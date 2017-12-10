@@ -1,6 +1,7 @@
 #include "updatebookingreply.h"
 
-UpdateBookingReply::UpdateBookingReply()
+UpdateBookingReply::UpdateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

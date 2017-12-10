@@ -11,7 +11,7 @@ class LanguageSelectionDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit LanguageSelectionDialog(QWidget *parent = 0);
+    explicit LanguageSelectionDialog(QWidget *parent = Q_NULLPTR);
     ~LanguageSelectionDialog();
 
     QLocale::Language language() const;

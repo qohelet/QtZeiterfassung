@@ -12,7 +12,7 @@ class AboutMeDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AboutMeDialog(const ZeiterfassungApi::UserInfo &userInfo, QWidget *parent = 0);
+    explicit AboutMeDialog(const ZeiterfassungApi::UserInfo &userInfo, QWidget *parent = Q_NULLPTR);
     ~AboutMeDialog();
 
 private:

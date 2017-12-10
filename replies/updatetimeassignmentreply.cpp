@@ -1,6 +1,7 @@
 #include "updatetimeassignmentreply.h"
 
-UpdateTimeAssignmentReply::UpdateTimeAssignmentReply()
+UpdateTimeAssignmentReply::UpdateTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

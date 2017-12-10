@@ -1,6 +1,7 @@
 #include "gettimeassignmentsreply.h"
 
-GetTimeAssignmentsReply::GetTimeAssignmentsReply()
+GetTimeAssignmentsReply::GetTimeAssignmentsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

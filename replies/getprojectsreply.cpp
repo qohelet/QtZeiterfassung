@@ -1,6 +1,7 @@
 #include "getprojectsreply.h"
 
-GetProjectsReply::GetProjectsReply()
+GetProjectsReply::GetProjectsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

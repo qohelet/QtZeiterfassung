@@ -16,7 +16,7 @@ class ZeiterfassungApi : public QObject
     Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged)
 
 public:
-    explicit ZeiterfassungApi(const QString &url, QObject *parent = 0);
+    explicit ZeiterfassungApi(const QString &url, QObject *parent = Q_NULLPTR);
 
     const QString &url() const;
     void setUrl(const QString &url);

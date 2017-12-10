@@ -1,6 +1,7 @@
 #include "getauswertungreply.h"
 
-GetAuswertungReply::GetAuswertungReply()
+GetAuswertungReply::GetAuswertungReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

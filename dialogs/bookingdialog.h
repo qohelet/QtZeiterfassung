@@ -11,7 +11,7 @@ class BookingDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit BookingDialog(QWidget *parent = 0);
+    explicit BookingDialog(QWidget *parent = Q_NULLPTR);
     ~BookingDialog();
 
     QTime getTime() const;

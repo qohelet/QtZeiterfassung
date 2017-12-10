@@ -16,7 +16,7 @@ class TimeAssignmentDialog : public QDialog
 
 public:
     explicit TimeAssignmentDialog(const QMap<QString, QString> &projects, const ZeiterfassungSettings &settings,
-                                  QWidget *parent = 0);
+                                  QWidget *parent = Q_NULLPTR);
     ~TimeAssignmentDialog();
 
     QTime getTime() const;

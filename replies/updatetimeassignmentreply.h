@@ -1,10 +1,16 @@
 #ifndef UPDATETIMEASSIGNMENTREPLY_H
 #define UPDATETIMEASSIGNMENTREPLY_H
 
-class UpdateTimeAssignmentReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class UpdateTimeAssignmentReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    UpdateTimeAssignmentReply();
+    UpdateTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // UPDATETIMEASSIGNMENTREPLY_H

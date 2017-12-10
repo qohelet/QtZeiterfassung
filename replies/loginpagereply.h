@@ -1,10 +1,16 @@
 #ifndef LOGINPAGEREPLY_H
 #define LOGINPAGEREPLY_H
 
-class LoginPageReply
+#include "zeiterfassungreply.h"
+
+class QNetworkReply;
+
+class LoginPageReply : public ZeiterfassungReply
 {
+    Q_OBJECT
+
 public:
-    LoginPageReply();
+    LoginPageReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
 };
 
 #endif // LOGINPAGEREPLY_H

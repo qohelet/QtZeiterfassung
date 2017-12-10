@@ -1,6 +1,7 @@
 #include "loginreply.h"
 
-LoginReply::LoginReply()
+LoginReply::LoginReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
+    : ZeiterfassungReply(zeiterfassung)
 {
 
 }

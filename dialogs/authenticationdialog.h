@@ -12,7 +12,7 @@ class AuthenticationDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AuthenticationDialog(QWidget *parent = 0);
+    explicit AuthenticationDialog(QWidget *parent = Q_NULLPTR);
     ~AuthenticationDialog();
 
     QString username() const;
