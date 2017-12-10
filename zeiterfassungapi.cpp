@@ -291,62 +291,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     return new GetAuswertungReply(reply, this);
 }
 
-void ZeiterfassungApi::deleteBookingRequestFinished()
-{
-}
-
-void ZeiterfassungApi::getTimeAssignmentsRequestFinished()
-{
-    if(m_replies.getTimeAssignments->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT getTimeAssignmentsFinished(false, tr("Request error occured: %0").arg(m_replies.getTimeAssignments->error()), {});
-        goto end;
-    }
-
-    {
-        QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.getTimeAssignments->readAll(), &error);
-        if(error.error != QJsonParseError::NoError)
-        {
-            Q_EMIT getTimeAssignmentsFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), {});
-            goto end;
-        }
-
-        if(!document.isArray())
-        {
-            Q_EMIT getTimeAssignmentsFinished(false, tr("JSON document is not an array!"), {});
-            goto end;
-        }
-
-        auto arr = document.array();
-        QVector<TimeAssignment> timeAssignments;
-
-        for(const auto &val : arr)
-        {
-            auto obj = val.toObject();
-
-            auto koWertList = obj.value(QStringLiteral("koWertList")).toArray();
-
-            timeAssignments.append({
-                                    obj.value(QStringLiteral("bookingNr")).toInt(),
-                                    QDate::fromString(QString::number(obj.value(QStringLiteral("bookingDate")).toInt()), QStringLiteral("yyyyMMdd")),
-                                    QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                                    QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTimespan")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                                    obj.value(QStringLiteral("text")).toString(),
-                                    koWertList.at(0).toObject().value(QStringLiteral("value")).toString(),
-                                    koWertList.at(1).toObject().value(QStringLiteral("value")).toString(),
-                                    koWertList.at(2).toObject().value(QStringLiteral("value")).toString()
-                               });
-        }
-
-        Q_EMIT getTimeAssignmentsFinished(true, QString(), timeAssignments);
-    }
-
-    end:
-    m_replies.getTimeAssignments->deleteLater();
-    m_replies.getTimeAssignments = Q_NULLPTR;
-}
-
 void ZeiterfassungApi::createTimeAssignmentRequestFinished()
 {
     if(m_replies.createTimeAssignment->error() != QNetworkReply::NoError)
