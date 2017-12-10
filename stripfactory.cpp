@@ -64,7 +64,12 @@ QWidget *StripFactory::createBookingStartStrip(QWidget *parent)
         return Q_NULLPTR;
     }
 
-    return m_loader->load(&buffer, parent);
+    auto widget = m_loader->load(&buffer, parent);
+
+    if(!widget)
+        m_errorString = m_loader->errorString();
+
+    return widget;
 }
 
 QWidget *StripFactory::createBookingEndStrip(QWidget *parent)
@@ -76,7 +81,12 @@ QWidget *StripFactory::createBookingEndStrip(QWidget *parent)
         return Q_NULLPTR;
     }
 
-    return m_loader->load(&buffer, parent);
+    auto widget = m_loader->load(&buffer, parent);
+
+    if(!widget)
+        m_errorString = m_loader->errorString();
+
+    return widget;
 }
 
 QWidget *StripFactory::createTimeAssignmentStrip(QWidget *parent)
@@ -88,5 +98,10 @@ QWidget *StripFactory::createTimeAssignmentStrip(QWidget *parent)
         return Q_NULLPTR;
     }
 
-    return m_loader->load(&buffer, parent);
+    auto widget = m_loader->load(&buffer, parent);
+
+    if(!widget)
+        m_errorString = m_loader->errorString();
+
+    return widget;
 }

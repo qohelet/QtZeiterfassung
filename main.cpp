@@ -43,6 +43,7 @@ bool loadAndInstallTranslator(QTranslator &translator,
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QApplication app(argc, argv);
 
     qSetMessagePattern("%{time dd.MM.yyyy HH:mm:ss.zzz} "
@@ -199,12 +200,47 @@ int main(int argc, char *argv[])
         reply->deleteLater();
     }
 
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading strip layouts..."));
+
     StripFactory stripFactory(&app);
     if(!stripFactory.load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("strips")))
     {
         QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
                              QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
         return -1;
+    }
+
+    {
+        auto widget = stripFactory.createBookingStartStrip();
+        if(!widget)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+            return -1;
+        }
+        widget->deleteLater();
+    }
+
+    {
+        auto widget = stripFactory.createBookingEndStrip();
+        if(!widget)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+            return -1;
+        }
+        widget->deleteLater();
+    }
+
+    {
+        auto widget = stripFactory.createTimeAssignmentStrip();
+        if(!widget)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+            return -1;
+        }
+        widget->deleteLater();
     }
 
     MainWindow mainWindow(settings, erfassung, userInfo, stripFactory);
