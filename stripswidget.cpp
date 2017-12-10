@@ -25,6 +25,7 @@ StripsWidget::StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory
     m_layout(new QVBoxLayout(this)),
     m_bookingsModel(new BookingsModel(this)),
     m_timeAssignmentsModel(new TimeAssignmentsModel(this)),
+    m_refreshing(false),
     m_startEnabled(false),
     m_endEnabled(false),
     m_getBookingsReply(Q_NULLPTR),
@@ -79,6 +80,11 @@ const QTime StripsWidget::minimumTime() const
     return m_minimumTime;
 }
 
+bool StripsWidget::refreshing() const
+{
+    return m_refreshing;
+}
+
 bool StripsWidget::startEnabled() const
 {
     return m_startEnabled;
@@ -111,6 +117,12 @@ void StripsWidget::refreshBookings()
 
     m_getBookingsReply = m_erfassung.doGetBookings(m_userId, m_date, m_date);
     connect(m_getBookingsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getBookingsFinished);
+
+    if(!m_refreshing)
+    {
+        m_refreshing = true;
+        Q_EMIT refreshingChanged();
+    }
 }
 
 void StripsWidget::refreshTimeAssignments()
@@ -125,6 +137,12 @@ void StripsWidget::refreshTimeAssignments()
 
     m_getTimeAssignmentsReply = m_erfassung.doGetTimeAssignments(m_userId, m_date, m_date);
     connect(m_getTimeAssignmentsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getTimeAssignmentsFinished);
+
+    if(!m_refreshing)
+    {
+        m_refreshing = true;
+        Q_EMIT refreshingChanged();
+    }
 }
 
 bool StripsWidget::createStrips()
@@ -410,7 +428,15 @@ void StripsWidget::getBookingsFinished()
     m_bookings = m_getBookingsReply->bookings();
 
     if(!m_getTimeAssignmentsReply)
+    {
+        if(m_refreshing)
+        {
+            m_refreshing = false;
+            Q_EMIT refreshingChanged();
+        }
+
         createStrips();
+    }
 
     m_getBookingsReply->deleteLater();
     m_getBookingsReply = Q_NULLPTR;
@@ -421,7 +447,15 @@ void StripsWidget::getTimeAssignmentsFinished()
     m_timeAssignments = m_getTimeAssignmentsReply->timeAssignments();
 
     if(!m_getBookingsReply)
+    {
+        if(m_refreshing)
+        {
+            m_refreshing = false;
+            Q_EMIT refreshingChanged();
+        }
+
         createStrips();
+    }
 
     m_getTimeAssignmentsReply->deleteLater();
     m_getTimeAssignmentsReply = Q_NULLPTR;

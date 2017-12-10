@@ -36,7 +36,7 @@ public:
     const QTime timeAssignmentTime() const;
     const QTime lastTimeAssignmentStart() const;
     const QTime minimumTime() const;
-
+    bool refreshing() const;
     bool startEnabled() const;
     bool endEnabled() const;
 
@@ -53,7 +53,7 @@ Q_SIGNALS:
     void timeAssignmentTimeChanged();
     void lastTimeAssignmentStartChanged();
     void minimumTimeChanged();
-
+    void refreshingChanged();
     void startEnabledChanged();
     void endEnabledChanged();
 
@@ -87,6 +87,7 @@ private:
     QTime m_timeAssignmentTime;
     QTime m_lastTimeAssignmentStart;
     QTime m_minimumTime;
+    bool m_refreshing;
     bool m_startEnabled;
     bool m_endEnabled;
 

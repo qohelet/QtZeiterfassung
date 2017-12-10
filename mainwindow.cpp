@@ -56,15 +56,17 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
         auto layout = new QVBoxLayout(widget);
 
+        m_stripsWidgetHeaders[i] = new QLabel(dayName, widget);
         {
-            auto label = new QLabel(dayName, widget);
-            auto font = label->font();
+            auto font = m_stripsWidgetHeaders[i]->font();
             font.setBold(true);
-            label->setFont(font);
-            layout->addWidget(label);
+            m_stripsWidgetHeaders[i]->setFont(font);
         }
+        layout->addWidget(m_stripsWidgetHeaders[i]);
 
         m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_userInfo.userId, m_stripFactory, m_projects, widget);
+        connect(m_stripsWidgets[i], &StripsWidget::refreshingChanged, this, &MainWindow::refreshingChanged);
+
         layout->addWidget(m_stripsWidgets[i++]);
 
         layout->addStretch(1);
@@ -159,10 +161,23 @@ void MainWindow::getProjectsFinished()
 
 void MainWindow::getAuswertungFinished()
 {
+    if(std::none_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget){
+        return stripsWidget->refreshing();
+    }))
+    {
+        ui->actionToday->setEnabled(true);
+        ui->actionRefresh->setEnabled(true);
+        ui->dateEditDate->setEnabled(true);
+        ui->pushButtonPrev->setEnabled(true);
+        ui->pushButtonNext->setEnabled(true);
+    }
+
     if(!m_getAuswertungReply->success())
     {
         m_auswertungDate = QDate();
         QMessageBox::warning(this, tr("Could not load Auswertung!"), tr("Could not load Auswertung!") % "\n\n" % m_getAuswertungReply->message());
+        m_getAuswertungReply->deleteLater();
+        m_getAuswertungReply = Q_NULLPTR;
         return;
     }
 
@@ -199,6 +214,9 @@ void MainWindow::getAuswertungFinished()
 
     m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(gleitzeit));
     m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(urlaubsAnspruch));
+
+    m_getAuswertungReply->deleteLater();
+    m_getAuswertungReply = Q_NULLPTR;
 }
 
 void MainWindow::contextMenuBooking(const QPoint &pos)
@@ -625,6 +643,17 @@ void MainWindow::dateChanged(bool force)
         m_getAuswertungReply = m_erfassung.doGetAuswertung(m_userInfo.userId, auswertungDate);
         connect(m_getAuswertungReply, &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
     }
+
+    if(std::any_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget) {
+        return stripsWidget->refreshing();
+    }) || m_getAuswertungReply)
+    {
+        ui->actionToday->setEnabled(false);
+        ui->actionRefresh->setEnabled(false);
+        ui->dateEditDate->setEnabled(false);
+        ui->pushButtonPrev->setEnabled(false);
+        ui->pushButtonNext->setEnabled(false);
+    }
 }
 
 void MainWindow::openAuswertung()
@@ -661,6 +690,24 @@ void MainWindow::timeAssignmentTimeChanged()
 void MainWindow::minimumTimeChanged()
 {
     ui->timeEditTime->setMinimumTime(m_currentStripWidget->minimumTime());
+}
+
+void MainWindow::refreshingChanged()
+{
+    if(m_getAuswertungReply)
+        return;
+
+    {
+        auto allFinished = std::none_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget){
+            return stripsWidget->refreshing();
+        });
+
+        ui->actionToday->setEnabled(allFinished);
+        ui->actionRefresh->setEnabled(allFinished);
+        ui->dateEditDate->setEnabled(allFinished);
+        ui->pushButtonPrev->setEnabled(allFinished);
+        ui->pushButtonNext->setEnabled(allFinished);
+    }
 }
 
 void MainWindow::startEnabledChanged()

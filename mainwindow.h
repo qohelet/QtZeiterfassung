@@ -37,7 +37,7 @@ private Q_SLOTS:
 
     void timeAssignmentTimeChanged();
     void minimumTimeChanged();
-
+    void refreshingChanged();
     void startEnabledChanged();
     void endEnabledChanged();
 
@@ -62,7 +62,8 @@ private:
     QLabel *m_holidaysLabel;
 
     StripFactory &m_stripFactory;
-    StripsWidget *m_stripsWidgets[7];
+    std::array<QLabel*, 7> m_stripsWidgetHeaders;
+    std::array<StripsWidget*, 7> m_stripsWidgets;
     StripsWidget *m_currentStripWidget;
 };
 
