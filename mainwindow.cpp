@@ -44,6 +44,10 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_erfassung(erfassung),
     m_userInfo(userInfo),
     m_stripFactory(stripFactory),
+    m_getProjectsReply(Q_NULLPTR),
+    m_getAuswertungReply(Q_NULLPTR),
+    m_bookingsModel(new BookingsModel(this)),
+    m_timeAssignmentsModel(new TimeAssignmentsModel(this)),
     m_currentStripWidget(Q_NULLPTR)
 {
     ui->setupUi(this);
@@ -93,14 +97,14 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->pushButtonStart, &QAbstractButton::pressed, this, &MainWindow::pushButtonStartPressed);
     connect(ui->pushButtonEnd, &QAbstractButton::pressed, this, &MainWindow::pushButtonEndPressed);
 
-    connect(ui->treeViewBookings, &QWidget::customContextMenuRequested,
-            this,                 &MainWindow::contextMenuBooking);
-    connect(ui->treeViewTimeAssignments, &QWidget::customContextMenuRequested,
-            this,                        &MainWindow::contextMenuTimeAssignment);
+    ui->treeViewBookings->setModel(m_bookingsModel);
+    connect(m_bookingsModel, &BookingsModel::enabledChanged, ui->treeViewBookings, &QWidget::setEnabled);
+    connect(ui->treeViewBookings, &QWidget::customContextMenuRequested, this, &MainWindow::contextMenuBooking);
 
-    ui->statusbar->addPermanentWidget(m_workingTimeLabel = new QLabel(ui->statusbar));
-    m_workingTimeLabel->setFrameShape(QFrame::Panel);
-    m_workingTimeLabel->setFrameShadow(QFrame::Sunken);
+    ui->treeViewTimeAssignments->setModel(m_timeAssignmentsModel);
+    connect(m_timeAssignmentsModel, &TimeAssignmentsModel::enabledChanged, ui->treeViewTimeAssignments, &QWidget::setEnabled);
+    connect(ui->treeViewTimeAssignments, &QWidget::customContextMenuRequested, this, &MainWindow::contextMenuTimeAssignment);
+
     ui->statusbar->addPermanentWidget(m_balanceLabel = new QLabel(ui->statusbar));
     m_balanceLabel->setFrameShape(QFrame::Panel);
     m_balanceLabel->setFrameShadow(QFrame::Sunken);
@@ -202,10 +206,11 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 {
     auto index = ui->treeViewBookings->indexAt(pos);
 
-    if(index.isValid())
+    if(!index.isValid())
     {
         QMenu menu;
         auto createAction = menu.addAction(tr("Create booking"));
+        auto refreshAction = menu.addAction(QIcon(QPixmap(QStringLiteral(":/zeiterfassung/images/refresh.png"))), tr("Refresh bookings"));
         auto selectedAction = menu.exec(ui->treeViewBookings->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
@@ -237,6 +242,10 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 
                 reply->deleteLater();
             }
+        }
+        else if(selectedAction == refreshAction)
+        {
+            m_currentStripWidget->refreshBookings();
         }
     }
     else
@@ -318,6 +327,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
     {
         QMenu menu;
         auto createAction = menu.addAction(tr("Create time assignment"));
+        auto refreshAction = menu.addAction(QIcon(QPixmap(QStringLiteral(":/zeiterfassung/images/refresh.png"))), tr("Refresh time assignments"));
         auto selectedAction = menu.exec(ui->treeViewTimeAssignments->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
@@ -349,6 +359,10 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 reply->deleteLater();
             }
+        }
+        else if(selectedAction == refreshAction)
+        {
+            m_currentStripWidget->refreshTimeAssignments();
         }
     }
     else
@@ -451,14 +465,14 @@ void MainWindow::pushButtonStartPressed()
         reply->deleteLater();
     }
 
-    auto timeAssignmentTime = m_stripsWidgets[0]->timeAssignmentTime();
+    auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
 
     if(m_currentStripWidget->timeAssignments().rbegin() != m_currentStripWidget->timeAssignments().rend())
     {
         auto timeAssignment = *m_currentStripWidget->timeAssignments().rbegin();
         if(timeAssignment.timespan == QTime(0, 0))
         {
-            auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
+            auto timespan = timeBetween(m_currentStripWidget->lastTimeAssignmentStart(), ui->timeEditTime->time());
 
             auto reply = m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
                                                             timeAssignment.time, timespan,
@@ -522,7 +536,7 @@ void MainWindow::pushButtonEndPressed()
         auto timeAssignment = *m_currentStripWidget->timeAssignments().rbegin();
         Q_ASSERT(timeAssignment.timespan == QTime(0, 0));
 
-        auto timespan = timeBetween(m_stripsWidgets[0]->lastTimeAssignmentStart(), ui->timeEditTime->time());
+        auto timespan = timeBetween(m_currentStripWidget->lastTimeAssignmentStart(), ui->timeEditTime->time());
 
         auto reply = m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
                                                         timeAssignment.time, timespan,
@@ -586,7 +600,6 @@ void MainWindow::dateChanged(bool force)
         {
             if(m_currentStripWidget)
             {
-                disconnect(m_currentStripWidget, &StripsWidget::timeAssignmentTimeChanged, this, &MainWindow::timeAssignmentTimeChanged);
                 disconnect(m_currentStripWidget, &StripsWidget::minimumTimeChanged, this, &MainWindow::minimumTimeChanged);
                 disconnect(m_currentStripWidget, &StripsWidget::startEnabledChanged, this, &MainWindow::startEnabledChanged);
                 disconnect(m_currentStripWidget, &StripsWidget::endEnabledChanged, this, &MainWindow::endEnabledChanged);
@@ -594,15 +607,13 @@ void MainWindow::dateChanged(bool force)
 
             m_currentStripWidget = m_stripsWidgets[i];
 
-            ui->treeViewBookings->setModel(m_currentStripWidget->bookingsModel());
-            ui->treeViewTimeAssignments->setModel(m_currentStripWidget->timeAssignmentsModel());
+            m_bookingsModel->setStripsWidget(m_currentStripWidget);
+            m_timeAssignmentsModel->setStripsWidget(m_currentStripWidget);
 
-            timeAssignmentTimeChanged();
             minimumTimeChanged();
             startEnabledChanged();
             endEnabledChanged();
 
-            connect(m_currentStripWidget, &StripsWidget::timeAssignmentTimeChanged, this, &MainWindow::timeAssignmentTimeChanged);
             connect(m_currentStripWidget, &StripsWidget::minimumTimeChanged, this, &MainWindow::minimumTimeChanged);
             connect(m_currentStripWidget, &StripsWidget::startEnabledChanged, this, &MainWindow::startEnabledChanged);
             connect(m_currentStripWidget, &StripsWidget::endEnabledChanged, this, &MainWindow::endEnabledChanged);
@@ -655,21 +666,8 @@ void MainWindow::openAuswertung()
     }
 }
 
-void MainWindow::timeAssignmentTimeChanged()
-{
-    qDebug() << "called" << m_currentStripWidget->timeAssignmentTime();
-    auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
-
-    m_workingTimeLabel->setText(tr("%0: %1")
-                                .arg(tr("Assigned time"))
-                                .arg(timeAssignmentTime.isValid() ?
-                                         tr("%0h").arg(timeAssignmentTime.toString(QStringLiteral("HH:mm"))):
-                                         tr("???")));
-}
-
 void MainWindow::minimumTimeChanged()
 {
-    qDebug() << "called" << m_currentStripWidget->minimumTime();
     ui->timeEditTime->setMinimumTime(m_currentStripWidget->minimumTime());
 }
 
@@ -693,8 +691,6 @@ void MainWindow::refreshingChanged()
 
 void MainWindow::startEnabledChanged()
 {
-    qDebug() << "called" << m_currentStripWidget->startEnabled();
-
     auto startEnabled = m_currentStripWidget->startEnabled();
     auto endEnabled = m_currentStripWidget->endEnabled();
 
@@ -711,8 +707,6 @@ void MainWindow::startEnabledChanged()
 
 void MainWindow::endEnabledChanged()
 {
-    qDebug() << "called" << m_currentStripWidget->endEnabled();
-
     auto startEnabled = m_currentStripWidget->startEnabled();
     auto endEnabled = m_currentStripWidget->endEnabled();
 

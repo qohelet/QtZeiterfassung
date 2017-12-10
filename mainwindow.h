@@ -15,6 +15,8 @@ class GetProjectsReply;
 class GetAuswertungReply;
 class StripFactory;
 class StripsWidget;
+class BookingsModel;
+class TimeAssignmentsModel;
 
 class MainWindow : public QMainWindow
 {
@@ -35,7 +37,6 @@ private Q_SLOTS:
     void dateChanged(bool force = false);
     void openAuswertung();
 
-    void timeAssignmentTimeChanged();
     void minimumTimeChanged();
     void refreshingChanged();
     void startEnabledChanged();
@@ -48,20 +49,22 @@ private:
     ZeiterfassungSettings &m_settings;
     ZeiterfassungApi &m_erfassung;
     const ZeiterfassungApi::UserInfo &m_userInfo;
+    StripFactory &m_stripFactory;
 
     GetProjectsReply *m_getProjectsReply;
     GetAuswertungReply *m_getAuswertungReply;
+
+    BookingsModel *m_bookingsModel;
+    TimeAssignmentsModel *m_timeAssignmentsModel;
 
     QMap<QString, QString> m_projects;
 
     QDate m_auswertungDate;
     QByteArray m_auswertung;
 
-    QLabel *m_workingTimeLabel;
     QLabel *m_balanceLabel;
     QLabel *m_holidaysLabel;
 
-    StripFactory &m_stripFactory;
     std::array<StripsWidget*, 7> m_stripsWidgets;
     StripsWidget *m_currentStripWidget;
 };

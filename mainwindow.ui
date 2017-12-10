@@ -196,7 +196,7 @@
           <x>0</x>
           <y>0</y>
           <width>1220</width>
-          <height>454</height>
+          <height>438</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="layoutWeek"/>
@@ -254,7 +254,7 @@
      <x>0</x>
      <y>0</y>
      <width>1242</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -337,7 +337,7 @@
      <normaloff>:/zeiterfassung/images/refresh.png</normaloff>:/zeiterfassung/images/refresh.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Refresh</string>
+    <string>&amp;Refresh everything</string>
    </property>
   </action>
   <action name="actionAuswertung">

@@ -11,8 +11,6 @@ template <class Key, class T> class QMap;
 template <typename T> class QVector;
 
 class StripFactory;
-class BookingsModel;
-class TimeAssignmentsModel;
 class GetBookingsReply;
 class GetTimeAssignmentsReply;
 
@@ -24,9 +22,6 @@ public:
     explicit StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory &stripFactory,
                           const QMap<QString, QString> &projects, QWidget *parent = Q_NULLPTR);
 
-    BookingsModel *bookingsModel() const;
-    TimeAssignmentsModel *timeAssignmentsModel() const;
-
     const QDate &date() const;
     void setDate(const QDate &date);
 
@@ -37,6 +32,8 @@ public:
     const QTime &lastTimeAssignmentStart() const;
     const QTime &minimumTime() const;
     bool refreshing() const;
+    bool refreshingBookings() const;
+    bool refreshingTimeAssignments() const;
     bool startEnabled() const;
     bool endEnabled() const;
 
@@ -54,6 +51,8 @@ Q_SIGNALS:
     void lastTimeAssignmentStartChanged(const QTime &lastTimeAssignmentStart);
     void minimumTimeChanged(const QTime &minimumTime);
     void refreshingChanged(bool refreshing);
+    void refreshingBookingsChanged(bool refreshingBookings);
+    void refreshingTimeAssignmentsChanged(bool refreshingTimeAssignments);
     void startEnabledChanged(bool startEnabled);
     void endEnabledChanged(bool endEnabled);
 
@@ -78,9 +77,6 @@ private:
 
     QBoxLayout *m_layout;
 
-    BookingsModel *m_bookingsModel;
-    TimeAssignmentsModel *m_timeAssignmentsModel;
-
     QDate m_date;
 
     QVector<ZeiterfassungApi::Booking> m_bookings;
@@ -90,6 +86,8 @@ private:
     QTime m_lastTimeAssignmentStart;
     QTime m_minimumTime;
     bool m_refreshing;
+    bool m_refreshingBookings;
+    bool m_refreshingTimeAssignments;
     bool m_startEnabled;
     bool m_endEnabled;
 

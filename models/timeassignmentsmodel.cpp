@@ -1,19 +1,58 @@
 #include "timeassignmentsmodel.h"
 
+#include <QDebug>
+
 #include "stripswidget.h"
 
-TimeAssignmentsModel::TimeAssignmentsModel(StripsWidget *stripsWidget) :
-    QAbstractListModel(stripsWidget),
-    m_stripsWidget(stripsWidget)
+TimeAssignmentsModel::TimeAssignmentsModel(QObject *parent) :
+    QAbstractListModel(parent),
+    m_stripsWidget(Q_NULLPTR),
+    m_enabled(false)
 {
-    connect(stripsWidget, &StripsWidget::timeAssignmentsChanged, this, &TimeAssignmentsModel::timeAssignmentsChanged);
+}
+
+StripsWidget *TimeAssignmentsModel::stripsWidget() const
+{
+    return m_stripsWidget;
+}
+
+void TimeAssignmentsModel::setStripsWidget(StripsWidget *stripsWidget)
+{
+    if(m_stripsWidget != stripsWidget)
+    {
+        if(m_stripsWidget)
+        {
+            disconnect(m_stripsWidget, &StripsWidget::timeAssignmentsChanged, this, &TimeAssignmentsModel::timeAssignmentsChanged);
+            disconnect(m_stripsWidget, &StripsWidget::refreshingTimeAssignmentsChanged, this, &TimeAssignmentsModel::refreshingChanged);
+        }
+
+        beginResetModel();
+        m_stripsWidget = stripsWidget;
+        endResetModel();
+
+        if(m_stripsWidget)
+        {
+            connect(m_stripsWidget, &StripsWidget::timeAssignmentsChanged, this, &TimeAssignmentsModel::timeAssignmentsChanged);
+            connect(m_stripsWidget, &StripsWidget::refreshingTimeAssignmentsChanged, this, &TimeAssignmentsModel::refreshingChanged);
+
+            if(m_enabled == m_stripsWidget->refreshingTimeAssignments())
+                Q_EMIT enabledChanged(m_enabled = !m_stripsWidget->refreshingTimeAssignments());
+        }
+        else if(m_enabled)
+            Q_EMIT enabledChanged(m_enabled = false);
+    }
+}
+
+bool TimeAssignmentsModel::enabled() const
+{
+    return m_enabled;
 }
 
 int TimeAssignmentsModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return m_stripsWidget->timeAssignments().count();
+    return m_stripsWidget ? m_stripsWidget->timeAssignments().count() : 0;
 }
 
 int TimeAssignmentsModel::columnCount(const QModelIndex &parent) const
@@ -25,6 +64,7 @@ int TimeAssignmentsModel::columnCount(const QModelIndex &parent) const
 
 QVariant TimeAssignmentsModel::data(const QModelIndex &index, int role) const
 {
+    Q_ASSERT(m_stripsWidget != Q_NULLPTR);
     Q_ASSERT(index.row() < m_stripsWidget->timeAssignments().count());
     const auto &timeAssignment = m_stripsWidget->timeAssignments().at(index.row());
 
@@ -76,4 +116,10 @@ void TimeAssignmentsModel::timeAssignmentsChanged()
 {
     beginResetModel();
     endResetModel();
+}
+
+void TimeAssignmentsModel::refreshingChanged(bool refreshing)
+{
+    if(m_enabled == refreshing)
+        Q_EMIT enabledChanged(m_enabled = !refreshing);
 }
