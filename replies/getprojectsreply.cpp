@@ -1,7 +1,86 @@
 #include "getprojectsreply.h"
 
-GetProjectsReply::GetProjectsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
-    : ZeiterfassungReply(zeiterfassung)
-{
+#include <QNetworkReply>
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
 
+GetProjectsReply::GetProjectsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+    ZeiterfassungReply(zeiterfassung),
+    m_reply(reply)
+{
+    connect(reply, &QNetworkReply::finished, this, &ZeiterfassungReply::requestFinished);
+}
+
+const QVector<ZeiterfassungApi::Project> &GetProjectsReply::projects() const
+{
+    return m_projects;
+}
+
+void GetProjectsReply::requestFinished()
+{
+    if(m_replies.getProjects->error() != QNetworkReply::NoError)
+    {
+        setSuccess(false);
+        setMessage(tr("Request error occured: %0").arg(m_replies.getProjects->error()));
+        goto end;
+    }
+
+    {
+        QJsonParseError error;
+        QJsonDocument document = QJsonDocument::fromJson(m_replies.getProjects->readAll(), &error);
+        if(error.error != QJsonParseError::NoError)
+        {
+            setSuccess(false);
+            setMessage(tr("Parsing JSON failed: %0").arg(error.errorString()));
+            goto end;
+        }
+
+        if(!document.isObject())
+        {
+            setSuccess(false);
+            setMessage(tr("JSON document is not an object!"));
+            goto end;
+        }
+
+        auto rootObj = document.object();
+
+        if(!rootObj.contains(QStringLiteral("elements")))
+        {
+            setSuccess(false);
+            setMessage(tr("JSON does not contain elements!"));
+            goto end;
+        }
+
+        auto elements = rootObj.value(QStringLiteral("elements"));
+
+        if(!elements.isArray())
+        {
+            setSuccess(false);
+            setMessage(tr("elements is not an array!"));
+            goto end;
+        }
+
+        auto elementsArr = elements.toArray();
+
+        setSuccess(true);
+        m_projects.clear();
+        for(const auto &val : elementsArr)
+        {
+            auto obj = val.toObject();
+
+            m_projects.append({
+                obj.value(QStringLiteral("label")).toString(),
+                obj.value(QStringLiteral("value")).toString()
+            });
+        }
+    }
+
+    end:
+    m_replies.getProjects->deleteLater();
+    m_replies.getProjects = Q_NULLPTR;
+
+    Q_EMIT finished();
 }

@@ -291,66 +291,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     return new GetAuswertungReply(reply, this);
 }
 
-void ZeiterfassungApi::getProjectsRequestFinished()
-{
-    if(m_replies.getProjects->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT getProjectsFinished(false, tr("Request error occured: %0").arg(m_replies.getProjects->error()), {});
-        goto end;
-    }
-
-    {
-        QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.getProjects->readAll(), &error);
-        if(error.error != QJsonParseError::NoError)
-        {
-            Q_EMIT getProjectsFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), {});
-            goto end;
-        }
-
-        if(!document.isObject())
-        {
-            Q_EMIT getProjectsFinished(false, tr("JSON document is not an object!"), {});
-            goto end;
-        }
-
-        auto rootObj = document.object();
-
-        if(!rootObj.contains(QStringLiteral("elements")))
-        {
-            Q_EMIT getProjectsFinished(false, tr("JSON does not contain elements!"), {});
-            goto end;
-        }
-
-        auto elements = rootObj.value(QStringLiteral("elements"));
-
-        if(!elements.isArray())
-        {
-            Q_EMIT getProjectsFinished(false, tr("elements is not an array!"), {});
-            goto end;
-        }
-
-        auto elementsArr = elements.toArray();
-        QVector<Project> projects;
-
-        for(const auto &val : elementsArr)
-        {
-            auto obj = val.toObject();
-
-            projects.append({
-                                obj.value(QStringLiteral("label")).toString(),
-                                obj.value(QStringLiteral("value")).toString()
-                            });
-        }
-
-        Q_EMIT getProjectsFinished(true, QString(), projects);
-    }
-
-    end:
-    m_replies.getProjects->deleteLater();
-    m_replies.getProjects = Q_NULLPTR;
-}
-
 void ZeiterfassungApi::getAuswertungRequest0Finished()
 {
     if(m_replies.getAuswertung->error() != QNetworkReply::NoError)
