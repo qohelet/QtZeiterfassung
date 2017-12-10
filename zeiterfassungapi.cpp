@@ -291,54 +291,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     return new GetAuswertungReply(reply, this);
 }
 
-void ZeiterfassungApi::getBookingsRequestFinished()
-{
-    if(m_replies.getBookings->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT getBookingsFinished(false, tr("Request error occured: %0").arg(m_replies.getBookings->error()), {});
-        goto end;
-    }
-
-    {
-        QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.getBookings->readAll(), &error);
-        if(error.error != QJsonParseError::NoError)
-        {
-            Q_EMIT getBookingsFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), {});
-            goto end;
-        }
-
-        if(!document.isArray())
-        {
-            Q_EMIT getBookingsFinished(false, tr("JSON document is not an array!"), {});
-            goto end;
-        }
-
-        auto arr = document.array();
-        QVector<Booking> bookings;
-
-        for(const auto &val : arr)
-        {
-            auto obj = val.toObject();
-
-            bookings.append({
-                                 obj.value(QStringLiteral("bookingNr")).toInt(),
-                                 QDate::fromString(QString::number(obj.value(QStringLiteral("bookingDate")).toInt()), QStringLiteral("yyyyMMdd")),
-                                 QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                                 QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTimespan")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                                 obj.value(QStringLiteral("bookingType")).toString(),
-                                 obj.value(QStringLiteral("text")).toString()
-                             });
-        }
-
-        Q_EMIT getBookingsFinished(true, QString(), bookings);
-    }
-
-    end:
-    m_replies.getBookings->deleteLater();
-    m_replies.getBookings = Q_NULLPTR;
-}
-
 void ZeiterfassungApi::createBookingRequestFinished()
 {
     if(m_replies.createBooking->error() != QNetworkReply::NoError)

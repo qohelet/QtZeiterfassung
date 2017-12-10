@@ -2,6 +2,7 @@
 #define GETBOOKINGSREPLY_H
 
 #include "zeiterfassungreply.h"
+#include "zeiterfassungapi.h"
 
 class QNetworkReply;
 
@@ -11,6 +12,15 @@ class GetBookingsReply : public ZeiterfassungReply
 
 public:
     GetBookingsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+
+    const QVector<ZeiterfassungApi::Booking> &bookings() const;
+
+private Q_SLOTS:
+    void requestFinished();
+
+private:
+    QNetworkReply *m_reply;
+    QVector<ZeiterfassungApi::Booking> m_bookings;
 };
 
 #endif // GETBOOKINGSREPLY_H
