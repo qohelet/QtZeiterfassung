@@ -11,6 +11,13 @@ class UpdateBookingReply : public ZeiterfassungReply
 
 public:
     UpdateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+
+private Q_SLOTS:
+    void requestFinished();
+
+private:
+    QNetworkReply *m_reply;
+    int m_bookingId;
 };
 
 #endif // UPDATEBOOKINGREPLY_H

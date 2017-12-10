@@ -291,47 +291,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     return new GetAuswertungReply(reply, this);
 }
 
-void ZeiterfassungApi::updateBookingRequestFinished()
-{
-    if(m_replies.updateBooking->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT updateBookingFinished(false, tr("Request error occured: %0").arg(m_replies.updateBooking->error()), -1);
-        goto end;
-    }
-
-    {
-        QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.updateBooking->readAll(), &error);
-        if(error.error != QJsonParseError::NoError)
-        {
-            Q_EMIT updateBookingFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), -1);
-            goto end;
-        }
-
-        if(!document.isObject())
-        {
-            Q_EMIT updateBookingFinished(false, tr("JSON document is not an object!"), -1);
-            goto end;
-        }
-
-        auto obj = document.object();
-
-        if(!obj.contains(QStringLiteral("bookingNr")))
-        {
-            Q_EMIT updateBookingFinished(false, tr("JSON does not contain bookingNr!"), -1);
-            goto end;
-        }
-
-        auto bookingId = obj.value(QStringLiteral("bookingNr")).toInt();
-
-        Q_EMIT updateBookingFinished(true, QString(), bookingId);
-    }
-
-    end:
-    m_replies.updateBooking->deleteLater();
-    m_replies.updateBooking = Q_NULLPTR;
-}
-
 void ZeiterfassungApi::deleteBookingRequestFinished()
 {
     if(m_replies.deleteBooking->error() != QNetworkReply::NoError)
