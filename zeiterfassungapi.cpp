@@ -3,14 +3,21 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QJsonParseError>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonValue>
 #include <QStringBuilder>
 
-QString QJsonValue::toString() const{ return toString(QString()); }
+#include "replies/createbookingreply.h"
+#include "replies/createtimeassignmentreply.h"
+#include "replies/deletebookingreply.h"
+#include "replies/deletetimeassignment.h"
+#include "replies/getauswertungreply.h"
+#include "replies/getbookingsreply.h"
+#include "replies/getprojectsreply.h"
+#include "replies/gettimeassignmentsreply.h"
+#include "replies/loginpagereply.h"
+#include "replies/loginreply.h"
+#include "replies/updatebookingreply.h"
+#include "replies/updatetimeassignmentreply.h"
+#include "replies/userinforeply.h"
 
 ZeiterfassungApi::ZeiterfassungApi(const QString &url, QObject *parent) :
     QObject(parent),
@@ -38,67 +45,40 @@ QNetworkAccessManager *ZeiterfassungApi::manager() const
     return m_manager;
 }
 
-bool ZeiterfassungApi::doLoginPage()
+LoginPageReply *ZeiterfassungApi::doLoginPage()
 {
-    if(m_replies.login)
-    {
-        qWarning() << "another loginPage already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(m_url % "pages/login.jsp"));
 
-    m_replies.loginPage = m_manager->get(request);
-    connect(m_replies.loginPage, &QNetworkReply::finished, this, &ZeiterfassungApi::loginPageRequestFinished);
+    auto reply = m_manager->get(request);
 
-    return true;
+    return new LoginPageReply(reply, this);
 }
 
-bool ZeiterfassungApi::doLogin(const QString &username, const QString &password)
+LoginReply *ZeiterfassungApi::doLogin(const QString &username, const QString &password)
 {
-    if(m_replies.login)
-    {
-        qWarning() << "another login already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(m_url % "pages/j_spring_security_check"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setMaximumRedirectsAllowed(0);
 
-    m_replies.login = m_manager->post(request, QStringLiteral("j_username=%0&j_password=%1&login=Anmelden").arg(username).arg(password).toUtf8());
-    connect(m_replies.login, &QNetworkReply::finished, this, &ZeiterfassungApi::loginRequestFinished);
+    auto data = QStringLiteral("j_username=%0&j_password=%1&login=Anmelden").arg(username).arg(password).toUtf8();
 
-    return true;
+    auto reply = m_manager->post(request, data);
+
+    return new LoginReply(reply, this);
 }
 
-bool ZeiterfassungApi::doUserInfo()
+UserInfoReply *ZeiterfassungApi::doUserInfo()
 {
-    if(m_replies.userInfo)
-    {
-        qWarning() << "another userInfo already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(m_url % "json/evoAppsUserInfoDialogController/load-EvoAppsUserInfoTO"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("home"));
 
-    m_replies.userInfo = m_manager->get(request);
-    connect(m_replies.userInfo, &QNetworkReply::finished, this, &ZeiterfassungApi::userInfoRequestFinished);
+    auto reply = m_manager->get(request);
 
-    return true;
+    return new UserInfoReply(reply, this);
 }
 
-#define NAMEOF(x) #x
-
-bool ZeiterfassungApi::doGetBookings(int userId, const QDate &start, const QDate &end)
+GetBookingsReply *ZeiterfassungApi::doGetBookings(int userId, const QDate &start, const QDate &end)
 {
-    if(m_replies.getBookings)
-    {
-        qWarning() << "another getBookings already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/bookings?start=%1&end=%2&pnrLst=%3")
                                  .arg(m_url)
                                  .arg(start.toString(QStringLiteral("yyyyMMdd")))
@@ -106,21 +86,13 @@ bool ZeiterfassungApi::doGetBookings(int userId, const QDate &start, const QDate
                                  .arg(userId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.getBookings = m_manager->get(request);
-    connect(m_replies.getBookings, &QNetworkReply::finished,
-            this,                   &ZeiterfassungApi::getBookingsRequestFinished);
+    auto reply = m_manager->get(request);
 
-    return true;
+    return new GetBookingsReply(reply, this);
 }
 
-bool ZeiterfassungApi::doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
+CreateBookingReply *ZeiterfassungApi::doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
 {
-    if(m_replies.createBooking)
-    {
-        qWarning() << "another createBooking already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(m_url % "json/booking"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
@@ -136,21 +108,13 @@ bool ZeiterfassungApi::doCreateBooking(int userId, const QDate &date, const QTim
     obj[QStringLiteral("bewEinh")] = QStringLiteral("");
     obj[QStringLiteral("text")] = text;
 
-    m_replies.createBooking = m_manager->post(request, QJsonDocument(obj).toJson());
-    connect(m_replies.createBooking, &QNetworkReply::finished,
-            this,                    &ZeiterfassungApi::createBookingRequestFinished);
+    auto reply = m_manager->post(request, QJsonDocument(obj).toJson());
 
-    return true;
+    return new CreateBookingReply(reply, this);
 }
 
-bool ZeiterfassungApi::doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
+UpdateBookingReply *ZeiterfassungApi::doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time, const QTime &timespan, const QString &type, const QString &text)
 {
-    if(m_replies.updateBooking)
-    {
-        qWarning() << "another updateBooking already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/booking/%1").arg(m_url).arg(bookingId)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
@@ -167,41 +131,27 @@ bool ZeiterfassungApi::doUpdateBooking(int bookingId, int userId, const QDate &d
     obj[QStringLiteral("bewEinh")] = QStringLiteral("");
     obj[QStringLiteral("text")] = text;
 
-    m_replies.updateBooking = m_manager->put(request, QJsonDocument(obj).toJson());
-    connect(m_replies.updateBooking, &QNetworkReply::finished,
-            this,                    &ZeiterfassungApi::updateBookingRequestFinished);
+    auto data = QJsonDocument(obj).toJson();
 
-    return true;
+    auto reply = m_manager->put(request, data);
+
+    return new UpdateBookingReply(reply, this);
 }
 
-bool ZeiterfassungApi::doDeleteBooking(int bookingId)
+DeleteBookingReply *ZeiterfassungApi::doDeleteBooking(int bookingId)
 {
-    if(m_replies.deleteBooking)
-    {
-        qWarning() << "another deleteBooking already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/booking/%1?text=")
                                  .arg(m_url)
                                  .arg(bookingId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
     m_replies.deleteBooking = m_manager->deleteResource(request);
-    connect(m_replies.deleteBooking, &QNetworkReply::finished,
-            this,                    &ZeiterfassungApi::deleteBookingRequestFinished);
 
-    return true;
+    return new DeleteBookingReply(reply, this);
 }
 
-bool ZeiterfassungApi::doGetTimeAssignments(int userId, const QDate &start, const QDate &end)
+GetTimeAssignmentsReply *ZeiterfassungApi::doGetTimeAssignments(int userId, const QDate &start, const QDate &end)
 {
-    if(m_replies.getTimeAssignments)
-    {
-        qWarning() << "another getTimeAssignments already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking?start=%1&end=%2&pnrLst=%3")
                                  .arg(m_url)
                                  .arg(start.toString(QStringLiteral("yyyyMMdd")))
@@ -209,23 +159,15 @@ bool ZeiterfassungApi::doGetTimeAssignments(int userId, const QDate &start, cons
                                  .arg(userId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.getTimeAssignments = m_manager->get(request);
-    connect(m_replies.getTimeAssignments, &QNetworkReply::finished,
-            this,                      &ZeiterfassungApi::getTimeAssignmentsRequestFinished);
+    auto reply = m_manager->get(request);
 
-    return true;
+    return new GetTimeAssignmentsReply(reply, this);
 }
 
-bool ZeiterfassungApi::doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
+CreateTimeAssignmentReply *ZeiterfassungApi::doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
                                            const QString &project, const QString &subproject, const QString &workpackage,
                                            const QString &text)
 {
-    if(m_replies.createTimeAssignment)
-    {
-        qWarning() << "another createTimeAssignment already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(m_url % "json/azebooking"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
@@ -257,23 +199,17 @@ bool ZeiterfassungApi::doCreateTimeAssignment(int userId, const QDate &date, con
         obj[QStringLiteral("koWertList")] = koWertList;
     }
 
-    m_replies.createTimeAssignment = m_manager->post(request, QJsonDocument(obj).toJson());
-    connect(m_replies.createTimeAssignment, &QNetworkReply::finished,
-            this,                       &ZeiterfassungApi::createTimeAssignmentRequestFinished);
+    auto data = QJsonDocument(obj).toJson();
 
-    return true;
+    auto reply = m_manager->post(request, data);
+
+    return new CreateTimeAssignmentReply(reply, this);
 }
 
-bool ZeiterfassungApi::doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
+UpdateTimeAssignmentReply *ZeiterfassungApi::doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
                                            const QTime &timespan, const QString &project, const QString &subproject,
                                            const QString &workpackage, const QString &text)
 {
-    if(m_replies.updateTimeAssignment)
-    {
-        qWarning() << "another updateTimeAssignment already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1").arg(m_url).arg(timeAssignmentId)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
@@ -310,92 +246,49 @@ bool ZeiterfassungApi::doUpdateTimeAssignment(int timeAssignmentId, int userId, 
         obj[QStringLiteral("koWertList")] = koWertList;
     }
 
-    m_replies.updateTimeAssignment = m_manager->put(request, QJsonDocument(obj).toJson());
-    connect(m_replies.updateTimeAssignment, &QNetworkReply::finished,
-            this,                       &ZeiterfassungApi::updateTimeAssignmentRequestFinished);
+    auto data = QJsonDocument(obj).toJson();
 
-    return true;
+    auto reply = m_manager->put(request, data);
+
+    return new UpdateTimeAssignmentReply(reply, this);
 }
 
-bool ZeiterfassungApi::doDeleteTimeAssignment(int timeAssignmentId)
+DeleteTimeAssignmentReply *ZeiterfassungApi::doDeleteTimeAssignment(int timeAssignmentId)
 {
-    if(m_replies.deleteTimeAssignment)
-    {
-        qWarning() << "another deleteTimeAssignment already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1")
                                  .arg(m_url)
                                  .arg(timeAssignmentId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.deleteTimeAssignment = m_manager->deleteResource(request);
-    connect(m_replies.deleteTimeAssignment, &QNetworkReply::finished,
-            this,                       &ZeiterfassungApi::deleteTimeAssignmentRequestFinished);
+    auto reply = m_manager->deleteResource(request);
 
-    return true;
+    return new DeleteTimeAssignmentReply(reply,this);
 }
 
-bool ZeiterfassungApi::doGetProjects(int userId, const QDate &date)
+GetProjectsReply *ZeiterfassungApi::doGetProjects(int userId, const QDate &date)
 {
-    if(m_replies.getProjects)
-    {
-        qWarning() << "another getProjects already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/combobox?persnr=%1&date=%2&dqkey=KOST&kowert0=&kowert1=&kowert2=&term=")
                                  .arg(m_url)
                                  .arg(userId)
                                  .arg(date.toString(QStringLiteral("yyyyMMdd")))));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.getProjects = m_manager->get(request);
-    connect(m_replies.getProjects, &QNetworkReply::finished, this, &ZeiterfassungApi::getProjectsRequestFinished);
+    auto reply = m_manager->get(request);
 
-    return true;
+    return new GetProjectsReply(reply, this);
 }
 
-bool ZeiterfassungApi::doGetAuswertung(int userId, const QDate &date)
+GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &date)
 {
-    if(m_replies.getAuswertung)
-    {
-        qWarning() << "another getAuswertung already processing!";
-        return false;
-    }
-
     QNetworkRequest request(QUrl(QStringLiteral("%0json/auswertung/month?persNr=%1&date=%2")
                                  .arg(m_url)
                                  .arg(userId)
                                  .arg(date.toString(QStringLiteral("yyyyMMdd")))));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
-    m_replies.getAuswertung = m_manager->get(request);
-    connect(m_replies.getAuswertung, &QNetworkReply::finished, this, &ZeiterfassungApi::getAuswertungRequest0Finished);
+    auto reply = m_manager->get(request);
 
-    return true;
-}
-
-void ZeiterfassungApi::loginPageRequestFinished()
-{
-    if(m_replies.loginPage->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT loginPageFinished(false, tr("Request error occured: %0").arg(m_replies.loginPage->error()));
-        goto end;
-    }
-
-    if(!m_replies.loginPage->readAll().contains(QByteArrayLiteral("evoApps Anmeldung")))
-    {
-        Q_EMIT loginPageFinished(false, tr("Could not find necessary keywords in login page!"));
-        goto end;
-    }
-
-    Q_EMIT loginPageFinished(true, QString());
-
-    end:
-    m_replies.loginPage->deleteLater();
-    m_replies.loginPage = Q_NULLPTR;
+    return new GetAuswertungReply(reply, this);
 }
 
 void ZeiterfassungApi::loginRequestFinished()

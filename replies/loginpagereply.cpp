@@ -1,7 +1,35 @@
 #include "loginpagereply.h"
 
-LoginPageReply::LoginPageReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung)
-    : ZeiterfassungReply(zeiterfassung)
-{
+#include <QNetworkReply>
 
+LoginPageReply::LoginPageReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+    ZeiterfassungReply(zeiterfassung),
+    m_reply(reply)
+{
+    connect(reply, &QNetworkReply::finished, this, &LoginPageReply::requestFinished);
+}
+
+void LoginPageReply::requestFinished()
+{
+    if(m_reply->error() != QNetworkReply::NoError)
+    {
+        setSuccess(false);
+        setMessage(tr("Request error occured: %0").arg(m_reply->error()));
+        goto end;
+    }
+
+    if(!m_reply->readAll().contains(QByteArrayLiteral("evoApps Anmeldung")))
+    {
+        setSuccess(false);
+        setMessage(tr("Could not find necessary keywords in login page!"));
+        goto end;
+    }
+
+    setSuccess(true);
+
+    end:
+    m_reply->deleteLater();
+    m_reply = Q_NULLPTR;
+
+    Q_EMIT finished();
 }
