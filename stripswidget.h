@@ -33,9 +33,9 @@ public:
     const QVector<ZeiterfassungApi::Booking> &bookings() const;
     const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments() const;
 
-    const QTime timeAssignmentTime() const;
-    const QTime lastTimeAssignmentStart() const;
-    const QTime minimumTime() const;
+    const QTime &timeAssignmentTime() const;
+    const QTime &lastTimeAssignmentStart() const;
+    const QTime &minimumTime() const;
     bool refreshing() const;
     bool startEnabled() const;
     bool endEnabled() const;
@@ -47,21 +47,23 @@ public:
     void clearStrips();
 
 Q_SIGNALS:
-    void bookingsChanged();
-    void timeAssignmentsChanged();
+    void bookingsChanged(const QVector<ZeiterfassungApi::Booking> &bookings);
+    void timeAssignmentsChanged(const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments);
 
-    void timeAssignmentTimeChanged();
-    void lastTimeAssignmentStartChanged();
-    void minimumTimeChanged();
-    void refreshingChanged();
-    void startEnabledChanged();
-    void endEnabledChanged();
+    void timeAssignmentTimeChanged(const QTime &timeAssignmentTime);
+    void lastTimeAssignmentStartChanged(const QTime &lastTimeAssignmentStart);
+    void minimumTimeChanged(const QTime &minimumTime);
+    void refreshingChanged(bool refreshing);
+    void startEnabledChanged(bool startEnabled);
+    void endEnabledChanged(bool endEnabled);
 
 private Q_SLOTS:
     void getBookingsFinished();
     void getTimeAssignmentsFinished();
 
 private:
+    void invalidateValues();
+
     QString buildProjectString(const QString &project);
 
     QWidget *appendBookingStartStrip(int id, const QTime &time);

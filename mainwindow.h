@@ -62,7 +62,6 @@ private:
     QLabel *m_holidaysLabel;
 
     StripFactory &m_stripFactory;
-    std::array<QLabel*, 7> m_stripsWidgetHeaders;
     std::array<StripsWidget*, 7> m_stripsWidgets;
     StripsWidget *m_currentStripWidget;
 };

@@ -48,32 +48,11 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 {
     ui->setupUi(this);
 
-    quint8 i = 0;
-    for(const auto &dayName : QStringList { tr("Monday"), tr("Tuesday"), tr("Wednesday"), tr("Thursday"),
-                                            tr("Friday"), tr("Saturday"), tr("Sunday")})
+    for(quint8 i = 0; i < 7; i++)
     {
-        auto widget = new QWidget(ui->widgetWeek);
-
-        auto layout = new QVBoxLayout(widget);
-
-        m_stripsWidgetHeaders[i] = new QLabel(dayName, widget);
-        {
-            auto font = m_stripsWidgetHeaders[i]->font();
-            font.setBold(true);
-            m_stripsWidgetHeaders[i]->setFont(font);
-        }
-        layout->addWidget(m_stripsWidgetHeaders[i]);
-
-        m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_userInfo.userId, m_stripFactory, m_projects, widget);
+        m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_userInfo.userId, m_stripFactory, m_projects, ui->widgetWeek);
         connect(m_stripsWidgets[i], &StripsWidget::refreshingChanged, this, &MainWindow::refreshingChanged);
-
-        layout->addWidget(m_stripsWidgets[i++]);
-
-        layout->addStretch(1);
-
-        widget->setLayout(layout);
-
-        ui->layoutWeek->addWidget(widget, 1);
+        ui->layoutWeek->addWidget(m_stripsWidgets[i], 1);
     }
 
     setWindowTitle(tr("Zeiterfassung - %0 (%1)").arg(m_userInfo.text).arg(m_userInfo.email));
@@ -167,7 +146,7 @@ void MainWindow::getAuswertungFinished()
     {
         ui->actionToday->setEnabled(true);
         ui->actionRefresh->setEnabled(true);
-        ui->dateEditDate->setEnabled(true);
+        ui->dateEditDate->setReadOnly(false);
         ui->pushButtonPrev->setEnabled(true);
         ui->pushButtonNext->setEnabled(true);
     }
@@ -650,7 +629,7 @@ void MainWindow::dateChanged(bool force)
     {
         ui->actionToday->setEnabled(false);
         ui->actionRefresh->setEnabled(false);
-        ui->dateEditDate->setEnabled(false);
+        ui->dateEditDate->setReadOnly(true);
         ui->pushButtonPrev->setEnabled(false);
         ui->pushButtonNext->setEnabled(false);
     }
@@ -678,7 +657,7 @@ void MainWindow::openAuswertung()
 
 void MainWindow::timeAssignmentTimeChanged()
 {
-    qDebug() << "called";
+    qDebug() << "called" << m_currentStripWidget->timeAssignmentTime();
     auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
 
     m_workingTimeLabel->setText(tr("%0: %1")
@@ -696,7 +675,6 @@ void MainWindow::minimumTimeChanged()
 
 void MainWindow::refreshingChanged()
 {
-    qDebug() << "called";
     if(m_getAuswertungReply)
         return;
 
@@ -707,7 +685,7 @@ void MainWindow::refreshingChanged()
 
         ui->actionToday->setEnabled(allFinished);
         ui->actionRefresh->setEnabled(allFinished);
-        ui->dateEditDate->setEnabled(allFinished);
+        ui->dateEditDate->setReadOnly(!allFinished);
         ui->pushButtonPrev->setEnabled(allFinished);
         ui->pushButtonNext->setEnabled(allFinished);
     }
@@ -717,10 +695,10 @@ void MainWindow::startEnabledChanged()
 {
     qDebug() << "called" << m_currentStripWidget->startEnabled();
 
-    ui->timeEditTime->setEnabled(m_currentStripWidget->startEnabled() ||
-                                 m_currentStripWidget->endEnabled());
-
     auto startEnabled = m_currentStripWidget->startEnabled();
+    auto endEnabled = m_currentStripWidget->endEnabled();
+
+    ui->timeEditTime->setEnabled(startEnabled ||endEnabled);
 
     ui->comboBoxProject->setEnabled(startEnabled);
     ui->comboBoxSubproject->setEnabled(startEnabled);
@@ -728,16 +706,20 @@ void MainWindow::startEnabledChanged()
     ui->comboBoxText->setEnabled(startEnabled);
 
     ui->pushButtonStart->setEnabled(startEnabled);
-    ui->pushButtonStart->setText(m_currentStripWidget->endEnabled() ? tr("Switch") : tr("Start"));
+    ui->pushButtonStart->setText(endEnabled ? tr("Switch") : tr("Start"));
 }
 
 void MainWindow::endEnabledChanged()
 {
-    qDebug() << "called" << m_currentStripWidget->startEnabled();
-    ui->timeEditTime->setEnabled(m_currentStripWidget->startEnabled() ||
-                                 m_currentStripWidget->endEnabled());
+    qDebug() << "called" << m_currentStripWidget->endEnabled();
 
-    ui->pushButtonStart->setText(m_currentStripWidget->endEnabled() ? tr("Switch") : tr("Start"));
+    auto startEnabled = m_currentStripWidget->startEnabled();
+    auto endEnabled = m_currentStripWidget->endEnabled();
+
+    ui->timeEditTime->setEnabled(startEnabled ||endEnabled);
+
+    ui->pushButtonStart->setText(endEnabled ? tr("Switch") : tr("Start"));
+    ui->pushButtonEnd->setEnabled(endEnabled);
 }
 
 void MainWindow::updateComboboxes()

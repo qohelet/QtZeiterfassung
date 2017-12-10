@@ -65,17 +65,17 @@ const QVector<ZeiterfassungApi::TimeAssignment> &StripsWidget::timeAssignments()
     return m_timeAssignments;
 }
 
-const QTime StripsWidget::timeAssignmentTime() const
+const QTime &StripsWidget::timeAssignmentTime() const
 {
     return m_timeAssignmentTime;
 }
 
-const QTime StripsWidget::lastTimeAssignmentStart() const
+const QTime &StripsWidget::lastTimeAssignmentStart() const
 {
     return m_lastTimeAssignmentStart;
 }
 
-const QTime StripsWidget::minimumTime() const
+const QTime &StripsWidget::minimumTime() const
 {
     return m_minimumTime;
 }
@@ -100,6 +100,7 @@ void StripsWidget::refresh()
     clearStrips();
 
     m_layout->addWidget(new QLabel(tr("Loading..."), this));
+    m_layout->addStretch(1);
 
     refreshBookings();
     refreshTimeAssignments();
@@ -113,16 +114,16 @@ void StripsWidget::refreshBookings()
         return;
     }
 
-    m_bookings.clear();
+    if(m_bookings.count())
+    {
+        m_bookings.clear();
+        Q_EMIT bookingsChanged(m_bookings);
+    }
+
+    invalidateValues();
 
     m_getBookingsReply = m_erfassung.doGetBookings(m_userId, m_date, m_date);
     connect(m_getBookingsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getBookingsFinished);
-
-    if(!m_refreshing)
-    {
-        m_refreshing = true;
-        Q_EMIT refreshingChanged();
-    }
 }
 
 void StripsWidget::refreshTimeAssignments()
@@ -133,16 +134,16 @@ void StripsWidget::refreshTimeAssignments()
         return;
     }
 
-    m_timeAssignments.clear();
+    if(m_timeAssignments.count())
+    {
+        m_timeAssignments.clear();
+        Q_EMIT timeAssignmentsChanged(m_timeAssignments);
+    }
+
+    invalidateValues();
 
     m_getTimeAssignmentsReply = m_erfassung.doGetTimeAssignments(m_userId, m_date, m_date);
     connect(m_getTimeAssignmentsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getTimeAssignmentsFinished);
-
-    if(!m_refreshing)
-    {
-        m_refreshing = true;
-        Q_EMIT refreshingChanged();
-    }
 }
 
 bool StripsWidget::createStrips()
@@ -395,7 +396,11 @@ bool StripsWidget::createStrips()
     }
 
     after:
-    auto startEnabled = !errorMessage.isEmpty();
+    auto startEnabled = errorMessage.isEmpty();
+
+    qDebug() << m_date << "startEnabled" << startEnabled;
+    qDebug() << m_date << "endEnabled" << endEnabled;
+
     if(!errorMessage.isEmpty())
     {
         startEnabled = false;
@@ -415,29 +420,22 @@ bool StripsWidget::createStrips()
                              errorMessage);
     }
 
-    if(m_startEnabled != startEnabled)
-    {
-        m_startEnabled = startEnabled;
-        Q_EMIT startEnabledChanged();
-    }
-
-    if(m_endEnabled != endEnabled)
-    {
-        m_endEnabled = endEnabled;
-        Q_EMIT endEnabledChanged();
-    }
-
     if(m_timeAssignmentTime != timeAssignmentTime)
-    {
-        m_timeAssignmentTime = timeAssignmentTime;
-        Q_EMIT timeAssignmentTimeChanged();
-    }
+        Q_EMIT timeAssignmentTimeChanged(m_timeAssignmentTime = timeAssignmentTime);
 
     if(m_lastTimeAssignmentStart != lastTimeAssignmentStart)
-    {
-        m_lastTimeAssignmentStart = lastTimeAssignmentStart;
-        Q_EMIT lastTimeAssignmentStartChanged();
-    }
+        Q_EMIT lastTimeAssignmentStartChanged(m_lastTimeAssignmentStart = lastTimeAssignmentStart);
+
+    if(m_refreshing)
+        Q_EMIT refreshingChanged(m_refreshing = false);
+
+    if(m_startEnabled != startEnabled)
+        Q_EMIT startEnabledChanged(m_startEnabled = startEnabled);
+
+    if(m_endEnabled != endEnabled)
+        Q_EMIT endEnabledChanged(m_endEnabled = endEnabled);
+
+    m_layout->addStretch(1);
 
     return !errorMessage.isEmpty();
 }
@@ -449,6 +447,21 @@ void StripsWidget::clearStrips()
         delete item->widget();
         delete item;
     }
+
+    auto label = new QLabel(this);
+    if(m_date.isValid())
+        label->setText(tr("%0 (%1)")
+            .arg(std::array<QString, 7> { tr("Monday"), tr("Tuesday"), tr("Wednesday"), tr("Thursday"),
+                                          tr("Friday"), tr("Saturday"), tr("Sunday") }[m_date.dayOfWeek() - 1])
+            .arg(m_date.toString(tr("dd.MM"))));
+    else
+        label->setText(tr("Invalid"));
+    {
+        auto font = label->font();
+        font.setBold(true);
+        label->setFont(font);
+    }
+    m_layout->addWidget(label);
 }
 
 void StripsWidget::getBookingsFinished()
@@ -456,15 +469,7 @@ void StripsWidget::getBookingsFinished()
     m_bookings = m_getBookingsReply->bookings();
 
     if(!m_getTimeAssignmentsReply)
-    {
-        if(m_refreshing)
-        {
-            m_refreshing = false;
-            Q_EMIT refreshingChanged();
-        }
-
         createStrips();
-    }
 
     m_getBookingsReply->deleteLater();
     m_getBookingsReply = Q_NULLPTR;
@@ -475,18 +480,31 @@ void StripsWidget::getTimeAssignmentsFinished()
     m_timeAssignments = m_getTimeAssignmentsReply->timeAssignments();
 
     if(!m_getBookingsReply)
-    {
-        if(m_refreshing)
-        {
-            m_refreshing = false;
-            Q_EMIT refreshingChanged();
-        }
-
         createStrips();
-    }
 
     m_getTimeAssignmentsReply->deleteLater();
     m_getTimeAssignmentsReply = Q_NULLPTR;
+}
+
+void StripsWidget::invalidateValues()
+{
+    if(m_timeAssignmentTime.isValid())
+        Q_EMIT timeAssignmentTimeChanged(m_timeAssignmentTime = QTime());
+
+    if(m_lastTimeAssignmentStart.isValid())
+        Q_EMIT lastTimeAssignmentStartChanged(m_lastTimeAssignmentStart = QTime());
+
+    if(m_minimumTime.isValid())
+        Q_EMIT minimumTimeChanged(m_minimumTime = QTime());
+
+    if(!m_refreshing)
+        Q_EMIT refreshingChanged(m_refreshing = true);
+
+    if(m_startEnabled)
+        Q_EMIT startEnabledChanged(m_startEnabled = false);
+
+    if(m_endEnabled)
+        Q_EMIT endEnabledChanged(m_endEnabled = false);
 }
 
 QString StripsWidget::buildProjectString(const QString &project)
