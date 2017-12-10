@@ -11,6 +11,15 @@ class CreateTimeAssignmentReply : public ZeiterfassungReply
 
 public:
     CreateTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+
+    int timeAssignmentId() const;
+
+private Q_SLOTS:
+    void requestFinished();
+
+private:
+    QNetworkReply *m_reply;
+    int m_timeAssignmentId;
 };
 
 #endif // CREATETIMEASSIGNMENTREPLY_H
