@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QTranslator>
+#include <QEventLoop>
 #include <QMessageBox>
 #include <QSplashScreen>
 #include <QPixmap>
@@ -11,9 +12,11 @@
 #include "zeiterfassungsettings.h"
 #include "dialogs/languageselectiondialog.h"
 #include "zeiterfassungapi.h"
-#include "eventloopwithstatus.h"
 #include "dialogs/authenticationdialog.h"
 #include "mainwindow.h"
+#include "replies/loginpagereply.h"
+#include "replies/loginreply.h"
+#include "replies/userinforeply.h"
 
 bool loadAndInstallTranslator(QTranslator &translator,
                               const QLocale &locale,
@@ -98,18 +101,20 @@ int main(int argc, char *argv[])
     ZeiterfassungApi erfassung(settings.url(), &app);
 
     {
-        EventLoopWithStatus eventLoop;
-        QObject::connect(&erfassung, &ZeiterfassungApi::loginPageFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
-
         again1:
-        erfassung.doLoginPage();
-        eventLoop.exec();
+        auto reply = erfassung.doLoginPage();
 
-        if(!eventLoop.success())
+        {
+            QEventLoop eventLoop;
+            QObject::connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            eventLoop.exec();
+        }
+
+        if(!reply->success())
         {
             bool ok;
             QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not access Zeiterfassung!"),
-                                 QCoreApplication::translate("main", "Could not access Zeiterfassung!") % "\n\n" % eventLoop.message());
+                                 QCoreApplication::translate("main", "Could not access Zeiterfassung!") % "\n\n" % reply->message());
 
             auto url = QInputDialog::getText(&splashScreen, QCoreApplication::translate("main", "Base url"),
                                              QCoreApplication::translate("main", "Please enter the base url to the Zeiterfassung:"),
@@ -118,8 +123,12 @@ int main(int argc, char *argv[])
                 return -1;
             settings.setUrl(url);
             erfassung.setUrl(url);
+
+            reply->deleteLater();
             goto again1;
         }
+
+        reply->deleteLater();
     }
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Authenticating..."));
@@ -134,17 +143,19 @@ int main(int argc, char *argv[])
     }
 
     {
-        EventLoopWithStatus eventLoop;
-        QObject::connect(&erfassung, &ZeiterfassungApi::loginFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
-
         again2:
-        erfassung.doLogin(settings.username(), settings.password());
-        eventLoop.exec();
+        auto reply = erfassung.doLogin(settings.username(), settings.password());
 
-        if(!eventLoop.success())
+        {
+            QEventLoop eventLoop;
+            QObject::connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            eventLoop.exec();
+        }
+
+        if(!reply->success())
         {
             QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!"),
-                                 QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!") % "\n\n" % eventLoop.message());
+                                 QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!") % "\n\n" % reply->message());
 
             AuthenticationDialog dialog(&splashScreen);
             dialog.setUsername(settings.username());
@@ -154,8 +165,11 @@ int main(int argc, char *argv[])
             settings.setUsername(dialog.username());
             settings.setPassword(dialog.password());
 
+            reply->deleteLater();
             goto again2;
         }
+
+        reply->deleteLater();
     }
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
@@ -163,25 +177,25 @@ int main(int argc, char *argv[])
     ZeiterfassungApi::UserInfo userInfo;
 
     {
-        EventLoopWithStatus eventLoop;
-        QObject::connect(&erfassung, &ZeiterfassungApi::userInfoFinished,
-                         [&](bool success, const QString &message, const ZeiterfassungApi::UserInfo &_userInfo) {
-            Q_UNUSED(message)
-            if(success)
-                userInfo = _userInfo;
-        });
-        QObject::connect(&erfassung, &ZeiterfassungApi::userInfoFinished, &eventLoop, &EventLoopWithStatus::quitWithStatus);
+        auto reply = erfassung.doUserInfo();
 
-        erfassung.doUserInfo();
-        eventLoop.exec();
+        {
+            QEventLoop eventLoop;
+            QObject::connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            eventLoop.exec();
+        }
 
-        if(!eventLoop.success())
+        if(!reply->success())
         {
             QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not get user information!"),
-                                 QCoreApplication::translate("main", "Could not get user information!") % "\n\n" % eventLoop.message());
+                                 QCoreApplication::translate("main", "Could not get user information!") % "\n\n" % reply->message());
 
+            reply->deleteLater();
             return -1;
         }
+
+        userInfo = reply->userInfo();
+        reply->deleteLater();
     }
 
     MainWindow mainWindow(settings, erfassung, userInfo);

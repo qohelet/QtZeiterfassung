@@ -20,7 +20,6 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     dialogs/aboutmedialog.cpp \
     dialogs/authenticationdialog.cpp \
-    eventloopwithstatus.cpp \
     zeiterfassungsettings.cpp \
     dialogs/settingsdialog.cpp \
     dialogs/languageselectiondialog.cpp \
@@ -52,7 +51,6 @@ HEADERS += \
     mainwindow.h \
     dialogs/aboutmedialog.h \
     dialogs/authenticationdialog.h \
-    eventloopwithstatus.h \
     zeiterfassungsettings.h \
     dialogs/settingsdialog.h \
     dialogs/languageselectiondialog.h \

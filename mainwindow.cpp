@@ -18,7 +18,6 @@
 #include "zeiterfassungsettings.h"
 #include "stripfactory.h"
 #include "stripswidget.h"
-#include "eventloopwithstatus.h"
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/bookingdialog.h"
 #include "dialogs/timeassignmentdialog.h"
