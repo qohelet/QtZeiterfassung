@@ -21,8 +21,8 @@ class StripsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit StripsWidget(ZeiterfassungApi &erfassung, StripFactory *stripFactory,
-                          int userId, const QMap<QString, QString> &projects, QWidget *parent = Q_NULLPTR);
+    explicit StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory &stripFactory,
+                          const QMap<QString, QString> &projects, QWidget *parent = Q_NULLPTR);
 
     BookingsModel *bookingsModel() const;
     TimeAssignmentsModel *timeAssignmentsModel() const;
@@ -70,8 +70,8 @@ private:
                                        const QString &workpackage, const QString &text);
 
     ZeiterfassungApi &m_erfassung;
-    StripFactory *m_stripFactory;
     int m_userId;
+    StripFactory &m_stripFactory;
     const QMap<QString, QString> &m_projects;
 
     QBoxLayout *m_layout;

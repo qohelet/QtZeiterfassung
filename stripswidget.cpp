@@ -15,12 +15,12 @@
 #include "timeutils.h"
 #include "stripfactory.h"
 
-StripsWidget::StripsWidget(ZeiterfassungApi &erfassung, StripFactory *stripFactory,
-                           int userId, const QMap<QString, QString> &projects, QWidget *parent) :
+StripsWidget::StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory &stripFactory,
+                           const QMap<QString, QString> &projects, QWidget *parent) :
     QWidget(parent),
     m_erfassung(erfassung),
-    m_stripFactory(stripFactory),
     m_userId(userId),
+    m_stripFactory(stripFactory),
     m_projects(projects),
     m_layout(new QVBoxLayout(this)),
     m_bookingsModel(new BookingsModel(this)),
@@ -440,7 +440,7 @@ QString StripsWidget::buildProjectString(const QString &project)
 
 QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
 {
-    auto widget = m_stripFactory->createBookingStartStrip(this);
+    auto widget = m_stripFactory.createBookingStartStrip(this);
 
     if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
         labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
@@ -459,7 +459,7 @@ QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
 
 QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
 {
-    auto widget = m_stripFactory->createBookingEndStrip(this);
+    auto widget = m_stripFactory.createBookingEndStrip(this);
 
     if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
         labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
@@ -478,7 +478,7 @@ QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
 
 QWidget *StripsWidget::appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject, const QString &workpackage, const QString &text)
 {
-    auto widget = m_stripFactory->createTimeAssignmentStrip(this);
+    auto widget = m_stripFactory.createTimeAssignmentStrip(this);
 
     if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
         labelTime->setProperty("text", duration == QTime(0, 0) ? tr("Open") : duration.toString(QStringLiteral("HH:mm")));

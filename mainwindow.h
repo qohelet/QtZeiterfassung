@@ -21,7 +21,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo, QWidget *parent = Q_NULLPTR);
+    explicit MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo,
+                        StripFactory &stripFactory, QWidget *parent = Q_NULLPTR);
     ~MainWindow();
 
 private Q_SLOTS:
@@ -60,7 +61,7 @@ private:
     QLabel *m_balanceLabel;
     QLabel *m_holidaysLabel;
 
-    StripFactory *m_stripFactory;
+    StripFactory &m_stripFactory;
     StripsWidget *m_stripsWidgets[7];
     StripsWidget *m_currentStripWidget;
 };

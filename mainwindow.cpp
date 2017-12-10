@@ -36,13 +36,14 @@
 #include "replies/createtimeassignmentreply.h"
 #include "replies/createbookingreply.h"
 
-MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo, QWidget *parent) :
+MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo,
+                       StripFactory &stripFactory, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_settings(settings),
     m_erfassung(erfassung),
     m_userInfo(userInfo),
-    m_stripFactory(new StripFactory(this)),
+    m_stripFactory(stripFactory),
     m_currentStripWidget(Q_NULLPTR)
 {
     ui->setupUi(this);
@@ -63,7 +64,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
             layout->addWidget(label);
         }
 
-        m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_stripFactory, m_userInfo.userId, m_projects, widget);
+        m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_userInfo.userId, m_stripFactory, m_projects, widget);
         layout->addWidget(m_stripsWidgets[i++]);
 
         layout->addStretch(1);
@@ -125,13 +126,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     ui->statusbar->addPermanentWidget(m_holidaysLabel = new QLabel(ui->statusbar));
     m_holidaysLabel->setFrameShape(QFrame::Panel);
     m_holidaysLabel->setFrameShadow(QFrame::Sunken);
-
-    if(!m_stripFactory->load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("strips")))
-    {
-        QMessageBox::warning(this, tr("Could not load strips!"), tr("Could not load strips!") % "\n\n" % m_stripFactory->errorString());
-        qApp->exit(-1);
-        return;
-    }
 
     dateChanged();
 

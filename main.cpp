@@ -17,6 +17,7 @@
 #include "replies/loginpagereply.h"
 #include "replies/loginreply.h"
 #include "replies/userinforeply.h"
+#include "stripfactory.h"
 
 bool loadAndInstallTranslator(QTranslator &translator,
                               const QLocale &locale,
@@ -198,7 +199,15 @@ int main(int argc, char *argv[])
         reply->deleteLater();
     }
 
-    MainWindow mainWindow(settings, erfassung, userInfo);
+    StripFactory stripFactory(&app);
+    if(!stripFactory.load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("strips")))
+    {
+        QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                             QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+        return -1;
+    }
+
+    MainWindow mainWindow(settings, erfassung, userInfo, stripFactory);
     mainWindow.show();
 
     splashScreen.finish(&mainWindow);
