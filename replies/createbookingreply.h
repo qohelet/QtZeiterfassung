@@ -11,6 +11,15 @@ class CreateBookingReply : public ZeiterfassungReply
 
 public:
     CreateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+
+    int bookingId() const;
+
+private Q_SLOTS:
+    void requestFinished();
+
+private:
+    QNetworkReply *m_reply;
+    int m_bookingId;
 };
 
 #endif // CREATEBOOKINGREPLY_H
