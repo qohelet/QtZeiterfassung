@@ -291,47 +291,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     return new GetAuswertungReply(reply, this);
 }
 
-void ZeiterfassungApi::updateTimeAssignmentRequestFinished()
-{
-    if(m_replies.updateTimeAssignment->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT updateTimeAssignmentFinished(false, tr("Request error occured: %0").arg(m_replies.updateTimeAssignment->error()), -1);
-        goto end;
-    }
-
-    {
-        QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_replies.updateTimeAssignment->readAll(), &error);
-        if(error.error != QJsonParseError::NoError)
-        {
-            Q_EMIT updateTimeAssignmentFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), -1);
-            goto end;
-        }
-
-        if(!document.isObject())
-        {
-            Q_EMIT updateTimeAssignmentFinished(false, tr("JSON document is not an object!"), 0);
-            goto end;
-        }
-
-        auto obj = document.object();
-
-        if(!obj.contains(QStringLiteral("bookingNr")))
-        {
-            Q_EMIT updateTimeAssignmentFinished(false, tr("JSON does not contain bookingNr!"), 0);
-            goto end;
-        }
-
-        auto timeAssignmentId = obj.value(QStringLiteral("bookingNr")).toInt();
-
-        Q_EMIT updateTimeAssignmentFinished(true, QString(), timeAssignmentId);
-    }
-
-    end:
-    m_replies.updateTimeAssignment->deleteLater();
-    m_replies.updateTimeAssignment = Q_NULLPTR;
-}
-
 void ZeiterfassungApi::deleteTimeAssignmentRequestFinished()
 {
     if(m_replies.deleteTimeAssignment->error() != QNetworkReply::NoError)
