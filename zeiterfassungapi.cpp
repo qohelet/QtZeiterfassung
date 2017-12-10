@@ -291,61 +291,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     return new GetAuswertungReply(reply, this);
 }
 
-void ZeiterfassungApi::userInfoRequestFinished()
-{
-    if(m_replies.userInfo->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT userInfoFinished(false, tr("Request error occured: %0").arg(m_replies.userInfo->error()), UserInfo());
-        goto end;
-    }
-
-    {
-        QJsonParseError error;
-        auto document = QJsonDocument::fromJson(m_replies.userInfo->readAll(), &error);
-        if(error.error != QJsonParseError::NoError)
-        {
-            Q_EMIT userInfoFinished(false, tr("Parsing JSON failed: %0").arg(error.errorString()), UserInfo());
-            goto end;
-        }
-
-        if(!document.isObject())
-        {
-            Q_EMIT userInfoFinished(false, tr("JSON document is not an object!"), UserInfo());
-            goto end;
-        }
-
-        auto rootObj = document.object();
-
-        if(!rootObj.contains(QStringLiteral("evoAppsUser")))
-        {
-            Q_EMIT userInfoFinished(false, tr("JSON does not contain evoAppsUser!"), UserInfo());
-            goto end;
-        }
-
-        auto evoAppsUser = rootObj.value(QStringLiteral("evoAppsUser"));
-
-        if(!evoAppsUser.isObject())
-        {
-            Q_EMIT userInfoFinished(false, tr("evoAppsUser is not an object!"), UserInfo());
-            goto end;
-        }
-
-        auto evoAppsUserObj = evoAppsUser.toObject();
-
-        Q_EMIT userInfoFinished(true, QString(), {
-                                    evoAppsUserObj.value(QStringLiteral("persNr")).toInt(),
-                                    evoAppsUserObj.value(QStringLiteral("email")).toString(),
-                                    evoAppsUserObj.value(QStringLiteral("longUsername")).toString(),
-                                    evoAppsUserObj.value(QStringLiteral("text")).toString(),
-                                    evoAppsUserObj.value(QStringLiteral("username")).toString()
-                                });
-    }
-
-    end:
-    m_replies.userInfo->deleteLater();
-    m_replies.userInfo = Q_NULLPTR;
-}
-
 void ZeiterfassungApi::getBookingsRequestFinished()
 {
     if(m_replies.getBookings->error() != QNetworkReply::NoError)
