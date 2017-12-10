@@ -42,10 +42,10 @@ SOURCES += main.cpp \
     replies/gettimeassignmentsreply.cpp \
     replies/createtimeassignmentreply.cpp \
     replies/updatetimeassignmentreply.cpp \
-    replies/deletetimeassignment.cpp \
     replies/getprojectsreply.cpp \
     replies/getauswertungreply.cpp \
-    replies/zeiterfassungreply.cpp
+    replies/zeiterfassungreply.cpp \
+    replies/deletetimeassignmentreply.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -73,10 +73,10 @@ HEADERS += \
     replies/gettimeassignmentsreply.h \
     replies/createtimeassignmentreply.h \
     replies/updatetimeassignmentreply.h \
-    replies/deletetimeassignment.h \
     replies/getprojectsreply.h \
     replies/getauswertungreply.h \
-    replies/zeiterfassungreply.h
+    replies/zeiterfassungreply.h \
+    replies/deletetimeassignmentreply.h
 
 FORMS += \
     mainwindow.ui \

@@ -8,7 +8,7 @@
 #include "replies/createbookingreply.h"
 #include "replies/createtimeassignmentreply.h"
 #include "replies/deletebookingreply.h"
-#include "replies/deletetimeassignment.h"
+#include "replies/deletetimeassignmentreply.h"
 #include "replies/getauswertungreply.h"
 #include "replies/getbookingsreply.h"
 #include "replies/getprojectsreply.h"
@@ -289,22 +289,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
     auto reply = m_manager->get(request);
 
     return new GetAuswertungReply(reply, this);
-}
-
-void ZeiterfassungApi::deleteTimeAssignmentRequestFinished()
-{
-    if(m_replies.deleteTimeAssignment->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT deleteTimeAssignmentFinished(false, tr("Request error occured: %0").arg(m_replies.deleteTimeAssignment->error()));
-        goto end;
-    }
-
-    //only contains deleted id, so nothing to check here
-    Q_EMIT deleteTimeAssignmentFinished(true, QString());
-
-    end:
-    m_replies.deleteTimeAssignment->deleteLater();
-    m_replies.deleteTimeAssignment = Q_NULLPTR;
 }
 
 void ZeiterfassungApi::getProjectsRequestFinished()
