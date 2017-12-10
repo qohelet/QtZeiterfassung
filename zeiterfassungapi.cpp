@@ -293,18 +293,6 @@ GetAuswertungReply *ZeiterfassungApi::doGetAuswertung(int userId, const QDate &d
 
 void ZeiterfassungApi::deleteBookingRequestFinished()
 {
-    if(m_replies.deleteBooking->error() != QNetworkReply::NoError)
-    {
-        Q_EMIT deleteBookingFinished(false, tr("Request error occured: %0").arg(m_replies.deleteBooking->error()));
-        goto end;
-    }
-
-    //should be empty, so nothing to check...
-    Q_EMIT deleteBookingFinished(true, QString());
-
-    end:
-    m_replies.deleteBooking->deleteLater();
-    m_replies.deleteBooking = Q_NULLPTR;
 }
 
 void ZeiterfassungApi::getTimeAssignmentsRequestFinished()
