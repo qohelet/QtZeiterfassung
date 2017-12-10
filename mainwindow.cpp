@@ -678,6 +678,7 @@ void MainWindow::openAuswertung()
 
 void MainWindow::timeAssignmentTimeChanged()
 {
+    qDebug() << "called";
     auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
 
     m_workingTimeLabel->setText(tr("%0: %1")
@@ -689,11 +690,13 @@ void MainWindow::timeAssignmentTimeChanged()
 
 void MainWindow::minimumTimeChanged()
 {
+    qDebug() << "called" << m_currentStripWidget->minimumTime();
     ui->timeEditTime->setMinimumTime(m_currentStripWidget->minimumTime());
 }
 
 void MainWindow::refreshingChanged()
 {
+    qDebug() << "called";
     if(m_getAuswertungReply)
         return;
 
@@ -712,6 +715,8 @@ void MainWindow::refreshingChanged()
 
 void MainWindow::startEnabledChanged()
 {
+    qDebug() << "called" << m_currentStripWidget->startEnabled();
+
     ui->timeEditTime->setEnabled(m_currentStripWidget->startEnabled() ||
                                  m_currentStripWidget->endEnabled());
 
@@ -728,6 +733,7 @@ void MainWindow::startEnabledChanged()
 
 void MainWindow::endEnabledChanged()
 {
+    qDebug() << "called" << m_currentStripWidget->startEnabled();
     ui->timeEditTime->setEnabled(m_currentStripWidget->startEnabled() ||
                                  m_currentStripWidget->endEnabled());
 

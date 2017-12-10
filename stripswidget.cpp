@@ -149,10 +149,9 @@ bool StripsWidget::createStrips()
 {
     clearStrips();
 
-    m_timeAssignmentTime = QTime(0, 0);
-    m_lastTimeAssignmentStart = QTime();
-    m_startEnabled = false;
-    m_endEnabled = false;
+    QTime timeAssignmentTime(0, 0);
+    QTime lastTimeAssignmentStart;
+    bool endEnabled = false;
 
     auto bookingsIter = m_bookings.constBegin();
     auto timeAssignmentsIter = m_timeAssignments.constBegin();
@@ -200,7 +199,7 @@ bool StripsWidget::createStrips()
 
         lastBooking = &startBooking;
 
-        m_lastTimeAssignmentStart = startBooking.time;
+        lastTimeAssignmentStart = startBooking.time;
         appendBookingStartStrip(startBooking.id, startBooking.time);
 
         if(timeAssignmentsIter == m_timeAssignments.constEnd())
@@ -210,10 +209,10 @@ bool StripsWidget::createStrips()
         }
 
         auto timeAssignment = *timeAssignmentsIter++;
-        if(timeAssignment.time != m_timeAssignmentTime)
+        if(timeAssignment.time != timeAssignmentTime)
         {
             errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                    .arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
+                    .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
                     .arg(timeAssignment.time.toString(QStringLiteral("HH:mm:ss")))
                     .arg(timeAssignment.id);
             goto after;
@@ -242,13 +241,13 @@ bool StripsWidget::createStrips()
                 goto after;
             }
 
-            m_endEnabled = true;
+            endEnabled = true;
             goto after;
         }
         else
         {
-            m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
-            m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
+            timeAssignmentTime = timeAdd(timeAssignmentTime, timeAssignment.timespan);
+            lastTimeAssignmentStart = timeAdd(lastTimeAssignmentStart, timeAssignment.timespan);
 
             if(bookingsIter == m_bookings.constEnd())
             {
@@ -262,10 +261,10 @@ bool StripsWidget::createStrips()
                     }
 
                     timeAssignment = *timeAssignmentsIter++;
-                    if(timeAssignment.time != m_timeAssignmentTime)
+                    if(timeAssignment.time != timeAssignmentTime)
                     {
                         errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
+                                .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
                                 .arg(timeAssignment.time.toString(QStringLiteral("HH:mm:ss")))
                                 .arg(timeAssignment.id);
                         goto after;
@@ -287,13 +286,13 @@ bool StripsWidget::createStrips()
                             goto after;
                         }
 
-                        m_endEnabled = true;
+                        endEnabled = true;
                         goto after;
                     }
                     else
                     {
-                        m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
-                        m_lastTimeAssignmentStart = timeAdd(m_lastTimeAssignmentStart, timeAssignment.timespan);
+                        timeAssignmentTime = timeAdd(timeAssignmentTime, timeAssignment.timespan);
+                        lastTimeAssignmentStart = timeAdd(lastTimeAssignmentStart, timeAssignment.timespan);
                     }
                 }
             }
@@ -313,12 +312,12 @@ bool StripsWidget::createStrips()
                 bookingTimespan = timeAdd(bookingTimespan, timeBetween(startBooking.time, endBooking.time));
                 //ui->timeEditTime->setMinimumTime(timeAdd(endBooking.time, QTime(0, 1)));
 
-                while(m_timeAssignmentTime < bookingTimespan)
+                while(timeAssignmentTime < bookingTimespan)
                 {
                     if(timeAssignmentsIter == m_timeAssignments.constEnd())
                     {
                         errorMessage = tr("Missing time assignment! Missing: %0h")
-                                .arg(timeBetween(m_timeAssignmentTime, bookingTimespan).toString(QStringLiteral("HH:mm:ss")));
+                                .arg(timeBetween(timeAssignmentTime, bookingTimespan).toString(QStringLiteral("HH:mm:ss")));
 
                         {
                             auto label = new QLabel(errorMessage, this);
@@ -333,10 +332,10 @@ bool StripsWidget::createStrips()
                     }
 
                     timeAssignment = *timeAssignmentsIter++;
-                    if(timeAssignment.time != m_timeAssignmentTime)
+                    if(timeAssignment.time != timeAssignmentTime)
                     {
                         errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
+                                .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
                                 .arg(timeAssignment.time.toString(QStringLiteral("HH:mm:ss")))
                                 .arg(timeAssignment.id);
                         goto after;
@@ -366,19 +365,19 @@ bool StripsWidget::createStrips()
                             goto after;
                         }
 
-                        m_endEnabled = true;
+                        endEnabled = true;
                         goto after;
                     }
                     else
                     {
-                        m_timeAssignmentTime = timeAdd(m_timeAssignmentTime, timeAssignment.timespan);
+                        timeAssignmentTime = timeAdd(timeAssignmentTime, timeAssignment.timespan);
                     }
                 }
 
-                if(m_timeAssignmentTime > bookingTimespan)
+                if(timeAssignmentTime > bookingTimespan)
                 {
                     errorMessage = tr("Time assignment time longer than booking time! Time assignment: %0 Booking: %1")
-                            .arg(m_timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
+                            .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
                             .arg(bookingTimespan.toString(QStringLiteral("HH:mm:ss")));
 
                     auto label = new QLabel(errorMessage, this);
@@ -389,16 +388,22 @@ bool StripsWidget::createStrips()
 
                 appendBookingEndStrip(endBooking.id, endBooking.time);
 
-                if(m_timeAssignmentTime > bookingTimespan)
+                if(timeAssignmentTime > bookingTimespan)
                     goto after;
             }
         }
     }
 
     after:
-    m_startEnabled = !errorMessage.isEmpty();
+    auto startEnabled = !errorMessage.isEmpty();
     if(!errorMessage.isEmpty())
     {
+        startEnabled = false;
+        endEnabled = false;
+
+        timeAssignmentTime = QTime();
+        lastTimeAssignmentStart = QTime();
+
         auto label = new QLabel(tr("Strip rendering aborted due error."), this);
         m_layout->addWidget(label);
         label->setMinimumHeight(20);
@@ -408,10 +413,33 @@ bool StripsWidget::createStrips()
                              tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" %
                              m_date.toString("dd.MM.yyyy") % "\n\n" %
                              errorMessage);
-        return false;
     }
 
-    return true;
+    if(m_startEnabled != startEnabled)
+    {
+        m_startEnabled = startEnabled;
+        Q_EMIT startEnabledChanged();
+    }
+
+    if(m_endEnabled != endEnabled)
+    {
+        m_endEnabled = endEnabled;
+        Q_EMIT endEnabledChanged();
+    }
+
+    if(m_timeAssignmentTime != timeAssignmentTime)
+    {
+        m_timeAssignmentTime = timeAssignmentTime;
+        Q_EMIT timeAssignmentTimeChanged();
+    }
+
+    if(m_lastTimeAssignmentStart != lastTimeAssignmentStart)
+    {
+        m_lastTimeAssignmentStart = lastTimeAssignmentStart;
+        Q_EMIT lastTimeAssignmentStartChanged();
+    }
+
+    return !errorMessage.isEmpty();
 }
 
 void StripsWidget::clearStrips()
