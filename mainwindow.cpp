@@ -507,7 +507,7 @@ void MainWindow::pushButtonStartPressed()
     {
         QEventLoop eventLoop;
         connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-        eventLoop.quit();
+        eventLoop.exec();
     }
 
     if(!reply->success())
