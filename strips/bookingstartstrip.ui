@@ -19,7 +19,7 @@
   <property name="frameShadow">
    <enum>QFrame::Raised</enum>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,0">
+  <layout class="QHBoxLayout" stretch="0,1,0">
    <property name="spacing">
     <number>10</number>
    </property>

@@ -4,6 +4,9 @@
 #include <QMessageBox>
 #include <QStringBuilder>
 #include <QDir>
+#include <QApplication>
+#include <QFile>
+#include <QTextStream>
 
 #include "zeiterfassungsettings.h"
 
@@ -62,10 +65,34 @@ void SettingsDialog::submit()
         warning = true;
     }
 
-    if(ui->comboBoxTheme->currentData().toString() != m_settings.theme())
+    auto theme = ui->comboBoxTheme->currentData().toString();
+    if(theme != m_settings.theme())
     {
-        m_settings.setTheme(ui->comboBoxTheme->currentData().toString());
-        warning = true;
+        if(theme.isEmpty())
+            qApp->setStyleSheet(QString());
+        else
+        {
+            auto themePath = QDir(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("themes"))).absoluteFilePath(theme);
+
+            QFile file(themePath % ".qss");
+
+            if(!file.exists())
+            {
+                QMessageBox::warning(this, tr("Could not load theme!"), tr("Could not load theme!") % "\n\n" % tr("Theme file does not exist!"));
+                return;
+            }
+
+            if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                QMessageBox::warning(this, tr("Could not load theme!"), tr("Could not load theme!") % "\n\n" % file.errorString());
+                return;
+            }
+
+            QTextStream textStream(&file);
+            qApp->setStyleSheet(textStream.readAll().replace(QStringLiteral("@THEME_RESOURCES@"), themePath));
+        }
+
+        m_settings.setTheme(theme);
     }
 
     if(warning)
