@@ -99,9 +99,9 @@ CreateBookingReply *ZeiterfassungApi::doCreateBooking(int userId, const QDate &d
 
     QJsonObject obj;
     obj[QStringLiteral("persNr")] = userId;
-    obj[QStringLiteral("bookingDate")] = date.toString("yyyyMMdd").toInt();
-    obj[QStringLiteral("bookingTime")] = time.toString("Hmmss").toInt();
-    obj[QStringLiteral("bookingTimespan")] = timespan.toString("Hmmss").toInt();
+    obj[QStringLiteral("bookingDate")] = date.toString(QStringLiteral("yyyyMMdd")).toInt();
+    obj[QStringLiteral("bookingTime")] = time.toString(QStringLiteral("Hmmss")).toInt();
+    obj[QStringLiteral("bookingTimespan")] = timespan.toString(QStringLiteral("Hmmss")).toInt();
     obj[QStringLiteral("bookingType")] = type;
     obj[QStringLiteral("hourCategory")] = QStringLiteral("");
     obj[QStringLiteral("empfEinh")] = QStringLiteral("");
@@ -122,9 +122,9 @@ UpdateBookingReply *ZeiterfassungApi::doUpdateBooking(int bookingId, int userId,
     QJsonObject obj;
     obj[QStringLiteral("bookingNr")] = bookingId;
     obj[QStringLiteral("persNr")] = userId;
-    obj[QStringLiteral("bookingDate")] = date.toString("yyyyMMdd").toInt();
-    obj[QStringLiteral("bookingTime")] = time.toString("Hmmss").toInt();
-    obj[QStringLiteral("bookingTimespan")] = timespan.toString("Hmmss").toInt();
+    obj[QStringLiteral("bookingDate")] = date.toString(QStringLiteral("yyyyMMdd")).toInt();
+    obj[QStringLiteral("bookingTime")] = time.toString(QStringLiteral("Hmmss")).toInt();
+    obj[QStringLiteral("bookingTimespan")] = timespan.toString(QStringLiteral("Hmmss")).toInt();
     obj[QStringLiteral("bookingType")] = type;
     obj[QStringLiteral("hourCategory")] = QStringLiteral("");
     obj[QStringLiteral("empfEinh")] = QStringLiteral("");
@@ -175,9 +175,9 @@ CreateTimeAssignmentReply *ZeiterfassungApi::doCreateTimeAssignment(int userId, 
     QJsonObject obj;
     obj[QStringLiteral("bookingNr")] = QJsonValue::Null;
     obj[QStringLiteral("persNr")] = userId;
-    obj[QStringLiteral("bookingDate")] = date.toString("yyyyMMdd").toInt();
-    obj[QStringLiteral("bookingTime")] = time.toString("Hmmss").toInt();
-    obj[QStringLiteral("bookingTimespan")] = timespan.toString("Hmmss").toInt();
+    obj[QStringLiteral("bookingDate")] = date.toString(QStringLiteral("yyyyMMdd")).toInt();
+    obj[QStringLiteral("bookingTime")] = time.toString(QStringLiteral("Hmmss")).toInt();
+    obj[QStringLiteral("bookingTimespan")] = timespan.toString(QStringLiteral("Hmmss")).toInt();
     obj[QStringLiteral("text")] = text;
     {
         QJsonArray koWertList;
@@ -217,9 +217,9 @@ UpdateTimeAssignmentReply *ZeiterfassungApi::doUpdateTimeAssignment(int timeAssi
     QJsonObject obj;
     obj[QStringLiteral("bookingNr")] = timeAssignmentId;
     obj[QStringLiteral("persNr")] = userId;
-    obj[QStringLiteral("bookingDate")] = date.toString("yyyyMMdd").toInt();
-    obj[QStringLiteral("bookingTime")] = time.toString("Hmmss").toInt();
-    obj[QStringLiteral("bookingTimespan")] = timespan.toString("Hmmss").toInt();
+    obj[QStringLiteral("bookingDate")] = date.toString(QStringLiteral("yyyyMMdd")).toInt();
+    obj[QStringLiteral("bookingTime")] = time.toString(QStringLiteral("Hmmss")).toInt();
+    obj[QStringLiteral("bookingTimespan")] = timespan.toString(QStringLiteral("Hmmss")).toInt();
     obj[QStringLiteral("bookingType")] = QJsonValue::Null;
     obj[QStringLiteral("hourCategory")] = QJsonValue::Null;
     obj[QStringLiteral("bewEinh")] = QJsonValue::Null;

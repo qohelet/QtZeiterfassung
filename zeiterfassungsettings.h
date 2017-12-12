@@ -53,7 +53,7 @@ public:
     void setLastUpdateCheck(const QDate &lastUpdateCheck);
 
 private:
-    void prepentItem(const QString &name, const QString &item);
+    void prependItem(const QString &name, const QString &item);
 };
 
 #endif // ZEITERFASSUNGSETTINGS_H

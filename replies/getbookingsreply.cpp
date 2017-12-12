@@ -56,8 +56,8 @@ void GetBookingsReply::requestFinished()
             m_bookings.append({
                 obj.value(QStringLiteral("bookingNr")).toInt(),
                 QDate::fromString(QString::number(obj.value(QStringLiteral("bookingDate")).toInt()), QStringLiteral("yyyyMMdd")),
-                QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTimespan")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
+                QTime::fromString(QStringLiteral("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
+                QTime::fromString(QStringLiteral("%0").arg(obj.value(QStringLiteral("bookingTimespan")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
                 obj.value(QStringLiteral("bookingType")).toString(),
                 obj.value(QStringLiteral("text")).toString()
             });

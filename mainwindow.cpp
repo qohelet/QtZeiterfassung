@@ -293,7 +293,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
         else if(selectedAction == deleteAction)
         {
             QMessageBox msgBox;
-            msgBox.setText("Do you really want to delete the booking?");
+            msgBox.setText(tr("Do you really want to delete the booking?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
             msgBox.setDefaultButton(QMessageBox::Cancel);
             if(msgBox.exec() == QMessageBox::Yes)
@@ -413,7 +413,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
         else if(selectedAction == deleteAction)
         {
             QMessageBox msgBox;
-            msgBox.setText("Do you really want to delete the time assignment?");
+            msgBox.setText(tr("Do you really want to delete the time assignment?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
             msgBox.setDefaultButton(QMessageBox::Cancel);
             if(msgBox.exec() == QMessageBox::Yes)

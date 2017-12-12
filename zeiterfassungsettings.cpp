@@ -34,115 +34,115 @@ ZeiterfassungSettings::ZeiterfassungSettings(QObject *parent) :
 
 QLocale::Language ZeiterfassungSettings::language() const
 {
-    return value("language").value<QLocale::Language>();
+    return value(QStringLiteral("language")).value<QLocale::Language>();
 }
 
 void ZeiterfassungSettings::setLanguage(QLocale::Language language)
 {
-    setValue("language", language);
+    setValue(QStringLiteral("language"), language);
 }
 
 QString ZeiterfassungSettings::url() const
 {
-    return value("url", QStringLiteral("http://10.1.0.11:8080/evoApps/")).toString();
+    return value(QStringLiteral("url"), QStringLiteral("http://10.1.0.11:8080/evoApps/")).toString();
 }
 
 void ZeiterfassungSettings::setUrl(const QString &url)
 {
-    setValue("url", url);
+    setValue(QStringLiteral("url"), url);
 }
 
 QString ZeiterfassungSettings::username() const
 {
-    return value("username").toString();
+    return value(QStringLiteral("username")).toString();
 }
 
 void ZeiterfassungSettings::setUsername(const QString &username)
 {
-    setValue("username", username);
+    setValue(QStringLiteral("username"), username);
 }
 
 QString ZeiterfassungSettings::password() const
 {
-    return value("password").toString();
+    return value(QStringLiteral("password")).toString();
 }
 
 void ZeiterfassungSettings::setPassword(const QString &password)
 {
-    setValue("password", password);
+    setValue(QStringLiteral("password"), password);
 }
 
 QStringList ZeiterfassungSettings::projects() const
 {
-    return value("projects").toStringList();
+    return value(QStringLiteral("projects")).toStringList();
 }
 
 void ZeiterfassungSettings::setProjects(const QStringList &projects)
 {
-    setValue("projects", projects);
+    setValue(QStringLiteral("projects"), projects);
 }
 
 void ZeiterfassungSettings::prependProject(const QString &project)
 {
-    prepentItem("projects", project);
+    prependItem(QStringLiteral("projects"), project);
 }
 
 QStringList ZeiterfassungSettings::subprojects() const
 {
-    return value("subprojects").toStringList();
+    return value(QStringLiteral("subprojects")).toStringList();
 }
 
 void ZeiterfassungSettings::setSubprojects(const QStringList &subprojects)
 {
-    setValue("subprojects", subprojects);
+    setValue(QStringLiteral("subprojects"), subprojects);
 }
 
 void ZeiterfassungSettings::prependSubproject(const QString &subproject)
 {
-    prepentItem("subprojects", subproject);
+    prependItem(QStringLiteral("subprojects"), subproject);
 }
 
 QStringList ZeiterfassungSettings::workpackages() const
 {
-    return value("workpackages").toStringList();
+    return value(QStringLiteral("workpackages")).toStringList();
 }
 
 void ZeiterfassungSettings::setWorkpackages(const QStringList &workpackages)
 {
-    setValue("workpackages", workpackages);
+    setValue(QStringLiteral("workpackages"), workpackages);
 }
 
 void ZeiterfassungSettings::prependWorkpackage(const QString &workpackage)
 {
-    prepentItem("workpackages", workpackage);
+    prependItem(QStringLiteral("workpackages"), workpackage);
 }
 
 QStringList ZeiterfassungSettings::texte() const
 {
-    return value("texte").toStringList();
+    return value(QStringLiteral("texte")).toStringList();
 }
 
 void ZeiterfassungSettings::setTexte(const QStringList &texte)
 {
-    setValue("texte", texte);
+    setValue(QStringLiteral("texte"), texte);
 }
 
 void ZeiterfassungSettings::prependText(const QString &text)
 {
-    prepentItem("texte", text);
+    prependItem(QStringLiteral("texte"), text);
 }
 
 QDate ZeiterfassungSettings::lastUpdateCheck() const
 {
-    return value("lastUpdateCheck").toDate();
+    return value(QStringLiteral("lastUpdateCheck")).toDate();
 }
 
 void ZeiterfassungSettings::setLastUpdateCheck(const QDate &lastUpdateCheck)
 {
-    setValue("lastUpdateCheck", lastUpdateCheck);
+    setValue(QStringLiteral("lastUpdateCheck"), lastUpdateCheck);
 }
 
-void ZeiterfassungSettings::prepentItem(const QString &name, const QString &item)
+void ZeiterfassungSettings::prependItem(const QString &name, const QString &item)
 {
     if(item.trimmed().isEmpty())
         return;

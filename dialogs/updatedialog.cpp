@@ -71,12 +71,12 @@ void UpdateDialog::finished()
     for(const auto &releaseVal : array)
     {
         auto releaseObj = releaseVal.toObject();
-        auto version = QVersionNumber::fromString(releaseObj.value("tag_name").toString());
+        auto version = QVersionNumber::fromString(releaseObj.value(QStringLiteral("tag_name")).toString());
 
         if(appVersion < version)
         {
-            m_url = QUrl(releaseObj.value("html_url").toString());
-            ui->labelDescription->setText(releaseObj.value("body").toString());
+            m_url = QUrl(releaseObj.value(QStringLiteral("html_url")).toString());
+            ui->labelDescription->setText(releaseObj.value(QStringLiteral("body")).toString());
 
             show();
             return;

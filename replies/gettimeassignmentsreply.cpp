@@ -58,8 +58,8 @@ void GetTimeAssignmentsReply::requestFinished()
             m_timeAssignments.append({
                  obj.value(QStringLiteral("bookingNr")).toInt(),
                  QDate::fromString(QString::number(obj.value(QStringLiteral("bookingDate")).toInt()), QStringLiteral("yyyyMMdd")),
-                 QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                 QTime::fromString(QString("%0").arg(obj.value(QStringLiteral("bookingTimespan")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
+                 QTime::fromString(QStringLiteral("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
+                 QTime::fromString(QStringLiteral("%0").arg(obj.value(QStringLiteral("bookingTimespan")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
                  obj.value(QStringLiteral("text")).toString(),
                  koWertList.at(0).toObject().value(QStringLiteral("value")).toString(),
                  koWertList.at(1).toObject().value(QStringLiteral("value")).toString(),

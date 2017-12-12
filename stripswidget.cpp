@@ -427,7 +427,7 @@ bool StripsWidget::createStrips()
 
         QMessageBox::warning(this, tr("Illegal state!"),
                              tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" %
-                             m_date.toString("dd.MM.yyyy") % "\n\n" %
+                             m_date.toString(QStringLiteral("dd.MM.yyyy")) % "\n\n" %
                              errorMessage);
     }
 
@@ -546,12 +546,12 @@ QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
 {
     auto widget = m_stripFactory.createBookingStartStrip(this);
 
-    if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
+    if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
     else
         qWarning() << "no labelTime found!";
 
-    if(auto labelId = widget->findChild<QWidget*>("labelId"))
+    if(auto labelId = widget->findChild<QWidget*>(QStringLiteral("labelId")))
         labelId->setProperty("text", QString::number(id));
     else
         qWarning() << "no labelId found!";
@@ -565,12 +565,12 @@ QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
 {
     auto widget = m_stripFactory.createBookingEndStrip(this);
 
-    if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
+    if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
     else
         qWarning() << "no labelTime found!";
 
-    if(auto labelId = widget->findChild<QWidget*>("labelId"))
+    if(auto labelId = widget->findChild<QWidget*>(QStringLiteral("labelId")))
         labelId->setProperty("text", QString::number(id));
     else
         qWarning() << "no labelId found!";
@@ -584,32 +584,32 @@ QWidget *StripsWidget::appendTimeAssignmentStrip(int id, const QTime &duration, 
 {
     auto widget = m_stripFactory.createTimeAssignmentStrip(this);
 
-    if(auto labelTime = widget->findChild<QWidget*>("labelTime"))
+    if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", duration == QTime(0, 0) ? tr("Open") : duration.toString(QStringLiteral("HH:mm")));
     else
         qWarning() << "no labelTime found!";
 
-    if(auto labelProject = widget->findChild<QWidget*>("labelProject"))
+    if(auto labelProject = widget->findChild<QWidget*>(QStringLiteral("labelProject")))
         labelProject->setProperty("text", project);
     else
         qWarning() << "no labelProject found!";
 
-    if(auto labelId = widget->findChild<QWidget*>("labelId"))
+    if(auto labelId = widget->findChild<QWidget*>(QStringLiteral("labelId")))
         labelId->setProperty("text", QString::number(id));
     else
         qWarning() << "no labelId found!";
 
-    if(auto labelSubproject = widget->findChild<QWidget*>("labelSubproject"))
+    if(auto labelSubproject = widget->findChild<QWidget*>(QStringLiteral("labelSubproject")))
         labelSubproject->setProperty("text", subproject);
     else
         qWarning() << "no labelSubproject found!";
 
-    if(auto labelWorkpackage = widget->findChild<QWidget*>("labelWorkpackage"))
+    if(auto labelWorkpackage = widget->findChild<QWidget*>(QStringLiteral("labelWorkpackage")))
         labelWorkpackage->setProperty("text", workpackage);
     else
         qWarning() << "no labelWorkpackage found!";
 
-    if(auto labelText = widget->findChild<QWidget*>("labelText"))
+    if(auto labelText = widget->findChild<QWidget*>(QStringLiteral("labelText")))
         labelText->setProperty("text", text);
     else
         qWarning() << "no labelText found!";
