@@ -592,23 +592,55 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="15"/>
+        <location filename="../dialogs/settingsdialog.ui" line="53"/>
+        <source>Theme:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="17"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="16"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="18"/>
         <source>German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="33"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="23"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="36"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="55"/>
+        <source>Invalid settings!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="23"/>
+        <source>Unknown language!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="27"/>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="36"/>
+        <source>Unknown theme!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="55"/>
+        <source>Please fill all options with valid values!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="72"/>
         <source>Restart required!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="33"/>
-        <source>To apply the new language a restart is required!</source>
+        <location filename="../dialogs/settingsdialog.cpp" line="72"/>
+        <source>To apply the new settings a restart is required!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1000,78 +1032,101 @@ Booking ID: %1</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="66"/>
+        <location filename="../main.cpp" line="71"/>
         <source>Loading settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="81"/>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="76"/>
+        <source>Loading translations...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="89"/>
         <source>Invalid language selection!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="90"/>
         <source>You did not select a valid language!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="102"/>
-        <source>Loading login page...</source>
+        <location filename="../main.cpp" line="111"/>
+        <source>Loading theme...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.cpp" line="119"/>
         <location filename="../main.cpp" line="120"/>
+        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="128"/>
+        <source>Could not load theme!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="121"/>
+        <source>Theme file does not exist!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="139"/>
+        <source>Loading login page...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="156"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Could not access Zeiterfassung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="122"/>
+        <location filename="../main.cpp" line="159"/>
         <source>Base url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="123"/>
+        <location filename="../main.cpp" line="160"/>
         <source>Please enter the base url to the Zeiterfassung:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="137"/>
+        <location filename="../main.cpp" line="174"/>
         <source>Authenticating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="160"/>
-        <location filename="../main.cpp" line="161"/>
+        <location filename="../main.cpp" line="197"/>
+        <location filename="../main.cpp" line="198"/>
         <source>Could not authenticate with Zeiterfassung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="178"/>
+        <location filename="../main.cpp" line="215"/>
         <source>Getting user information...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="193"/>
-        <location filename="../main.cpp" line="194"/>
+        <location filename="../main.cpp" line="230"/>
+        <location filename="../main.cpp" line="231"/>
         <source>Could not get user information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="204"/>
+        <location filename="../main.cpp" line="241"/>
         <source>Loading strip layouts...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="209"/>
-        <location filename="../main.cpp" line="210"/>
-        <location filename="../main.cpp" line="218"/>
-        <location filename="../main.cpp" line="219"/>
-        <location filename="../main.cpp" line="229"/>
-        <location filename="../main.cpp" line="230"/>
-        <location filename="../main.cpp" line="240"/>
-        <location filename="../main.cpp" line="241"/>
+        <location filename="../main.cpp" line="246"/>
+        <location filename="../main.cpp" line="247"/>
+        <location filename="../main.cpp" line="255"/>
+        <location filename="../main.cpp" line="256"/>
+        <location filename="../main.cpp" line="266"/>
+        <location filename="../main.cpp" line="267"/>
+        <location filename="../main.cpp" line="277"/>
+        <location filename="../main.cpp" line="278"/>
         <source>Could not load strips!</source>
         <translation type="unfinished"></translation>
     </message>

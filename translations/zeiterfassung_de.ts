@@ -592,24 +592,56 @@
         <translation>Sprache:</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="15"/>
+        <location filename="../dialogs/settingsdialog.ui" line="53"/>
+        <source>Theme:</source>
+        <translation>Aussehen:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="17"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="16"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="18"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="33"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="23"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="36"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="55"/>
+        <source>Invalid settings!</source>
+        <translation>Ungültige Einstellungen!</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="23"/>
+        <source>Unknown language!</source>
+        <translation>Unbekannte Sprache!</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="27"/>
+        <source>Default</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="36"/>
+        <source>Unknown theme!</source>
+        <translation>Unbekanntes Aussehen!</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="55"/>
+        <source>Please fill all options with valid values!</source>
+        <translation>Bitte füllen Sie alle Felder mit gültigen Werten!</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="72"/>
         <source>Restart required!</source>
         <translation>Neustart erforderlich!</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="33"/>
-        <source>To apply the new language a restart is required!</source>
-        <translation>Um die neue Sprache anzuwenden, ist ein Neustart erforderlich!</translation>
+        <location filename="../dialogs/settingsdialog.cpp" line="72"/>
+        <source>To apply the new settings a restart is required!</source>
+        <translation>Um die neuen Einstellungen zu übernehmen, ist ein Neustart erforderlich!</translation>
     </message>
 </context>
 <context>
@@ -1000,78 +1032,101 @@ Booking ID: %1</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="66"/>
+        <location filename="../main.cpp" line="71"/>
         <source>Loading settings...</source>
         <translation>Lade Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="81"/>
-        <location filename="../main.cpp" line="82"/>
+        <location filename="../main.cpp" line="76"/>
+        <source>Loading translations...</source>
+        <translation>Lade Übersetzungen...</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="88"/>
+        <location filename="../main.cpp" line="89"/>
         <source>Invalid language selection!</source>
         <translation>Ungültige Sprachauswahl!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="90"/>
         <source>You did not select a valid language!</source>
         <translation>Sie haben keine gültige Sprachauswahl getroffen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="102"/>
-        <source>Loading login page...</source>
-        <translation>Lade Login-Seite...</translation>
+        <location filename="../main.cpp" line="111"/>
+        <source>Loading theme...</source>
+        <translation>Lade Aussehen...</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="119"/>
         <location filename="../main.cpp" line="120"/>
+        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="128"/>
+        <source>Could not load theme!</source>
+        <translation>Konnte Aussehen nicht laden!</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="121"/>
+        <source>Theme file does not exist!</source>
+        <translation>Aussehen-Datei existiert nicht!</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="139"/>
+        <source>Loading login page...</source>
+        <translation>Lade Login-Seite...</translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="156"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Could not access Zeiterfassung!</source>
         <translation>Konnte Zeiterfassung nicht erreichen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="122"/>
+        <location filename="../main.cpp" line="159"/>
         <source>Base url</source>
         <translation>Basis URL</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="123"/>
+        <location filename="../main.cpp" line="160"/>
         <source>Please enter the base url to the Zeiterfassung:</source>
         <translation>Bitte geben Sie die Basis URL zur Zeiterfassung ein:</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="137"/>
+        <location filename="../main.cpp" line="174"/>
         <source>Authenticating...</source>
         <translation>Authentifiziere...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="160"/>
-        <location filename="../main.cpp" line="161"/>
+        <location filename="../main.cpp" line="197"/>
+        <location filename="../main.cpp" line="198"/>
         <source>Could not authenticate with Zeiterfassung!</source>
         <translation>Konnte nicht mit Zeiterfassung authentifizieren!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="178"/>
+        <location filename="../main.cpp" line="215"/>
         <source>Getting user information...</source>
         <translation>Hole Benutzer Information...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="193"/>
-        <location filename="../main.cpp" line="194"/>
+        <location filename="../main.cpp" line="230"/>
+        <location filename="../main.cpp" line="231"/>
         <source>Could not get user information!</source>
         <translation>Konnte Benutzer Information nicht holen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="204"/>
+        <location filename="../main.cpp" line="241"/>
         <source>Loading strip layouts...</source>
         <translation>Lade Streifenlayouts...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="209"/>
-        <location filename="../main.cpp" line="210"/>
-        <location filename="../main.cpp" line="218"/>
-        <location filename="../main.cpp" line="219"/>
-        <location filename="../main.cpp" line="229"/>
-        <location filename="../main.cpp" line="230"/>
-        <location filename="../main.cpp" line="240"/>
-        <location filename="../main.cpp" line="241"/>
+        <location filename="../main.cpp" line="246"/>
+        <location filename="../main.cpp" line="247"/>
+        <location filename="../main.cpp" line="255"/>
+        <location filename="../main.cpp" line="256"/>
+        <location filename="../main.cpp" line="266"/>
+        <location filename="../main.cpp" line="267"/>
+        <location filename="../main.cpp" line="277"/>
+        <location filename="../main.cpp" line="278"/>
         <source>Could not load strips!</source>
         <translation>Konnte Streifenlayouts nicht laden!</translation>
     </message>

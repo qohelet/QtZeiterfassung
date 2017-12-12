@@ -34,7 +34,7 @@ ZeiterfassungSettings::ZeiterfassungSettings(QObject *parent) :
 
 QLocale::Language ZeiterfassungSettings::language() const
 {
-    return value(QStringLiteral("language")).value<QLocale::Language>();
+    return value(QStringLiteral("language"), QLocale::AnyLanguage).value<QLocale::Language>();
 }
 
 void ZeiterfassungSettings::setLanguage(QLocale::Language language)
@@ -140,6 +140,16 @@ QDate ZeiterfassungSettings::lastUpdateCheck() const
 void ZeiterfassungSettings::setLastUpdateCheck(const QDate &lastUpdateCheck)
 {
     setValue(QStringLiteral("lastUpdateCheck"), lastUpdateCheck);
+}
+
+QString ZeiterfassungSettings::theme() const
+{
+    return value(QStringLiteral("theme")).toString();
+}
+
+void ZeiterfassungSettings::setTheme(const QString &theme)
+{
+    setValue(QStringLiteral("theme"), theme);
 }
 
 void ZeiterfassungSettings::prependItem(const QString &name, const QString &item)

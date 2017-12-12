@@ -4,7 +4,12 @@
 #include <QMessageBox>
 #include <QSplashScreen>
 #include <QPixmap>
+#include <QLocale>
+#include <QTranslator>
 #include <QDir>
+#include <QFile>
+#include <QTextStream>
+#include <QFileInfo>
 #include <QInputDialog>
 #include <QStringBuilder>
 #include <QDebug>
@@ -68,6 +73,8 @@ int main(int argc, char *argv[])
 
     ZeiterfassungSettings settings(&app);
 
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading translations..."));
+
     if(settings.language() == QLocale::AnyLanguage)
     {
         LanguageSelectionDialog dialog(&splashScreen);
@@ -98,6 +105,36 @@ int main(int argc, char *argv[])
         loadAndInstallTranslator(qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
         loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
     }
+
+    if(!settings.theme().isEmpty())
+    {
+        splashScreen.showMessage(QCoreApplication::translate("main", "Loading theme..."));
+
+        auto themePath = QDir(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("themes"))).absoluteFilePath(settings.theme());
+
+        QFile file(themePath % ".qss");
+
+        if(!file.exists())
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load theme!"),
+                                 QCoreApplication::translate("main", "Could not load theme!") % "\n\n" %
+                                 QCoreApplication::translate("main", "Theme file does not exist!"));
+            goto after;
+        }
+
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load theme!"),
+                                 QCoreApplication::translate("main", "Could not load theme!") % "\n\n" %
+                                 file.errorString());
+            goto after;
+        }
+
+        QTextStream textStream(&file);
+        app.setStyleSheet(textStream.readAll().replace(QStringLiteral("@THEME_RESOURCES@"), themePath));
+    }
+
+    after:
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
 

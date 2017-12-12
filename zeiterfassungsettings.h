@@ -52,6 +52,9 @@ public:
     QDate lastUpdateCheck() const;
     void setLastUpdateCheck(const QDate &lastUpdateCheck);
 
+    QString theme() const;
+    void setTheme(const QString &theme);
+
 private:
     void prependItem(const QString &name, const QString &item);
 };
