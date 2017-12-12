@@ -555,6 +555,12 @@
         <translation>Konnte Kontierung nicht löschen!</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="734"/>
+        <location filename="../mainwindow.cpp" line="743"/>
+        <source>%0 (%1)</source>
+        <translation>%0 (%1)</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="329"/>
         <source>Create time assignment</source>
         <translation>Kontierung erstellen</translation>
@@ -637,9 +643,19 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="203"/>
+        <location filename="../stripswidget.cpp" line="327"/>
         <location filename="../stripswidget.cpp" line="410"/>
         <source>%0h</source>
         <translation>%0h</translation>
+    </message>
+    <message>
+        <location filename="../stripswidget.cpp" line="203"/>
+        <location filename="../stripswidget.cpp" line="410"/>
+        <location filename="../stripswidget.cpp" line="550"/>
+        <location filename="../stripswidget.cpp" line="569"/>
+        <location filename="../stripswidget.cpp" line="588"/>
+        <source>HH:mm</source>
+        <translation>HH:mm</translation>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="216"/>
@@ -653,6 +669,19 @@ Booking ID: %1</source>
         <source>Expected %0 but received %1 in time assignment.
 Time assignment ID: %2</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../stripswidget.cpp" line="224"/>
+        <location filename="../stripswidget.cpp" line="225"/>
+        <location filename="../stripswidget.cpp" line="275"/>
+        <location filename="../stripswidget.cpp" line="276"/>
+        <location filename="../stripswidget.cpp" line="327"/>
+        <location filename="../stripswidget.cpp" line="345"/>
+        <location filename="../stripswidget.cpp" line="346"/>
+        <location filename="../stripswidget.cpp" line="386"/>
+        <location filename="../stripswidget.cpp" line="387"/>
+        <source>HH:mm:ss</source>
+        <translation>HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="237"/>
@@ -685,8 +714,8 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="326"/>
-        <source>Missing time assignment! Missing: %0h</source>
-        <translation>Kontierung fehlend! %0h nicht kontiert</translation>
+        <source>Missing time assignment! Missing: %0</source>
+        <translation>Kontierung fehlend! %0 nicht kontiert</translation>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="385"/>
@@ -714,7 +743,14 @@ Booking ID: %1</source>
         <translation>Ihre Buchungen und Kontierungen für diesen Tag sind in einem ungültigen Zustand!</translation>
     </message>
     <message>
+        <location filename="../stripswidget.cpp" line="430"/>
+        <location filename="../stripswidget.cpp" line="467"/>
+        <source>dd.MM.yyyy</source>
+        <translation>dd.MM.yyyy</translation>
+    </message>
+    <message>
         <location filename="../stripswidget.cpp" line="464"/>
+        <location filename="../stripswidget.cpp" line="537"/>
         <source>%0 (%1)</source>
         <translation>%0 (%1)</translation>
     </message>
@@ -752,11 +788,6 @@ Booking ID: %1</source>
         <location filename="../stripswidget.cpp" line="466"/>
         <source>Sunday</source>
         <translation>Sonntag</translation>
-    </message>
-    <message>
-        <location filename="../stripswidget.cpp" line="467"/>
-        <source>dd.MM</source>
-        <translation>dd.MM</translation>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="469"/>
@@ -806,6 +837,12 @@ Booking ID: %1</source>
         <location filename="../dialogs/timeassignmentdialog.ui" line="84"/>
         <source>Text:</source>
         <translation>Text:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="26"/>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="35"/>
+        <source>%0 (%1)</source>
+        <translation>%0 (%1)</translation>
     </message>
 </context>
 <context>
@@ -979,62 +1016,62 @@ Booking ID: %1</source>
         <translation>Sie haben keine gültige Sprachauswahl getroffen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="101"/>
+        <location filename="../main.cpp" line="102"/>
         <source>Loading login page...</source>
         <translation>Lade Login-Seite...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="118"/>
         <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="120"/>
         <source>Could not access Zeiterfassung!</source>
         <translation>Konnte Zeiterfassung nicht erreichen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="121"/>
+        <location filename="../main.cpp" line="122"/>
         <source>Base url</source>
         <translation>Basis URL</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="122"/>
+        <location filename="../main.cpp" line="123"/>
         <source>Please enter the base url to the Zeiterfassung:</source>
         <translation>Bitte geben Sie die Basis URL zur Zeiterfassung ein:</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="136"/>
+        <location filename="../main.cpp" line="137"/>
         <source>Authenticating...</source>
         <translation>Authentifiziere...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="159"/>
         <location filename="../main.cpp" line="160"/>
+        <location filename="../main.cpp" line="161"/>
         <source>Could not authenticate with Zeiterfassung!</source>
         <translation>Konnte nicht mit Zeiterfassung authentifizieren!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="177"/>
+        <location filename="../main.cpp" line="178"/>
         <source>Getting user information...</source>
         <translation>Hole Benutzer Information...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="192"/>
         <location filename="../main.cpp" line="193"/>
+        <location filename="../main.cpp" line="194"/>
         <source>Could not get user information!</source>
         <translation>Konnte Benutzer Information nicht holen!</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="203"/>
+        <location filename="../main.cpp" line="204"/>
         <source>Loading strip layouts...</source>
         <translation>Lade Streifenlayouts...</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="208"/>
         <location filename="../main.cpp" line="209"/>
-        <location filename="../main.cpp" line="217"/>
+        <location filename="../main.cpp" line="210"/>
         <location filename="../main.cpp" line="218"/>
-        <location filename="../main.cpp" line="228"/>
+        <location filename="../main.cpp" line="219"/>
         <location filename="../main.cpp" line="229"/>
-        <location filename="../main.cpp" line="239"/>
+        <location filename="../main.cpp" line="230"/>
         <location filename="../main.cpp" line="240"/>
+        <location filename="../main.cpp" line="241"/>
         <source>Could not load strips!</source>
         <translation>Konnte Streifenlayouts nicht laden!</translation>
     </message>

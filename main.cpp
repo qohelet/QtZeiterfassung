@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(QStringLiteral("zeiterfassung"));
     QCoreApplication::setApplicationVersion(QStringLiteral("1.2"));
 
-    QSplashScreen splashScreen(QPixmap(":/zeiterfassung/images/splash.png"));
+    QSplashScreen splashScreen(QPixmap(QStringLiteral(":/zeiterfassung/images/splash.png")));
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading settings..."));
     splashScreen.show();
 
@@ -91,12 +91,13 @@ int main(int argc, char *argv[])
     QLocale::setDefault(locale);
 
     QTranslator qtTranslator(&app);
-    loadAndInstallTranslator(qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"),
-                             QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("translations"));
-
     QTranslator zeiterfassungTranslator(&app);
-    loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"),
-                             QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("translations"));
+
+    {
+        auto translationsDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
+        loadAndInstallTranslator(qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
+        loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
+    }
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
 
@@ -203,7 +204,7 @@ int main(int argc, char *argv[])
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading strip layouts..."));
 
     StripFactory stripFactory(&app);
-    if(!stripFactory.load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath("strips")))
+    if(!stripFactory.load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("strips"))))
     {
         QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
                              QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());

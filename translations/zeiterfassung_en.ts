@@ -555,6 +555,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="734"/>
+        <location filename="../mainwindow.cpp" line="743"/>
+        <source>%0 (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="329"/>
         <source>Create time assignment</source>
         <translation type="unfinished"></translation>
@@ -637,8 +643,18 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="203"/>
+        <location filename="../stripswidget.cpp" line="327"/>
         <location filename="../stripswidget.cpp" line="410"/>
         <source>%0h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../stripswidget.cpp" line="203"/>
+        <location filename="../stripswidget.cpp" line="410"/>
+        <location filename="../stripswidget.cpp" line="550"/>
+        <location filename="../stripswidget.cpp" line="569"/>
+        <location filename="../stripswidget.cpp" line="588"/>
+        <source>HH:mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -652,6 +668,19 @@ Booking ID: %1</source>
         <location filename="../stripswidget.cpp" line="344"/>
         <source>Expected %0 but received %1 in time assignment.
 Time assignment ID: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../stripswidget.cpp" line="224"/>
+        <location filename="../stripswidget.cpp" line="225"/>
+        <location filename="../stripswidget.cpp" line="275"/>
+        <location filename="../stripswidget.cpp" line="276"/>
+        <location filename="../stripswidget.cpp" line="327"/>
+        <location filename="../stripswidget.cpp" line="345"/>
+        <location filename="../stripswidget.cpp" line="346"/>
+        <location filename="../stripswidget.cpp" line="386"/>
+        <location filename="../stripswidget.cpp" line="387"/>
+        <source>HH:mm:ss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -685,7 +714,7 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="326"/>
-        <source>Missing time assignment! Missing: %0h</source>
+        <source>Missing time assignment! Missing: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -714,7 +743,14 @@ Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../stripswidget.cpp" line="430"/>
+        <location filename="../stripswidget.cpp" line="467"/>
+        <source>dd.MM.yyyy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../stripswidget.cpp" line="464"/>
+        <location filename="../stripswidget.cpp" line="537"/>
         <source>%0 (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -751,11 +787,6 @@ Booking ID: %1</source>
     <message>
         <location filename="../stripswidget.cpp" line="466"/>
         <source>Sunday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../stripswidget.cpp" line="467"/>
-        <source>dd.MM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -805,6 +836,12 @@ Booking ID: %1</source>
     <message>
         <location filename="../dialogs/timeassignmentdialog.ui" line="84"/>
         <source>Text:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="26"/>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="35"/>
+        <source>%0 (%1)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -979,62 +1016,62 @@ Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="101"/>
+        <location filename="../main.cpp" line="102"/>
         <source>Loading login page...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="118"/>
         <location filename="../main.cpp" line="119"/>
+        <location filename="../main.cpp" line="120"/>
         <source>Could not access Zeiterfassung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="121"/>
+        <location filename="../main.cpp" line="122"/>
         <source>Base url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="122"/>
+        <location filename="../main.cpp" line="123"/>
         <source>Please enter the base url to the Zeiterfassung:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="136"/>
+        <location filename="../main.cpp" line="137"/>
         <source>Authenticating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="159"/>
         <location filename="../main.cpp" line="160"/>
+        <location filename="../main.cpp" line="161"/>
         <source>Could not authenticate with Zeiterfassung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="177"/>
+        <location filename="../main.cpp" line="178"/>
         <source>Getting user information...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="192"/>
         <location filename="../main.cpp" line="193"/>
+        <location filename="../main.cpp" line="194"/>
         <source>Could not get user information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="203"/>
+        <location filename="../main.cpp" line="204"/>
         <source>Loading strip layouts...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="208"/>
         <location filename="../main.cpp" line="209"/>
-        <location filename="../main.cpp" line="217"/>
+        <location filename="../main.cpp" line="210"/>
         <location filename="../main.cpp" line="218"/>
-        <location filename="../main.cpp" line="228"/>
+        <location filename="../main.cpp" line="219"/>
         <location filename="../main.cpp" line="229"/>
-        <location filename="../main.cpp" line="239"/>
+        <location filename="../main.cpp" line="230"/>
         <location filename="../main.cpp" line="240"/>
+        <location filename="../main.cpp" line="241"/>
         <source>Could not load strips!</source>
         <translation type="unfinished"></translation>
     </message>

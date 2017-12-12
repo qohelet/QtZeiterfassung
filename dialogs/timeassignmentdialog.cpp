@@ -23,7 +23,7 @@ TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &project
                 continue;
             }
 
-            ui->comboBoxProject->addItem(projects.value(preferedProject) % " (" % preferedProject % ')', preferedProject);
+            ui->comboBoxProject->addItem(tr("%0 (%1)").arg(projects.value(preferedProject)).arg(preferedProject), preferedProject);
         }
 
         if(settings.projects().count())
@@ -32,7 +32,7 @@ TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &project
         for(auto iter = projects.constBegin(); iter != projects.constEnd(); iter++)
         {
             if(!settings.projects().contains(iter.key()))
-                ui->comboBoxProject->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
+                ui->comboBoxProject->addItem(tr("%0 (%1)").arg(iter.value()).arg(iter.key()), iter.key());
         }
     }
 

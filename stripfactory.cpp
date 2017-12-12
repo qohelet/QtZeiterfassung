@@ -18,7 +18,7 @@ bool StripFactory::load(const QString &stripsPath)
     QDir stripsDir(stripsPath);
 
     {
-        QFile file(stripsDir.absoluteFilePath("bookingstartstrip.ui"));
+        QFile file(stripsDir.absoluteFilePath(QStringLiteral("bookingstartstrip.ui")));
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             m_errorString = file.errorString();
@@ -28,7 +28,7 @@ bool StripFactory::load(const QString &stripsPath)
     }
 
     {
-        QFile file(stripsDir.absoluteFilePath("bookingendstrip.ui"));
+        QFile file(stripsDir.absoluteFilePath(QStringLiteral("bookingendstrip.ui")));
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             m_errorString = file.errorString();
@@ -38,7 +38,7 @@ bool StripFactory::load(const QString &stripsPath)
     }
 
     {
-        QFile file(stripsDir.absoluteFilePath("timeassignmentstrip.ui"));
+        QFile file(stripsDir.absoluteFilePath(QStringLiteral("timeassignmentstrip.ui")));
         if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             m_errorString = file.errorString();

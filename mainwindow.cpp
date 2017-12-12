@@ -648,7 +648,7 @@ void MainWindow::dateChanged(bool force)
 
 void MainWindow::openAuswertung()
 {
-    QTemporaryFile file(QDir::temp().absoluteFilePath("auswertungXXXXXX.pdf"));
+    QTemporaryFile file(QDir::temp().absoluteFilePath(QStringLiteral("auswertungXXXXXX.pdf")));
     file.setAutoRemove(false);
     if(!file.open())
     {
@@ -731,7 +731,7 @@ void MainWindow::updateComboboxes()
                 continue;
             }
 
-            ui->comboBoxProject->addItem(m_projects.value(preferedProject) % " (" % preferedProject % ')', preferedProject);
+            ui->comboBoxProject->addItem(tr("%0 (%1)").arg(m_projects.value(preferedProject)).arg(preferedProject), preferedProject);
         }
 
         if(preferedProjects.count())
@@ -740,7 +740,7 @@ void MainWindow::updateComboboxes()
         for(auto iter = m_projects.constBegin(); iter != m_projects.constEnd(); iter++)
         {
             if(!preferedProjects.contains(iter.key()))
-                ui->comboBoxProject->addItem(iter.value() % " (" % iter.key() % ')', iter.key());
+                ui->comboBoxProject->addItem(tr("%0 (%1)").arg(iter.value()).arg(iter.key()), iter.key());
         }
     }
 

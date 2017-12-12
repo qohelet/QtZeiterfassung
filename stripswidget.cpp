@@ -200,7 +200,7 @@ bool StripsWidget::createStrips()
         if(lastBooking)
         {
             auto breakTime = timeBetween(lastBooking->time, startBooking.time);
-            auto label = new QLabel(tr("%0: %1").arg(tr("Break")).arg(tr("%0h").arg(breakTime.toString(QStringLiteral("HH:mm")))), this);
+            auto label = new QLabel(tr("%0: %1").arg(tr("Break")).arg(tr("%0h").arg(breakTime.toString(tr("HH:mm")))), this);
             m_layout->addWidget(label);
             label->setMinimumHeight(20);
             label->setMaximumHeight(20);
@@ -221,8 +221,8 @@ bool StripsWidget::createStrips()
         if(timeAssignment.time != timeAssignmentTime)
         {
             errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                    .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
-                    .arg(timeAssignment.time.toString(QStringLiteral("HH:mm:ss")))
+                    .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
+                    .arg(timeAssignment.time.toString(tr("HH:mm:ss")))
                     .arg(timeAssignment.id);
             goto after;
         }
@@ -272,8 +272,8 @@ bool StripsWidget::createStrips()
                     if(timeAssignment.time != timeAssignmentTime)
                     {
                         errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
-                                .arg(timeAssignment.time.toString(QStringLiteral("HH:mm:ss")))
+                                .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
+                                .arg(timeAssignment.time.toString(tr("HH:mm:ss")))
                                 .arg(timeAssignment.id);
                         goto after;
                     }
@@ -323,8 +323,8 @@ bool StripsWidget::createStrips()
                 {
                     if(timeAssignmentsIter == m_timeAssignments.constEnd())
                     {
-                        errorMessage = tr("Missing time assignment! Missing: %0h")
-                                .arg(timeBetween(timeAssignmentTime, bookingTimespan).toString(QStringLiteral("HH:mm:ss")));
+                        errorMessage = tr("Missing time assignment! Missing: %0")
+                                .arg(tr("%0h").arg(timeBetween(timeAssignmentTime, bookingTimespan).toString(tr("HH:mm:ss"))));
 
                         {
                             auto label = new QLabel(errorMessage, this);
@@ -342,8 +342,8 @@ bool StripsWidget::createStrips()
                     if(timeAssignment.time != timeAssignmentTime)
                     {
                         errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
-                                .arg(timeAssignment.time.toString(QStringLiteral("HH:mm:ss")))
+                                .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
+                                .arg(timeAssignment.time.toString(tr("HH:mm:ss")))
                                 .arg(timeAssignment.id);
                         goto after;
                     }
@@ -383,8 +383,8 @@ bool StripsWidget::createStrips()
                 if(timeAssignmentTime > bookingTimespan)
                 {
                     errorMessage = tr("Time assignment time longer than booking time! Time assignment: %0 Booking: %1")
-                            .arg(timeAssignmentTime.toString(QStringLiteral("HH:mm:ss")))
-                            .arg(bookingTimespan.toString(QStringLiteral("HH:mm:ss")));
+                            .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
+                            .arg(bookingTimespan.toString(tr("HH:mm:ss")));
 
                     auto label = new QLabel(errorMessage, this);
                     m_layout->addWidget(label);
@@ -407,7 +407,7 @@ bool StripsWidget::createStrips()
     {
         auto label = new QLabel(tr("%0: %1")
                                 .arg(tr("Assigned time"))
-                                .arg(tr("%0h").arg(timeAssignmentTime.toString(QStringLiteral("HH:mm")))), this);
+                                .arg(tr("%0h").arg(timeAssignmentTime.toString(tr("HH:mm")))), this);
         m_layout->addWidget(label);
         label->setMinimumHeight(20);
         label->setMaximumHeight(20);
@@ -427,7 +427,7 @@ bool StripsWidget::createStrips()
 
         QMessageBox::warning(this, tr("Illegal state!"),
                              tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" %
-                             m_date.toString(QStringLiteral("dd.MM.yyyy")) % "\n\n" %
+                             m_date.toString(tr("dd.MM.yyyy")) % "\n\n" %
                              errorMessage);
     }
 
@@ -464,7 +464,7 @@ void StripsWidget::clearStrips()
         label->setText(tr("%0 (%1)")
             .arg(std::array<QString, 7> { tr("Monday"), tr("Tuesday"), tr("Wednesday"), tr("Thursday"),
                                           tr("Friday"), tr("Saturday"), tr("Sunday") }[m_date.dayOfWeek() - 1])
-            .arg(m_date.toString(tr("dd.MM"))));
+            .arg(m_date.toString(tr("dd.MM.yyyy"))));
     else
         label->setText(tr("Invalid"));
     {
@@ -534,7 +534,7 @@ void StripsWidget::invalidateValues()
 QString StripsWidget::buildProjectString(const QString &project)
 {
     if(m_projects.contains(project))
-        return m_projects.value(project) % " (" % project % ")";
+        return tr("%0 (%1)").arg(m_projects.value(project)).arg(project);
     else
     {
         qWarning() << "could not find project" << project;
@@ -547,7 +547,7 @@ QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
     auto widget = m_stripFactory.createBookingStartStrip(this);
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
-        labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
+        labelTime->setProperty("text", time.toString(tr("HH:mm")));
     else
         qWarning() << "no labelTime found!";
 
@@ -566,7 +566,7 @@ QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
     auto widget = m_stripFactory.createBookingEndStrip(this);
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
-        labelTime->setProperty("text", time.toString(QStringLiteral("HH:mm")));
+        labelTime->setProperty("text", time.toString(tr("HH:mm")));
     else
         qWarning() << "no labelTime found!";
 
@@ -585,7 +585,7 @@ QWidget *StripsWidget::appendTimeAssignmentStrip(int id, const QTime &duration, 
     auto widget = m_stripFactory.createTimeAssignmentStrip(this);
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
-        labelTime->setProperty("text", duration == QTime(0, 0) ? tr("Open") : duration.toString(QStringLiteral("HH:mm")));
+        labelTime->setProperty("text", duration == QTime(0, 0) ? tr("Open") : duration.toString(tr("HH:mm")));
     else
         qWarning() << "no labelTime found!";
 
