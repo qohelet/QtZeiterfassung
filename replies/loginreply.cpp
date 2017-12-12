@@ -21,7 +21,7 @@ void LoginReply::requestFinished()
     if(!m_reply->hasRawHeader(QByteArrayLiteral("Location")))
     {
         setSuccess(false);
-        setMessage(tr("Request did not contain a Location header."));
+        setMessage(tr("Response did not contain a Location header."));
         goto end;
     }
 
