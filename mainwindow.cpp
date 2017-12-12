@@ -167,8 +167,7 @@ void MainWindow::getAuswertungFinished()
     ui->actionAuswertung->setEnabled(true);
     m_auswertung = m_getAuswertungReply->auswertung();
 
-    auto urlaubsAnspruch = tr("???");
-    auto gleitzeit = tr("???");
+    auto urlaubsAnspruch = tr("n/a");
 
     {
         static QRegularExpression regex(QStringLiteral("Urlaubsanspruch +([0-9]+\\.[0-9]+\\-?) +([0-9]+\\.[0-9]+\\-?)"));
@@ -178,6 +177,9 @@ void MainWindow::getAuswertungFinished()
         else
             qWarning() << "Urlaubsanspruch not found";
     }
+
+    auto gleitzeit = tr("n/a");
+
     {
         static QRegularExpression regex(QStringLiteral("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)"));
         auto match = regex.match(m_auswertung);
@@ -441,6 +443,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
 void MainWindow::pushButtonStartPressed()
 {
+    auto bookingsChanged = false;
+
     if(m_currentStripWidget->bookings().rbegin() == m_currentStripWidget->bookings().rend() ||
        m_currentStripWidget->bookings().rbegin()->type == QStringLiteral("G"))
     {
@@ -463,6 +467,8 @@ void MainWindow::pushButtonStartPressed()
         }
 
         reply->deleteLater();
+
+        bookingsChanged = true;
     }
 
     auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
@@ -527,7 +533,20 @@ void MainWindow::pushButtonStartPressed()
 
     updateComboboxes();
 
-    m_currentStripWidget->refresh();
+    if(bookingsChanged)
+    {
+        m_currentStripWidget->refresh();
+
+        refreshAuswertung();
+    }
+    else
+        m_currentStripWidget->refreshTimeAssignments();
+
+    ui->actionToday->setEnabled(false);
+    ui->actionRefresh->setEnabled(false);
+    ui->dateEditDate->setReadOnly(true);
+    ui->pushButtonPrev->setEnabled(false);
+    ui->pushButtonNext->setEnabled(false);
 }
 
 void MainWindow::pushButtonEndPressed()
@@ -583,6 +602,13 @@ void MainWindow::pushButtonEndPressed()
     }
 
     m_currentStripWidget->refresh();
+    refreshAuswertung();
+
+    ui->actionToday->setEnabled(false);
+    ui->actionRefresh->setEnabled(false);
+    ui->dateEditDate->setReadOnly(true);
+    ui->pushButtonPrev->setEnabled(false);
+    ui->pushButtonNext->setEnabled(false);
 }
 
 void MainWindow::dateChanged(bool force)
@@ -620,19 +646,8 @@ void MainWindow::dateChanged(bool force)
         }
     }
 
-    auto auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
-    if(force || m_auswertungDate != auswertungDate)
-    {
-        m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
-        m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
-
-        ui->actionAuswertung->setEnabled(false);
-        m_auswertung.clear();
-
-        m_auswertungDate = auswertungDate;
-        m_getAuswertungReply = m_erfassung.doGetAuswertung(m_userInfo.userId, auswertungDate);
-        connect(m_getAuswertungReply, &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
-    }
+    if(force || m_auswertungDate != QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1))
+        refreshAuswertung();
 
     if(std::any_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget) {
         return stripsWidget->refreshing();
@@ -710,10 +725,23 @@ void MainWindow::endEnabledChanged()
     auto startEnabled = m_currentStripWidget->startEnabled();
     auto endEnabled = m_currentStripWidget->endEnabled();
 
-    ui->timeEditTime->setEnabled(startEnabled ||endEnabled);
+    ui->timeEditTime->setEnabled(startEnabled || endEnabled);
 
     ui->pushButtonStart->setText(endEnabled ? tr("Switch") : tr("Start"));
     ui->pushButtonEnd->setEnabled(endEnabled);
+}
+
+void MainWindow::refreshAuswertung()
+{
+    m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
+    m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
+
+    ui->actionAuswertung->setEnabled(false);
+    m_auswertung.clear();
+
+    m_auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
+    m_getAuswertungReply = m_erfassung.doGetAuswertung(m_userInfo.userId, m_auswertungDate);
+    connect(m_getAuswertungReply, &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
 }
 
 void MainWindow::updateComboboxes()

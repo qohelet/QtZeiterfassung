@@ -534,7 +534,7 @@ void StripsWidget::invalidateValues()
 QString StripsWidget::buildProjectString(const QString &project)
 {
     if(m_projects.contains(project))
-        return tr("%0 (%1)").arg(m_projects.value(project)).arg(project);
+        return m_projects.value(project) % "\n" % project;
     else
     {
         qWarning() << "could not find project" << project;

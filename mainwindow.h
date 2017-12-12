@@ -43,6 +43,7 @@ private Q_SLOTS:
     void endEnabledChanged();
 
 private:
+    void refreshAuswertung();
     void updateComboboxes();
 
     Ui::MainWindow *ui;

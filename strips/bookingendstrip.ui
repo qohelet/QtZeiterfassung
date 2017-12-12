@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="styleSheet">
-   <string notr="true">#bookingEndStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FF7F7F, stop:1 #BF6F6F); }</string>
+   <string notr="true">QLabel { color: black; } #bookingEndStrip { background-color: qlineargradient( x1:0 y1:0, x2:0 y2:1, stop:0 #FF7F7F, stop:1 #BF6F6F); }</string>
   </property>
   <property name="frameShape">
    <enum>QFrame::WinPanel</enum>
@@ -40,6 +40,8 @@
      <property name="font">
       <font>
        <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -63,6 +65,9 @@
        <pointsize>12</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0,0,0,30);</string>
+     </property>
      <property name="text">
       <string>END</string>
      </property>
@@ -70,6 +75,9 @@
    </item>
    <item>
     <widget class="QLabel" name="labelId">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0,0,0,30);</string>
+     </property>
      <property name="text">
       <string notr="true">0123456</string>
      </property>
