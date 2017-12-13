@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(QStringLiteral("brunner.ninja"));
     QCoreApplication::setOrganizationName(QStringLiteral("db-software"));
     QCoreApplication::setApplicationName(QStringLiteral("zeiterfassung"));
-    QCoreApplication::setApplicationVersion(QStringLiteral("1.2"));
+    QCoreApplication::setApplicationVersion(QStringLiteral("1.3.1"));
 
     QSplashScreen splashScreen(QPixmap(QStringLiteral(":/zeiterfassung/images/splash.png")));
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading settings..."));
