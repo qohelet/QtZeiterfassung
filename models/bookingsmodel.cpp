@@ -103,6 +103,8 @@ QVariant BookingsModel::headerData(int section, Qt::Orientation orientation, int
             case 4: return tr("Text");
             }
         }
+    default:
+        qt_noop();
     }
 
     return QVariant();

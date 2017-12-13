@@ -107,6 +107,8 @@ QVariant TimeAssignmentsModel::headerData(int section, Qt::Orientation orientati
             case 6: return tr("Text");
             }
         }
+    default:
+        qt_noop();
     }
 
     return QVariant();

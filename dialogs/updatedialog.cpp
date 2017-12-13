@@ -83,6 +83,8 @@ void UpdateDialog::finished()
         }
     }
 
+    m_settings.setLastUpdateCheck(QDate::currentDate());
+
     deleteLater();
 }
 
