@@ -66,6 +66,7 @@ void GetProjectsReply::requestFinished()
 
         setSuccess(true);
         m_projects.clear();
+        m_projects.reserve(elementsArr.count());
         for(const auto &val : elementsArr)
         {
             auto obj = val.toObject();

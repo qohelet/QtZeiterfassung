@@ -45,7 +45,8 @@ SOURCES += main.cpp \
     replies/getprojectsreply.cpp \
     replies/getauswertungreply.cpp \
     replies/zeiterfassungreply.cpp \
-    replies/deletetimeassignmentreply.cpp
+    replies/deletetimeassignmentreply.cpp \
+    replies/getpresencestatusreply.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -77,7 +78,8 @@ HEADERS += \
     replies/getauswertungreply.h \
     replies/zeiterfassungreply.h \
     replies/deletetimeassignmentreply.h \
-    cpp14polyfills.h
+    cpp14polyfills.h \
+    replies/getpresencestatusreply.h
 
 FORMS += \
     mainwindow.ui \

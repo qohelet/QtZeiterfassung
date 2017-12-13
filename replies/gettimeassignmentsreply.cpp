@@ -49,6 +49,7 @@ void GetTimeAssignmentsReply::requestFinished()
 
         setSuccess(true);
         m_timeAssignments.clear();
+        m_timeAssignments.reserve(arr.count());
         for(const auto &val : arr)
         {
             auto obj = val.toObject();

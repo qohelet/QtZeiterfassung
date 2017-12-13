@@ -23,6 +23,7 @@ class UpdateTimeAssignmentReply;
 class DeleteTimeAssignmentReply;
 class GetProjectsReply;
 class GetAuswertungReply;
+class GetPresenceStatusReply;
 
 class ZeiterfassungApi : public QObject
 {
@@ -73,6 +74,14 @@ public:
         QString value;
     };
 
+    struct PresenceStatus
+    {
+        int userId;
+        QString firstName;
+        QString lastName;
+        QString presence;
+    };
+
     std::unique_ptr<LoginPageReply> doLoginPage();
     std::unique_ptr<LoginReply> doLogin(const QString &username, const QString &password);
     std::unique_ptr<UserInfoReply> doUserInfo();
@@ -97,6 +106,7 @@ public:
 
     std::unique_ptr<GetProjectsReply> doGetProjects(int userId, const QDate &date);
     std::unique_ptr<GetAuswertungReply> doGetAuswertung(int userId, const QDate &date);
+    std::unique_ptr<GetPresenceStatusReply> doGetPresenceStatus();
 
 private:
     QString m_url;

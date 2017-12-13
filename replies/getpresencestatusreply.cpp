@@ -1,4 +1,4 @@
-#include "getbookingsreply.h"
+#include "getpresencestatusreply.h"
 
 #include <QJsonParseError>
 #include <QJsonDocument>
@@ -6,19 +6,19 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
-GetBookingsReply::GetBookingsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
+GetPresenceStatusReply::GetPresenceStatusReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
     m_reply(std::move(reply))
 {
-    connect(m_reply.get(), &QNetworkReply::finished, this, &GetBookingsReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &GetPresenceStatusReply::requestFinished);
 }
 
-const QVector<ZeiterfassungApi::Booking> &GetBookingsReply::bookings() const
+const QVector<ZeiterfassungApi::PresenceStatus> &GetPresenceStatusReply::presenceStatuses() const
 {
-    return m_bookings;
+    return m_presenceStatuses;
 }
 
-void GetBookingsReply::requestFinished()
+void GetPresenceStatusReply::requestFinished()
 {
     if(m_reply->error() != QNetworkReply::NoError)
     {
@@ -47,19 +47,17 @@ void GetBookingsReply::requestFinished()
         auto arr = document.array();
 
         setSuccess(true);
-        m_bookings.clear();
-        m_bookings.reserve(arr.count());
+        m_presenceStatuses.clear();
+        m_presenceStatuses.reserve(arr.count());
         for(const auto &val : arr)
         {
             auto obj = val.toObject();
 
-            m_bookings.append({
-                obj.value(QStringLiteral("bookingNr")).toInt(),
-                QDate::fromString(QString::number(obj.value(QStringLiteral("bookingDate")).toInt()), QStringLiteral("yyyyMMdd")),
-                QTime::fromString(QStringLiteral("%0").arg(obj.value(QStringLiteral("bookingTime")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                QTime::fromString(QStringLiteral("%0").arg(obj.value(QStringLiteral("bookingTimespan")).toInt(), 6, 10, QChar('0')), QStringLiteral("HHmmss")),
-                obj.value(QStringLiteral("bookingType")).toString(),
-                obj.value(QStringLiteral("text")).toString()
+            m_presenceStatuses.append({
+                obj.value(QStringLiteral("persNr")).toInt(),
+                obj.value(QStringLiteral("firstName")).toString(),
+                obj.value(QStringLiteral("lastName")).toString(),
+                obj.value(QStringLiteral("presence")).toString()
             });
         }
     }
