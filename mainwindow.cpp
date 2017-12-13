@@ -56,7 +56,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     {
         m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_userInfo.userId, m_stripFactory, m_projects, ui->widgetWeek);
         connect(m_stripsWidgets[i], &StripsWidget::refreshingChanged, this, &MainWindow::refreshingChanged);
-        ui->layoutWeek->addWidget(m_stripsWidgets[i], 1);
+        ui->layoutWeek->addWidget(m_stripsWidgets[i]);
     }
 
     setWindowTitle(tr("Zeiterfassung - %0 (%1)").arg(m_userInfo.text).arg(m_userInfo.email));
@@ -82,6 +82,8 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->pushButtonNext, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
 
     ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
+
+    connect(ui->pushButtonNow, &QAbstractButton::pressed, [=](){ ui->timeEditTime->setTime(QTime::currentTime()); });
 
     m_getProjectsReply = erfassung.doGetProjects(userInfo.userId, QDate::currentDate());
     connect(m_getProjectsReply, &ZeiterfassungReply::finished, this, &MainWindow::getProjectsFinished);
@@ -709,7 +711,8 @@ void MainWindow::startEnabledChanged()
     auto startEnabled = m_currentStripWidget->startEnabled();
     auto endEnabled = m_currentStripWidget->endEnabled();
 
-    ui->timeEditTime->setEnabled(startEnabled ||endEnabled);
+    ui->timeEditTime->setEnabled(startEnabled || endEnabled);
+    ui->pushButtonNow->setEnabled(startEnabled || endEnabled);
 
     ui->comboBoxProject->setEnabled(startEnabled);
     ui->comboBoxSubproject->setEnabled(startEnabled);
@@ -726,6 +729,7 @@ void MainWindow::endEnabledChanged()
     auto endEnabled = m_currentStripWidget->endEnabled();
 
     ui->timeEditTime->setEnabled(startEnabled || endEnabled);
+    ui->pushButtonNow->setEnabled(startEnabled || endEnabled);
 
     ui->pushButtonStart->setText(endEnabled ? tr("Switch") : tr("Start"));
     ui->pushButtonEnd->setEnabled(endEnabled);

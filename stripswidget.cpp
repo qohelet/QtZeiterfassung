@@ -3,7 +3,6 @@
 #include <QVBoxLayout>
 #include <QVector>
 #include <QLabel>
-#include <QMessageBox>
 #include <QMap>
 #include <QStringBuilder>
 #include <QDebug>
@@ -202,8 +201,6 @@ bool StripsWidget::createStrips()
             auto breakTime = timeBetween(lastBooking->time, startBooking.time);
             auto label = new QLabel(tr("%0: %1").arg(tr("Break")).arg(tr("%0h").arg(breakTime.toString(tr("HH:mm")))), this);
             m_layout->addWidget(label);
-            label->setMinimumHeight(20);
-            label->setMaximumHeight(20);
         }
 
         lastBooking = &startBooking;
@@ -326,13 +323,6 @@ bool StripsWidget::createStrips()
                         errorMessage = tr("Missing time assignment! Missing: %0")
                                 .arg(tr("%0h").arg(timeBetween(timeAssignmentTime, bookingTimespan).toString(tr("HH:mm:ss"))));
 
-                        {
-                            auto label = new QLabel(errorMessage, this);
-                            m_layout->addWidget(label);
-                            label->setMinimumHeight(20);
-                            label->setMaximumHeight(20);
-                        }
-
                         appendBookingEndStrip(endBooking.id, endBooking.time);
 
                         goto after;
@@ -382,14 +372,9 @@ bool StripsWidget::createStrips()
 
                 if(timeAssignmentTime > bookingTimespan)
                 {
-                    errorMessage = tr("Time assignment time longer than booking time! Time assignment: %0 Booking: %1")
+                    errorMessage = tr("Time assignment time longer than booking time!\nTime assignment: %0\nBooking: %1")
                             .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
                             .arg(bookingTimespan.toString(tr("HH:mm:ss")));
-
-                    auto label = new QLabel(errorMessage, this);
-                    m_layout->addWidget(label);
-                    label->setMinimumHeight(20);
-                    label->setMaximumHeight(20);
                 }
 
                 appendBookingEndStrip(endBooking.id, endBooking.time);
@@ -409,8 +394,6 @@ bool StripsWidget::createStrips()
                                 .arg(tr("Assigned time"))
                                 .arg(tr("%0h").arg(timeAssignmentTime.toString(tr("HH:mm")))), this);
         m_layout->addWidget(label);
-        label->setMinimumHeight(20);
-        label->setMaximumHeight(20);
     }
     else
     {
@@ -420,15 +403,11 @@ bool StripsWidget::createStrips()
         timeAssignmentTime = QTime();
         lastTimeAssignmentStart = QTime();
 
-        auto label = new QLabel(tr("Strip rendering aborted due error."), this);
+        auto label = new QLabel(tr("Strip rendering aborted due error.\n"
+                                   "Your bookings and time assignments for this day are in an illegal state!") % "\n" %
+                                   errorMessage, this);
+        label->setStyleSheet("color: red;");
         m_layout->addWidget(label);
-        label->setMinimumHeight(20);
-        label->setMaximumHeight(20);
-
-        QMessageBox::warning(this, tr("Illegal state!"),
-                             tr("Your bookings and time assignments for this day are in an illegal state!") % "\n\n" %
-                             m_date.toString(tr("dd.MM.yyyy")) % "\n\n" %
-                             errorMessage);
     }
 
     if(m_timeAssignmentTime != timeAssignmentTime)

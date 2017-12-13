@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1242</width>
-    <height>581</height>
+    <width>1411</width>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowIcon">
@@ -19,14 +19,13 @@
     <item>
      <layout class="QHBoxLayout">
       <item>
-       <widget class="QDateEdit" name="dateEditDate">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
+       <widget class="QDateEdit" name="dateEditDate"/>
       </item>
       <item>
        <widget class="QPushButton" name="pushButtonPrev">
+        <property name="whatsThis">
+         <string>Previous day</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -38,6 +37,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButtonNext">
+        <property name="whatsThis">
+         <string>Next day</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -61,17 +63,24 @@
        </spacer>
       </item>
       <item>
-       <widget class="QTimeEdit" name="timeEditTime">
-        <property name="enabled">
-         <bool>false</bool>
+       <widget class="QTimeEdit" name="timeEditTime"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonNow">
+        <property name="whatsThis">
+         <string>Now</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/zeiterfassung/images/now.png</normaloff>:/zeiterfassung/images/now.png</iconset>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QComboBox" name="comboBoxProject">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="minimumSize">
          <size>
           <width>200</width>
@@ -82,12 +91,9 @@
       </item>
       <item>
        <widget class="QComboBox" name="comboBoxSubproject">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>200</width>
           <height>0</height>
          </size>
         </property>
@@ -101,12 +107,9 @@
       </item>
       <item>
        <widget class="QComboBox" name="comboBoxWorkpackage">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>200</width>
           <height>0</height>
          </size>
         </property>
@@ -120,12 +123,9 @@
       </item>
       <item>
        <widget class="QComboBox" name="comboBoxText">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>200</width>
           <height>0</height>
          </size>
         </property>
@@ -139,9 +139,6 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButtonStart">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="text">
          <string>Start</string>
         </property>
@@ -162,9 +159,6 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButtonEnd">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
         <property name="text">
          <string>End</string>
         </property>
@@ -195,8 +189,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>1220</width>
-          <height>438</height>
+          <width>1389</width>
+          <height>409</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="layoutWeek"/>
@@ -216,9 +210,6 @@
         <layout class="QHBoxLayout">
          <item>
           <widget class="QTreeView" name="treeViewBookings">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
@@ -233,9 +224,6 @@
         <layout class="QHBoxLayout">
          <item>
           <widget class="QTreeView" name="treeViewTimeAssignments">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
@@ -253,8 +241,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1242</width>
-     <height>26</height>
+     <width>1411</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -291,6 +279,18 @@
    <addaction name="menu_Tools"/>
    <addaction name="menu_About"/>
   </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionToday"/>
+   <addaction name="actionRefresh"/>
+   <addaction name="actionAuswertung"/>
+   <addaction name="actionSettings"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">
    <property name="icon">
@@ -317,9 +317,6 @@
    </property>
   </action>
   <action name="actionToday">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/zeiterfassung/images/today.png</normaloff>:/zeiterfassung/images/today.png</iconset>
@@ -329,9 +326,6 @@
    </property>
   </action>
   <action name="actionRefresh">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/zeiterfassung/images/refresh.png</normaloff>:/zeiterfassung/images/refresh.png</iconset>
@@ -341,14 +335,19 @@
    </property>
   </action>
   <action name="actionAuswertung">
-   <property name="enabled">
-    <bool>false</bool>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/zeiterfassung/images/auswertung.png</normaloff>:/zeiterfassung/images/auswertung.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Auswertung</string>
    </property>
   </action>
   <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/zeiterfassung/images/settings.png</normaloff>:/zeiterfassung/images/settings.png</iconset>
+   </property>
    <property name="text">
     <string>&amp;Settings</string>
    </property>
