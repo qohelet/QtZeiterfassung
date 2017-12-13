@@ -7,14 +7,15 @@
 #include <QMap>
 
 #include "zeiterfassungapi.h"
+#include "replies/getprojectsreply.h"
+#include "replies/getauswertungreply.h"
+#include "replies/getpresencestatusreply.h"
 
 class QLabel;
 class QBoxLayout;
 
 namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
-class GetProjectsReply;
-class GetAuswertungReply;
 class StripFactory;
 class StripsWidget;
 class BookingsModel;
@@ -38,6 +39,8 @@ private Q_SLOTS:
     void pushButtonEndPressed();
     void dateChanged(bool force = false);
     void openAuswertung();
+    void refreshPresence();
+    void getPresenceStatusFinished();
 
     void minimumTimeChanged();
     void refreshingChanged();
@@ -65,11 +68,15 @@ private:
     QDate m_auswertungDate;
     QByteArray m_auswertung;
 
+    QLabel *m_presenceLabel;
+
     QLabel *m_balanceLabel;
     QLabel *m_holidaysLabel;
 
     std::array<StripsWidget*, 7> m_stripsWidgets;
     StripsWidget *m_currentStripWidget;
+
+    std::unique_ptr<GetPresenceStatusReply> m_getPresenceStatusReply;
 };
 
 #endif // MAINWINDOW_H

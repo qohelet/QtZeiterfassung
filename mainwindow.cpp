@@ -4,7 +4,7 @@
 #include <QUrl>
 #include <QLineEdit>
 #include <QMessageBox>
-#include <QStandardItem>
+#include <QTimer>
 #include <QStringBuilder>
 #include <QMenu>
 #include <QEventLoop>
@@ -48,7 +48,8 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_getAuswertungReply(Q_NULLPTR),
     m_bookingsModel(new BookingsModel(this)),
     m_timeAssignmentsModel(new TimeAssignmentsModel(this)),
-    m_currentStripWidget(Q_NULLPTR)
+    m_currentStripWidget(Q_NULLPTR),
+    m_getPresenceStatusReply(Q_NULLPTR)
 {
     ui->setupUi(this);
 
@@ -90,8 +91,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_getProjectsReply = erfassung.doGetProjects(userInfo.userId, QDate::currentDate());
     connect(m_getProjectsReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getProjectsFinished);
 
-    ui->comboBoxProject->setMaxVisibleItems(10);
-
     ui->comboBoxSubproject->lineEdit()->setPlaceholderText(tr("Subproject"));
     ui->comboBoxWorkpackage->lineEdit()->setPlaceholderText(tr("Workpackage"));
     ui->comboBoxText->lineEdit()->setPlaceholderText(tr("Text"));
@@ -109,6 +108,10 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(m_timeAssignmentsModel, &TimeAssignmentsModel::enabledChanged, ui->treeViewTimeAssignments, &QWidget::setEnabled);
     connect(ui->treeViewTimeAssignments, &QWidget::customContextMenuRequested, this, &MainWindow::contextMenuTimeAssignment);
 
+    ui->statusbar->addWidget(m_presenceLabel = new QLabel(tr("???"), ui->statusbar));
+    m_presenceLabel->setFrameShape(QFrame::Panel);
+    m_presenceLabel->setFrameShadow(QFrame::Sunken);
+
     ui->statusbar->addPermanentWidget(m_balanceLabel = new QLabel(ui->statusbar));
     m_balanceLabel->setFrameShape(QFrame::Panel);
     m_balanceLabel->setFrameShadow(QFrame::Sunken);
@@ -117,6 +120,15 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_holidaysLabel->setFrameShadow(QFrame::Sunken);
 
     dateChanged();
+
+    {
+        auto timer = new QTimer(this);
+        timer->setInterval(60000);
+        connect(timer, &QTimer::timeout, this, &MainWindow::refreshPresence);
+        timer->start();
+    }
+
+    refreshPresence();
 
     if(settings.lastUpdateCheck().isNull() || settings.lastUpdateCheck() < QDate::currentDate())
         new UpdateDialog(settings, erfassung.manager(), this);
@@ -649,6 +661,34 @@ void MainWindow::openAuswertung()
         QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open default PDF viewer!"));
         return;
     }
+}
+
+void MainWindow::refreshPresence()
+{
+    m_presenceLabel->setText(tr("???"));
+
+    m_getPresenceStatusReply = m_erfassung.doGetPresenceStatus();
+    connect(m_getPresenceStatusReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getPresenceStatusFinished);
+}
+
+void MainWindow::getPresenceStatusFinished()
+{
+    if(m_getPresenceStatusReply->success())
+    {
+        QMap<QString, int> counts;
+        for(const auto &presenceStatus : m_getPresenceStatusReply->presenceStatuses())
+            counts[presenceStatus.presence]++;
+        QString text;
+        for(auto iter = counts.constBegin(); iter != counts.constEnd(); iter++)
+        {
+            if(!text.isEmpty())
+                text.append(' ');
+            text.append(QStringLiteral("%0: %1").arg(iter.key()).arg(iter.value()));
+        }
+        m_presenceLabel->setText(text);
+    }
+
+    m_getPresenceStatusReply = Q_NULLPTR;
 }
 
 void MainWindow::minimumTimeChanged()
