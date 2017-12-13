@@ -114,22 +114,22 @@
 <context>
     <name>CreateBookingReply</name>
     <message>
-        <location filename="../replies/createbookingreply.cpp" line="27"/>
+        <location filename="../replies/createbookingreply.cpp" line="26"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/createbookingreply.cpp" line="37"/>
+        <location filename="../replies/createbookingreply.cpp" line="36"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/createbookingreply.cpp" line="44"/>
+        <location filename="../replies/createbookingreply.cpp" line="43"/>
         <source>JSON document is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/createbookingreply.cpp" line="53"/>
+        <location filename="../replies/createbookingreply.cpp" line="52"/>
         <source>JSON does not contain bookingNr!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -137,22 +137,22 @@
 <context>
     <name>CreateTimeAssignmentReply</name>
     <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="27"/>
+        <location filename="../replies/createtimeassignmentreply.cpp" line="26"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="37"/>
+        <location filename="../replies/createtimeassignmentreply.cpp" line="36"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="44"/>
+        <location filename="../replies/createtimeassignmentreply.cpp" line="43"/>
         <source>JSON document is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="53"/>
+        <location filename="../replies/createtimeassignmentreply.cpp" line="52"/>
         <source>JSON does not contain bookingNr!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,7 +160,7 @@
 <context>
     <name>DeleteBookingReply</name>
     <message>
-        <location filename="../replies/deletebookingreply.cpp" line="17"/>
+        <location filename="../replies/deletebookingreply.cpp" line="15"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -168,7 +168,7 @@
 <context>
     <name>DeleteTimeAssignmentReply</name>
     <message>
-        <location filename="../replies/deletetimeassignmentreply.cpp" line="17"/>
+        <location filename="../replies/deletetimeassignmentreply.cpp" line="15"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,8 +176,8 @@
 <context>
     <name>GetAuswertungReply</name>
     <message>
-        <location filename="../replies/getauswertungreply.cpp" line="24"/>
-        <location filename="../replies/getauswertungreply.cpp" line="45"/>
+        <location filename="../replies/getauswertungreply.cpp" line="22"/>
+        <location filename="../replies/getauswertungreply.cpp" line="40"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -185,17 +185,17 @@
 <context>
     <name>GetBookingsReply</name>
     <message>
-        <location filename="../replies/getbookingsreply.cpp" line="27"/>
+        <location filename="../replies/getbookingsreply.cpp" line="26"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/getbookingsreply.cpp" line="37"/>
+        <location filename="../replies/getbookingsreply.cpp" line="36"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/getbookingsreply.cpp" line="44"/>
+        <location filename="../replies/getbookingsreply.cpp" line="43"/>
         <source>JSON document is not an array!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -203,27 +203,27 @@
 <context>
     <name>GetProjectsReply</name>
     <message>
-        <location filename="../replies/getprojectsreply.cpp" line="27"/>
+        <location filename="../replies/getprojectsreply.cpp" line="26"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/getprojectsreply.cpp" line="37"/>
+        <location filename="../replies/getprojectsreply.cpp" line="36"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/getprojectsreply.cpp" line="44"/>
+        <location filename="../replies/getprojectsreply.cpp" line="43"/>
         <source>JSON document is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/getprojectsreply.cpp" line="53"/>
+        <location filename="../replies/getprojectsreply.cpp" line="52"/>
         <source>JSON does not contain elements!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/getprojectsreply.cpp" line="62"/>
+        <location filename="../replies/getprojectsreply.cpp" line="61"/>
         <source>elements is not an array!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -314,95 +314,115 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="146"/>
-        <location filename="../mainwindow.cpp" line="705"/>
-        <location filename="../mainwindow.cpp" line="715"/>
+        <location filename="../mainwindow.ui" line="27"/>
+        <source>Previous day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="41"/>
+        <source>Next day</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="71"/>
+        <source>Now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="143"/>
+        <location filename="../mainwindow.cpp" line="689"/>
+        <location filename="../mainwindow.cpp" line="700"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="169"/>
+        <location filename="../mainwindow.ui" line="163"/>
         <source>End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="191"/>
+        <location filename="../mainwindow.ui" line="185"/>
         <source>Optimized view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="210"/>
+        <location filename="../mainwindow.ui" line="204"/>
         <source>Advanced view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="214"/>
+        <location filename="../mainwindow.ui" line="208"/>
         <source>Bookings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="231"/>
+        <location filename="../mainwindow.ui" line="222"/>
         <source>Time assignments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="262"/>
+        <location filename="../mainwindow.ui" line="250"/>
         <source>&amp;File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="268"/>
+        <location filename="../mainwindow.ui" line="256"/>
         <source>&amp;About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="278"/>
+        <location filename="../mainwindow.ui" line="267"/>
         <source>&amp;View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="285"/>
+        <location filename="../mainwindow.ui" line="274"/>
         <source>&amp;Tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="301"/>
+        <location filename="../mainwindow.ui" line="302"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="306"/>
+        <location filename="../mainwindow.ui" line="311"/>
         <source>About &amp;Me</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="311"/>
+        <location filename="../mainwindow.ui" line="320"/>
         <source>About &amp;zeiterfassung</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="316"/>
+        <location filename="../mainwindow.ui" line="325"/>
         <source>About &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="328"/>
+        <location filename="../mainwindow.ui" line="334"/>
         <source>&amp;Today</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="340"/>
+        <location filename="../mainwindow.ui" line="343"/>
         <source>&amp;Refresh everything</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="348"/>
+        <location filename="../mainwindow.ui" line="352"/>
         <source>&amp;Auswertung</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="353"/>
+        <location filename="../mainwindow.ui" line="361"/>
         <source>&amp;Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="370"/>
+        <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -411,169 +431,173 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="655"/>
-        <location filename="../mainwindow.cpp" line="664"/>
+        <location filename="../mainwindow.cpp" line="638"/>
+        <location filename="../mainwindow.cpp" line="647"/>
         <source>Could not open auswertung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="664"/>
+        <location filename="../mainwindow.cpp" line="647"/>
         <source>Could not open default PDF viewer!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="91"/>
+        <location filename="../mainwindow.cpp" line="93"/>
         <source>Subproject</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="92"/>
+        <location filename="../mainwindow.cpp" line="94"/>
         <source>Workpackage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="93"/>
+        <location filename="../mainwindow.cpp" line="95"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="198"/>
-        <location filename="../mainwindow.cpp" line="199"/>
-        <location filename="../mainwindow.cpp" line="626"/>
-        <location filename="../mainwindow.cpp" line="627"/>
+        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <location filename="../mainwindow.cpp" line="706"/>
+        <location filename="../mainwindow.cpp" line="707"/>
         <source>%0: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="170"/>
-        <location filename="../mainwindow.cpp" line="171"/>
-        <location filename="../mainwindow.cpp" line="626"/>
-        <location filename="../mainwindow.cpp" line="627"/>
+        <location filename="../mainwindow.cpp" line="706"/>
+        <location filename="../mainwindow.cpp" line="707"/>
         <source>???</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="198"/>
-        <location filename="../mainwindow.cpp" line="626"/>
+        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.cpp" line="706"/>
         <source>Balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="199"/>
-        <location filename="../mainwindow.cpp" line="627"/>
+        <location filename="../mainwindow.cpp" line="201"/>
+        <location filename="../mainwindow.cpp" line="707"/>
         <source>Holidays</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="138"/>
-        <location filename="../mainwindow.cpp" line="139"/>
+        <location filename="../mainwindow.cpp" line="140"/>
+        <location filename="../mainwindow.cpp" line="141"/>
         <source>Could not load bookings!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="161"/>
+        <location filename="../mainwindow.cpp" line="162"/>
         <source>Could not load Auswertung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="192"/>
+        <location filename="../mainwindow.cpp" line="194"/>
         <source>%0h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="314"/>
+        <location filename="../mainwindow.cpp" line="307"/>
         <source>Could not delete booking!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="256"/>
+        <location filename="../mainwindow.cpp" line="254"/>
         <source>Edit booking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="257"/>
+        <location filename="../mainwindow.cpp" line="255"/>
         <source>Delete booking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="285"/>
+        <location filename="../mainwindow.cpp" line="283"/>
         <source>Could not edit booking!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="212"/>
+        <location filename="../mainwindow.cpp" line="213"/>
         <source>Create booking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="213"/>
+        <location filename="../mainwindow.cpp" line="170"/>
+        <location filename="../mainwindow.cpp" line="181"/>
+        <source>n/a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="214"/>
         <source>Refresh bookings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="238"/>
-        <location filename="../mainwindow.cpp" line="459"/>
-        <location filename="../mainwindow.cpp" line="576"/>
+        <location filename="../mainwindow.cpp" line="239"/>
+        <location filename="../mainwindow.cpp" line="444"/>
+        <location filename="../mainwindow.cpp" line="566"/>
         <source>Could not create booking!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="296"/>
+        <location filename="../mainwindow.cpp" line="291"/>
         <source>Do you really want to delete the booking?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="330"/>
+        <location filename="../mainwindow.cpp" line="321"/>
         <source>Refresh time assignments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="373"/>
+        <location filename="../mainwindow.cpp" line="361"/>
         <source>Edit time assignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="374"/>
+        <location filename="../mainwindow.cpp" line="362"/>
         <source>Delete time assignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="405"/>
-        <location filename="../mainwindow.cpp" line="492"/>
-        <location filename="../mainwindow.cpp" line="554"/>
+        <location filename="../mainwindow.cpp" line="393"/>
+        <location filename="../mainwindow.cpp" line="476"/>
+        <location filename="../mainwindow.cpp" line="547"/>
         <source>Could not edit time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="416"/>
+        <location filename="../mainwindow.cpp" line="401"/>
         <source>Do you really want to delete the time assignment?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="434"/>
+        <location filename="../mainwindow.cpp" line="419"/>
         <source>Could not delete time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="734"/>
-        <location filename="../mainwindow.cpp" line="743"/>
+        <location filename="../mainwindow.cpp" line="732"/>
+        <location filename="../mainwindow.cpp" line="741"/>
         <source>%0 (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="329"/>
+        <location filename="../mainwindow.cpp" line="320"/>
         <source>Create time assignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="355"/>
-        <location filename="../mainwindow.cpp" line="515"/>
+        <location filename="../mainwindow.cpp" line="346"/>
+        <location filename="../mainwindow.cpp" line="497"/>
         <source>Could not create time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="705"/>
-        <location filename="../mainwindow.cpp" line="715"/>
+        <location filename="../mainwindow.cpp" line="689"/>
+        <location filename="../mainwindow.cpp" line="700"/>
         <source>Switch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -597,49 +621,60 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="17"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="20"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="18"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="21"/>
         <source>German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="23"/>
-        <location filename="../dialogs/settingsdialog.cpp" line="36"/>
-        <location filename="../dialogs/settingsdialog.cpp" line="55"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="26"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="39"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="58"/>
         <source>Invalid settings!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="23"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="26"/>
         <source>Unknown language!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="27"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="30"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="36"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="39"/>
         <source>Unknown theme!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="55"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="58"/>
         <source>Please fill all options with valid values!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="72"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="81"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="87"/>
+        <source>Could not load theme!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="81"/>
+        <source>Theme file does not exist!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="99"/>
         <source>Restart required!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="72"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="99"/>
         <source>To apply the new settings a restart is required!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -647,187 +682,178 @@
 <context>
     <name>StripsWidget</name>
     <message>
-        <location filename="../stripswidget.cpp" line="100"/>
+        <location filename="../stripswidget.cpp" line="97"/>
         <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="187"/>
+        <location filename="../stripswidget.cpp" line="184"/>
         <source>Missing booking!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="194"/>
+        <location filename="../stripswidget.cpp" line="191"/>
         <source>Expected start booking, instead got type %0
 Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="203"/>
-        <location filename="../stripswidget.cpp" line="408"/>
+        <location filename="../stripswidget.cpp" line="200"/>
+        <location filename="../stripswidget.cpp" line="391"/>
         <source>%0: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="203"/>
+        <location filename="../stripswidget.cpp" line="200"/>
         <source>Break</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="203"/>
-        <location filename="../stripswidget.cpp" line="327"/>
-        <location filename="../stripswidget.cpp" line="410"/>
+        <location filename="../stripswidget.cpp" line="200"/>
+        <location filename="../stripswidget.cpp" line="322"/>
+        <location filename="../stripswidget.cpp" line="393"/>
         <source>%0h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="203"/>
-        <location filename="../stripswidget.cpp" line="410"/>
-        <location filename="../stripswidget.cpp" line="550"/>
-        <location filename="../stripswidget.cpp" line="569"/>
-        <location filename="../stripswidget.cpp" line="588"/>
+        <location filename="../stripswidget.cpp" line="200"/>
+        <location filename="../stripswidget.cpp" line="393"/>
+        <location filename="../stripswidget.cpp" line="525"/>
+        <location filename="../stripswidget.cpp" line="544"/>
+        <location filename="../stripswidget.cpp" line="563"/>
         <source>HH:mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="216"/>
+        <location filename="../stripswidget.cpp" line="211"/>
         <source>Missing time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="223"/>
-        <location filename="../stripswidget.cpp" line="274"/>
-        <location filename="../stripswidget.cpp" line="344"/>
+        <location filename="../stripswidget.cpp" line="218"/>
+        <location filename="../stripswidget.cpp" line="269"/>
+        <location filename="../stripswidget.cpp" line="332"/>
         <source>Expected %0 but received %1 in time assignment.
 Time assignment ID: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="224"/>
-        <location filename="../stripswidget.cpp" line="225"/>
-        <location filename="../stripswidget.cpp" line="275"/>
-        <location filename="../stripswidget.cpp" line="276"/>
-        <location filename="../stripswidget.cpp" line="327"/>
-        <location filename="../stripswidget.cpp" line="345"/>
-        <location filename="../stripswidget.cpp" line="346"/>
-        <location filename="../stripswidget.cpp" line="386"/>
-        <location filename="../stripswidget.cpp" line="387"/>
+        <location filename="../stripswidget.cpp" line="219"/>
+        <location filename="../stripswidget.cpp" line="220"/>
+        <location filename="../stripswidget.cpp" line="270"/>
+        <location filename="../stripswidget.cpp" line="271"/>
+        <location filename="../stripswidget.cpp" line="322"/>
+        <location filename="../stripswidget.cpp" line="333"/>
+        <location filename="../stripswidget.cpp" line="334"/>
+        <location filename="../stripswidget.cpp" line="374"/>
+        <location filename="../stripswidget.cpp" line="375"/>
         <source>HH:mm:ss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="237"/>
-        <location filename="../stripswidget.cpp" line="358"/>
+        <location filename="../stripswidget.cpp" line="232"/>
+        <location filename="../stripswidget.cpp" line="346"/>
         <source>There is another booking after an unfinished time assignment.
 Booking ID: %0
 Time assignment ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="245"/>
-        <location filename="../stripswidget.cpp" line="288"/>
-        <location filename="../stripswidget.cpp" line="367"/>
+        <location filename="../stripswidget.cpp" line="240"/>
+        <location filename="../stripswidget.cpp" line="283"/>
+        <location filename="../stripswidget.cpp" line="355"/>
         <source>There is another time assignment after an unfinished time assignment.
 Time assignment ID: %0
 Time assignment ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="266"/>
+        <location filename="../stripswidget.cpp" line="261"/>
         <source>The last time assignment is finished without end booking
 Time assignment ID: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="311"/>
+        <location filename="../stripswidget.cpp" line="306"/>
         <source>Expected end booking, instead got type %0
 Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="326"/>
+        <location filename="../stripswidget.cpp" line="321"/>
         <source>Missing time assignment! Missing: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="385"/>
-        <source>Time assignment time longer than booking time! Time assignment: %0 Booking: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../stripswidget.cpp" line="409"/>
+        <location filename="../stripswidget.cpp" line="392"/>
         <source>Assigned time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="423"/>
-        <source>Strip rendering aborted due error.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../stripswidget.cpp" line="428"/>
-        <source>Illegal state!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../stripswidget.cpp" line="429"/>
-        <source>Your bookings and time assignments for this day are in an illegal state!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../stripswidget.cpp" line="430"/>
-        <location filename="../stripswidget.cpp" line="467"/>
+        <location filename="../stripswidget.cpp" line="444"/>
         <source>dd.MM.yyyy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="464"/>
-        <location filename="../stripswidget.cpp" line="537"/>
+        <location filename="../stripswidget.cpp" line="441"/>
         <source>%0 (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="465"/>
+        <location filename="../stripswidget.cpp" line="373"/>
+        <source>Time assignment time longer than booking time!
+Time assignment: %0
+Booking: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../stripswidget.cpp" line="404"/>
+        <source>Strip rendering aborted due error.
+Your bookings and time assignments for this day are in an illegal state!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../stripswidget.cpp" line="442"/>
         <source>Monday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="465"/>
+        <location filename="../stripswidget.cpp" line="442"/>
         <source>Tuesday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="465"/>
+        <location filename="../stripswidget.cpp" line="442"/>
         <source>Wednesday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="465"/>
+        <location filename="../stripswidget.cpp" line="442"/>
         <source>Thursday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="466"/>
+        <location filename="../stripswidget.cpp" line="443"/>
         <source>Friday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="466"/>
+        <location filename="../stripswidget.cpp" line="443"/>
         <source>Saturday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="466"/>
+        <location filename="../stripswidget.cpp" line="443"/>
         <source>Sunday</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="469"/>
+        <location filename="../stripswidget.cpp" line="446"/>
         <source>Invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="588"/>
+        <location filename="../stripswidget.cpp" line="563"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
@@ -918,22 +944,22 @@ Booking ID: %1</source>
 <context>
     <name>UpdateBookingReply</name>
     <message>
-        <location filename="../replies/updatebookingreply.cpp" line="22"/>
+        <location filename="../replies/updatebookingreply.cpp" line="21"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/updatebookingreply.cpp" line="32"/>
+        <location filename="../replies/updatebookingreply.cpp" line="31"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/updatebookingreply.cpp" line="39"/>
+        <location filename="../replies/updatebookingreply.cpp" line="38"/>
         <source>JSON document is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/updatebookingreply.cpp" line="48"/>
+        <location filename="../replies/updatebookingreply.cpp" line="47"/>
         <source>JSON does not contain bookingNr!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -965,22 +991,22 @@ Booking ID: %1</source>
 <context>
     <name>UpdateTimeAssignmentReply</name>
     <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="27"/>
+        <location filename="../replies/updatetimeassignmentreply.cpp" line="26"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="37"/>
+        <location filename="../replies/updatetimeassignmentreply.cpp" line="36"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="44"/>
+        <location filename="../replies/updatetimeassignmentreply.cpp" line="43"/>
         <source>JSON document is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="53"/>
+        <location filename="../replies/updatetimeassignmentreply.cpp" line="52"/>
         <source>JSON does not contain bookingNr!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -988,27 +1014,27 @@ Booking ID: %1</source>
 <context>
     <name>UserInfoReply</name>
     <message>
-        <location filename="../replies/userinforeply.cpp" line="26"/>
+        <location filename="../replies/userinforeply.cpp" line="25"/>
         <source>Request error occured: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/userinforeply.cpp" line="36"/>
+        <location filename="../replies/userinforeply.cpp" line="35"/>
         <source>Parsing JSON failed: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/userinforeply.cpp" line="43"/>
+        <location filename="../replies/userinforeply.cpp" line="42"/>
         <source>JSON document is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/userinforeply.cpp" line="52"/>
+        <location filename="../replies/userinforeply.cpp" line="51"/>
         <source>JSON does not contain evoAppsUser!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../replies/userinforeply.cpp" line="61"/>
+        <location filename="../replies/userinforeply.cpp" line="60"/>
         <source>evoAppsUser is not an object!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1016,7 +1042,7 @@ Booking ID: %1</source>
 <context>
     <name>bookingEndStrip</name>
     <message>
-        <location filename="../strips/bookingendstrip.ui" line="67"/>
+        <location filename="../strips/bookingendstrip.ui" line="72"/>
         <source>END</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1024,7 +1050,7 @@ Booking ID: %1</source>
 <context>
     <name>bookingStartStrip</name>
     <message>
-        <location filename="../strips/bookingstartstrip.ui" line="67"/>
+        <location filename="../strips/bookingstartstrip.ui" line="72"/>
         <source>START</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1092,41 +1118,41 @@ Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="174"/>
+        <location filename="../main.cpp" line="171"/>
         <source>Authenticating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="197"/>
-        <location filename="../main.cpp" line="198"/>
+        <location filename="../main.cpp" line="194"/>
+        <location filename="../main.cpp" line="195"/>
         <source>Could not authenticate with Zeiterfassung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="215"/>
+        <location filename="../main.cpp" line="209"/>
         <source>Getting user information...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="230"/>
-        <location filename="../main.cpp" line="231"/>
+        <location filename="../main.cpp" line="224"/>
+        <location filename="../main.cpp" line="225"/>
         <source>Could not get user information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="241"/>
+        <location filename="../main.cpp" line="232"/>
         <source>Loading strip layouts...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../main.cpp" line="237"/>
+        <location filename="../main.cpp" line="238"/>
         <location filename="../main.cpp" line="246"/>
         <location filename="../main.cpp" line="247"/>
-        <location filename="../main.cpp" line="255"/>
         <location filename="../main.cpp" line="256"/>
+        <location filename="../main.cpp" line="257"/>
         <location filename="../main.cpp" line="266"/>
         <location filename="../main.cpp" line="267"/>
-        <location filename="../main.cpp" line="277"/>
-        <location filename="../main.cpp" line="278"/>
         <source>Could not load strips!</source>
         <translation type="unfinished"></translation>
     </message>
