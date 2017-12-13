@@ -1,17 +1,16 @@
 #include "getprojectsreply.h"
 
-#include <QNetworkReply>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QJsonArray>
 
-GetProjectsReply::GetProjectsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+GetProjectsReply::GetProjectsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply)
+    m_reply(std::move(reply))
 {
-    connect(reply, &QNetworkReply::finished, this, &GetProjectsReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &GetProjectsReply::requestFinished);
 }
 
 const QVector<ZeiterfassungApi::Project> &GetProjectsReply::projects() const
@@ -79,7 +78,6 @@ void GetProjectsReply::requestFinished()
     }
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

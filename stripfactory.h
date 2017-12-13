@@ -1,7 +1,10 @@
 #ifndef STRIPFACTORY_H
 #define STRIPFACTORY_H
 
+#include <memory>
+
 #include <QObject>
+#include <QWidget>
 
 class QUiLoader;
 class QByteArray;
@@ -16,9 +19,9 @@ public:
     bool load(const QString &stripsPath);
     const QString &errorString() const;
 
-    QWidget *createBookingStartStrip(QWidget *parent = Q_NULLPTR);
-    QWidget *createBookingEndStrip(QWidget *parent = Q_NULLPTR);
-    QWidget *createTimeAssignmentStrip(QWidget *parent = Q_NULLPTR);
+    std::unique_ptr<QWidget> createBookingStartStrip(QWidget *parent = Q_NULLPTR);
+    std::unique_ptr<QWidget> createBookingEndStrip(QWidget *parent = Q_NULLPTR);
+    std::unique_ptr<QWidget> createTimeAssignmentStrip(QWidget *parent = Q_NULLPTR);
 
 private:
     QUiLoader *m_loader;

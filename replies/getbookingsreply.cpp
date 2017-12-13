@@ -1,17 +1,16 @@
 #include "getbookingsreply.h"
 
-#include <QNetworkReply>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QJsonObject>
 
-GetBookingsReply::GetBookingsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+GetBookingsReply::GetBookingsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply)
+    m_reply(std::move(reply))
 {
-    connect(reply, &QNetworkReply::finished, this, &GetBookingsReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &GetBookingsReply::requestFinished);
 }
 
 const QVector<ZeiterfassungApi::Booking> &GetBookingsReply::bookings() const
@@ -65,7 +64,6 @@ void GetBookingsReply::requestFinished()
     }
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

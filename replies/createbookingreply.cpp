@@ -1,17 +1,16 @@
 #include "createbookingreply.h"
 
-#include <QNetworkReply>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 
-CreateBookingReply::CreateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+CreateBookingReply::CreateBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply),
+    m_reply(std::move(reply)),
     m_bookingId(-1)
 {
-    connect(reply, &QNetworkReply::finished, this, &CreateBookingReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &CreateBookingReply::requestFinished);
 }
 
 int CreateBookingReply::bookingId() const
@@ -59,7 +58,6 @@ void CreateBookingReply::requestFinished()
     }
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

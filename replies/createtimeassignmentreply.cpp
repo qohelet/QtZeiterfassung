@@ -1,17 +1,16 @@
 #include "createtimeassignmentreply.h"
 
-#include <QNetworkReply>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 
-CreateTimeAssignmentReply::CreateTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+CreateTimeAssignmentReply::CreateTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply),
+    m_reply(std::move(reply)),
     m_timeAssignmentId(-1)
 {
-    connect(reply, &QNetworkReply::finished, this, &CreateTimeAssignmentReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &CreateTimeAssignmentReply::requestFinished);
 }
 
 int CreateTimeAssignmentReply::timeAssignmentId() const
@@ -59,7 +58,6 @@ void CreateTimeAssignmentReply::requestFinished()
     }
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

@@ -1,18 +1,19 @@
 #ifndef GETAUSWERTUNGREPLY_H
 #define GETAUSWERTUNGREPLY_H
 
+#include <memory>
+
+#include <QNetworkReply>
 #include <QByteArray>
 
 #include "zeiterfassungreply.h"
-
-class QNetworkReply;
 
 class GetAuswertungReply : public ZeiterfassungReply
 {
     Q_OBJECT
 
 public:
-    GetAuswertungReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+    GetAuswertungReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     const QByteArray &auswertung() const;
 
@@ -21,7 +22,7 @@ private Q_SLOTS:
     void request1Finished();
 
 private:
-    QNetworkReply *m_reply;
+    std::unique_ptr<QNetworkReply> m_reply;
     QByteArray m_auswertung;
 };
 

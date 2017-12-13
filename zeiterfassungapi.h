@@ -1,6 +1,8 @@
 #ifndef ZEITERFASSUNGAPI_H
 #define ZEITERFASSUNGAPI_H
 
+#include <memory>
+
 #include <QObject>
 #include <QString>
 #include <QDate>
@@ -71,29 +73,30 @@ public:
         QString value;
     };
 
-public Q_SLOTS:
-    LoginPageReply *doLoginPage();
-    LoginReply *doLogin(const QString &username, const QString &password);
-    UserInfoReply *doUserInfo();
+    std::unique_ptr<LoginPageReply> doLoginPage();
+    std::unique_ptr<LoginReply> doLogin(const QString &username, const QString &password);
+    std::unique_ptr<UserInfoReply> doUserInfo();
 
-    GetBookingsReply *doGetBookings(int userId, const QDate &start, const QDate &end);
-    CreateBookingReply *doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan,
-                                   const QString &type, const QString &text);
-    UpdateBookingReply *doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time,
-                                   const QTime &timespan, const QString &type, const QString &text);
-    DeleteBookingReply *doDeleteBooking(int bookingId);
+    std::unique_ptr<GetBookingsReply> doGetBookings(int userId, const QDate &start, const QDate &end);
+    std::unique_ptr<CreateBookingReply> doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan,
+                                                        const QString &type, const QString &text);
+    std::unique_ptr<UpdateBookingReply> doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time,
+                                                        const QTime &timespan, const QString &type, const QString &text);
+    std::unique_ptr<DeleteBookingReply> doDeleteBooking(int bookingId);
 
-    GetTimeAssignmentsReply *doGetTimeAssignments(int userId, const QDate &start, const QDate &end);
-    CreateTimeAssignmentReply *doCreateTimeAssignment(int userId, const QDate &date, const QTime &time, const QTime &timespan,
-                                                 const QString &project, const QString &subproject, const QString &workpackage,
-                                                 const QString &text);
-    UpdateTimeAssignmentReply *doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date, const QTime &time,
-                                                 const QTime &timespan, const QString &project, const QString &subproject,
-                                                 const QString &workpackage, const QString &text);
-    DeleteTimeAssignmentReply *doDeleteTimeAssignment(int timeAssignmentId);
+    std::unique_ptr<GetTimeAssignmentsReply> doGetTimeAssignments(int userId, const QDate &start, const QDate &end);
+    std::unique_ptr<CreateTimeAssignmentReply> doCreateTimeAssignment(int userId, const QDate &date, const QTime &time,
+                                                                      const QTime &timespan, const QString &project,
+                                                                      const QString &subproject, const QString &workpackage,
+                                                                      const QString &text);
+    std::unique_ptr<UpdateTimeAssignmentReply> doUpdateTimeAssignment(int timeAssignmentId, int userId, const QDate &date,
+                                                                      const QTime &time, const QTime &timespan, const QString &project,
+                                                                      const QString &subproject, const QString &workpackage,
+                                                                      const QString &text);
+    std::unique_ptr<DeleteTimeAssignmentReply> doDeleteTimeAssignment(int timeAssignmentId);
 
-    GetProjectsReply *doGetProjects(int userId, const QDate &date);
-    GetAuswertungReply *doGetAuswertung(int userId, const QDate &date);
+    std::unique_ptr<GetProjectsReply> doGetProjects(int userId, const QDate &date);
+    std::unique_ptr<GetAuswertungReply> doGetAuswertung(int userId, const QDate &date);
 
 private:
     QString m_url;

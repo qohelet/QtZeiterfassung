@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>236</height>
+    <width>454</width>
+    <height>0</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>About me</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
    <item>
     <widget class="QLabel" name="labelTitle">
      <property name="font">
@@ -124,8 +124,32 @@
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AboutMeDialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>5</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>0</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

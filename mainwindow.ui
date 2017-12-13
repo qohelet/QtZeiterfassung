@@ -257,6 +257,7 @@
     </property>
     <addaction name="actionAboutMe"/>
     <addaction name="actionSettings"/>
+    <addaction name="actionHelp"/>
     <addaction name="separator"/>
     <addaction name="actionAboutzeiterfassung"/>
     <addaction name="actionAboutQt"/>
@@ -302,11 +303,19 @@
    </property>
   </action>
   <action name="actionAboutMe">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/zeiterfassung/images/user.png</normaloff>:/zeiterfassung/images/user.png</iconset>
+   </property>
    <property name="text">
     <string>About &amp;Me</string>
    </property>
   </action>
   <action name="actionAboutzeiterfassung">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/zeiterfassung/images/about.png</normaloff>:/zeiterfassung/images/about.png</iconset>
+   </property>
    <property name="text">
     <string>About &amp;zeiterfassung</string>
    </property>
@@ -350,6 +359,15 @@
    </property>
    <property name="text">
     <string>&amp;Settings</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/zeiterfassung/images/help.png</normaloff>:/zeiterfassung/images/help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Help</string>
    </property>
   </action>
  </widget>

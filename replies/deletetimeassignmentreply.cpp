@@ -1,12 +1,10 @@
 #include "deletetimeassignmentreply.h"
 
-#include <QNetworkReply>
-
-DeleteTimeAssignmentReply::DeleteTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+DeleteTimeAssignmentReply::DeleteTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply)
+    m_reply(std::move(reply))
 {
-    connect(reply, &QNetworkReply::finished, this, &DeleteTimeAssignmentReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &DeleteTimeAssignmentReply::requestFinished);
 }
 
 void DeleteTimeAssignmentReply::requestFinished()
@@ -23,7 +21,6 @@ void DeleteTimeAssignmentReply::requestFinished()
     setSuccess(true);
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

@@ -1,7 +1,9 @@
 <RCC>
     <qresource prefix="/zeiterfassung">
+        <file>images/about.png</file>
         <file>images/auswertung.png</file>
         <file>images/authentication.png</file>
+        <file>images/help.png</file>
         <file>images/icon.png</file>
         <file>images/next.png</file>
         <file>images/now.png</file>
@@ -11,5 +13,6 @@
         <file>images/settings.png</file>
         <file>images/splash.png</file>
         <file>images/today.png</file>
+        <file>images/user.png</file>
     </qresource>
 </RCC>

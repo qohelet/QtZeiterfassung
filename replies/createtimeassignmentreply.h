@@ -1,16 +1,18 @@
 #ifndef CREATETIMEASSIGNMENTREPLY_H
 #define CREATETIMEASSIGNMENTREPLY_H
 
-#include "zeiterfassungreply.h"
+#include <memory>
 
-class QNetworkReply;
+#include <QNetworkReply>
+
+#include "zeiterfassungreply.h"
 
 class CreateTimeAssignmentReply : public ZeiterfassungReply
 {
     Q_OBJECT
 
 public:
-    CreateTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+    CreateTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     int timeAssignmentId() const;
 
@@ -18,7 +20,7 @@ private Q_SLOTS:
     void requestFinished();
 
 private:
-    QNetworkReply *m_reply;
+    std::unique_ptr<QNetworkReply> m_reply;
     int m_timeAssignmentId;
 };
 

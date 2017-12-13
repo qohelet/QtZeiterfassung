@@ -1,18 +1,20 @@
 #ifndef STRIPSWIDGET_H
 #define STRIPSWIDGET_H
 
+#include <memory>
+
 #include <QWidget>
 #include <QTime>
 
 #include "zeiterfassungapi.h"
+#include "replies/getbookingsreply.h"
+#include "replies/gettimeassignmentsreply.h"
 
 class QBoxLayout;
 template <class Key, class T> class QMap;
 template <typename T> class QVector;
 
 class StripFactory;
-class GetBookingsReply;
-class GetTimeAssignmentsReply;
 
 class StripsWidget : public QWidget
 {
@@ -91,8 +93,8 @@ private:
     bool m_startEnabled;
     bool m_endEnabled;
 
-    GetBookingsReply *m_getBookingsReply;
-    GetTimeAssignmentsReply *m_getTimeAssignmentsReply;
+    std::unique_ptr<GetBookingsReply> m_getBookingsReply;
+    std::unique_ptr<GetTimeAssignmentsReply> m_getTimeAssignmentsReply;
 };
 
 #endif // STRIPSWIDGET_H

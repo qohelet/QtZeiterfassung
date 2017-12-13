@@ -55,7 +55,7 @@ const QString &StripFactory::errorString() const
     return m_errorString;
 }
 
-QWidget *StripFactory::createBookingStartStrip(QWidget *parent)
+std::unique_ptr<QWidget> StripFactory::createBookingStartStrip(QWidget *parent)
 {
     QBuffer buffer(&m_bookingStartStrip);
     if(!buffer.open(QIODevice::ReadOnly))
@@ -64,7 +64,7 @@ QWidget *StripFactory::createBookingStartStrip(QWidget *parent)
         return Q_NULLPTR;
     }
 
-    auto widget = m_loader->load(&buffer, parent);
+    auto widget = std::unique_ptr<QWidget>(m_loader->load(&buffer, parent));
 
     if(!widget)
         m_errorString = m_loader->errorString();
@@ -72,7 +72,7 @@ QWidget *StripFactory::createBookingStartStrip(QWidget *parent)
     return widget;
 }
 
-QWidget *StripFactory::createBookingEndStrip(QWidget *parent)
+std::unique_ptr<QWidget> StripFactory::createBookingEndStrip(QWidget *parent)
 {
     QBuffer buffer(&m_bookingEndStrip);
     if(!buffer.open(QIODevice::ReadOnly))
@@ -81,7 +81,7 @@ QWidget *StripFactory::createBookingEndStrip(QWidget *parent)
         return Q_NULLPTR;
     }
 
-    auto widget = m_loader->load(&buffer, parent);
+    auto widget = std::unique_ptr<QWidget>(m_loader->load(&buffer, parent));
 
     if(!widget)
         m_errorString = m_loader->errorString();
@@ -89,7 +89,7 @@ QWidget *StripFactory::createBookingEndStrip(QWidget *parent)
     return widget;
 }
 
-QWidget *StripFactory::createTimeAssignmentStrip(QWidget *parent)
+std::unique_ptr<QWidget> StripFactory::createTimeAssignmentStrip(QWidget *parent)
 {
     QBuffer buffer(&m_timeAssignmentStrip);
     if(!buffer.open(QIODevice::ReadOnly))
@@ -98,7 +98,7 @@ QWidget *StripFactory::createTimeAssignmentStrip(QWidget *parent)
         return Q_NULLPTR;
     }
 
-    auto widget = m_loader->load(&buffer, parent);
+    auto widget = std::unique_ptr<QWidget>(m_loader->load(&buffer, parent));
 
     if(!widget)
         m_errorString = m_loader->errorString();

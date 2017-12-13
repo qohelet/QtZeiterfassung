@@ -1,22 +1,24 @@
 #ifndef DELETETIMEASSIGNMENT_H
 #define DELETETIMEASSIGNMENT_H
 
-#include "zeiterfassungreply.h"
+#include <memory>
 
-class QNetworkReply;
+#include <QNetworkReply>
+
+#include "zeiterfassungreply.h"
 
 class DeleteTimeAssignmentReply : public ZeiterfassungReply
 {
     Q_OBJECT
 
 public:
-    DeleteTimeAssignmentReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+    DeleteTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
 private Q_SLOTS:
     void requestFinished();
 
 private:
-    QNetworkReply *m_reply;
+    std::unique_ptr<QNetworkReply> m_reply;
 };
 
 #endif // DELETETIMEASSIGNMENT_H

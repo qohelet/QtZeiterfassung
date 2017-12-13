@@ -1,16 +1,15 @@
 #include "userinforeply.h"
 
-#include <QNetworkReply>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 
-UserInfoReply::UserInfoReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+UserInfoReply::UserInfoReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply)
+    m_reply(std::move(reply))
 {
-    connect(reply, &QNetworkReply::finished, this, &UserInfoReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &UserInfoReply::requestFinished);
 }
 
 const ZeiterfassungApi::UserInfo &UserInfoReply::userInfo() const
@@ -75,7 +74,6 @@ void UserInfoReply::requestFinished()
     }
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

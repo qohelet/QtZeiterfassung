@@ -7,8 +7,6 @@
 #include <QStringBuilder>
 #include <QDebug>
 
-#include "replies/getbookingsreply.h"
-#include "replies/gettimeassignmentsreply.h"
 #include "timeutils.h"
 #include "stripfactory.h"
 
@@ -126,7 +124,7 @@ void StripsWidget::refreshBookings()
     invalidateValues();
 
     m_getBookingsReply = m_erfassung.doGetBookings(m_userId, m_date, m_date);
-    connect(m_getBookingsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getBookingsFinished);
+    connect(m_getBookingsReply.get(), &ZeiterfassungReply::finished, this, &StripsWidget::getBookingsFinished);
 }
 
 void StripsWidget::refreshTimeAssignments()
@@ -152,7 +150,7 @@ void StripsWidget::refreshTimeAssignments()
     invalidateValues();
 
     m_getTimeAssignmentsReply = m_erfassung.doGetTimeAssignments(m_userId, m_date, m_date);
-    connect(m_getTimeAssignmentsReply, &ZeiterfassungReply::finished, this, &StripsWidget::getTimeAssignmentsFinished);
+    connect(m_getTimeAssignmentsReply.get(), &ZeiterfassungReply::finished, this, &StripsWidget::getTimeAssignmentsFinished);
 }
 
 bool StripsWidget::createStrips()
@@ -469,7 +467,6 @@ void StripsWidget::getBookingsFinished()
         createStrips();
     }
 
-    m_getBookingsReply->deleteLater();
     m_getBookingsReply = Q_NULLPTR;
 }
 
@@ -488,7 +485,6 @@ void StripsWidget::getTimeAssignmentsFinished()
         createStrips();
     }
 
-    m_getTimeAssignmentsReply->deleteLater();
     m_getTimeAssignmentsReply = Q_NULLPTR;
 }
 
@@ -523,7 +519,7 @@ QString StripsWidget::buildProjectString(const QString &project)
 
 QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
 {
-    auto widget = m_stripFactory.createBookingStartStrip(this);
+    auto widget = m_stripFactory.createBookingStartStrip(this).release();
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", time.toString(tr("HH:mm")));
@@ -542,7 +538,7 @@ QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
 
 QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
 {
-    auto widget = m_stripFactory.createBookingEndStrip(this);
+    auto widget = m_stripFactory.createBookingEndStrip(this).release();
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", time.toString(tr("HH:mm")));
@@ -561,7 +557,7 @@ QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
 
 QWidget *StripsWidget::appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject, const QString &workpackage, const QString &text)
 {
-    auto widget = m_stripFactory.createTimeAssignmentStrip(this);
+    auto widget = m_stripFactory.createTimeAssignmentStrip(this).release();
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", duration == QTime(0, 0) ? tr("Open") : duration.toString(tr("HH:mm")));

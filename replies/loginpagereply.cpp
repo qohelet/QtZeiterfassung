@@ -2,11 +2,11 @@
 
 #include <QNetworkReply>
 
-LoginPageReply::LoginPageReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+LoginPageReply::LoginPageReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply)
+    m_reply(std::move(reply))
 {
-    connect(reply, &QNetworkReply::finished, this, &LoginPageReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &LoginPageReply::requestFinished);
 }
 
 void LoginPageReply::requestFinished()
@@ -28,7 +28,6 @@ void LoginPageReply::requestFinished()
     setSuccess(true);
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

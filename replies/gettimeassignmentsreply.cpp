@@ -7,11 +7,11 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
-GetTimeAssignmentsReply::GetTimeAssignmentsReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+GetTimeAssignmentsReply::GetTimeAssignmentsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply)
+    m_reply(std::move(reply))
 {
-    connect(reply, &QNetworkReply::finished, this, &GetTimeAssignmentsReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &GetTimeAssignmentsReply::requestFinished);
 }
 
 const QVector<ZeiterfassungApi::TimeAssignment> &GetTimeAssignmentsReply::timeAssignments() const
@@ -69,7 +69,6 @@ void GetTimeAssignmentsReply::requestFinished()
     }
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();

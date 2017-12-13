@@ -86,7 +86,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->pushButtonNow, &QAbstractButton::pressed, [=](){ ui->timeEditTime->setTime(QTime::currentTime()); });
 
     m_getProjectsReply = erfassung.doGetProjects(userInfo.userId, QDate::currentDate());
-    connect(m_getProjectsReply, &ZeiterfassungReply::finished, this, &MainWindow::getProjectsFinished);
+    connect(m_getProjectsReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getProjectsFinished);
 
     ui->comboBoxProject->setMaxVisibleItems(10);
 
@@ -140,7 +140,6 @@ void MainWindow::getProjectsFinished()
         QMessageBox::warning(this, tr("Could not load bookings!"),
                              tr("Could not load bookings!") % "\n\n" % m_getProjectsReply->message());
 
-    m_getProjectsReply->deleteLater();
     m_getProjectsReply = Q_NULLPTR;
 }
 
@@ -161,7 +160,6 @@ void MainWindow::getAuswertungFinished()
     {
         m_auswertungDate = QDate();
         QMessageBox::warning(this, tr("Could not load Auswertung!"), tr("Could not load Auswertung!") % "\n\n" % m_getAuswertungReply->message());
-        m_getAuswertungReply->deleteLater();
         m_getAuswertungReply = Q_NULLPTR;
         return;
     }
@@ -202,7 +200,6 @@ void MainWindow::getAuswertungFinished()
     m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(gleitzeit));
     m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(urlaubsAnspruch));
 
-    m_getAuswertungReply->deleteLater();
     m_getAuswertungReply = Q_NULLPTR;
 }
 
@@ -229,7 +226,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 
                 {
                     QEventLoop eventLoop;
-                    connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
                     eventLoop.exec();
                 }
 
@@ -240,11 +237,8 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
                 else
                 {
                     QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % reply->message());
-                    reply->deleteLater();
                     goto again2;
                 }
-
-                reply->deleteLater();
             }
         }
         else if(selectedAction == refreshAction)
@@ -276,7 +270,7 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 
                 {
                     QEventLoop eventLoop;
-                    connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
                     eventLoop.exec();
                 }
 
@@ -287,11 +281,8 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
                 else
                 {
                     QMessageBox::warning(this, tr("Could not edit booking!"), tr("Could not edit booking!") % "\n\n" % reply->message());
-                    reply->deleteLater();
                     goto again1;
                 }
-
-                reply->deleteLater();
             }
         }
         else if(selectedAction == deleteAction)
@@ -306,18 +297,14 @@ void MainWindow::contextMenuBooking(const QPoint &pos)
 
                 {
                     QEventLoop eventLoop;
-                    connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
                     eventLoop.exec();
                 }
 
                 if(reply->success())
-                {
                     m_currentStripWidget->refreshBookings();
-                }
                 else
                     QMessageBox::warning(this, tr("Could not delete booking!"), tr("Could not delete booking!") % "\n\n" % reply->message());
-
-                reply->deleteLater();
             }
         }
     }
@@ -346,7 +333,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 {
                     QEventLoop eventLoop;
-                    connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
                     eventLoop.exec();
                 }
 
@@ -357,11 +344,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                 else
                 {
                     QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % reply->message());
-                    reply->deleteLater();
                     goto again2;
                 }
-
-                reply->deleteLater();
             }
         }
         else if(selectedAction == refreshAction)
@@ -396,7 +380,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 {
                     QEventLoop eventLoop;
-                    connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
                     eventLoop.exec();
                 }
 
@@ -407,11 +391,8 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                 else
                 {
                     QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
-                    reply->deleteLater();
                     goto again1;
                 }
-
-                reply->deleteLater();
             }
         }
         else if(selectedAction == deleteAction)
@@ -426,7 +407,7 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
 
                 {
                     QEventLoop eventLoop;
-                    connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
                     eventLoop.exec();
                 }
 
@@ -436,8 +417,6 @@ void MainWindow::contextMenuTimeAssignment(const QPoint &pos)
                 }
                 else
                     QMessageBox::warning(this, tr("Could not delete time assignment!"), tr("Could not delete time assignment!") % "\n\n" % reply->message());
-
-                reply->deleteLater();
             }
         }
     }
@@ -456,7 +435,7 @@ void MainWindow::pushButtonStartPressed()
 
         {
             QEventLoop eventLoop;
-            connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
             eventLoop.exec();
         }
 
@@ -464,11 +443,8 @@ void MainWindow::pushButtonStartPressed()
         {
             QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % reply->message());
             m_currentStripWidget->refresh();
-            reply->deleteLater();
             return;
         }
-
-        reply->deleteLater();
 
         bookingsChanged = true;
     }
@@ -489,7 +465,7 @@ void MainWindow::pushButtonStartPressed()
 
             {
                 QEventLoop eventLoop;
-                connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+                connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
                 eventLoop.exec();
             }
 
@@ -499,34 +475,30 @@ void MainWindow::pushButtonStartPressed()
             {
                 QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
                 m_currentStripWidget->refresh();
-                reply->deleteLater();
                 return;
             }
-
-            reply->deleteLater();
         }
     }
 
-    auto reply = m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
-                                                    timeAssignmentTime, QTime(0, 0),
-                                                    ui->comboBoxProject->currentData().toString(), ui->comboBoxSubproject->currentText(),
-                                                    ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
-
     {
-        QEventLoop eventLoop;
-        connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-        eventLoop.exec();
-    }
+        auto reply = m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
+                                                        timeAssignmentTime, QTime(0, 0),
+                                                        ui->comboBoxProject->currentData().toString(), ui->comboBoxSubproject->currentText(),
+                                                        ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
 
-    if(!reply->success())
-    {
-        QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % reply->message());
-        m_currentStripWidget->refresh();
-        reply->deleteLater();
-        return;
-    }
+        {
+            QEventLoop eventLoop;
+            connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            eventLoop.exec();
+        }
 
-    reply->deleteLater();
+        if(!reply->success())
+        {
+            QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % reply->message());
+            m_currentStripWidget->refresh();
+            return;
+        }
+    }
 
     m_settings.prependProject(ui->comboBoxProject->currentData().toString());
     m_settings.prependSubproject(ui->comboBoxSubproject->currentText());
@@ -566,7 +538,7 @@ void MainWindow::pushButtonEndPressed()
 
         {
             QEventLoop eventLoop;
-            connect(reply, SIGNAL(finished()), &eventLoop, SLOT(quit()));
+            connect(reply.get(), SIGNAL(finished()), &eventLoop, SLOT(quit()));
             eventLoop.exec();
         }
 
@@ -574,11 +546,8 @@ void MainWindow::pushButtonEndPressed()
         {
             QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
             m_currentStripWidget->refresh();
-            reply->deleteLater();
             return;
         }
-
-        reply->deleteLater();
     }
 
     {
@@ -588,7 +557,7 @@ void MainWindow::pushButtonEndPressed()
 
         {
             QEventLoop eventLoop;
-            connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
             eventLoop.exec();
         }
 
@@ -596,11 +565,8 @@ void MainWindow::pushButtonEndPressed()
         {
             QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % reply->message());
             m_currentStripWidget->refresh();
-            reply->deleteLater();
             return;
         }
-
-        reply->deleteLater();
     }
 
     m_currentStripWidget->refresh();
@@ -745,7 +711,7 @@ void MainWindow::refreshAuswertung()
 
     m_auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
     m_getAuswertungReply = m_erfassung.doGetAuswertung(m_userInfo.userId, m_auswertungDate);
-    connect(m_getAuswertungReply, &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
+    connect(m_getAuswertungReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
 }
 
 void MainWindow::updateComboboxes()

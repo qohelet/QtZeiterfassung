@@ -1,16 +1,18 @@
 #ifndef CREATEBOOKINGREPLY_H
 #define CREATEBOOKINGREPLY_H
 
-#include "zeiterfassungreply.h"
+#include <memory>
 
-class QNetworkReply;
+#include <QNetworkReply>
+
+#include "zeiterfassungreply.h"
 
 class CreateBookingReply : public ZeiterfassungReply
 {
     Q_OBJECT
 
 public:
-    CreateBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+    CreateBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     int bookingId() const;
 
@@ -18,7 +20,7 @@ private Q_SLOTS:
     void requestFinished();
 
 private:
-    QNetworkReply *m_reply;
+    std::unique_ptr<QNetworkReply> m_reply;
     int m_bookingId;
 };
 

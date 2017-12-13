@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <memory>
+
 #include <QMainWindow>
 #include <QMap>
 
@@ -52,8 +54,8 @@ private:
     const ZeiterfassungApi::UserInfo &m_userInfo;
     StripFactory &m_stripFactory;
 
-    GetProjectsReply *m_getProjectsReply;
-    GetAuswertungReply *m_getAuswertungReply;
+    std::unique_ptr<GetProjectsReply> m_getProjectsReply;
+    std::unique_ptr<GetAuswertungReply> m_getAuswertungReply;
 
     BookingsModel *m_bookingsModel;
     TimeAssignmentsModel *m_timeAssignmentsModel;

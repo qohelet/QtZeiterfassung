@@ -1,22 +1,24 @@
 #ifndef LOGINPAGEREPLY_H
 #define LOGINPAGEREPLY_H
 
-#include "zeiterfassungreply.h"
+#include <memory>
 
-class QNetworkReply;
+#include <QNetworkReply>
+
+#include "zeiterfassungreply.h"
 
 class LoginPageReply : public ZeiterfassungReply
 {
     Q_OBJECT
 
 public:
-    LoginPageReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung);
+    LoginPageReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
 private Q_SLOTS:
     void requestFinished();
 
 private:
-    QNetworkReply *m_reply;
+    std::unique_ptr<QNetworkReply> m_reply;
 };
 
 #endif // LOGINPAGEREPLY_H

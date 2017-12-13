@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 
         {
             QEventLoop eventLoop;
-            QObject::connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
             eventLoop.exec();
         }
 
@@ -164,11 +164,8 @@ int main(int argc, char *argv[])
             settings.setUrl(url);
             erfassung.setUrl(url);
 
-            reply->deleteLater();
             goto again1;
         }
-
-        reply->deleteLater();
     }
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Authenticating..."));
@@ -188,7 +185,7 @@ int main(int argc, char *argv[])
 
         {
             QEventLoop eventLoop;
-            QObject::connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
             eventLoop.exec();
         }
 
@@ -205,11 +202,8 @@ int main(int argc, char *argv[])
             settings.setUsername(dialog.username());
             settings.setPassword(dialog.password());
 
-            reply->deleteLater();
             goto again2;
         }
-
-        reply->deleteLater();
     }
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
@@ -221,7 +215,7 @@ int main(int argc, char *argv[])
 
         {
             QEventLoop eventLoop;
-            QObject::connect(reply, &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
             eventLoop.exec();
         }
 
@@ -229,13 +223,10 @@ int main(int argc, char *argv[])
         {
             QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not get user information!"),
                                  QCoreApplication::translate("main", "Could not get user information!") % "\n\n" % reply->message());
-
-            reply->deleteLater();
             return -1;
         }
 
         userInfo = reply->userInfo();
-        reply->deleteLater();
     }
 
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading strip layouts..."));
@@ -256,7 +247,6 @@ int main(int argc, char *argv[])
                                  QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
             return -1;
         }
-        widget->deleteLater();
     }
 
     {
@@ -267,7 +257,6 @@ int main(int argc, char *argv[])
                                  QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
             return -1;
         }
-        widget->deleteLater();
     }
 
     {
@@ -278,7 +267,6 @@ int main(int argc, char *argv[])
                                  QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
             return -1;
         }
-        widget->deleteLater();
     }
 
     MainWindow mainWindow(settings, erfassung, userInfo, stripFactory);

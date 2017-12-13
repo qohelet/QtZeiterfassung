@@ -1,12 +1,10 @@
 #include "deletebookingreply.h"
 
-#include <QNetworkReply>
-
-DeleteBookingReply::DeleteBookingReply(QNetworkReply *reply, ZeiterfassungApi *zeiterfassung) :
+DeleteBookingReply::DeleteBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(reply)
+    m_reply(std::move(reply))
 {
-    connect(reply, &QNetworkReply::finished, this, &DeleteBookingReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &DeleteBookingReply::requestFinished);
 }
 
 void DeleteBookingReply::requestFinished()
@@ -23,7 +21,6 @@ void DeleteBookingReply::requestFinished()
     setSuccess(true);
 
     end:
-    m_reply->deleteLater();
     m_reply = Q_NULLPTR;
 
     Q_EMIT finished();
