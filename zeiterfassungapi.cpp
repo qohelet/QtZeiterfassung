@@ -23,6 +23,9 @@
 #include "replies/updatetimeassignmentreply.h"
 #include "replies/userinforeply.h"
 
+//add support for pre cpp14 compilers
+#include "cpp14polyfills.h"
+
 ZeiterfassungApi::ZeiterfassungApi(const QString &url, QObject *parent) :
     QObject(parent),
     m_url(url),

@@ -76,7 +76,8 @@ HEADERS += \
     replies/getprojectsreply.h \
     replies/getauswertungreply.h \
     replies/zeiterfassungreply.h \
-    replies/deletetimeassignmentreply.h
+    replies/deletetimeassignmentreply.h \
+    cpp14polyfills.h
 
 FORMS += \
     mainwindow.ui \
