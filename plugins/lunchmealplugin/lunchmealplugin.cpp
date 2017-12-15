@@ -1,6 +1,14 @@
 #include "lunchmealplugin.h"
 
-LunchMealPlugin::LunchMealPlugin(QObject *parent) : QObject(parent)
+#include <QDebug>
+
+LunchMealPlugin::LunchMealPlugin(QObject *parent) :
+    ZeiterfassungPlugin(parent)
 {
 
+}
+
+void LunchMealPlugin::initialize()
+{
+    qDebug() << "called";
 }

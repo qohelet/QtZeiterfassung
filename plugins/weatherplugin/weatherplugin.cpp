@@ -1,6 +1,14 @@
 #include "weatherplugin.h"
 
-WeatherPlugin::WeatherPlugin(QObject *parent) : QObject(parent)
+#include <QDebug>
+
+WeatherPlugin::WeatherPlugin(QObject *parent) :
+    ZeiterfassungPlugin(parent)
 {
 
+}
+
+void WeatherPlugin::initialize()
+{
+    qDebug() << "called";
 }

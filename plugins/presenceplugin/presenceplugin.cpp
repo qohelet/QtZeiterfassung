@@ -1,6 +1,14 @@
 #include "presenceplugin.h"
 
-PresencePlugin::PresencePlugin(QObject *parent) : QObject(parent)
+#include <QDebug>
+
+PresencePlugin::PresencePlugin(QObject *parent) :
+    ZeiterfassungPlugin(parent)
 {
 
+}
+
+void PresencePlugin::initialize()
+{
+    qDebug() << "called";
 }
