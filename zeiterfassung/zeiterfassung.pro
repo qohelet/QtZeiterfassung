@@ -1,4 +1,4 @@
-QT += network gui widgets uitools
+QT += core network gui widgets uitools
 
 TARGET = zeiterfassung
 TEMPLATE = app

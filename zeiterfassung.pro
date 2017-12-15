@@ -1,6 +1,8 @@
 TEMPLATE = subdirs
 
-SUBDIRS += zeiterfassung \
+SUBDIRS += plugins \
+           zeiterfassung \
            zeiterfassunglib
 
+plugins.depends += zeiterfassunglib
 zeiterfassung.depends += zeiterfassunglib
