@@ -5,10 +5,11 @@
 
 #include <QNetworkReply>
 
+#include "zeiterfassunglib_global.h"
 #include "zeiterfassungreply.h"
 #include "zeiterfassungapi.h"
 
-class GetPresenceStatusReply : public ZeiterfassungReply
+class ZEITERFASSUNGLIBSHARED_EXPORT GetPresenceStatusReply : public ZeiterfassungReply
 {
     Q_OBJECT
 

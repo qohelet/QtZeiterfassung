@@ -1,3 +1,6 @@
-TEMPLATE=subdirs
+TEMPLATE = subdirs
 
-SUBDIRS+=zeiterfassung
+SUBDIRS += zeiterfassung \
+           zeiterfassunglib
+
+zeiterfassung.depends += zeiterfassunglib

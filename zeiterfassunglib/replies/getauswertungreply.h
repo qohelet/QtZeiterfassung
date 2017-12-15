@@ -6,9 +6,10 @@
 #include <QNetworkReply>
 #include <QByteArray>
 
+#include "zeiterfassunglib_global.h"
 #include "zeiterfassungreply.h"
 
-class GetAuswertungReply : public ZeiterfassungReply
+class ZEITERFASSUNGLIBSHARED_EXPORT GetAuswertungReply : public ZeiterfassungReply
 {
     Q_OBJECT
 

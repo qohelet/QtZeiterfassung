@@ -6,10 +6,11 @@
 #include <QNetworkReply>
 #include <QVector>
 
+#include "zeiterfassunglib_global.h"
 #include "zeiterfassungreply.h"
 #include "zeiterfassungapi.h"
 
-class GetProjectsReply : public ZeiterfassungReply
+class ZEITERFASSUNGLIBSHARED_EXPORT GetProjectsReply : public ZeiterfassungReply
 {
     Q_OBJECT
 

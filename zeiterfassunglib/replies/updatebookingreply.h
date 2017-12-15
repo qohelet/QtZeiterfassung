@@ -5,9 +5,10 @@
 
 #include <QNetworkReply>
 
+#include "zeiterfassunglib_global.h"
 #include "zeiterfassungreply.h"
 
-class UpdateBookingReply : public ZeiterfassungReply
+class ZEITERFASSUNGLIBSHARED_EXPORT UpdateBookingReply : public ZeiterfassungReply
 {
     Q_OBJECT
 

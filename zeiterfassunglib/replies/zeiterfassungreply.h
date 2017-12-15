@@ -3,9 +3,11 @@
 
 #include <QObject>
 
+#include "zeiterfassunglib_global.h"
+
 class ZeiterfassungApi;
 
-class ZeiterfassungReply : public QObject
+class ZEITERFASSUNGLIBSHARED_EXPORT ZeiterfassungReply : public QObject
 {
     Q_OBJECT
 

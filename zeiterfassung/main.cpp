@@ -24,6 +24,12 @@
 #include "replies/userinforeply.h"
 #include "stripfactory.h"
 
+struct {
+    QTranslator qtTranslator;
+    QTranslator zeiterfassungTranslator;
+    QTranslator zeiterfassunglibTranslator;
+} translators;
+
 bool loadAndInstallTranslator(QTranslator &translator,
                               const QLocale &locale,
                               const QString &filename,
@@ -72,12 +78,10 @@ bool loadTranslations(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
     QLocale locale(settings.language(), QLocale::Austria);
     QLocale::setDefault(locale);
 
-    QTranslator qtTranslator(qApp);
-    QTranslator zeiterfassungTranslator(qApp);
-
     auto translationsDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
-    loadAndInstallTranslator(qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
-    loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
+    loadAndInstallTranslator(translators.qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
+    loadAndInstallTranslator(translators.zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
+    loadAndInstallTranslator(translators.zeiterfassunglibTranslator, locale, QStringLiteral("zeiterfassunglib"), QStringLiteral("_"), translationsDir);
 
     return true;
 }
