@@ -46,6 +46,227 @@ bool loadAndInstallTranslator(QTranslator &translator,
     return true;
 }
 
+bool loadTranslations(QSplashScreen &splashScreen, ZeiterfassungSettings &settings)
+{
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading translations..."));
+
+    if(settings.language() == QLocale::AnyLanguage)
+    {
+        LanguageSelectionDialog dialog(&splashScreen);
+
+        again:
+        if(dialog.exec() != QDialog::Accepted)
+            return false;
+
+        if(dialog.language() == QLocale::AnyLanguage)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Invalid language selection!"),
+                                 QCoreApplication::translate("main", "Invalid language selection!") % "\n\n" %
+                                 QCoreApplication::translate("main", "You did not select a valid language!"));
+            goto again;
+        }
+
+        settings.setLanguage(dialog.language());
+    }
+
+    QLocale locale(settings.language(), QLocale::Austria);
+    QLocale::setDefault(locale);
+
+    QTranslator qtTranslator(qApp);
+    QTranslator zeiterfassungTranslator(qApp);
+
+    auto translationsDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
+    loadAndInstallTranslator(qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
+    loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
+
+    return true;
+}
+
+bool loadTheme(QSplashScreen &splashScreen, ZeiterfassungSettings &settings)
+{
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading theme..."));
+
+    if(settings.theme().isEmpty())
+        return true;
+
+    auto themePath = QDir(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("themes"))).absoluteFilePath(settings.theme());
+
+    QFile file(themePath % ".qss");
+
+    if(!file.exists())
+    {
+        QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load theme!"),
+                             QCoreApplication::translate("main", "Could not load theme!") % "\n\n" %
+                             QCoreApplication::translate("main", "Theme file does not exist!"));
+        return false;
+    }
+
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load theme!"),
+                             QCoreApplication::translate("main", "Could not load theme!") % "\n\n" %
+                             file.errorString());
+        return false;
+    }
+
+    QTextStream textStream(&file);
+    qApp->setStyleSheet(textStream.readAll().replace(QStringLiteral("@THEME_RESOURCES@"), themePath));
+
+    return true;
+}
+
+bool loadStripLayouts(QSplashScreen &splashScreen, StripFactory &stripFactory)
+{
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading strip layouts..."));
+
+    if(!stripFactory.load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("strips"))))
+    {
+        QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                             QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+        return false;
+    }
+
+    {
+        auto widget = stripFactory.createBookingStartStrip();
+        if(!widget)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+            return false;
+        }
+    }
+
+    {
+        auto widget = stripFactory.createBookingEndStrip();
+        if(!widget)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+            return false;
+        }
+    }
+
+    {
+        auto widget = stripFactory.createTimeAssignmentStrip();
+        if(!widget)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
+                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool loadLoginPage(QSplashScreen &splashScreen, ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung)
+{
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
+
+    again:
+    auto reply = erfassung.doLoginPage();
+
+    {
+        QEventLoop eventLoop;
+        QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+        eventLoop.exec();
+    }
+
+    if(!reply->success())
+    {
+        QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not access Zeiterfassung!"),
+                             QCoreApplication::translate("main", "Could not access Zeiterfassung!") % "\n\n" % reply->message());
+
+        bool ok;
+        auto url = QInputDialog::getText(&splashScreen, QCoreApplication::translate("main", "Base url"),
+                                         QCoreApplication::translate("main", "Please enter the base url to the Zeiterfassung:"),
+                                         QLineEdit::Normal, settings.url(), &ok);
+
+        if(!ok)
+            return false;
+
+        settings.setUrl(url);
+        erfassung.setUrl(url);
+
+        goto again;
+    }
+
+    return true;
+}
+
+bool doAuthentication(QSplashScreen &splashScreen, ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung)
+{
+    splashScreen.showMessage(QCoreApplication::translate("main", "Authenticating..."));
+
+    if(settings.username().isNull() || settings.password().isNull())
+    {
+        AuthenticationDialog dialog(&splashScreen);
+
+        if(dialog.exec() != QDialog::Accepted)
+            return false;
+
+        settings.setUsername(dialog.username());
+        settings.setPassword(dialog.password());
+    }
+
+    {
+        again:
+        auto reply = erfassung.doLogin(settings.username(), settings.password());
+
+        {
+            QEventLoop eventLoop;
+            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            eventLoop.exec();
+        }
+
+        if(!reply->success())
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!"),
+                                 QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!") % "\n\n" % reply->message());
+
+            AuthenticationDialog dialog(&splashScreen);
+            dialog.setUsername(settings.username());
+            dialog.setPassword(settings.password());
+
+            if(dialog.exec() != QDialog::Accepted)
+                return false;
+
+            settings.setUsername(dialog.username());
+            settings.setPassword(dialog.password());
+
+            goto again;
+        }
+    }
+
+    return true;
+}
+
+bool loadUserInfo(QSplashScreen &splashScreen, ZeiterfassungApi &erfassung, ZeiterfassungApi::UserInfo &userInfo)
+{
+    splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
+
+    {
+        auto reply = erfassung.doUserInfo();
+
+        {
+            QEventLoop eventLoop;
+            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
+            eventLoop.exec();
+        }
+
+        if(!reply->success())
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not get user information!"),
+                                 QCoreApplication::translate("main", "Could not get user information!") % "\n\n" % reply->message());
+            return false;
+        }
+
+        userInfo = reply->userInfo();
+    }
+
+    return true;
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
@@ -73,206 +294,35 @@ int main(int argc, char *argv[])
 
     ZeiterfassungSettings settings(&app);
 
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading translations..."));
+    if(!loadTranslations(splashScreen, settings))
+        return -1;
 
-    if(settings.language() == QLocale::AnyLanguage)
-    {
-        LanguageSelectionDialog dialog(&splashScreen);
+    // not critical if it fails
+    //if(!loadTheme(splashScreen, settings))
+    //    return -2;
+    loadTheme(splashScreen, settings);
 
-        again0:
-        if(dialog.exec() != QDialog::Accepted)
-            return -1;
+    StripFactory stripFactory(&app);
 
-        if(dialog.language() == QLocale::AnyLanguage)
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Invalid language selection!"),
-                                 QCoreApplication::translate("main", "Invalid language selection!") % "\n\n" %
-                                 QCoreApplication::translate("main", "You did not select a valid language!"));
-            goto again0;
-        }
-
-        settings.setLanguage(dialog.language());
-    }
-
-    QLocale locale(settings.language(), QLocale::Austria);
-    QLocale::setDefault(locale);
-
-    QTranslator qtTranslator(&app);
-    QTranslator zeiterfassungTranslator(&app);
-
-    {
-        auto translationsDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
-        loadAndInstallTranslator(qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
-        loadAndInstallTranslator(zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
-    }
-
-    if(!settings.theme().isEmpty())
-    {
-        splashScreen.showMessage(QCoreApplication::translate("main", "Loading theme..."));
-
-        auto themePath = QDir(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("themes"))).absoluteFilePath(settings.theme());
-
-        QFile file(themePath % ".qss");
-
-        if(!file.exists())
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load theme!"),
-                                 QCoreApplication::translate("main", "Could not load theme!") % "\n\n" %
-                                 QCoreApplication::translate("main", "Theme file does not exist!"));
-            goto after;
-        }
-
-        if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load theme!"),
-                                 QCoreApplication::translate("main", "Could not load theme!") % "\n\n" %
-                                 file.errorString());
-            goto after;
-        }
-
-        QTextStream textStream(&file);
-        app.setStyleSheet(textStream.readAll().replace(QStringLiteral("@THEME_RESOURCES@"), themePath));
-    }
-
-    after:
-
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
+    if(!loadStripLayouts(splashScreen, stripFactory))
+        return -3;
 
     ZeiterfassungApi erfassung(settings.url(), &app);
 
-    {
-        again1:
-        auto reply = erfassung.doLoginPage();
+    if(!loadLoginPage(splashScreen, settings, erfassung))
+        return -4;
 
-        {
-            QEventLoop eventLoop;
-            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
-
-        if(!reply->success())
-        {
-            bool ok;
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not access Zeiterfassung!"),
-                                 QCoreApplication::translate("main", "Could not access Zeiterfassung!") % "\n\n" % reply->message());
-
-            auto url = QInputDialog::getText(&splashScreen, QCoreApplication::translate("main", "Base url"),
-                                             QCoreApplication::translate("main", "Please enter the base url to the Zeiterfassung:"),
-                                             QLineEdit::Normal, settings.url(), &ok);
-            if(!ok)
-                return -1;
-            settings.setUrl(url);
-            erfassung.setUrl(url);
-
-            goto again1;
-        }
-    }
-
-    splashScreen.showMessage(QCoreApplication::translate("main", "Authenticating..."));
-
-    if(settings.username().isNull() || settings.password().isNull())
-    {
-        AuthenticationDialog dialog(&splashScreen);
-        if(dialog.exec() != QDialog::Accepted)
-            return -1;
-        settings.setUsername(dialog.username());
-        settings.setPassword(dialog.password());
-    }
-
-    {
-        again2:
-        auto reply = erfassung.doLogin(settings.username(), settings.password());
-
-        {
-            QEventLoop eventLoop;
-            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
-
-        if(!reply->success())
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!"),
-                                 QCoreApplication::translate("main", "Could not authenticate with Zeiterfassung!") % "\n\n" % reply->message());
-
-            AuthenticationDialog dialog(&splashScreen);
-            dialog.setUsername(settings.username());
-            dialog.setPassword(settings.password());
-            if(dialog.exec() != QDialog::Accepted)
-                return -1;
-            settings.setUsername(dialog.username());
-            settings.setPassword(dialog.password());
-
-            goto again2;
-        }
-    }
-
-    splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
+    if(!doAuthentication(splashScreen, settings, erfassung))
+        return -5;
 
     ZeiterfassungApi::UserInfo userInfo;
 
-    {
-        auto reply = erfassung.doUserInfo();
-
-        {
-            QEventLoop eventLoop;
-            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
-
-        if(!reply->success())
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not get user information!"),
-                                 QCoreApplication::translate("main", "Could not get user information!") % "\n\n" % reply->message());
-            return -1;
-        }
-
-        userInfo = reply->userInfo();
-    }
-
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading strip layouts..."));
-
-    StripFactory stripFactory(&app);
-    if(!stripFactory.load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("strips"))))
-    {
-        QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
-                             QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
-        return -1;
-    }
-
-    {
-        auto widget = stripFactory.createBookingStartStrip();
-        if(!widget)
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
-                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
-            return -1;
-        }
-    }
-
-    {
-        auto widget = stripFactory.createBookingEndStrip();
-        if(!widget)
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
-                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
-            return -1;
-        }
-    }
-
-    {
-        auto widget = stripFactory.createTimeAssignmentStrip();
-        if(!widget)
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load strips!"),
-                                 QCoreApplication::translate("main", "Could not load strips!") % "\n\n" % stripFactory.errorString());
-            return -1;
-        }
-    }
+    if(!loadUserInfo(splashScreen, erfassung, userInfo))
+        return -6;
 
     MainWindow mainWindow(settings, erfassung, userInfo, stripFactory);
-    mainWindow.show();
-
     splashScreen.finish(&mainWindow);
+    mainWindow.show();
 
     return app.exec();
 }
