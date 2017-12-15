@@ -14,6 +14,7 @@ INSTALLS += libinstall
 
 iconenginesinstall.path = $$DESTDIR/plugins/iconengines
 iconenginesinstall.files = $$[QT_INSTALL_PLUGINS]/iconengines/qsvgicon$${DEBUG_SIGN}.dll
+INSTALLS += iconenginesinstall
 
 imageformatsinstall.path = $$DESTDIR/plugins/imageformats
 imageformatsinstall.files = $$[QT_INSTALL_PLUGINS]/imageformats/qdds$${DEBUG_SIGN}.dll \
@@ -26,6 +27,8 @@ imageformatsinstall.files = $$[QT_INSTALL_PLUGINS]/imageformats/qdds$${DEBUG_SIG
                             $$[QT_INSTALL_PLUGINS]/imageformats/qtiff$${DEBUG_SIGN}.dll \
                             $$[QT_INSTALL_PLUGINS]/imageformats/qwbmp$${DEBUG_SIGN}.dll \
                             $$[QT_INSTALL_PLUGINS]/imageformats/qwebp$${DEBUG_SIGN}.dll
+INSTALLS += imageformatsinstall
 
 platformsinstall.path = $$DESTDIR/plugins/platforms
 win32: platformsinstall.files = $$[QT_INSTALL_PLUGINS]/platforms/qwindows$${DEBUG_SIGN}.dll
+INSTALLS += platformsinstall
