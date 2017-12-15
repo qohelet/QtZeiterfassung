@@ -12,12 +12,15 @@
 #include <QFileInfo>
 #include <QInputDialog>
 #include <QStringBuilder>
+#include <QLibrary>
+#include <QPluginLoader>
 #include <QDebug>
 
 #include "zeiterfassungsettings.h"
 #include "dialogs/languageselectiondialog.h"
 #include "zeiterfassungapi.h"
 #include "dialogs/authenticationdialog.h"
+#include "zeiterfassungplugin.h"
 #include "mainwindow.h"
 #include "replies/loginpagereply.h"
 #include "replies/loginreply.h"
@@ -271,9 +274,55 @@ bool loadUserInfo(QSplashScreen &splashScreen, ZeiterfassungApi &erfassung, Zeit
     return true;
 }
 
+bool loadPlugins(QSplashScreen &splashScreen)
+{
+    auto ok = true;
+
+    QDir dir(
+        QDir(
+            QDir(
+                QCoreApplication::applicationDirPath()
+            ).absoluteFilePath(QStringLiteral("plugins"))
+        ).absoluteFilePath(QStringLiteral("zeiterfassung"))
+    );
+
+    for(const auto &fileInfo : dir.entryInfoList(QDir::Files))
+    {
+        if(fileInfo.isSymLink())
+            continue; // to skip unix so symlinks
+
+        if(!QLibrary::isLibrary(fileInfo.filePath()))
+            continue; // to skip windows junk files
+
+        QPluginLoader loader(fileInfo.filePath());
+        if(!loader.load())
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load plugin %0!"),
+                                 QCoreApplication::translate("main", "Could not load plugin %0!").arg(fileInfo.fileName()) %
+                                 "\n\n" % loader.errorString());
+            ok = false;
+            continue;
+        }
+
+        auto plugin = qobject_cast<ZeiterfassungPlugin*>(loader.instance());
+
+        if(!plugin)
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Plugin not valid %0!"),
+                                 QCoreApplication::translate("main", "Plugin not valid %0!").arg(fileInfo.fileName()) %
+                                 "\n\n" % loader.errorString());
+            ok = false;
+            continue;
+        }
+
+        plugin->initialize();
+    }
+
+    return ok;
+}
+
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
     QApplication app(argc, argv);
 
     qSetMessagePattern(QStringLiteral("%{time dd.MM.yyyy HH:mm:ss.zzz} "
@@ -323,6 +372,8 @@ int main(int argc, char *argv[])
 
     if(!loadUserInfo(splashScreen, erfassung, userInfo))
         return -6;
+
+    loadPlugins(splashScreen);
 
     MainWindow mainWindow(settings, erfassung, userInfo, stripFactory);
     splashScreen.finish(&mainWindow);
