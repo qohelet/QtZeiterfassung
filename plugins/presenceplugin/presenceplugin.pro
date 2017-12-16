@@ -14,8 +14,10 @@ DEPENDPATH += $$PWD/../../zeiterfassunglib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += presenceplugin.h
+HEADERS += presenceplugin.h \
+    presencewidget.h
 
-SOURCES += presenceplugin.cpp
+SOURCES += presenceplugin.cpp \
+    presencewidget.cpp
 
 OTHER_FILES += presenceplugin.json

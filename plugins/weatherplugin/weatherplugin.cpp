@@ -7,8 +7,3 @@ WeatherPlugin::WeatherPlugin(QObject *parent) :
 {
 
 }
-
-void WeatherPlugin::initialize()
-{
-    qDebug() << "called";
-}

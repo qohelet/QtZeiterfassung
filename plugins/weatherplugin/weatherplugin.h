@@ -15,7 +15,6 @@ public:
     explicit WeatherPlugin(QObject *parent = 0);
 
     // ZeiterfassungPlugin interface
-    void initialize() Q_DECL_OVERRIDE;
 };
 
 #endif // WEATHERPLUGIN_H

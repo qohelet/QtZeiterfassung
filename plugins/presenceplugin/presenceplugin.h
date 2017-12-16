@@ -5,6 +5,8 @@
 
 #include "zeiterfassungplugin.h"
 
+class MainWindow;
+
 class Q_DECL_EXPORT PresencePlugin : public ZeiterfassungPlugin
 {
     Q_OBJECT
@@ -15,7 +17,7 @@ public:
     explicit PresencePlugin(QObject *parent = 0);
 
     // ZeiterfassungPlugin interface
-    void initialize() Q_DECL_OVERRIDE;
+    void attachTo(MainWindow &mainWindow);
 };
 
 #endif // PRESENCEPLUGIN_H

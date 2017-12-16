@@ -33,6 +33,8 @@ struct {
     QTranslator zeiterfassunglibTranslator;
 } translators;
 
+QVector<ZeiterfassungPlugin*> plugins;
+
 bool loadAndInstallTranslator(QTranslator &translator,
                               const QLocale &locale,
                               const QString &filename,
@@ -315,7 +317,7 @@ bool loadPlugins(QSplashScreen &splashScreen)
             continue;
         }
 
-        plugin->initialize();
+        plugins.append(plugin);
     }
 
     return ok;
@@ -377,6 +379,10 @@ int main(int argc, char *argv[])
 
     MainWindow mainWindow(settings, erfassung, userInfo, stripFactory);
     splashScreen.finish(&mainWindow);
+
+    for(auto plugin : plugins)
+        plugin->attachTo(mainWindow);
+
     mainWindow.show();
 
     return app.exec();

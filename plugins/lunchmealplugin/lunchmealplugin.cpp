@@ -7,8 +7,3 @@ LunchMealPlugin::LunchMealPlugin(QObject *parent) :
 {
 
 }
-
-void LunchMealPlugin::initialize()
-{
-    qDebug() << "called";
-}

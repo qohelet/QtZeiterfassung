@@ -31,6 +31,16 @@ public:
                         StripFactory &stripFactory, QWidget *parent = Q_NULLPTR);
     ~MainWindow();
 
+    QMenu *menuFile() const;
+    QMenu *menuView() const;
+    QMenu *menuTools() const;
+    QMenu *menuAbout() const;
+
+    ZeiterfassungSettings &settings() const;
+    ZeiterfassungApi &erfassung() const;
+    const ZeiterfassungApi::UserInfo &userInfo() const;
+    StripFactory &stripFactory() const;
+
 private Q_SLOTS:
     void getProjectsFinished();
     void getAuswertungFinished();
@@ -40,8 +50,6 @@ private Q_SLOTS:
     void pushButtonEndPressed();
     void dateChanged(bool force = false);
     void openAuswertung();
-    void refreshPresence();
-    void getPresenceStatusFinished();
 
     void minimumTimeChanged();
     void refreshingChanged();
@@ -69,15 +77,11 @@ private:
     QDate m_auswertungDate;
     QByteArray m_auswertung;
 
-    QLabel *m_presenceLabel;
-
     QLabel *m_balanceLabel;
     QLabel *m_holidaysLabel;
 
     std::array<StripsWidget*, 7> m_stripsWidgets;
     StripsWidget *m_currentStripWidget;
-
-    std::unique_ptr<GetPresenceStatusReply> m_getPresenceStatusReply;
 };
 
 #endif // MAINWINDOW_H

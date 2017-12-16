@@ -48,8 +48,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_getAuswertungReply(Q_NULLPTR),
     m_bookingsModel(new BookingsModel(this)),
     m_timeAssignmentsModel(new TimeAssignmentsModel(this)),
-    m_currentStripWidget(Q_NULLPTR),
-    m_getPresenceStatusReply(Q_NULLPTR)
+    m_currentStripWidget(Q_NULLPTR)
 {
     ui->setupUi(this);
 
@@ -108,10 +107,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(m_timeAssignmentsModel, &TimeAssignmentsModel::enabledChanged, ui->treeViewTimeAssignments, &QWidget::setEnabled);
     connect(ui->treeViewTimeAssignments, &QWidget::customContextMenuRequested, this, &MainWindow::contextMenuTimeAssignment);
 
-    ui->statusbar->addWidget(m_presenceLabel = new QLabel(tr("???"), ui->statusbar));
-    m_presenceLabel->setFrameShape(QFrame::Panel);
-    m_presenceLabel->setFrameShadow(QFrame::Sunken);
-
     ui->statusbar->addPermanentWidget(m_balanceLabel = new QLabel(ui->statusbar));
     m_balanceLabel->setFrameShape(QFrame::Panel);
     m_balanceLabel->setFrameShadow(QFrame::Sunken);
@@ -121,15 +116,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
     dateChanged();
 
-    {
-        auto timer = new QTimer(this);
-        timer->setInterval(60000);
-        connect(timer, &QTimer::timeout, this, &MainWindow::refreshPresence);
-        timer->start();
-    }
-
-    refreshPresence();
-
     if(settings.lastUpdateCheck().isNull() || settings.lastUpdateCheck() < QDate::currentDate())
         new UpdateDialog(settings, erfassung.manager(), this);
 }
@@ -137,6 +123,46 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+QMenu *MainWindow::menuFile() const
+{
+    return ui->menuFile;
+}
+
+QMenu *MainWindow::menuView() const
+{
+    return ui->menuView;
+}
+
+QMenu *MainWindow::menuTools() const
+{
+    return ui->menuTools;
+}
+
+QMenu *MainWindow::menuAbout() const
+{
+    return ui->menuAbout;
+}
+
+ZeiterfassungSettings &MainWindow::settings() const
+{
+    return m_settings;
+}
+
+ZeiterfassungApi &MainWindow::erfassung() const
+{
+    return m_erfassung;
+}
+
+const ZeiterfassungApi::UserInfo &MainWindow::userInfo() const
+{
+    return m_userInfo;
+}
+
+StripFactory &MainWindow::stripFactory() const
+{
+    return m_stripFactory;
 }
 
 void MainWindow::getProjectsFinished()
@@ -661,34 +687,6 @@ void MainWindow::openAuswertung()
         QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open default PDF viewer!"));
         return;
     }
-}
-
-void MainWindow::refreshPresence()
-{
-    m_presenceLabel->setText(tr("???"));
-
-    m_getPresenceStatusReply = m_erfassung.doGetPresenceStatus();
-    connect(m_getPresenceStatusReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getPresenceStatusFinished);
-}
-
-void MainWindow::getPresenceStatusFinished()
-{
-    if(m_getPresenceStatusReply->success())
-    {
-        QMap<QString, int> counts;
-        for(const auto &presenceStatus : m_getPresenceStatusReply->presenceStatuses())
-            counts[presenceStatus.presence]++;
-        QString text;
-        for(auto iter = counts.constBegin(); iter != counts.constEnd(); iter++)
-        {
-            if(!text.isEmpty())
-                text.append(' ');
-            text.append(QStringLiteral("%0: %1").arg(iter.key()).arg(iter.value()));
-        }
-        m_presenceLabel->setText(text);
-    }
-
-    m_getPresenceStatusReply = Q_NULLPTR;
 }
 
 void MainWindow::minimumTimeChanged()

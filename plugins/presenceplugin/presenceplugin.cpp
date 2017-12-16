@@ -2,13 +2,16 @@
 
 #include <QDebug>
 
+#include "mainwindow.h"
+#include "presencewidget.h"
+
 PresencePlugin::PresencePlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
 {
-
+    qDebug() << "called";
 }
 
-void PresencePlugin::initialize()
+void PresencePlugin::attachTo(MainWindow &mainWindow)
 {
-    qDebug() << "called";
+    new PresenceWidget(mainWindow);
 }
