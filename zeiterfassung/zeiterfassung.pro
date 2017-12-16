@@ -27,8 +27,8 @@ FORMS += strips/bookingstartstrip.ui \
 
 RESOURCES +=
 
-TRANSLATIONS +=  translations/zeiterfassung_en.ts \
-                 translations/zeiterfassung_de.ts
+TRANSLATIONS += translations/zeiterfassung_en.ts \
+                translations/zeiterfassung_de.ts
 
 include(../lrelease.pri)
 
