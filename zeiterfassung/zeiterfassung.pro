@@ -21,12 +21,16 @@ SOURCES += main.cpp
 
 HEADERS +=
 
-FORMS +=
+FORMS += strips/bookingstartstrip.ui \
+         strips/bookingendstrip.ui \
+         strips/timeassignmentstrip.ui
 
 RESOURCES +=
 
 TRANSLATIONS +=  translations/zeiterfassung_en.ts \
                  translations/zeiterfassung_de.ts
+
+include(../lrelease.pri)
 
 include(installs.pri)
 unix: include(installs_unix.pri)

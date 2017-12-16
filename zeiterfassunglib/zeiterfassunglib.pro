@@ -90,6 +90,8 @@ RESOURCES += resources.qrc
 TRANSLATIONS +=  translations/zeiterfassunglib_en.ts \
                  translations/zeiterfassunglib_de.ts
 
+include(../lrelease.pri)
+
 # unix {
 #    target.path = /usr/lib
 #    INSTALLS += target
