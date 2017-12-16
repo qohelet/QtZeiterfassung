@@ -341,7 +341,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(QStringLiteral("zeiterfassung"));
     QCoreApplication::setApplicationVersion(QStringLiteral("1.3.1"));
 
-    QSplashScreen splashScreen(QPixmap(QStringLiteral(":/zeiterfassung/images/splash.png")));
+    QSplashScreen splashScreen(QPixmap(QStringLiteral(":/zeiterfassunglib/images/splash.png")));
     splashScreen.showMessage(QCoreApplication::translate("main", "Loading settings..."));
     splashScreen.show();
 

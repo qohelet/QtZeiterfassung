@@ -12,7 +12,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/zeiterfassung/images/icon.png</normaloff>:/zeiterfassung/images/icon.png</iconset>
+    <normaloff>:/zeiterfassunglib/images/icon.png</normaloff>:/zeiterfassunglib/images/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" stretch="0,0">
@@ -31,7 +31,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/zeiterfassung/images/previous.png</normaloff>:/zeiterfassung/images/previous.png</iconset>
+          <normaloff>:/zeiterfassunglib/images/previous.png</normaloff>:/zeiterfassunglib/images/previous.png</iconset>
         </property>
        </widget>
       </item>
@@ -45,7 +45,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/zeiterfassung/images/next.png</normaloff>:/zeiterfassung/images/next.png</iconset>
+          <normaloff>:/zeiterfassunglib/images/next.png</normaloff>:/zeiterfassunglib/images/next.png</iconset>
         </property>
        </widget>
       </item>
@@ -75,7 +75,7 @@
         </property>
         <property name="icon">
          <iconset resource="resources.qrc">
-          <normaloff>:/zeiterfassung/images/now.png</normaloff>:/zeiterfassung/images/now.png</iconset>
+          <normaloff>:/zeiterfassunglib/images/now.png</normaloff>:/zeiterfassunglib/images/now.png</iconset>
         </property>
        </widget>
       </item>
@@ -296,7 +296,7 @@
   <action name="actionQuit">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/quit.png</normaloff>:/zeiterfassung/images/quit.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/quit.png</normaloff>:/zeiterfassunglib/images/quit.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -305,7 +305,7 @@
   <action name="actionAboutMe">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/user.png</normaloff>:/zeiterfassung/images/user.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/user.png</normaloff>:/zeiterfassunglib/images/user.png</iconset>
    </property>
    <property name="text">
     <string>About &amp;Me</string>
@@ -314,7 +314,7 @@
   <action name="actionAboutzeiterfassung">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/about.png</normaloff>:/zeiterfassung/images/about.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/about.png</normaloff>:/zeiterfassunglib/images/about.png</iconset>
    </property>
    <property name="text">
     <string>About &amp;zeiterfassung</string>
@@ -328,7 +328,7 @@
   <action name="actionToday">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/today.png</normaloff>:/zeiterfassung/images/today.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/today.png</normaloff>:/zeiterfassunglib/images/today.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Today</string>
@@ -337,7 +337,7 @@
   <action name="actionRefresh">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/refresh.png</normaloff>:/zeiterfassung/images/refresh.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/refresh.png</normaloff>:/zeiterfassunglib/images/refresh.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Refresh everything</string>
@@ -346,7 +346,7 @@
   <action name="actionAuswertung">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/auswertung.png</normaloff>:/zeiterfassung/images/auswertung.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/auswertung.png</normaloff>:/zeiterfassunglib/images/auswertung.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Auswertung</string>
@@ -355,7 +355,7 @@
   <action name="actionSettings">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/settings.png</normaloff>:/zeiterfassung/images/settings.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/settings.png</normaloff>:/zeiterfassunglib/images/settings.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Settings</string>
@@ -364,7 +364,7 @@
   <action name="actionHelp">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassung/images/help.png</normaloff>:/zeiterfassung/images/help.png</iconset>
+     <normaloff>:/zeiterfassunglib/images/help.png</normaloff>:/zeiterfassunglib/images/help.png</iconset>
    </property>
    <property name="text">
     <string>Help</string>
