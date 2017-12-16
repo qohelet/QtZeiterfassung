@@ -4,9 +4,11 @@
 #include <QDialog>
 #include <QLocale>
 
+#include "zeiterfassunglib_global.h"
+
 namespace Ui { class LanguageSelectionDialog; }
 
-class LanguageSelectionDialog : public QDialog
+class ZEITERFASSUNGLIBSHARED_EXPORT LanguageSelectionDialog : public QDialog
 {
     Q_OBJECT
 

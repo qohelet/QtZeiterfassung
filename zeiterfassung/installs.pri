@@ -11,10 +11,10 @@ translationsinstall.files = $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm \
                             $$[QT_INSTALL_TRANSLATIONS]/qtquick1_de.qm \
                             $$[QT_INSTALL_TRANSLATIONS]/qtscript_de.qm \
                             $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_de.qm \
-                            translations/zeiterfassung_en.qm \
-                            translations/zeiterfassung_de.qm \
-                            ../zeiterfassunglib/translations/zeiterfassunglib_en.qm \
-                            ../zeiterfassunglib/translations/zeiterfassunglib_de.qm
+                            $$OUT_PWD/translations/zeiterfassung_en.qm \
+                            $$OUT_PWD/translations/zeiterfassung_de.qm \
+                            $$OUT_PWD/../zeiterfassunglib/translations/zeiterfassunglib_en.qm \
+                            $$OUT_PWD/../zeiterfassunglib/translations/zeiterfassunglib_de.qm
 INSTALLS += translationsinstall
 
 themesinstall.path = $${DESTDIR}/themes

@@ -3,7 +3,9 @@
 
 #include <QObject>
 
-class ZeiterfassungPlugin : public QObject
+#include "zeiterfassunglib_global.h"
+
+class ZEITERFASSUNGLIBSHARED_EXPORT ZeiterfassungPlugin : public QObject
 {
     Q_OBJECT
 

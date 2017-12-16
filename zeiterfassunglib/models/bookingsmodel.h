@@ -4,11 +4,12 @@
 #include <QAbstractListModel>
 #include <QVector>
 
+#include "zeiterfassunglib_global.h"
 #include "zeiterfassungapi.h"
 
 class StripsWidget;
 
-class BookingsModel : public QAbstractListModel
+class ZEITERFASSUNGLIBSHARED_EXPORT BookingsModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(StripsWidget* stripsWidget READ stripsWidget WRITE setStripsWidget NOTIFY stripsWidgetChanged)

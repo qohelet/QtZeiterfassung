@@ -4,13 +4,15 @@
 #include <QDialog>
 #include <QTime>
 
+#include "zeiterfassunglib_global.h"
+
 template <class Key, class T> class QMap;
 
 class ZeiterfassungSettings;
 
 namespace Ui { class TimeAssignmentDialog; }
 
-class TimeAssignmentDialog : public QDialog
+class ZEITERFASSUNGLIBSHARED_EXPORT TimeAssignmentDialog : public QDialog
 {
     Q_OBJECT
 

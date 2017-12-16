@@ -6,10 +6,12 @@
 #include <QObject>
 #include <QWidget>
 
+#include "zeiterfassunglib_global.h"
+
 class QUiLoader;
 class QByteArray;
 
-class StripFactory : public QObject
+class ZEITERFASSUNGLIBSHARED_EXPORT StripFactory : public QObject
 {
     Q_OBJECT
 

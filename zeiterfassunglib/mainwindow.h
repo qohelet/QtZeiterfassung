@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QMap>
 
+#include "zeiterfassunglib_global.h"
 #include "zeiterfassungapi.h"
 #include "replies/getprojectsreply.h"
 #include "replies/getauswertungreply.h"
@@ -21,7 +22,7 @@ class StripsWidget;
 class BookingsModel;
 class TimeAssignmentsModel;
 
-class MainWindow : public QMainWindow
+class ZEITERFASSUNGLIBSHARED_EXPORT MainWindow : public QMainWindow
 {
     Q_OBJECT
 

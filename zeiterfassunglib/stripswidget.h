@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QTime>
 
+#include "zeiterfassunglib_global.h"
 #include "zeiterfassungapi.h"
 #include "replies/getbookingsreply.h"
 #include "replies/gettimeassignmentsreply.h"
@@ -16,7 +17,7 @@ template <typename T> class QVector;
 
 class StripFactory;
 
-class StripsWidget : public QWidget
+class ZEITERFASSUNGLIBSHARED_EXPORT StripsWidget : public QWidget
 {
     Q_OBJECT
 

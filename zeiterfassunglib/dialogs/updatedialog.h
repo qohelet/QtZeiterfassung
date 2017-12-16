@@ -4,13 +4,15 @@
 #include <QDialog>
 #include <QUrl>
 
+#include "zeiterfassunglib_global.h"
+
 class QNetworkAccessManager;
 class QNetworkReply;
 
 class ZeiterfassungSettings;
 namespace Ui { class UpdateDialog; }
 
-class UpdateDialog : public QDialog
+class ZEITERFASSUNGLIBSHARED_EXPORT UpdateDialog : public QDialog
 {
     Q_OBJECT
 

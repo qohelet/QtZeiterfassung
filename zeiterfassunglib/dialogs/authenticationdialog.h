@@ -3,11 +3,13 @@
 
 #include <QDialog>
 
+#include "zeiterfassunglib_global.h"
+
 namespace Ui {
 class AuthenticationDialog;
 }
 
-class AuthenticationDialog : public QDialog
+class ZEITERFASSUNGLIBSHARED_EXPORT AuthenticationDialog : public QDialog
 {
     Q_OBJECT
 

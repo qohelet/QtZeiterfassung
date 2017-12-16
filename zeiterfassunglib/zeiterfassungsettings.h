@@ -7,7 +7,9 @@
 #include <QStringList>
 #include <QDate>
 
-class ZeiterfassungSettings : public QSettings
+#include "zeiterfassunglib_global.h"
+
+class ZEITERFASSUNGLIBSHARED_EXPORT ZeiterfassungSettings : public QSettings
 {
     Q_OBJECT
 
