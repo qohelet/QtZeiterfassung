@@ -8,7 +8,8 @@
 
 #include "zeiterfassunglib_global.h"
 #include "zeiterfassungreply.h"
-#include "zeiterfassungapi.h"
+
+class ZeiterfassungApi;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT GetProjectsReply : public ZeiterfassungReply
 {
@@ -17,14 +18,20 @@ class ZEITERFASSUNGLIBSHARED_EXPORT GetProjectsReply : public ZeiterfassungReply
 public:
     GetProjectsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
-    const QVector<ZeiterfassungApi::Project> &projects() const;
+    struct Project
+    {
+        QString label;
+        QString value;
+    };
+
+    const QVector<Project> &projects() const;
 
 private Q_SLOTS:
     void requestFinished();
 
 private:
     std::unique_ptr<QNetworkReply> m_reply;
-    QVector<ZeiterfassungApi::Project> m_projects;
+    QVector<Project> m_projects;
 };
 
 #endif // GETPROJECTSREPLY_H

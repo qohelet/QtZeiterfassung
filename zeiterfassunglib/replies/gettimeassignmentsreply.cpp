@@ -7,6 +7,8 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
+#include "zeiterfassungapi.h"
+
 GetTimeAssignmentsReply::GetTimeAssignmentsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
     m_reply(std::move(reply))
@@ -14,7 +16,7 @@ GetTimeAssignmentsReply::GetTimeAssignmentsReply(std::unique_ptr<QNetworkReply> 
     connect(m_reply.get(), &QNetworkReply::finished, this, &GetTimeAssignmentsReply::requestFinished);
 }
 
-const QVector<ZeiterfassungApi::TimeAssignment> &GetTimeAssignmentsReply::timeAssignments() const
+const QVector<GetTimeAssignmentsReply::TimeAssignment> &GetTimeAssignmentsReply::timeAssignments() const
 {
     return m_timeAssignments;
 }

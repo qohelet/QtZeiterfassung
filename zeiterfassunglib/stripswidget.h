@@ -7,7 +7,6 @@
 #include <QTime>
 
 #include "zeiterfassunglib_global.h"
-#include "zeiterfassungapi.h"
 #include "replies/getbookingsreply.h"
 #include "replies/gettimeassignmentsreply.h"
 
@@ -15,6 +14,7 @@ class QBoxLayout;
 template <class Key, class T> class QMap;
 template <typename T> class QVector;
 
+class ZeiterfassungApi;
 class StripFactory;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT StripsWidget : public QWidget
@@ -28,8 +28,8 @@ public:
     const QDate &date() const;
     void setDate(const QDate &date);
 
-    const QVector<ZeiterfassungApi::Booking> &bookings() const;
-    const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments() const;
+    const QVector<GetBookingsReply::Booking> &bookings() const;
+    const QVector<GetTimeAssignmentsReply::TimeAssignment> &timeAssignments() const;
 
     const QTime &timeAssignmentTime() const;
     const QTime &lastTimeAssignmentStart() const;
@@ -47,8 +47,8 @@ public:
     void clearStrips();
 
 Q_SIGNALS:
-    void bookingsChanged(const QVector<ZeiterfassungApi::Booking> &bookings);
-    void timeAssignmentsChanged(const QVector<ZeiterfassungApi::TimeAssignment> &timeAssignments);
+    void bookingsChanged(const QVector<GetBookingsReply::Booking> &bookings);
+    void timeAssignmentsChanged(const QVector<GetTimeAssignmentsReply::TimeAssignment> &timeAssignments);
 
     void timeAssignmentTimeChanged(const QTime &timeAssignmentTime);
     void lastTimeAssignmentStartChanged(const QTime &lastTimeAssignmentStart);
@@ -82,8 +82,8 @@ private:
 
     QDate m_date;
 
-    QVector<ZeiterfassungApi::Booking> m_bookings;
-    QVector<ZeiterfassungApi::TimeAssignment> m_timeAssignments;
+    QVector<GetBookingsReply::Booking> m_bookings;
+    QVector<GetTimeAssignmentsReply::TimeAssignment> m_timeAssignments;
 
     QTime m_timeAssignmentTime;
     QTime m_lastTimeAssignmentStart;

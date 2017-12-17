@@ -6,6 +6,8 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
+#include "zeiterfassungapi.h"
+
 GetPresenceStatusReply::GetPresenceStatusReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
     m_reply(std::move(reply))
@@ -13,7 +15,7 @@ GetPresenceStatusReply::GetPresenceStatusReply(std::unique_ptr<QNetworkReply> &&
     connect(m_reply.get(), &QNetworkReply::finished, this, &GetPresenceStatusReply::requestFinished);
 }
 
-const QVector<ZeiterfassungApi::PresenceStatus> &GetPresenceStatusReply::presenceStatuses() const
+const QVector<GetPresenceStatusReply::PresenceStatus> &GetPresenceStatusReply::presenceStatuses() const
 {
     return m_presenceStatuses;
 }

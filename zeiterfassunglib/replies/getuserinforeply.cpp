@@ -1,23 +1,25 @@
-#include "userinforeply.h"
+#include "getuserinforeply.h"
 
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 
-UserInfoReply::UserInfoReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
+#include "zeiterfassungapi.h"
+
+GetUserInfoReply::GetUserInfoReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
     m_reply(std::move(reply))
 {
-    connect(m_reply.get(), &QNetworkReply::finished, this, &UserInfoReply::requestFinished);
+    connect(m_reply.get(), &QNetworkReply::finished, this, &GetUserInfoReply::requestFinished);
 }
 
-const ZeiterfassungApi::UserInfo &UserInfoReply::userInfo() const
+const GetUserInfoReply::UserInfo &GetUserInfoReply::userInfo() const
 {
     return m_userInfo;
 }
 
-void UserInfoReply::requestFinished()
+void GetUserInfoReply::requestFinished()
 {
     if(m_reply->error() != QNetworkReply::NoError)
     {

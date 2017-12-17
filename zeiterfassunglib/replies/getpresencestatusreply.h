@@ -7,7 +7,8 @@
 
 #include "zeiterfassunglib_global.h"
 #include "zeiterfassungreply.h"
-#include "zeiterfassungapi.h"
+
+class ZeiterfassungApi;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT GetPresenceStatusReply : public ZeiterfassungReply
 {
@@ -16,14 +17,22 @@ class ZEITERFASSUNGLIBSHARED_EXPORT GetPresenceStatusReply : public Zeiterfassun
 public:
     explicit GetPresenceStatusReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
-    const QVector<ZeiterfassungApi::PresenceStatus> &presenceStatuses() const;
+    struct PresenceStatus
+    {
+        int userId;
+        QString firstName;
+        QString lastName;
+        QString presence;
+    };
+
+    const QVector<PresenceStatus> &presenceStatuses() const;
 
 private Q_SLOTS:
     void requestFinished();
 
 private:
     std::unique_ptr<QNetworkReply> m_reply;
-    QVector<ZeiterfassungApi::PresenceStatus> m_presenceStatuses;
+    QVector<PresenceStatus> m_presenceStatuses;
 };
 
 #endif // GETPRESENCESTATUSREPLY_H

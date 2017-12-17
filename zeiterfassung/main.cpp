@@ -24,7 +24,7 @@
 #include "mainwindow.h"
 #include "replies/loginpagereply.h"
 #include "replies/loginreply.h"
-#include "replies/userinforeply.h"
+#include "replies/getuserinforeply.h"
 #include "stripfactory.h"
 
 struct {
@@ -250,7 +250,7 @@ bool doAuthentication(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
     return true;
 }
 
-bool loadUserInfo(QSplashScreen &splashScreen, ZeiterfassungApi &erfassung, ZeiterfassungApi::UserInfo &userInfo)
+bool loadUserInfo(QSplashScreen &splashScreen, ZeiterfassungApi &erfassung, GetUserInfoReply::UserInfo &userInfo)
 {
     splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
 
@@ -370,7 +370,7 @@ int main(int argc, char *argv[])
     if(!doAuthentication(splashScreen, settings, erfassung))
         return -5;
 
-    ZeiterfassungApi::UserInfo userInfo;
+    GetUserInfoReply::UserInfo userInfo;
 
     if(!loadUserInfo(splashScreen, erfassung, userInfo))
         return -6;

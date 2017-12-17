@@ -7,7 +7,7 @@
 #include <QMap>
 
 #include "zeiterfassunglib_global.h"
-#include "zeiterfassungapi.h"
+#include "replies/getuserinforeply.h"
 #include "replies/getprojectsreply.h"
 #include "replies/getauswertungreply.h"
 #include "replies/getpresencestatusreply.h"
@@ -27,7 +27,7 @@ class ZEITERFASSUNGLIBSHARED_EXPORT MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo,
+    explicit MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const GetUserInfoReply::UserInfo &userInfo,
                         StripFactory &stripFactory, QWidget *parent = Q_NULLPTR);
     ~MainWindow();
 
@@ -38,7 +38,7 @@ public:
 
     ZeiterfassungSettings &settings() const;
     ZeiterfassungApi &erfassung() const;
-    const ZeiterfassungApi::UserInfo &userInfo() const;
+    const GetUserInfoReply::UserInfo &userInfo() const;
     StripFactory &stripFactory() const;
 
 private Q_SLOTS:
@@ -63,7 +63,7 @@ private:
     Ui::MainWindow *ui;
     ZeiterfassungSettings &m_settings;
     ZeiterfassungApi &m_erfassung;
-    const ZeiterfassungApi::UserInfo &m_userInfo;
+    const GetUserInfoReply::UserInfo &m_userInfo;
     StripFactory &m_stripFactory;
 
     std::unique_ptr<GetProjectsReply> m_getProjectsReply;

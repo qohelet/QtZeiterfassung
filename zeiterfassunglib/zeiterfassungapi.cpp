@@ -22,7 +22,7 @@
 #include "replies/loginreply.h"
 #include "replies/updatebookingreply.h"
 #include "replies/updatetimeassignmentreply.h"
-#include "replies/userinforeply.h"
+#include "replies/getuserinforeply.h"
 
 //add support for pre cpp14 compilers
 #include "cpp14polyfills.h"
@@ -55,6 +55,8 @@ std::unique_ptr<LoginPageReply> ZeiterfassungApi::doLoginPage()
 
     auto reply = std::unique_ptr<QNetworkReply>(m_manager->get(request));
 
+    qDebug() << reply->parent();
+
     return std::make_unique<LoginPageReply>(std::move(reply), this);
 }
 
@@ -71,14 +73,14 @@ std::unique_ptr<LoginReply> ZeiterfassungApi::doLogin(const QString &username, c
     return std::make_unique<LoginReply>(std::move(reply), this);
 }
 
-std::unique_ptr<UserInfoReply> ZeiterfassungApi::doUserInfo()
+std::unique_ptr<GetUserInfoReply> ZeiterfassungApi::doUserInfo()
 {
     QNetworkRequest request(QUrl(m_url % "json/evoAppsUserInfoDialogController/load-EvoAppsUserInfoTO"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("home"));
 
     auto reply = std::unique_ptr<QNetworkReply>(m_manager->get(request));
 
-    return std::make_unique<UserInfoReply>(std::move(reply), this);
+    return std::make_unique<GetUserInfoReply>(std::move(reply), this);
 }
 
 std::unique_ptr<GetBookingsReply> ZeiterfassungApi::doGetBookings(int userId, const QDate &start, const QDate &end)

@@ -8,7 +8,8 @@
 
 #include "zeiterfassunglib_global.h"
 #include "zeiterfassungreply.h"
-#include "zeiterfassungapi.h"
+
+class ZeiterfassungApi;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT GetBookingsReply : public ZeiterfassungReply
 {
@@ -17,14 +18,24 @@ class ZEITERFASSUNGLIBSHARED_EXPORT GetBookingsReply : public ZeiterfassungReply
 public:
     GetBookingsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
-    const QVector<ZeiterfassungApi::Booking> &bookings() const;
+    struct Booking
+    {
+        int id;
+        QDate date;
+        QTime time;
+        QTime timespan;
+        QString type;
+        QString text;
+    };
+
+    const QVector<Booking> &bookings() const;
 
 private Q_SLOTS:
     void requestFinished();
 
 private:
     std::unique_ptr<QNetworkReply> m_reply;
-    QVector<ZeiterfassungApi::Booking> m_bookings;
+    QVector<Booking> m_bookings;
 };
 
 #endif // GETBOOKINGSREPLY_H

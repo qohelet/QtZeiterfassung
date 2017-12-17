@@ -14,7 +14,7 @@ class QNetworkAccessManager;
 
 class LoginPageReply;
 class LoginReply;
-class UserInfoReply;
+class GetUserInfoReply;
 class GetBookingsReply;
 class CreateBookingReply;
 class UpdateBookingReply;
@@ -39,54 +39,9 @@ public:
 
     QNetworkAccessManager *manager() const;
 
-    struct UserInfo
-    {
-        int userId;
-        QString email;
-        QString longUsername;
-        QString text;
-        QString username;
-    };
-
-    struct Booking
-    {
-        int id;
-        QDate date;
-        QTime time;
-        QTime timespan;
-        QString type;
-        QString text;
-    };
-
-    struct TimeAssignment
-    {
-        int id;
-        QDate date;
-        QTime time;
-        QTime timespan;
-        QString text;
-        QString project;
-        QString subproject;
-        QString workpackage;
-    };
-
-    struct Project
-    {
-        QString label;
-        QString value;
-    };
-
-    struct PresenceStatus
-    {
-        int userId;
-        QString firstName;
-        QString lastName;
-        QString presence;
-    };
-
     std::unique_ptr<LoginPageReply> doLoginPage();
     std::unique_ptr<LoginReply> doLogin(const QString &username, const QString &password);
-    std::unique_ptr<UserInfoReply> doUserInfo();
+    std::unique_ptr<GetUserInfoReply> doUserInfo();
 
     std::unique_ptr<GetBookingsReply> doGetBookings(int userId, const QDate &start, const QDate &end);
     std::unique_ptr<CreateBookingReply> doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan,

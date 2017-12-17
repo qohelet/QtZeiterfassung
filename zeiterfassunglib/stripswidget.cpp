@@ -7,6 +7,7 @@
 #include <QStringBuilder>
 #include <QDebug>
 
+#include "zeiterfassungapi.h"
 #include "timeutils.h"
 #include "stripfactory.h"
 
@@ -40,12 +41,12 @@ void StripsWidget::setDate(const QDate &date)
     refresh();
 }
 
-const QVector<ZeiterfassungApi::Booking> &StripsWidget::bookings() const
+const QVector<GetBookingsReply::Booking> &StripsWidget::bookings() const
 {
     return m_bookings;
 }
 
-const QVector<ZeiterfassungApi::TimeAssignment> &StripsWidget::timeAssignments() const
+const QVector<GetTimeAssignmentsReply::TimeAssignment> &StripsWidget::timeAssignments() const
 {
     return m_timeAssignments;
 }
@@ -167,7 +168,7 @@ bool StripsWidget::createStrips()
 
     auto bookingTimespan = QTime(0, 0);
 
-    const ZeiterfassungApi::Booking *lastBooking = Q_NULLPTR;
+    const GetBookingsReply::Booking *lastBooking = Q_NULLPTR;
 
     QString errorMessage;
 

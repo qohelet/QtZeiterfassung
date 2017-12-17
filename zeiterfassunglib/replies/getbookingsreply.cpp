@@ -6,6 +6,8 @@
 #include <QJsonValue>
 #include <QJsonObject>
 
+#include "zeiterfassungapi.h"
+
 GetBookingsReply::GetBookingsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
     m_reply(std::move(reply))
@@ -13,7 +15,7 @@ GetBookingsReply::GetBookingsReply(std::unique_ptr<QNetworkReply> &&reply, Zeite
     connect(m_reply.get(), &QNetworkReply::finished, this, &GetBookingsReply::requestFinished);
 }
 
-const QVector<ZeiterfassungApi::Booking> &GetBookingsReply::bookings() const
+const QVector<GetBookingsReply::Booking> &GetBookingsReply::bookings() const
 {
     return m_bookings;
 }

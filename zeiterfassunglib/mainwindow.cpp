@@ -15,6 +15,7 @@
 #include <QRegularExpression>
 #include <QDebug>
 
+#include "zeiterfassungapi.h"
 #include "timeutils.h"
 #include "zeiterfassungsettings.h"
 #include "stripfactory.h"
@@ -36,7 +37,7 @@
 #include "replies/createtimeassignmentreply.h"
 #include "replies/createbookingreply.h"
 
-MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const ZeiterfassungApi::UserInfo &userInfo,
+MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const GetUserInfoReply::UserInfo &userInfo,
                        StripFactory &stripFactory, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -155,7 +156,7 @@ ZeiterfassungApi &MainWindow::erfassung() const
     return m_erfassung;
 }
 
-const ZeiterfassungApi::UserInfo &MainWindow::userInfo() const
+const GetUserInfoReply::UserInfo &MainWindow::userInfo() const
 {
     return m_userInfo;
 }

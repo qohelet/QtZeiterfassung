@@ -39,8 +39,8 @@ SOURCES += mainwindow.cpp \
            replies/loginreply.cpp \
            replies/updatebookingreply.cpp \
            replies/updatetimeassignmentreply.cpp \
-           replies/userinforeply.cpp \
-           replies/zeiterfassungreply.cpp
+           replies/zeiterfassungreply.cpp \
+    replies/getuserinforeply.cpp
 
 HEADERS += cpp14polyfills.h \
            mainwindow.h \
@@ -73,8 +73,8 @@ HEADERS += cpp14polyfills.h \
            replies/loginreply.h \
            replies/updatebookingreply.h \
            replies/updatetimeassignmentreply.h \
-           replies/userinforeply.h \
-           replies/zeiterfassungreply.h
+           replies/zeiterfassungreply.h \
+    replies/getuserinforeply.h
 
 FORMS += mainwindow.ui \
          dialogs/updatedialog.ui \

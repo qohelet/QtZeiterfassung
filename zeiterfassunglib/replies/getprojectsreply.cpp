@@ -6,6 +6,8 @@
 #include <QJsonValue>
 #include <QJsonArray>
 
+#include "zeiterfassungapi.h"
+
 GetProjectsReply::GetProjectsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
     m_reply(std::move(reply))
@@ -13,7 +15,7 @@ GetProjectsReply::GetProjectsReply(std::unique_ptr<QNetworkReply> &&reply, Zeite
     connect(m_reply.get(), &QNetworkReply::finished, this, &GetProjectsReply::requestFinished);
 }
 
-const QVector<ZeiterfassungApi::Project> &GetProjectsReply::projects() const
+const QVector<GetProjectsReply::Project> &GetProjectsReply::projects() const
 {
     return m_projects;
 }
