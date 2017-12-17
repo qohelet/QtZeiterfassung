@@ -17,8 +17,7 @@ copy_libraries.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += copy_libraries
 PRE_TARGETDEPS += compiler_copy_libraries_make_all
 
-IMAGE_FORMATS += $$[QT_INSTALL_PLUGINS]/imageformats/qdds$${DEBUG_SIGN}.dll \
-                 $$[QT_INSTALL_PLUGINS]/imageformats/qgif$${DEBUG_SIGN}.dll \
+IMAGE_FORMATS += $$[QT_INSTALL_PLUGINS]/imageformats/qgif$${DEBUG_SIGN}.dll \
                  $$[QT_INSTALL_PLUGINS]/imageformats/qicns$${DEBUG_SIGN}.dll \
                  $$[QT_INSTALL_PLUGINS]/imageformats/qico$${DEBUG_SIGN}.dll \
                  $$[QT_INSTALL_PLUGINS]/imageformats/qjpeg$${DEBUG_SIGN}.dll \
