@@ -6,6 +6,7 @@
 #include "replies/getpresencestatusreply.h"
 
 class QLabel;
+class QAction;
 
 class MainWindow;
 
@@ -24,6 +25,8 @@ private:
 
     QLabel *m_labelAvailable;
     QLabel *m_labelNotAvailable;
+
+    QAction *m_action;
 
     std::unique_ptr<GetPresenceStatusReply> m_reply;
 };
