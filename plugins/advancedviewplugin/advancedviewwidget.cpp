@@ -3,7 +3,7 @@
 #include <QIcon>
 
 #include "stripswidget.h"
-#include "advanvedviewdialog.h"
+#include "advancedviewdialog.h"
 
 AdvancedViewWidget::AdvancedViewWidget(StripsWidget &stripsWidget) :
     QPushButton(&stripsWidget),
@@ -24,6 +24,6 @@ void AdvancedViewWidget::dateChanged(const QDate &date)
 
 void AdvancedViewWidget::pressedSlot()
 {
-    AdvanvedViewDialog dialog(m_stripsWidget);
+    AdvancedViewDialog dialog(m_stripsWidget);
     dialog.exec();
 }
