@@ -3,17 +3,20 @@
 
 #include <QToolButton>
 
-class MainWindow;
+class StripsWidget;
 
 class AdvancedViewWidget : public QToolButton
 {
     Q_OBJECT
 
 public:
-    explicit AdvancedViewWidget(MainWindow &mainWindow);
+    explicit AdvancedViewWidget(StripsWidget &stripsWidget);
+
+private Q_SLOTS:
+    void dateChanged(const QDate &date);
 
 private:
-    MainWindow &m_mainWindow;
+    StripsWidget &m_stripsWidget;
 };
 
 #endif // ADVANCEDVIEWWIDGET_H

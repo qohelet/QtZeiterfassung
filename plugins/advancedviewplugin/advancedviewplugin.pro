@@ -20,4 +20,11 @@ HEADERS += advancedviewplugin.h \
 SOURCES += advancedviewplugin.cpp \
            advancedviewwidget.cpp
 
+FORMS +=
+
+RESOURCES += \
+    advancedviewplugin_resources.qrc
+
+TRANSLATIONS +=
+
 OTHER_FILES += advancedviewplugin.json
