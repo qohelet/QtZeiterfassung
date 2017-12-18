@@ -7,7 +7,7 @@ BookingsModel::BookingsModel(StripsWidget &stripsWidget, QObject *parent) :
     m_stripsWidget(stripsWidget)
 {
     connect(&stripsWidget, &StripsWidget::bookingsChanged, this, &BookingsModel::bookingsChanged);
-    connect(&stripsWidget, &StripsWidget::refreshingBookingsChanged, this, &BookingsModel::enabledChanged);
+    connect(&stripsWidget, &StripsWidget::refreshingBookingsChanged, [=](bool refreshing){ enabledChanged(!refreshing); });
 }
 
 StripsWidget &BookingsModel::stripsWidget() const

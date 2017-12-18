@@ -140,11 +140,11 @@ void StripsWidget::refresh()
 
     m_stripsLayout->addWidget(new QLabel(tr("Loading..."), this));
 
-    refreshBookings();
-    refreshTimeAssignments();
+    refreshBookings(false);
+    refreshTimeAssignments(false);
 }
 
-void StripsWidget::refreshBookings()
+void StripsWidget::refreshBookings(bool createLabel)
 {
     if(!m_date.isValid())
     {
@@ -152,7 +152,14 @@ void StripsWidget::refreshBookings()
         return;
     }
 
-    if(m_bookings.count())
+    if(createLabel)
+    {
+        clearStrips();
+
+        m_stripsLayout->addWidget(new QLabel(tr("Loading..."), this));
+    }
+
+    if(!m_bookings.empty())
     {
         m_bookings.clear();
         Q_EMIT bookingsChanged(m_bookings);
@@ -170,7 +177,7 @@ void StripsWidget::refreshBookings()
     connect(m_getBookingsReply.get(), &ZeiterfassungReply::finished, this, &StripsWidget::getBookingsFinished);
 }
 
-void StripsWidget::refreshTimeAssignments()
+void StripsWidget::refreshTimeAssignments(bool createLabel)
 {
     if(!m_date.isValid())
     {
@@ -178,7 +185,14 @@ void StripsWidget::refreshTimeAssignments()
         return;
     }
 
-    if(m_timeAssignments.count())
+    if(createLabel)
+    {
+        clearStrips();
+
+        m_stripsLayout->addWidget(new QLabel(tr("Loading..."), this));
+    }
+
+    if(!m_timeAssignments.empty())
     {
         m_timeAssignments.clear();
         Q_EMIT timeAssignmentsChanged(m_timeAssignments);

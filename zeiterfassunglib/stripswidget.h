@@ -46,8 +46,8 @@ public:
     bool endEnabled() const;
 
     void refresh();
-    void refreshBookings();
-    void refreshTimeAssignments();
+    void refreshBookings(bool createLabel = true);
+    void refreshTimeAssignments(bool createLabel = true);
     bool createStrips();
     void clearStrips();
 

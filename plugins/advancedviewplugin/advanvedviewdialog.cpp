@@ -32,10 +32,12 @@ AdvanvedViewDialog::AdvanvedViewDialog(StripsWidget &stripsWidget) :
     ui->setupUi(this);
 
     ui->bookingsView->setModel(m_bookingsModel);
+    ui->bookingsView->setEnabled(m_bookingsModel->enabled());
     connect(m_bookingsModel, &BookingsModel::enabledChanged, ui->bookingsView, &QWidget::setEnabled);
     connect(ui->bookingsView, &QWidget::customContextMenuRequested, this, &AdvanvedViewDialog::contextMenuBooking);
 
     ui->timeAssignmentsView->setModel(m_timeAssignmentsModel);
+    ui->timeAssignmentsView->setEnabled(m_timeAssignmentsModel->enabled());
     connect(m_timeAssignmentsModel, &TimeAssignmentsModel::enabledChanged, ui->timeAssignmentsView, &QWidget::setEnabled);
     connect(ui->timeAssignmentsView, &QWidget::customContextMenuRequested, this, &AdvanvedViewDialog::contextMenuTimeAssignment);
 }
