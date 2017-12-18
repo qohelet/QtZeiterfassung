@@ -1,6 +1,6 @@
 QT += core network gui widgets
 
-TARGET = advancedviewplugin
+TARGET = updaterplugin
 TEMPLATE = lib
 
 CONFIG += shared c++14
@@ -14,11 +14,13 @@ DEPENDPATH += $$PWD/../../zeiterfassunglib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += updaterplugin.h
+HEADERS += updaterdialog.h \
+           updaterplugin.h
 
-SOURCES += updaterplugin.cpp
+SOURCES += updaterdialog.cpp \
+           updaterplugin.cpp
 
-FORMS +=
+FORMS += updaterdialog.ui
 
 RESOURCES +=
 

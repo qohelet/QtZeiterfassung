@@ -21,7 +21,6 @@
 #include "stripswidget.h"
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/settingsdialog.h"
-#include "dialogs/updatedialog.h"
 #include "replies/getprojectsreply.h"
 #include "replies/getauswertungreply.h"
 #include "replies/createbookingreply.h"
@@ -97,9 +96,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_holidaysLabel->setFrameShadow(QFrame::Sunken);
 
     dateChanged();
-
-    if(settings.lastUpdateCheck().isNull() || settings.lastUpdateCheck() < QDate::currentDate())
-        new UpdateDialog(settings, erfassung.manager(), this);
 }
 
 MainWindow::~MainWindow()

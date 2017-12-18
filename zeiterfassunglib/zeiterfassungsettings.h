@@ -51,9 +51,6 @@ public:
     void setTexte(const QStringList &texte);
     void prependText(const QString &text);
 
-    QDate lastUpdateCheck() const;
-    void setLastUpdateCheck(const QDate &lastUpdateCheck);
-
     QString theme() const;
     void setTheme(const QString &theme);
 

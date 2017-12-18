@@ -21,7 +21,6 @@ SOURCES += mainwindow.cpp \
            dialogs/authenticationdialog.cpp \
            dialogs/languageselectiondialog.cpp \
            dialogs/settingsdialog.cpp \
-           dialogs/updatedialog.cpp \
            replies/createbookingreply.cpp \
            replies/createtimeassignmentreply.cpp \
            replies/deletebookingreply.cpp \
@@ -51,7 +50,6 @@ HEADERS += cpp14polyfills.h \
            dialogs/authenticationdialog.h \
            dialogs/languageselectiondialog.h \
            dialogs/settingsdialog.h \
-           dialogs/updatedialog.h \
            replies/createbookingreply.h \
            replies/createtimeassignmentreply.h \
            replies/deletebookingreply.h \
@@ -69,7 +67,6 @@ HEADERS += cpp14polyfills.h \
            replies/getuserinforeply.h
 
 FORMS += mainwindow.ui \
-         dialogs/updatedialog.ui \
          dialogs/settingsdialog.ui \
          dialogs/languageselectiondialog.ui \
          dialogs/authenticationdialog.ui \
