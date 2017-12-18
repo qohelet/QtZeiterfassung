@@ -245,7 +245,7 @@ void MainWindow::pushButtonStartPressed()
     if(bookingsChanged)
     {
         m_currentStripWidget->refresh();
-        //refreshAuswertung();
+        //refreshReport();
     }
     else
         m_currentStripWidget->refreshTimeAssignments();
@@ -296,7 +296,7 @@ void MainWindow::pushButtonEndPressed()
     }
 
     m_currentStripWidget->refresh();
-    //refreshAuswertung();
+    //refreshReport();
 
     ui->actionToday->setEnabled(false);
     ui->actionRefresh->setEnabled(false);

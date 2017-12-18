@@ -68,7 +68,7 @@ void ReportsWidget::refresh()
     m_labelBalance->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
     m_labelHolidays->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
 
-    m_reply = m_mainWindow.erfassung().doGetAuswertung(m_mainWindow.userInfo().userId, m_date);
+    m_reply = m_mainWindow.erfassung().doGetReport(m_mainWindow.userInfo().userId, m_date);
     connect(m_reply.get(), &ZeiterfassungReply::finished, this, &ReportsWidget::finished);
 }
 
@@ -82,7 +82,7 @@ void ReportsWidget::finished()
     }
 
     {
-        auto content = m_reply->auswertung();
+        auto content = m_reply->content();
 
         {
             static QRegularExpression regex(QStringLiteral("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)"));
@@ -117,7 +117,7 @@ void ReportsWidget::finished()
         }
 
         {
-            QTemporaryFile file(QDir::temp().absoluteFilePath(QStringLiteral("auswertungXXXXXX.pdf")));
+            QTemporaryFile file(QDir::temp().absoluteFilePath(QStringLiteral("reportXXXXXX.pdf")));
             file.setAutoRemove(false);
             if(!file.open())
             {

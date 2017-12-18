@@ -5,7 +5,7 @@
 #include <QDate>
 #include <QUrl>
 
-#include "replies/getauswertungreply.h"
+#include "replies/getreportreply.h"
 
 class QLabel;
 class QAction;
@@ -37,7 +37,7 @@ private:
     QDate m_date;
     QUrl m_url;
 
-    std::unique_ptr<GetAuswertungReply> m_reply;
+    std::unique_ptr<GetReportReply> m_reply;
 };
 
 #endif // REPORTSWIDGET_H
