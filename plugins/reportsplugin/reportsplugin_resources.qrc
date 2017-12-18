@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/zeiterfassung/plugins/reportsplugin">
+        <file>images/refresh.png</file>
+        <file>images/report.png</file>
+    </qresource>
+</RCC>

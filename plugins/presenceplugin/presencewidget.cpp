@@ -2,6 +2,7 @@
 
 #include <QLabel>
 #include <QStatusBar>
+#include <QMenu>
 #include <QTimer>
 #include <QMessageBox>
 #include <QStringBuilder>
@@ -23,6 +24,9 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
     m_labelNotAvailable->setFrameShadow(QFrame::Sunken);
     m_mainWindow.statusBar()->addWidget(m_labelNotAvailable);
 
+    m_action = m_mainWindow.menuView()->addAction(QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/refresh.png")),
+                                                  tr("Refresh presence"), this, &PresenceWidget::timeout);
+
     auto timer = new QTimer(this);
     timer->setInterval(60000);
     connect(timer, &QTimer::timeout, this, &PresenceWidget::timeout);
@@ -33,14 +37,10 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
 
 void PresenceWidget::timeout()
 {
-    if(m_reply)
-    {
-        qWarning() << "last request not finished yet!";
-        return;
-    }
-
     m_labelAvailable->setText(tr("%0: %1").arg(tr("Available")).arg(tr("???")));
     m_labelNotAvailable->setText(tr("%0: %1").arg(tr("Not available")).arg(tr("???")));
+
+    m_action->setEnabled(false);
 
     m_reply = m_mainWindow.erfassung().doGetPresenceStatus();
     connect(m_reply.get(), &ZeiterfassungReply::finished, this, &PresenceWidget::finished);
@@ -73,5 +73,6 @@ void PresenceWidget::finished()
     }
 
     after:
+    m_action->setEnabled(true);
     m_reply = Q_NULLPTR;
 }

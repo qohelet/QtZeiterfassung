@@ -1,27 +1,27 @@
-#ifndef ADVANVEDVIEWDIALOG_H
-#define ADVANVEDVIEWDIALOG_H
+#ifndef ADVANCEDVIEWDIALOG_H
+#define ADVANCEDVIEWDIALOG_H
 
 #include <QDialog>
 
-namespace Ui { class AdvanvedViewDialog; }
+namespace Ui { class AdvancedViewDialog; }
 class StripsWidget;
 class BookingsModel;
 class TimeAssignmentsModel;
 
-class AdvanvedViewDialog : public QDialog
+class AdvancedViewDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AdvanvedViewDialog(StripsWidget &stripsWidget);
-    ~AdvanvedViewDialog();
+    explicit AdvancedViewDialog(StripsWidget &stripsWidget);
+    ~AdvancedViewDialog();
 
 private Q_SLOTS:
     void contextMenuBooking(const QPoint &pos);
     void contextMenuTimeAssignment(const QPoint &pos);
 
 private:
-    Ui::AdvanvedViewDialog *ui;
+    Ui::AdvancedViewDialog *ui;
 
     StripsWidget &m_stripsWidget;
 
@@ -29,4 +29,4 @@ private:
     TimeAssignmentsModel *m_timeAssignmentsModel;
 };
 
-#endif // ADVANVEDVIEWDIALOG_H
+#endif // ADVANCEDVIEWDIALOG_H

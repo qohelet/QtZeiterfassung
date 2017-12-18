@@ -25,7 +25,6 @@ SOURCES += mainwindow.cpp \
            replies/createtimeassignmentreply.cpp \
            replies/deletebookingreply.cpp \
            replies/deletetimeassignmentreply.cpp \
-           replies/getauswertungreply.cpp \
            replies/getbookingsreply.cpp \
            replies/getpresencestatusreply.cpp \
            replies/getprojectsreply.cpp \
@@ -35,7 +34,8 @@ SOURCES += mainwindow.cpp \
            replies/updatebookingreply.cpp \
            replies/updatetimeassignmentreply.cpp \
            replies/zeiterfassungreply.cpp \
-           replies/getuserinforeply.cpp
+           replies/getuserinforeply.cpp \
+           replies/getreportreply.cpp
 
 HEADERS += cpp14polyfills.h \
            mainwindow.h \
@@ -54,7 +54,6 @@ HEADERS += cpp14polyfills.h \
            replies/createtimeassignmentreply.h \
            replies/deletebookingreply.h \
            replies/deletetimeassignmentreply.h \
-           replies/getauswertungreply.h \
            replies/getbookingsreply.h \
            replies/getpresencestatusreply.h \
            replies/getprojectsreply.h \
@@ -64,7 +63,8 @@ HEADERS += cpp14polyfills.h \
            replies/updatebookingreply.h \
            replies/updatetimeassignmentreply.h \
            replies/zeiterfassungreply.h \
-           replies/getuserinforeply.h
+           replies/getuserinforeply.h \
+           replies/getreportreply.h
 
 FORMS += mainwindow.ui \
          dialogs/settingsdialog.ui \

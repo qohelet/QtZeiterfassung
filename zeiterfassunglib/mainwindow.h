@@ -9,9 +9,10 @@
 #include "zeiterfassunglib_global.h"
 #include "replies/getuserinforeply.h"
 #include "replies/getprojectsreply.h"
-#include "replies/getauswertungreply.h"
 #include "replies/getpresencestatusreply.h"
 
+class QMenu;
+class QToolBar;
 class QLabel;
 class QBoxLayout;
 
@@ -19,8 +20,6 @@ namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
 class StripFactory;
 class StripsWidget;
-class BookingsModel;
-class TimeAssignmentsModel;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT MainWindow : public QMainWindow
 {
@@ -35,22 +34,23 @@ public:
     QMenu *menuView() const;
     QMenu *menuTools() const;
     QMenu *menuAbout() const;
+    QToolBar *toolBar() const;
 
     ZeiterfassungSettings &settings() const;
     ZeiterfassungApi &erfassung() const;
     const GetUserInfoReply::UserInfo &userInfo() const;
     StripFactory &stripFactory() const;
 
+    QDate date() const;
+
     const QMap<QString, QString> &projects() const;
     const std::array<StripsWidget*, 7> &stripsWidgets() const;
 
 private Q_SLOTS:
     void getProjectsFinished();
-    void getAuswertungFinished();
     void pushButtonStartPressed();
     void pushButtonEndPressed();
     void dateChanged(bool force = false);
-    void openAuswertung();
 
     void minimumTimeChanged();
     void refreshingChanged();
@@ -58,7 +58,6 @@ private Q_SLOTS:
     void endEnabledChanged();
 
 private:
-    void refreshAuswertung();
     void updateComboboxes();
 
     Ui::MainWindow *ui;
@@ -68,18 +67,8 @@ private:
     StripFactory &m_stripFactory;
 
     std::unique_ptr<GetProjectsReply> m_getProjectsReply;
-    std::unique_ptr<GetAuswertungReply> m_getAuswertungReply;
-
-    BookingsModel *m_bookingsModel;
-    TimeAssignmentsModel *m_timeAssignmentsModel;
 
     QMap<QString, QString> m_projects;
-
-    QDate m_auswertungDate;
-    QByteArray m_auswertung;
-
-    QLabel *m_balanceLabel;
-    QLabel *m_holidaysLabel;
 
     std::array<StripsWidget*, 7> m_stripsWidgets;
     StripsWidget *m_currentStripWidget;

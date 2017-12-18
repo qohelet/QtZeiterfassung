@@ -1,6 +1,6 @@
 QT += core network gui widgets
 
-TARGET = presenceplugin
+TARGET = reportsplugin
 TEMPLATE = lib
 
 CONFIG += shared c++14
@@ -14,16 +14,16 @@ DEPENDPATH += $$PWD/../../zeiterfassunglib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += presenceplugin.h \
-           presencewidget.h
+HEADERS += reportsplugin.h \
+    reportswidget.h
 
-SOURCES += presenceplugin.cpp \
-           presencewidget.cpp
+SOURCES += reportsplugin.cpp \
+    reportswidget.cpp
 
 FORMS +=
 
-RESOURCES += presenceplugin_resources.qrc
+RESOURCES += reportsplugin_resources.qrc
 
 TRANSLATIONS +=
 
-OTHER_FILES += presenceplugin.json
+OTHER_FILES += reportsplugin.json

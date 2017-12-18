@@ -13,7 +13,7 @@
 #include "replies/createtimeassignmentreply.h"
 #include "replies/deletebookingreply.h"
 #include "replies/deletetimeassignmentreply.h"
-#include "replies/getauswertungreply.h"
+#include "replies/getreportreply.h"
 #include "replies/getbookingsreply.h"
 #include "replies/getpresencestatusreply.h"
 #include "replies/getprojectsreply.h"
@@ -286,7 +286,7 @@ std::unique_ptr<GetProjectsReply> ZeiterfassungApi::doGetProjects(int userId, co
     return std::make_unique<GetProjectsReply>(std::move(reply), this);
 }
 
-std::unique_ptr<GetAuswertungReply> ZeiterfassungApi::doGetAuswertung(int userId, const QDate &date)
+std::unique_ptr<GetReportReply> ZeiterfassungApi::doGetReport(int userId, const QDate &date)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/auswertung/month?persNr=%1&date=%2")
                                  .arg(m_url)
@@ -296,7 +296,7 @@ std::unique_ptr<GetAuswertungReply> ZeiterfassungApi::doGetAuswertung(int userId
 
     auto reply = std::unique_ptr<QNetworkReply>(m_manager->get(request));
 
-    return std::make_unique<GetAuswertungReply>(std::move(reply), this);
+    return std::make_unique<GetReportReply>(std::move(reply), this);
 }
 
 std::unique_ptr<GetPresenceStatusReply> ZeiterfassungApi::doGetPresenceStatus()

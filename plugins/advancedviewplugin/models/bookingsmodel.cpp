@@ -7,7 +7,7 @@ BookingsModel::BookingsModel(StripsWidget &stripsWidget, QObject *parent) :
     m_stripsWidget(stripsWidget)
 {
     connect(&stripsWidget, &StripsWidget::bookingsChanged, this, &BookingsModel::bookingsChanged);
-    connect(&stripsWidget, &StripsWidget::refreshingBookingsChanged, [=](bool refreshing){ enabledChanged(!refreshing); });
+    connect(&stripsWidget, &StripsWidget::refreshingBookingsChanged, this, &BookingsModel::refreshingChanged);
 }
 
 StripsWidget &BookingsModel::stripsWidget() const
@@ -85,4 +85,9 @@ void BookingsModel::bookingsChanged()
 {
     beginResetModel();
     endResetModel();
+}
+
+void BookingsModel::refreshingChanged(bool refreshing)
+{
+    Q_EMIT enabledChanged(!refreshing);
 }

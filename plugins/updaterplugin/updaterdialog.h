@@ -20,6 +20,8 @@ public:
     ~UpdaterDialog();
 
 private Q_SLOTS:
+    void acceptedSlot();
+    void rejectedSlot();
     void finished();
 
 private:

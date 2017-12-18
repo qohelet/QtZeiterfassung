@@ -27,22 +27,8 @@ UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
 
     setAttribute(Qt::WA_DeleteOnClose);
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, [=]() {
-        if(ui->checkBoxDontShow->isChecked())
-            m_mainWindow.settings().setValue(QStringLiteral("UpdaterPlugin/lastUpdateCheck"), QDate::currentDate());
-
-        if(!QDesktopServices::openUrl(m_url))
-            QMessageBox::warning(this, tr("Could not open default webbrowser!"), tr("Could not open default webbrowser!"));
-
-        accept();
-    });
-
-    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, [=](){
-        if(ui->checkBoxDontShow->isChecked())
-            m_mainWindow.settings().setValue(QStringLiteral("UpdaterPlugin/lastUpdateCheck"), QDate::currentDate());
-
-        reject();
-    });
+    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &UpdaterDialog::acceptedSlot);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &UpdaterDialog::rejectedSlot);
 
     auto url = m_mainWindow.settings().value(QStringLiteral("UpdaterPlugin/url"),
                                              QUrl(QStringLiteral("https://api.github.com/repos/0xFEEDC0DE64/QtZeiterfassung/releases"))).toUrl();
@@ -53,6 +39,25 @@ UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
 UpdaterDialog::~UpdaterDialog()
 {
     delete ui;
+}
+
+void UpdaterDialog::acceptedSlot()
+{
+    if(ui->checkBoxDontShow->isChecked())
+        m_mainWindow.settings().setValue(QStringLiteral("UpdaterPlugin/lastUpdateCheck"), QDate::currentDate());
+
+    if(!QDesktopServices::openUrl(m_url))
+        QMessageBox::warning(this, tr("Could not open default webbrowser!"), tr("Could not open default webbrowser!"));
+
+    accept();
+}
+
+void UpdaterDialog::rejectedSlot()
+{
+    if(ui->checkBoxDontShow->isChecked())
+        m_mainWindow.settings().setValue(QStringLiteral("UpdaterPlugin/lastUpdateCheck"), QDate::currentDate());
+
+    reject();
 }
 
 void UpdaterDialog::finished()

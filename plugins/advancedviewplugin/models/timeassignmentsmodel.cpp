@@ -7,7 +7,7 @@ TimeAssignmentsModel::TimeAssignmentsModel(StripsWidget &stripsWidget, QObject *
     m_stripsWidget(stripsWidget)
 {
     connect(&stripsWidget, &StripsWidget::timeAssignmentsChanged, this, &TimeAssignmentsModel::timeAssignmentsChanged);
-    connect(&stripsWidget, &StripsWidget::refreshingTimeAssignmentsChanged, [=](bool refreshing){ enabledChanged(!refreshing); });
+    connect(&stripsWidget, &StripsWidget::refreshingTimeAssignmentsChanged, this, &TimeAssignmentsModel::refreshingChanged);
 }
 
 StripsWidget &TimeAssignmentsModel::stripsWidget() const
@@ -89,4 +89,9 @@ void TimeAssignmentsModel::timeAssignmentsChanged()
 {
     beginResetModel();
     endResetModel();
+}
+
+void TimeAssignmentsModel::refreshingChanged(bool refreshing)
+{
+    Q_EMIT enabledChanged(!refreshing);
 }
