@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/zeiterfassunglib/plugins/advancedviewplugin">
+    <qresource prefix="/zeiterfassung/plugins/advancedviewplugin">
         <file>images/advanced-view.png</file>
     </qresource>
 </RCC>

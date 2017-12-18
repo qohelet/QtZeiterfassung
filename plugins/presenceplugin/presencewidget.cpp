@@ -24,7 +24,8 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
     m_labelNotAvailable->setFrameShadow(QFrame::Sunken);
     m_mainWindow.statusBar()->addWidget(m_labelNotAvailable);
 
-    m_action = m_mainWindow.menuView()->addAction(tr("Refresh presence"), this, &PresenceWidget::timeout);
+    m_action = m_mainWindow.menuView()->addAction(QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/refresh.png")),
+                                                  tr("Refresh presence"), this, &PresenceWidget::timeout);
 
     auto timer = new QTimer(this);
     timer->setInterval(60000);

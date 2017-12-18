@@ -11,7 +11,6 @@ AdvancedViewPlugin::AdvancedViewPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
 {
     qDebug() << "called";
-    Q_INIT_RESOURCE(advancedviewplugin_resources);
 }
 
 void AdvancedViewPlugin::attachTo(MainWindow &mainWindow)

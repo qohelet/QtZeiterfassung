@@ -9,7 +9,7 @@ AdvancedViewWidget::AdvancedViewWidget(StripsWidget &stripsWidget) :
     QPushButton(&stripsWidget),
     m_stripsWidget(stripsWidget)
 {
-    setIcon(QIcon(QStringLiteral(":/zeiterfassunglib/plugins/advancedviewplugin/images/advanced-view.png")));
+    setIcon(QIcon(QStringLiteral(":/zeiterfassung/plugins/advancedviewplugin/images/advanced-view.png")));
 
     connect(&stripsWidget, &StripsWidget::dateChanged, this, &AdvancedViewWidget::dateChanged);
     dateChanged(stripsWidget.date());
