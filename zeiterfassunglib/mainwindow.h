@@ -19,8 +19,6 @@ namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
 class StripFactory;
 class StripsWidget;
-class BookingsModel;
-class TimeAssignmentsModel;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT MainWindow : public QMainWindow
 {
@@ -69,9 +67,6 @@ private:
 
     std::unique_ptr<GetProjectsReply> m_getProjectsReply;
     std::unique_ptr<GetAuswertungReply> m_getAuswertungReply;
-
-    BookingsModel *m_bookingsModel;
-    TimeAssignmentsModel *m_timeAssignmentsModel;
 
     QMap<QString, QString> m_projects;
 

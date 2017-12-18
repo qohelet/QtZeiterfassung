@@ -16,8 +16,6 @@ UpdaterPlugin::UpdaterPlugin(QObject *parent) :
 
 void UpdaterPlugin::attachTo(MainWindow &mainWindow)
 {
-    qDebug() << "called";
-
     if(mainWindow.settings().value(QStringLiteral("UpdaterPlugin/lastUpdateCheck")).toDate().isNull() ||
        mainWindow.settings().value(QStringLiteral("UpdaterPlugin/lastUpdateCheck")).toDate() < QDate::currentDate())
         new UpdaterDialog(mainWindow);

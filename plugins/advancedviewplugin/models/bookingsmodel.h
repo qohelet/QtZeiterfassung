@@ -32,6 +32,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void bookingsChanged();
+    void refreshingChanged(bool refreshing);
 
 private:
     StripsWidget &m_stripsWidget;
