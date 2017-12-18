@@ -7,27 +7,58 @@
 #include <QStringBuilder>
 #include <QDebug>
 
+#include "mainwindow.h"
 #include "zeiterfassungapi.h"
 #include "timeutils.h"
 #include "stripfactory.h"
 
-StripsWidget::StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory &stripFactory,
-                           const QMap<QString, QString> &projects, QWidget *parent) :
+StripsWidget::StripsWidget(MainWindow &mainWindow, QWidget *parent) :
     QWidget(parent),
-    m_erfassung(erfassung),
-    m_userId(userId),
-    m_stripFactory(stripFactory),
-    m_projects(projects),
-    m_layout(new QVBoxLayout(this)),
+    m_mainWindow(mainWindow),
     m_refreshing(false),
     m_refreshingBookings(false),
     m_refreshingTimeAssignments(false),
     m_startEnabled(false),
-    m_endEnabled(false),
-    m_getBookingsReply(Q_NULLPTR),
-    m_getTimeAssignmentsReply(Q_NULLPTR)
+    m_endEnabled(false)
 {
-    setLayout(m_layout);
+    auto layout = new QVBoxLayout(this);
+
+    m_headerLayout = new QHBoxLayout(this);
+    m_label = new QLabel(this);
+    {
+        auto font = m_label->font();
+        font.setBold(true);
+        m_label->setFont(font);
+    }
+    m_headerLayout->addWidget(m_label, 1);
+    layout->addLayout(m_headerLayout);
+
+    m_stripsLayout = new QVBoxLayout(this);
+    layout->addLayout(m_stripsLayout);
+
+    layout->addStretch(1);
+
+    setLayout(layout);
+}
+
+MainWindow &StripsWidget::mainWindow() const
+{
+    return m_mainWindow;
+}
+
+QBoxLayout *StripsWidget::headerLayout() const
+{
+    return m_headerLayout;
+}
+
+QBoxLayout *StripsWidget::stripsLayout() const
+{
+    return m_stripsLayout;
+}
+
+QLabel *StripsWidget::label() const
+{
+    return m_label;
 }
 
 const QDate &StripsWidget::date() const
@@ -37,8 +68,20 @@ const QDate &StripsWidget::date() const
 
 void StripsWidget::setDate(const QDate &date)
 {
-    m_date = date;
-    refresh();
+    if(m_date != date)
+    {
+        Q_EMIT dateChanged(m_date = date);
+
+        if(m_date.isValid())
+            m_label->setText(tr("%0 (%1)")
+                             .arg(std::array<QString, 7> { tr("Monday"), tr("Tuesday"), tr("Wednesday"), tr("Thursday"),
+                                                           tr("Friday"), tr("Saturday"), tr("Sunday") }[m_date.dayOfWeek() - 1])
+                             .arg(m_date.toString(tr("dd.MM.yyyy"))));
+        else
+            m_label->setText(tr("Invalid"));
+
+        refresh();
+    }
 }
 
 const QVector<GetBookingsReply::Booking> &StripsWidget::bookings() const
@@ -95,14 +138,13 @@ void StripsWidget::refresh()
 {
     clearStrips();
 
-    m_layout->addWidget(new QLabel(tr("Loading..."), this));
-    m_layout->addStretch(1);
+    m_stripsLayout->addWidget(new QLabel(tr("Loading..."), this));
 
-    refreshBookings();
-    refreshTimeAssignments();
+    refreshBookings(false);
+    refreshTimeAssignments(false);
 }
 
-void StripsWidget::refreshBookings()
+void StripsWidget::refreshBookings(bool createLabel)
 {
     if(!m_date.isValid())
     {
@@ -110,7 +152,14 @@ void StripsWidget::refreshBookings()
         return;
     }
 
-    if(m_bookings.count())
+    if(createLabel)
+    {
+        clearStrips();
+
+        m_stripsLayout->addWidget(new QLabel(tr("Loading..."), this));
+    }
+
+    if(!m_bookings.empty())
     {
         m_bookings.clear();
         Q_EMIT bookingsChanged(m_bookings);
@@ -124,11 +173,11 @@ void StripsWidget::refreshBookings()
 
     invalidateValues();
 
-    m_getBookingsReply = m_erfassung.doGetBookings(m_userId, m_date, m_date);
+    m_getBookingsReply = m_mainWindow.erfassung().doGetBookings(m_mainWindow.userInfo().userId, m_date, m_date);
     connect(m_getBookingsReply.get(), &ZeiterfassungReply::finished, this, &StripsWidget::getBookingsFinished);
 }
 
-void StripsWidget::refreshTimeAssignments()
+void StripsWidget::refreshTimeAssignments(bool createLabel)
 {
     if(!m_date.isValid())
     {
@@ -136,7 +185,14 @@ void StripsWidget::refreshTimeAssignments()
         return;
     }
 
-    if(m_timeAssignments.count())
+    if(createLabel)
+    {
+        clearStrips();
+
+        m_stripsLayout->addWidget(new QLabel(tr("Loading..."), this));
+    }
+
+    if(!m_timeAssignments.empty())
     {
         m_timeAssignments.clear();
         Q_EMIT timeAssignmentsChanged(m_timeAssignments);
@@ -150,7 +206,7 @@ void StripsWidget::refreshTimeAssignments()
 
     invalidateValues();
 
-    m_getTimeAssignmentsReply = m_erfassung.doGetTimeAssignments(m_userId, m_date, m_date);
+    m_getTimeAssignmentsReply = m_mainWindow.erfassung().doGetTimeAssignments(m_mainWindow.userInfo().userId, m_date, m_date);
     connect(m_getTimeAssignmentsReply.get(), &ZeiterfassungReply::finished, this, &StripsWidget::getTimeAssignmentsFinished);
 }
 
@@ -199,7 +255,7 @@ bool StripsWidget::createStrips()
         {
             auto breakTime = timeBetween(lastBooking->time, startBooking.time);
             auto label = new QLabel(tr("%0: %1").arg(tr("Break")).arg(tr("%0h").arg(breakTime.toString(tr("HH:mm")))), this);
-            m_layout->addWidget(label);
+            m_stripsLayout->addWidget(label);
         }
 
         lastBooking = &startBooking;
@@ -392,7 +448,7 @@ bool StripsWidget::createStrips()
         auto label = new QLabel(tr("%0: %1")
                                 .arg(tr("Assigned time"))
                                 .arg(tr("%0h").arg(timeAssignmentTime.toString(tr("HH:mm")))), this);
-        m_layout->addWidget(label);
+        m_stripsLayout->addWidget(label);
     }
     else
     {
@@ -406,7 +462,7 @@ bool StripsWidget::createStrips()
                                    "Your bookings and time assignments for this day are in an illegal state!") % "\n" %
                                    errorMessage, this);
         label->setStyleSheet("color: red;");
-        m_layout->addWidget(label);
+        m_stripsLayout->addWidget(label);
     }
 
     if(m_timeAssignmentTime != timeAssignmentTime)
@@ -424,33 +480,16 @@ bool StripsWidget::createStrips()
     if(m_endEnabled != endEnabled)
         Q_EMIT endEnabledChanged(m_endEnabled = endEnabled);
 
-    m_layout->addStretch(1);
-
     return !errorMessage.isEmpty();
 }
 
 void StripsWidget::clearStrips()
 {
-    while(QLayoutItem *item = m_layout->takeAt(0))
+    while(QLayoutItem *item = m_stripsLayout->takeAt(0))
     {
         delete item->widget();
         delete item;
     }
-
-    auto label = new QLabel(this);
-    if(m_date.isValid())
-        label->setText(tr("%0 (%1)")
-            .arg(std::array<QString, 7> { tr("Monday"), tr("Tuesday"), tr("Wednesday"), tr("Thursday"),
-                                          tr("Friday"), tr("Saturday"), tr("Sunday") }[m_date.dayOfWeek() - 1])
-            .arg(m_date.toString(tr("dd.MM.yyyy"))));
-    else
-        label->setText(tr("Invalid"));
-    {
-        auto font = label->font();
-        font.setBold(true);
-        label->setFont(font);
-    }
-    m_layout->addWidget(label);
 }
 
 void StripsWidget::getBookingsFinished()
@@ -507,10 +546,10 @@ void StripsWidget::invalidateValues()
         Q_EMIT endEnabledChanged(m_endEnabled = false);
 }
 
-QString StripsWidget::buildProjectString(const QString &project)
+QString StripsWidget::buildProjectString(const QString &project) const
 {
-    if(m_projects.contains(project))
-        return m_projects.value(project) % "\n" % project;
+    if(m_mainWindow.projects().contains(project))
+        return m_mainWindow.projects().value(project) % "\n" % project;
     else
     {
         qWarning() << "could not find project" << project;
@@ -520,7 +559,7 @@ QString StripsWidget::buildProjectString(const QString &project)
 
 QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
 {
-    auto widget = m_stripFactory.createBookingStartStrip(this).release();
+    auto widget = m_mainWindow.stripFactory().createBookingStartStrip(this).release();
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", time.toString(tr("HH:mm")));
@@ -532,14 +571,14 @@ QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
     else
         qWarning() << "no labelId found!";
 
-    m_layout->addWidget(widget);
+    m_stripsLayout->addWidget(widget);
 
     return widget;
 }
 
 QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
 {
-    auto widget = m_stripFactory.createBookingEndStrip(this).release();
+    auto widget = m_mainWindow.stripFactory().createBookingEndStrip(this).release();
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", time.toString(tr("HH:mm")));
@@ -551,14 +590,14 @@ QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
     else
         qWarning() << "no labelId found!";
 
-    m_layout->addWidget(widget);
+    m_stripsLayout->addWidget(widget);
 
     return widget;
 }
 
 QWidget *StripsWidget::appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject, const QString &workpackage, const QString &text)
 {
-    auto widget = m_stripFactory.createTimeAssignmentStrip(this).release();
+    auto widget = m_mainWindow.stripFactory().createTimeAssignmentStrip(this).release();
 
     if(auto labelTime = widget->findChild<QWidget*>(QStringLiteral("labelTime")))
         labelTime->setProperty("text", duration == QTime(0, 0) ? tr("Open") : duration.toString(tr("HH:mm")));
@@ -590,7 +629,7 @@ QWidget *StripsWidget::appendTimeAssignmentStrip(int id, const QTime &duration, 
     else
         qWarning() << "no labelText found!";
 
-    m_layout->addWidget(widget);
+    m_stripsLayout->addWidget(widget);
 
     return widget;
 }

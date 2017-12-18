@@ -14,7 +14,7 @@ class Q_DECL_EXPORT PresencePlugin : public ZeiterfassungPlugin
     Q_INTERFACES(ZeiterfassungPlugin)
 
 public:
-    explicit PresencePlugin(QObject *parent = 0);
+    explicit PresencePlugin(QObject *parent = Q_NULLPTR);
 
     // ZeiterfassungPlugin interface
     void attachTo(MainWindow &mainWindow);

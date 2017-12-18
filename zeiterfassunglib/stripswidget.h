@@ -11,19 +11,24 @@
 #include "replies/gettimeassignmentsreply.h"
 
 class QBoxLayout;
-template <class Key, class T> class QMap;
+class QLabel;
 template <typename T> class QVector;
 
-class ZeiterfassungApi;
-class StripFactory;
+class MainWindow;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT StripsWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory &stripFactory,
-                          const QMap<QString, QString> &projects, QWidget *parent = Q_NULLPTR);
+    explicit StripsWidget(MainWindow &mainWindow, QWidget *parent = Q_NULLPTR);
+
+    MainWindow &mainWindow() const;
+
+    QBoxLayout *headerLayout() const;
+    QBoxLayout *stripsLayout() const;
+
+    QLabel *label() const;
 
     const QDate &date() const;
     void setDate(const QDate &date);
@@ -41,12 +46,14 @@ public:
     bool endEnabled() const;
 
     void refresh();
-    void refreshBookings();
-    void refreshTimeAssignments();
+    void refreshBookings(bool createLabel = true);
+    void refreshTimeAssignments(bool createLabel = true);
     bool createStrips();
     void clearStrips();
 
 Q_SIGNALS:
+    void dateChanged(const QDate &date);
+
     void bookingsChanged(const QVector<GetBookingsReply::Booking> &bookings);
     void timeAssignmentsChanged(const QVector<GetTimeAssignmentsReply::TimeAssignment> &timeAssignments);
 
@@ -64,21 +71,20 @@ private Q_SLOTS:
     void getTimeAssignmentsFinished();
 
 private:
-    void invalidateValues();
-
-    QString buildProjectString(const QString &project);
+    void invalidateValues();    
+    QString buildProjectString(const QString &project) const;
 
     QWidget *appendBookingStartStrip(int id, const QTime &time);
     QWidget *appendBookingEndStrip(int id, const QTime &time);
     QWidget *appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject,
                                        const QString &workpackage, const QString &text);
 
-    ZeiterfassungApi &m_erfassung;
-    int m_userId;
-    StripFactory &m_stripFactory;
-    const QMap<QString, QString> &m_projects;
+    MainWindow &m_mainWindow;
 
-    QBoxLayout *m_layout;
+    QBoxLayout *m_headerLayout;
+    QBoxLayout *m_stripsLayout;
+
+    QLabel *m_label;
 
     QDate m_date;
 

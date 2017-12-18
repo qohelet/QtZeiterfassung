@@ -1,5 +1,5 @@
-#ifndef TIMEASSIGNMENTSMODEL_H
-#define TIMEASSIGNMENTSMODEL_H
+#ifndef BOOKINGSMODEL_H
+#define BOOKINGSMODEL_H
 
 #include <QAbstractListModel>
 #include <QVector>
@@ -9,17 +9,15 @@
 
 class StripsWidget;
 
-class ZEITERFASSUNGLIBSHARED_EXPORT TimeAssignmentsModel : public QAbstractListModel
+class ZEITERFASSUNGLIBSHARED_EXPORT BookingsModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(StripsWidget* stripsWidget READ stripsWidget WRITE setStripsWidget NOTIFY stripsWidgetChanged)
     Q_PROPERTY(bool enabled READ enabled NOTIFY enabledChanged)
 
 public:
-    explicit TimeAssignmentsModel(QObject *parent = Q_NULLPTR);
+    explicit BookingsModel(StripsWidget &stripsWidget, QObject *parent = Q_NULLPTR);
 
-    StripsWidget *stripsWidget() const;
-    void setStripsWidget(StripsWidget *stripsWidget);
+    StripsWidget &stripsWidget() const;
 
     bool enabled() const;
 
@@ -30,16 +28,13 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
 Q_SIGNALS:
-    void stripsWidgetChanged(StripsWidget *stripsWidget);
     void enabledChanged(bool enabled);
 
 private Q_SLOTS:
-    void timeAssignmentsChanged();
-    void refreshingChanged(bool refreshing);
+    void bookingsChanged();
 
 private:
-    StripsWidget *m_stripsWidget;
-    bool m_enabled;
+    StripsWidget &m_stripsWidget;
 };
 
-#endif // TIMEASSIGNMENTSMODEL_H
+#endif // BOOKINGSMODEL_H

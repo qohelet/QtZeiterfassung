@@ -41,11 +41,12 @@ public:
     const GetUserInfoReply::UserInfo &userInfo() const;
     StripFactory &stripFactory() const;
 
+    const QMap<QString, QString> &projects() const;
+    const std::array<StripsWidget*, 7> &stripsWidgets() const;
+
 private Q_SLOTS:
     void getProjectsFinished();
     void getAuswertungFinished();
-    void contextMenuBooking(const QPoint &pos);
-    void contextMenuTimeAssignment(const QPoint &pos);
     void pushButtonStartPressed();
     void pushButtonEndPressed();
     void dateChanged(bool force = false);

@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS += lunchmealplugin \
+SUBDIRS += advancedviewplugin \
+           lunchmealplugin \
            presenceplugin \
            weatherplugin
