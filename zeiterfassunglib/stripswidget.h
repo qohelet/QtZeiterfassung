@@ -11,6 +11,7 @@
 #include "replies/gettimeassignmentsreply.h"
 
 class QBoxLayout;
+class QLabel;
 template <class Key, class T> class QMap;
 template <typename T> class QVector;
 
@@ -24,6 +25,11 @@ class ZEITERFASSUNGLIBSHARED_EXPORT StripsWidget : public QWidget
 public:
     explicit StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory &stripFactory,
                           const QMap<QString, QString> &projects, QWidget *parent = Q_NULLPTR);
+
+    QBoxLayout *headerLayout() const;
+    QBoxLayout *stripsLayout() const;
+
+    QLabel *label() const;
 
     const QDate &date() const;
     void setDate(const QDate &date);
@@ -47,6 +53,8 @@ public:
     void clearStrips();
 
 Q_SIGNALS:
+    void dateChanged(const QDate &date);
+
     void bookingsChanged(const QVector<GetBookingsReply::Booking> &bookings);
     void timeAssignmentsChanged(const QVector<GetTimeAssignmentsReply::TimeAssignment> &timeAssignments);
 
@@ -78,7 +86,10 @@ private:
     StripFactory &m_stripFactory;
     const QMap<QString, QString> &m_projects;
 
-    QBoxLayout *m_layout;
+    QBoxLayout *m_headerLayout;
+    QBoxLayout *m_stripsLayout;
+
+    QLabel *m_label;
 
     QDate m_date;
 
