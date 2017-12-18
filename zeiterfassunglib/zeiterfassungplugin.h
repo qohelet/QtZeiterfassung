@@ -16,7 +16,6 @@ public:
     explicit ZeiterfassungPlugin(QObject *parent = 0);
 
     virtual void attachTo(MainWindow &mainWindow) { Q_UNUSED(mainWindow) }
-    virtual void attachTo(StripsWidget &stripsWidget) { Q_UNUSED(stripsWidget) }
 };
 
 Q_DECLARE_INTERFACE(ZeiterfassungPlugin, "dbsoftware.zeiterfassung.plugin/1.0")
