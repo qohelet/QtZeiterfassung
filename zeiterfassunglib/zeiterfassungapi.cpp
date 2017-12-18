@@ -55,8 +55,6 @@ std::unique_ptr<LoginPageReply> ZeiterfassungApi::doLoginPage()
 
     auto reply = std::unique_ptr<QNetworkReply>(m_manager->get(request));
 
-    qDebug() << reply->parent();
-
     return std::make_unique<LoginPageReply>(std::move(reply), this);
 }
 

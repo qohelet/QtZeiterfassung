@@ -278,10 +278,18 @@ bool loadPlugins(QSplashScreen &splashScreen)
     for(const auto &fileInfo : dir.entryInfoList(QDir::Files))
     {
         if(fileInfo.isSymLink())
+        {
+            qWarning() << "skipping" << fileInfo.fileName() << "because symlink";
             continue; // to skip unix so symlinks
+        }
 
         if(!QLibrary::isLibrary(fileInfo.filePath()))
+        {
+            qWarning() << "skipping" << fileInfo.fileName() << "because no QLibrary";
             continue; // to skip windows junk files
+        }
+
+        qDebug() << "loading" << fileInfo.fileName();
 
         QPluginLoader loader(fileInfo.filePath());
         if(!loader.load())

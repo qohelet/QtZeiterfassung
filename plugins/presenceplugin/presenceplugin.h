@@ -17,7 +17,7 @@ public:
     explicit PresencePlugin(QObject *parent = Q_NULLPTR);
 
     // ZeiterfassungPlugin interface
-    void attachTo(MainWindow &mainWindow);
+    void attachTo(MainWindow &mainWindow) Q_DECL_OVERRIDE;
 };
 
 #endif // PRESENCEPLUGIN_H
