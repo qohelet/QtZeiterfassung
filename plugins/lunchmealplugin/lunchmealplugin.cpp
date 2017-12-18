@@ -5,5 +5,5 @@
 LunchMealPlugin::LunchMealPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
 {
-
+    qDebug() << "called";
 }

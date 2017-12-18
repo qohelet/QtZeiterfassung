@@ -5,5 +5,5 @@
 WeatherPlugin::WeatherPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
 {
-
+    qDebug() << "called";
 }

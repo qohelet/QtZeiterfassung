@@ -1,5 +1,6 @@
 #include "advancedviewplugin.h"
 
+#include <QDebug>
 #include <QBoxLayout>
 
 #include "mainwindow.h"
@@ -9,6 +10,7 @@
 AdvancedViewPlugin::AdvancedViewPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
 {
+    qDebug() << "called";
     Q_INIT_RESOURCE(advancedviewplugin_resources);
 }
 
