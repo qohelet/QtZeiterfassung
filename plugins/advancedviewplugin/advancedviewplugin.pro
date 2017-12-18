@@ -16,11 +16,15 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 
 HEADERS += advancedviewplugin.h \
            advancedviewwidget.h \
-           advanvedviewdialog.h
+           advanvedviewdialog.h \
+           views/bookingsview.h \
+           views/timeassignmentsview.h
 
 SOURCES += advancedviewplugin.cpp \
            advancedviewwidget.cpp \
-           advanvedviewdialog.cpp
+           advanvedviewdialog.cpp \
+           views/bookingsview.cpp \
+           views/timeassignmentsview.cpp
 
 FORMS += advanvedviewdialog.ui
 
