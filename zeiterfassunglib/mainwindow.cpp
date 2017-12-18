@@ -7,7 +7,6 @@
 #include <QTimer>
 #include <QStringBuilder>
 #include <QMenu>
-#include <QEventLoop>
 #include <QLabel>
 #include <QDir>
 #include <QTemporaryFile>
@@ -247,11 +246,7 @@ void MainWindow::pushButtonStartPressed()
                                                  timeNormalise(ui->timeEditTime->time()), QTime(0, 0),
                                                  QStringLiteral("K"), QStringLiteral(""));
 
-        {
-            QEventLoop eventLoop;
-            connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {
@@ -277,11 +272,7 @@ void MainWindow::pushButtonStartPressed()
                                                             timeAssignment.project, timeAssignment.subproject,
                                                             timeAssignment.workpackage, timeAssignment.text);
 
-            {
-                QEventLoop eventLoop;
-                connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-                eventLoop.exec();
-            }
+            reply->waitForFinished();
 
             if(reply->success())
                 timeAssignmentTime = timeAdd(timeAssignmentTime, timespan);
@@ -300,11 +291,7 @@ void MainWindow::pushButtonStartPressed()
                                                         ui->comboBoxProject->currentData().toString(), ui->comboBoxSubproject->currentText(),
                                                         ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
 
-        {
-            QEventLoop eventLoop;
-            connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {
@@ -350,11 +337,7 @@ void MainWindow::pushButtonEndPressed()
                                                         timeAssignment.project, timeAssignment.subproject,
                                                         timeAssignment.workpackage, timeAssignment.text);
 
-        {
-            QEventLoop eventLoop;
-            connect(reply.get(), SIGNAL(finished()), &eventLoop, SLOT(quit()));
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {
@@ -369,11 +352,7 @@ void MainWindow::pushButtonEndPressed()
                                                  timeNormalise(ui->timeEditTime->time()), QTime(0, 0),
                                                  QStringLiteral("G"), QStringLiteral(""));
 
-        {
-            QEventLoop eventLoop;
-            connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {

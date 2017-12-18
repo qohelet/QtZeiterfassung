@@ -1,6 +1,5 @@
 #include <QApplication>
 #include <QTranslator>
-#include <QEventLoop>
 #include <QMessageBox>
 #include <QSplashScreen>
 #include <QPixmap>
@@ -175,11 +174,7 @@ bool loadLoginPage(QSplashScreen &splashScreen, ZeiterfassungSettings &settings,
     again:
     auto reply = erfassung.doLoginPage();
 
-    {
-        QEventLoop eventLoop;
-        QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-        eventLoop.exec();
-    }
+    reply->waitForFinished();
 
     if(!reply->success())
     {
@@ -222,11 +217,7 @@ bool doAuthentication(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
         again:
         auto reply = erfassung.doLogin(settings.username(), settings.password());
 
-        {
-            QEventLoop eventLoop;
-            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {
@@ -257,11 +248,7 @@ bool loadUserInfo(QSplashScreen &splashScreen, ZeiterfassungApi &erfassung, GetU
     {
         auto reply = erfassung.doUserInfo();
 
-        {
-            QEventLoop eventLoop;
-            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {
