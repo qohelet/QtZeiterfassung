@@ -1,11 +1,11 @@
 #ifndef ADVANCEDVIEWWIDGET_H
 #define ADVANCEDVIEWWIDGET_H
 
-#include <QToolButton>
+#include <QPushButton>
 
 class StripsWidget;
 
-class AdvancedViewWidget : public QToolButton
+class AdvancedViewWidget : public QPushButton
 {
     Q_OBJECT
 
@@ -14,6 +14,7 @@ public:
 
 private Q_SLOTS:
     void dateChanged(const QDate &date);
+    void pressedSlot();
 
 private:
     StripsWidget &m_stripsWidget;

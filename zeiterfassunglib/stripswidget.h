@@ -12,19 +12,18 @@
 
 class QBoxLayout;
 class QLabel;
-template <class Key, class T> class QMap;
 template <typename T> class QVector;
 
-class ZeiterfassungApi;
-class StripFactory;
+class MainWindow;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT StripsWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit StripsWidget(ZeiterfassungApi &erfassung, int userId, StripFactory &stripFactory,
-                          const QMap<QString, QString> &projects, QWidget *parent = Q_NULLPTR);
+    explicit StripsWidget(MainWindow &mainWindow);
+
+    MainWindow &mainWindow() const;
 
     QBoxLayout *headerLayout() const;
     QBoxLayout *stripsLayout() const;
@@ -72,19 +71,15 @@ private Q_SLOTS:
     void getTimeAssignmentsFinished();
 
 private:
-    void invalidateValues();
-
-    QString buildProjectString(const QString &project);
+    void invalidateValues();    
+    QString buildProjectString(const QString &project) const;
 
     QWidget *appendBookingStartStrip(int id, const QTime &time);
     QWidget *appendBookingEndStrip(int id, const QTime &time);
     QWidget *appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject,
                                        const QString &workpackage, const QString &text);
 
-    ZeiterfassungApi &m_erfassung;
-    int m_userId;
-    StripFactory &m_stripFactory;
-    const QMap<QString, QString> &m_projects;
+    MainWindow &m_mainWindow;
 
     QBoxLayout *m_headerLayout;
     QBoxLayout *m_stripsLayout;

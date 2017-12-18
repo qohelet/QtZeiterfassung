@@ -55,7 +55,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
     for(quint8 i = 0; i < 7; i++)
     {
-        m_stripsWidgets[i] = new StripsWidget(m_erfassung, m_userInfo.userId, m_stripFactory, m_projects, ui->widgetWeek);
+        m_stripsWidgets[i] = new StripsWidget(*this);
         connect(m_stripsWidgets[i], &StripsWidget::refreshingChanged, this, &MainWindow::refreshingChanged);
         ui->layoutWeek->addWidget(m_stripsWidgets[i]);
     }

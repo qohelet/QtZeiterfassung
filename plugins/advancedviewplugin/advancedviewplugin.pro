@@ -15,15 +15,16 @@ DEPENDPATH += $$PWD/../../zeiterfassunglib
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
 HEADERS += advancedviewplugin.h \
-           advancedviewwidget.h
+           advancedviewwidget.h \
+           advanvedviewdialog.h
 
 SOURCES += advancedviewplugin.cpp \
-           advancedviewwidget.cpp
+           advancedviewwidget.cpp \
+           advanvedviewdialog.cpp
 
-FORMS +=
+FORMS += advanvedviewdialog.ui
 
-RESOURCES += \
-    advancedviewplugin_resources.qrc
+RESOURCES += advancedviewplugin_resources.qrc
 
 TRANSLATIONS +=
 
