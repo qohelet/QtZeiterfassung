@@ -166,6 +166,16 @@ StripFactory &MainWindow::stripFactory() const
     return m_stripFactory;
 }
 
+const QMap<QString, QString> &MainWindow::projects() const
+{
+    return m_projects;
+}
+
+const std::array<StripsWidget*, 7> &MainWindow::stripsWidgets() const
+{
+    return m_stripsWidgets;
+}
+
 void MainWindow::getProjectsFinished()
 {
     if(m_getProjectsReply->success())
