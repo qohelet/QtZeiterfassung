@@ -2,6 +2,8 @@
 
 #include <QDebug>
 
+#include "reportswidget.h"
+
 ReportsPlugin::ReportsPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
 {
@@ -10,4 +12,5 @@ ReportsPlugin::ReportsPlugin(QObject *parent) :
 
 void ReportsPlugin::attachTo(MainWindow &mainWindow)
 {
+    new ReportsWidget(mainWindow);
 }

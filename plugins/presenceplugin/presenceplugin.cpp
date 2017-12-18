@@ -2,7 +2,6 @@
 
 #include <QDebug>
 
-#include "mainwindow.h"
 #include "presencewidget.h"
 
 PresencePlugin::PresencePlugin(QObject *parent) :

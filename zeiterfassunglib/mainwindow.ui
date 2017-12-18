@@ -229,7 +229,6 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
-    <addaction name="actionAuswertung"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -245,8 +244,6 @@
    </attribute>
    <addaction name="actionToday"/>
    <addaction name="actionRefresh"/>
-   <addaction name="actionAuswertung"/>
-   <addaction name="actionSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">
@@ -297,15 +294,6 @@
    </property>
    <property name="text">
     <string>&amp;Refresh everything</string>
-   </property>
-  </action>
-  <action name="actionAuswertung">
-   <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/zeiterfassunglib/images/auswertung.png</normaloff>:/zeiterfassunglib/images/auswertung.png</iconset>
-   </property>
-   <property name="text">
-    <string>&amp;Auswertung</string>
    </property>
   </action>
   <action name="actionSettings">

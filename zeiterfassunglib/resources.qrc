@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/zeiterfassunglib">
         <file>images/about.png</file>
-        <file>images/auswertung.png</file>
         <file>images/authentication.png</file>
         <file>images/help.png</file>
         <file>images/icon.png</file>

@@ -13,6 +13,7 @@ class MainWindow;
 class PresenceWidget : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit PresenceWidget(MainWindow &mainWindow);
 

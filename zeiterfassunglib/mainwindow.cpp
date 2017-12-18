@@ -22,7 +22,6 @@
 #include "dialogs/aboutmedialog.h"
 #include "dialogs/settingsdialog.h"
 #include "replies/getprojectsreply.h"
-#include "replies/getauswertungreply.h"
 #include "replies/createbookingreply.h"
 #include "replies/createtimeassignmentreply.h"
 #include "replies/updatetimeassignmentreply.h"
@@ -35,8 +34,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_erfassung(erfassung),
     m_userInfo(userInfo),
     m_stripFactory(stripFactory),
-    m_getProjectsReply(Q_NULLPTR),
-    m_getAuswertungReply(Q_NULLPTR),
     m_currentStripWidget(Q_NULLPTR)
 {
     ui->setupUi(this);
@@ -56,8 +53,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
     connect(ui->actionRefresh, &QAction::triggered, this, [=](){ dateChanged(true); });
-
-    connect(ui->actionAuswertung, &QAction::triggered, this, &MainWindow::openAuswertung);
 
     connect(ui->actionAboutMe, &QAction::triggered, [=](){ AboutMeDialog(userInfo, this).exec(); });
     connect(ui->actionSettings, &QAction::triggered, [=](){ SettingsDialog(m_settings, this).exec(); });
@@ -88,13 +83,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->pushButtonStart, &QAbstractButton::pressed, this, &MainWindow::pushButtonStartPressed);
     connect(ui->pushButtonEnd, &QAbstractButton::pressed, this, &MainWindow::pushButtonEndPressed);
 
-    ui->statusbar->addPermanentWidget(m_balanceLabel = new QLabel(ui->statusbar));
-    m_balanceLabel->setFrameShape(QFrame::Panel);
-    m_balanceLabel->setFrameShadow(QFrame::Sunken);
-    ui->statusbar->addPermanentWidget(m_holidaysLabel = new QLabel(ui->statusbar));
-    m_holidaysLabel->setFrameShape(QFrame::Panel);
-    m_holidaysLabel->setFrameShadow(QFrame::Sunken);
-
     dateChanged();
 }
 
@@ -123,6 +111,11 @@ QMenu *MainWindow::menuAbout() const
     return ui->menuAbout;
 }
 
+QToolBar *MainWindow::toolBar() const
+{
+    return ui->mainToolBar;
+}
+
 ZeiterfassungSettings &MainWindow::settings() const
 {
     return m_settings;
@@ -141,6 +134,11 @@ const GetUserInfoReply::UserInfo &MainWindow::userInfo() const
 StripFactory &MainWindow::stripFactory() const
 {
     return m_stripFactory;
+}
+
+QDate MainWindow::date() const
+{
+    return ui->dateEditDate->date();
 }
 
 const QMap<QString, QString> &MainWindow::projects() const
@@ -169,66 +167,6 @@ void MainWindow::getProjectsFinished()
                              tr("Could not load bookings!") % "\n\n" % m_getProjectsReply->message());
 
     m_getProjectsReply = Q_NULLPTR;
-}
-
-void MainWindow::getAuswertungFinished()
-{
-    if(std::none_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget){
-        return stripsWidget->refreshing();
-    }))
-    {
-        ui->actionToday->setEnabled(true);
-        ui->actionRefresh->setEnabled(true);
-        ui->dateEditDate->setReadOnly(false);
-        ui->pushButtonPrev->setEnabled(true);
-        ui->pushButtonNext->setEnabled(true);
-    }
-
-    if(!m_getAuswertungReply->success())
-    {
-        m_auswertungDate = QDate();
-        QMessageBox::warning(this, tr("Could not load Auswertung!"), tr("Could not load Auswertung!") % "\n\n" % m_getAuswertungReply->message());
-        m_getAuswertungReply = Q_NULLPTR;
-        return;
-    }
-
-    ui->actionAuswertung->setEnabled(true);
-    m_auswertung = m_getAuswertungReply->auswertung();
-
-    auto urlaubsAnspruch = tr("n/a");
-
-    {
-        static QRegularExpression regex(QStringLiteral("Urlaubsanspruch +([0-9]+\\.[0-9]+\\-?) +([0-9]+\\.[0-9]+\\-?)"));
-        auto match = regex.match(m_auswertung);
-        if(match.hasMatch())
-            urlaubsAnspruch = match.captured(2);
-        else
-            qWarning() << "Urlaubsanspruch not found";
-    }
-
-    auto gleitzeit = tr("n/a");
-
-    {
-        static QRegularExpression regex(QStringLiteral("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)"));
-        auto match = regex.match(m_auswertung);
-        if(match.hasMatch())
-        {
-            gleitzeit = match.captured(2);
-            if(gleitzeit.endsWith(QChar('-')))
-            {
-                gleitzeit.chop(1);
-                gleitzeit = QChar('-') % gleitzeit;
-            }
-            gleitzeit = tr("%0h").arg(gleitzeit);
-        }
-        else
-            qWarning() << "Gleitzeit not found";
-    }
-
-    m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(gleitzeit));
-    m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(urlaubsAnspruch));
-
-    m_getAuswertungReply = Q_NULLPTR;
 }
 
 void MainWindow::pushButtonStartPressed()
@@ -307,8 +245,7 @@ void MainWindow::pushButtonStartPressed()
     if(bookingsChanged)
     {
         m_currentStripWidget->refresh();
-
-        refreshAuswertung();
+        //refreshAuswertung();
     }
     else
         m_currentStripWidget->refreshTimeAssignments();
@@ -359,7 +296,7 @@ void MainWindow::pushButtonEndPressed()
     }
 
     m_currentStripWidget->refresh();
-    refreshAuswertung();
+    //refreshAuswertung();
 
     ui->actionToday->setEnabled(false);
     ui->actionRefresh->setEnabled(false);
@@ -400,38 +337,15 @@ void MainWindow::dateChanged(bool force)
         }
     }
 
-    if(force || m_auswertungDate != QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1))
-        refreshAuswertung();
-
     if(std::any_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget) {
         return stripsWidget->refreshing();
-    }) || m_getAuswertungReply)
+    }))
     {
         ui->actionToday->setEnabled(false);
         ui->actionRefresh->setEnabled(false);
         ui->dateEditDate->setReadOnly(true);
         ui->pushButtonPrev->setEnabled(false);
         ui->pushButtonNext->setEnabled(false);
-    }
-}
-
-void MainWindow::openAuswertung()
-{
-    QTemporaryFile file(QDir::temp().absoluteFilePath(QStringLiteral("auswertungXXXXXX.pdf")));
-    file.setAutoRemove(false);
-    if(!file.open())
-    {
-        QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open auswertung!") % "\n\n" % file.errorString());
-        return;
-    }
-
-    file.write(m_auswertung);
-    file.close();
-
-    if(!QDesktopServices::openUrl(QUrl::fromLocalFile(file.fileName())))
-    {
-        QMessageBox::warning(this, tr("Could not open auswertung!"), tr("Could not open default PDF viewer!"));
-        return;
     }
 }
 
@@ -442,9 +356,6 @@ void MainWindow::minimumTimeChanged()
 
 void MainWindow::refreshingChanged()
 {
-    if(m_getAuswertungReply)
-        return;
-
     {
         auto allFinished = std::none_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget){
             return stripsWidget->refreshing();
@@ -485,19 +396,6 @@ void MainWindow::endEnabledChanged()
 
     ui->pushButtonStart->setText(endEnabled ? tr("Switch") : tr("Start"));
     ui->pushButtonEnd->setEnabled(endEnabled);
-}
-
-void MainWindow::refreshAuswertung()
-{
-    m_balanceLabel->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
-    m_holidaysLabel->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
-
-    ui->actionAuswertung->setEnabled(false);
-    m_auswertung.clear();
-
-    m_auswertungDate = QDate(ui->dateEditDate->date().year(), ui->dateEditDate->date().month(), 1);
-    m_getAuswertungReply = m_erfassung.doGetAuswertung(m_userInfo.userId, m_auswertungDate);
-    connect(m_getAuswertungReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getAuswertungFinished);
 }
 
 void MainWindow::updateComboboxes()
