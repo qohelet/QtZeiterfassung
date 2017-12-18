@@ -12,7 +12,7 @@ class Q_DECL_EXPORT LunchMealPlugin : public ZeiterfassungPlugin
     Q_INTERFACES(ZeiterfassungPlugin)
 
 public:
-    explicit LunchMealPlugin(QObject *parent = 0);
+    explicit LunchMealPlugin(QObject *parent = Q_NULLPTR);
 
     // ZeiterfassungPlugin interface
 };

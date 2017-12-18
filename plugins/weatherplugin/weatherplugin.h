@@ -12,7 +12,7 @@ class Q_DECL_EXPORT WeatherPlugin : public ZeiterfassungPlugin
     Q_INTERFACES(ZeiterfassungPlugin)
 
 public:
-    explicit WeatherPlugin(QObject *parent = 0);
+    explicit WeatherPlugin(QObject *parent = Q_NULLPTR);
 
     // ZeiterfassungPlugin interface
 };

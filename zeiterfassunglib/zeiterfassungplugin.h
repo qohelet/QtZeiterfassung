@@ -13,7 +13,7 @@ class ZEITERFASSUNGLIBSHARED_EXPORT ZeiterfassungPlugin : public QObject
     Q_OBJECT
 
 public:
-    explicit ZeiterfassungPlugin(QObject *parent = 0);
+    explicit ZeiterfassungPlugin(QObject *parent = Q_NULLPTR);
 
     virtual void attachTo(MainWindow &mainWindow) { Q_UNUSED(mainWindow) }
 };
