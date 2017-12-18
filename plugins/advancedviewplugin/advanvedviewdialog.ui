@@ -19,8 +19,16 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <widget class="BookingsView" name="bookingsView"/>
-     <widget class="TimeAssignmentsView" name="timeAssignmentsView"/>
+     <widget class="QTreeView" name="bookingsView">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+     </widget>
+     <widget class="QTreeView" name="timeAssignmentsView">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+     </widget>
     </widget>
    </item>
    <item>
@@ -35,18 +43,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>BookingsView</class>
-   <extends>QTreeView</extends>
-   <header>views/bookingsview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>TimeAssignmentsView</class>
-   <extends>QTreeView</extends>
-   <header>views/timeassignmentsview.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>

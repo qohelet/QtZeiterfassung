@@ -12,8 +12,8 @@
 #include "timeutils.h"
 #include "stripfactory.h"
 
-StripsWidget::StripsWidget(MainWindow &mainWindow) :
-    QWidget(&mainWindow),
+StripsWidget::StripsWidget(MainWindow &mainWindow, QWidget *parent) :
+    QWidget(parent),
     m_mainWindow(mainWindow),
     m_refreshing(false),
     m_refreshingBookings(false),

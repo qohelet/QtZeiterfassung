@@ -3,8 +3,10 @@
 
 #include <QDialog>
 
-class StripsWidget;
 namespace Ui { class AdvanvedViewDialog; }
+class StripsWidget;
+class BookingsModel;
+class TimeAssignmentsModel;
 
 class AdvanvedViewDialog : public QDialog
 {
@@ -14,10 +16,17 @@ public:
     explicit AdvanvedViewDialog(StripsWidget &stripsWidget);
     ~AdvanvedViewDialog();
 
+private Q_SLOTS:
+    void contextMenuBooking(const QPoint &pos);
+    void contextMenuTimeAssignment(const QPoint &pos);
+
 private:
     Ui::AdvanvedViewDialog *ui;
 
     StripsWidget &m_stripsWidget;
+
+    BookingsModel *m_bookingsModel;
+    TimeAssignmentsModel *m_timeAssignmentsModel;
 };
 
 #endif // ADVANVEDVIEWDIALOG_H

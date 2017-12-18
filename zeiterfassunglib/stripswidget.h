@@ -21,7 +21,7 @@ class ZEITERFASSUNGLIBSHARED_EXPORT StripsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit StripsWidget(MainWindow &mainWindow);
+    explicit StripsWidget(MainWindow &mainWindow, QWidget *parent = Q_NULLPTR);
 
     MainWindow &mainWindow() const;
 

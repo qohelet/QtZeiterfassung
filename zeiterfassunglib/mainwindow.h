@@ -47,8 +47,6 @@ public:
 private Q_SLOTS:
     void getProjectsFinished();
     void getAuswertungFinished();
-    void contextMenuBooking(const QPoint &pos);
-    void contextMenuTimeAssignment(const QPoint &pos);
     void pushButtonStartPressed();
     void pushButtonEndPressed();
     void dateChanged(bool force = false);

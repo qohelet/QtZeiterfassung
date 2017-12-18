@@ -1,5 +1,5 @@
-#ifndef BOOKINGSMODEL_H
-#define BOOKINGSMODEL_H
+#ifndef TIMEASSIGNMENTSMODEL_H
+#define TIMEASSIGNMENTSMODEL_H
 
 #include <QAbstractListModel>
 #include <QVector>
@@ -9,17 +9,15 @@
 
 class StripsWidget;
 
-class ZEITERFASSUNGLIBSHARED_EXPORT BookingsModel : public QAbstractListModel
+class ZEITERFASSUNGLIBSHARED_EXPORT TimeAssignmentsModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(StripsWidget* stripsWidget READ stripsWidget WRITE setStripsWidget NOTIFY stripsWidgetChanged)
     Q_PROPERTY(bool enabled READ enabled NOTIFY enabledChanged)
 
 public:
-    explicit BookingsModel(QObject *parent = Q_NULLPTR);
+    explicit TimeAssignmentsModel(StripsWidget &stripsWidget, QObject *parent = Q_NULLPTR);
 
-    StripsWidget *stripsWidget() const;
-    void setStripsWidget(StripsWidget *stripsWidget);
+    StripsWidget &stripsWidget() const;
 
     bool enabled() const;
 
@@ -34,12 +32,11 @@ Q_SIGNALS:
     void enabledChanged(bool enabled);
 
 private Q_SLOTS:
-    void bookingsChanged();
+    void timeAssignmentsChanged();
     void refreshingChanged(bool refreshing);
 
 private:
-    StripsWidget *m_stripsWidget;
-    bool m_enabled;
+    StripsWidget &m_stripsWidget;
 };
 
-#endif // BOOKINGSMODEL_H
+#endif // TIMEASSIGNMENTSMODEL_H

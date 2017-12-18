@@ -19,13 +19,9 @@ SOURCES += mainwindow.cpp \
            zeiterfassungsettings.cpp \
            dialogs/aboutmedialog.cpp \
            dialogs/authenticationdialog.cpp \
-           dialogs/bookingdialog.cpp \
            dialogs/languageselectiondialog.cpp \
            dialogs/settingsdialog.cpp \
-           dialogs/timeassignmentdialog.cpp \
            dialogs/updatedialog.cpp \
-           models/bookingsmodel.cpp \
-           models/timeassignmentsmodel.cpp \
            replies/createbookingreply.cpp \
            replies/createtimeassignmentreply.cpp \
            replies/deletebookingreply.cpp \
@@ -40,7 +36,7 @@ SOURCES += mainwindow.cpp \
            replies/updatebookingreply.cpp \
            replies/updatetimeassignmentreply.cpp \
            replies/zeiterfassungreply.cpp \
-    replies/getuserinforeply.cpp
+           replies/getuserinforeply.cpp
 
 HEADERS += cpp14polyfills.h \
            mainwindow.h \
@@ -53,13 +49,9 @@ HEADERS += cpp14polyfills.h \
            zeiterfassungsettings.h \
            dialogs/aboutmedialog.h \
            dialogs/authenticationdialog.h \
-           dialogs/bookingdialog.h \
            dialogs/languageselectiondialog.h \
            dialogs/settingsdialog.h \
-           dialogs/timeassignmentdialog.h \
            dialogs/updatedialog.h \
-           models/bookingsmodel.h \
-           models/timeassignmentsmodel.h \
            replies/createbookingreply.h \
            replies/createtimeassignmentreply.h \
            replies/deletebookingreply.h \
@@ -74,16 +66,14 @@ HEADERS += cpp14polyfills.h \
            replies/updatebookingreply.h \
            replies/updatetimeassignmentreply.h \
            replies/zeiterfassungreply.h \
-    replies/getuserinforeply.h
+           replies/getuserinforeply.h
 
 FORMS += mainwindow.ui \
          dialogs/updatedialog.ui \
          dialogs/settingsdialog.ui \
          dialogs/languageselectiondialog.ui \
          dialogs/authenticationdialog.ui \
-         dialogs/bookingdialog.ui \
-         dialogs/aboutmedialog.ui \
-         dialogs/timeassignmentdialog.ui
+         dialogs/aboutmedialog.ui
 
 RESOURCES += resources.qrc
 

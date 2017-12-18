@@ -14,19 +14,25 @@ DEPENDPATH += $$PWD/../../zeiterfassunglib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += advancedviewplugin.h \
+HEADERS += advanvedviewdialog.h \
+           advancedviewplugin.h \
            advancedviewwidget.h \
-           advanvedviewdialog.h \
-           views/bookingsview.h \
-           views/timeassignmentsview.h
+           dialogs/bookingdialog.h \
+           dialogs/timeassignmentdialog.h \
+           models/bookingsmodel.h \
+           models/timeassignmentsmodel.h
 
-SOURCES += advancedviewplugin.cpp \
+SOURCES += advanvedviewdialog.cpp \
+           advancedviewplugin.cpp \
            advancedviewwidget.cpp \
-           advanvedviewdialog.cpp \
-           views/bookingsview.cpp \
-           views/timeassignmentsview.cpp
+           dialogs/bookingdialog.cpp \
+           dialogs/timeassignmentdialog.cpp \
+           models/bookingsmodel.cpp \
+           models/timeassignmentsmodel.cpp
 
-FORMS += advanvedviewdialog.ui
+FORMS += advanvedviewdialog.ui \
+         dialogs/bookingdialog.ui \
+         dialogs/timeassignmentdialog.ui
 
 RESOURCES += advancedviewplugin_resources.qrc
 
