@@ -24,6 +24,9 @@ FORMS += updaterdialog.ui
 
 RESOURCES +=
 
-TRANSLATIONS +=
+TRANSLATIONS += translations/updaterplugin_en.ts \
+                translations/updaterplugin_de.ts
 
 OTHER_FILES += updaterplugin.json
+
+include(../../lrelease.pri)

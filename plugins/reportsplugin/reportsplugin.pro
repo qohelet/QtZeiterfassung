@@ -24,6 +24,9 @@ FORMS +=
 
 RESOURCES += reportsplugin_resources.qrc
 
-TRANSLATIONS +=
+TRANSLATIONS += translations/reportsplugin_en.ts \
+                translations/reportsplugin_de.ts
 
 OTHER_FILES += reportsplugin.json
+
+include(../../lrelease.pri)

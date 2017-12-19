@@ -16,17 +16,19 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 
 HEADERS += lunchmealplugin.h \
            lunchmealwidget.h \
-    lunchmealdialog.h
+           lunchmealdialog.h
 
 SOURCES += lunchmealplugin.cpp \
            lunchmealwidget.cpp \
-    lunchmealdialog.cpp
+           lunchmealdialog.cpp
 
-FORMS += \
-    lunchmealdialog.ui
+FORMS += lunchmealdialog.ui
 
 RESOURCES += lunchmealplugin_resources.qrc
 
-TRANSLATIONS +=
+TRANSLATIONS += translations/lunchmealplugin_en.ts \
+                translations/lunchmealplugin_de.ts
 
 OTHER_FILES += lunchmealplugin.json
+
+include(../../lrelease.pri)

@@ -36,6 +36,9 @@ FORMS += advancedviewdialog.ui \
 
 RESOURCES += advancedviewplugin_resources.qrc
 
-TRANSLATIONS +=
+TRANSLATIONS += translations/advancedviewplugin_en.ts \
+                translations/advancedviewplugin_de.ts
 
 OTHER_FILES += advancedviewplugin.json
+
+include(../../lrelease.pri)

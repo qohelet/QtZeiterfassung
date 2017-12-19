@@ -24,6 +24,9 @@ FORMS +=
 
 RESOURCES += presenceplugin_resources.qrc
 
-TRANSLATIONS +=
+TRANSLATIONS += translations/presenceplugin_en.ts \
+                translations/presenceplugin_de.ts
 
 OTHER_FILES += presenceplugin.json
+
+include(../../lrelease.pri)
