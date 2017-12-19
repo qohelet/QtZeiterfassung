@@ -6,6 +6,8 @@
 #include "mainwindow.h"
 #include "zeiterfassungapi.h"
 
+#include "lunchmealdialog.h"
+
 LunchMealWidget::LunchMealWidget(StripsWidget &stripsWidget) :
     QToolButton(&stripsWidget),
     m_stripsWidget(stripsWidget)
@@ -18,5 +20,6 @@ LunchMealWidget::LunchMealWidget(StripsWidget &stripsWidget) :
 
 void LunchMealWidget::pressedSlot()
 {
-
+    LunchMealDialog dialog(m_stripsWidget);
+    dialog.exec();
 }
