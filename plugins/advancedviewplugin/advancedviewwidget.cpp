@@ -6,10 +6,11 @@
 #include "advancedviewdialog.h"
 
 AdvancedViewWidget::AdvancedViewWidget(StripsWidget &stripsWidget) :
-    QPushButton(&stripsWidget),
+    QToolButton(&stripsWidget),
     m_stripsWidget(stripsWidget)
 {
     setIcon(QIcon(QStringLiteral(":/zeiterfassung/plugins/advancedviewplugin/images/advanced-view.png")));
+    setText(tr("Advanced view"));
 
     connect(&stripsWidget, &StripsWidget::dateChanged, this, &AdvancedViewWidget::dateChanged);
     dateChanged(stripsWidget.date());

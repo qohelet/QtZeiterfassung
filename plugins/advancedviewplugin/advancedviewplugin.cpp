@@ -5,6 +5,7 @@
 
 #include "mainwindow.h"
 #include "stripswidget.h"
+
 #include "advancedviewwidget.h"
 
 AdvancedViewPlugin::AdvancedViewPlugin(QObject *parent) :

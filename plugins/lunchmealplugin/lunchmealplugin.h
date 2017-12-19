@@ -5,6 +5,8 @@
 
 #include "zeiterfassungplugin.h"
 
+class MainWindow;
+
 class Q_DECL_EXPORT LunchMealPlugin : public ZeiterfassungPlugin
 {
     Q_OBJECT
@@ -15,6 +17,7 @@ public:
     explicit LunchMealPlugin(QObject *parent = Q_NULLPTR);
 
     // ZeiterfassungPlugin interface
+    void attachTo(MainWindow &mainWindow) Q_DECL_OVERRIDE;
 };
 
 #endif // LUNCHMEALPLUGIN_H
