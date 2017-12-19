@@ -42,18 +42,22 @@ public:
     StripFactory &stripFactory() const;
 
     QDate date() const;
+    void setDate(const QDate &date);
 
     const QMap<QString, QString> &projects() const;
     const std::array<StripsWidget*, 7> &stripsWidgets() const;
+
+Q_SIGNALS:
+    void dateChanged(const QDate &date);
+    void refreshEverything();
 
 private Q_SLOTS:
     void getProjectsFinished();
     void pushButtonStartPressed();
     void pushButtonEndPressed();
-    void dateChanged(bool force = false);
+    void dateChangedSlot(const QDate &date);
 
     void minimumTimeChanged();
-    void refreshingChanged();
     void startEnabledChanged();
     void endEnabledChanged();
 

@@ -38,13 +38,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 {
     ui->setupUi(this);
 
-    for(quint8 i = 0; i < 7; i++)
-    {
-        m_stripsWidgets[i] = new StripsWidget(*this, ui->widgetWeek);
-        connect(m_stripsWidgets[i], &StripsWidget::refreshingChanged, this, &MainWindow::refreshingChanged);
-        ui->layoutWeek->addWidget(m_stripsWidgets[i]);
-    }
-
     setWindowTitle(tr("Zeiterfassung - %0 (%1)").arg(m_userInfo.text).arg(m_userInfo.email));
 
     ui->actionQuit->setShortcut(QKeySequence::Quit);
@@ -52,7 +45,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->actionToday, &QAction::triggered, [=](){ ui->dateEditDate->setDate(QDate::currentDate()); });
 
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
-    connect(ui->actionRefresh, &QAction::triggered, this, [=](){ dateChanged(true); });
+    connect(ui->actionRefresh, &QAction::triggered, this, &MainWindow::refreshEverything);
 
     connect(ui->actionAboutMe, &QAction::triggered, [=](){ AboutMeDialog(userInfo, this).exec(); });
     connect(ui->actionSettings, &QAction::triggered, [=](){ SettingsDialog(m_settings, this).exec(); });
@@ -62,7 +55,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->actionAboutQt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this); });
 
     ui->dateEditDate->setDate(QDate::currentDate());
-    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, [=](){ dateChanged(false); });
+    connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, &MainWindow::dateChangedSlot);
 
     connect(ui->pushButtonPrev, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
     connect(ui->pushButtonNext, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
@@ -83,7 +76,14 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->pushButtonStart, &QAbstractButton::pressed, this, &MainWindow::pushButtonStartPressed);
     connect(ui->pushButtonEnd, &QAbstractButton::pressed, this, &MainWindow::pushButtonEndPressed);
 
-    dateChanged();
+    for(quint8 i = 0; i < 7; i++)
+    {
+        m_stripsWidgets[i] = new StripsWidget(*this, ui->widgetWeek);
+        connect(this, &MainWindow::refreshEverything, m_stripsWidgets[i], &StripsWidget::refresh);
+        ui->layoutWeek->addWidget(m_stripsWidgets[i]);
+    }
+
+    dateChangedSlot(ui->dateEditDate->date());
 }
 
 MainWindow::~MainWindow()
@@ -139,6 +139,11 @@ StripFactory &MainWindow::stripFactory() const
 QDate MainWindow::date() const
 {
     return ui->dateEditDate->date();
+}
+
+void MainWindow::setDate(const QDate &date)
+{
+    ui->dateEditDate->setDate(date);
 }
 
 const QMap<QString, QString> &MainWindow::projects() const
@@ -305,18 +310,17 @@ void MainWindow::pushButtonEndPressed()
     ui->pushButtonNext->setEnabled(false);
 }
 
-void MainWindow::dateChanged(bool force)
+void MainWindow::dateChangedSlot(const QDate &date)
 {
-    auto firstDayOfWeek = ui->dateEditDate->date().addDays(-(ui->dateEditDate->date().dayOfWeek() - 1));
+    auto firstDayOfWeek = date.addDays(-(ui->dateEditDate->date().dayOfWeek() - 1));
 
     for(quint8 i = 0; i < 7; i++)
     {
-        auto date = firstDayOfWeek.addDays(i);
+        auto weekDay = firstDayOfWeek.addDays(i);
 
-        if(force || m_stripsWidgets[i]->date() != date)
-            m_stripsWidgets[i]->setDate(date);
+        m_stripsWidgets[i]->setDate(weekDay);
 
-        if(date == ui->dateEditDate->date() && (force || m_currentStripWidget != m_stripsWidgets[i]))
+        if(weekDay == date && m_currentStripWidget != m_stripsWidgets[i])
         {
             if(m_currentStripWidget)
             {
@@ -337,36 +341,12 @@ void MainWindow::dateChanged(bool force)
         }
     }
 
-    if(std::any_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget) {
-        return stripsWidget->refreshing();
-    }))
-    {
-        ui->actionToday->setEnabled(false);
-        ui->actionRefresh->setEnabled(false);
-        ui->dateEditDate->setReadOnly(true);
-        ui->pushButtonPrev->setEnabled(false);
-        ui->pushButtonNext->setEnabled(false);
-    }
+    Q_EMIT dateChanged(ui->dateEditDate->date());
 }
 
 void MainWindow::minimumTimeChanged()
 {
     ui->timeEditTime->setMinimumTime(m_currentStripWidget->minimumTime());
-}
-
-void MainWindow::refreshingChanged()
-{
-    {
-        auto allFinished = std::none_of(std::begin(m_stripsWidgets), std::end(m_stripsWidgets), [](StripsWidget *stripsWidget){
-            return stripsWidget->refreshing();
-        });
-
-        ui->actionToday->setEnabled(allFinished);
-        ui->actionRefresh->setEnabled(allFinished);
-        ui->dateEditDate->setReadOnly(!allFinished);
-        ui->pushButtonPrev->setEnabled(allFinished);
-        ui->pushButtonNext->setEnabled(allFinished);
-    }
 }
 
 void MainWindow::startEnabledChanged()

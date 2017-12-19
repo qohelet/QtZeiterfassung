@@ -14,6 +14,8 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
     QWidget(&mainWindow),
     m_mainWindow(mainWindow)
 {
+    connect(&m_mainWindow, &MainWindow::refreshEverything, this, &PresenceWidget::refresh);
+
     m_labelAvailable = new QLabel(this);
     m_labelAvailable->setFrameShape(QFrame::Panel);
     m_labelAvailable->setFrameShadow(QFrame::Sunken);
@@ -25,17 +27,17 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
     m_mainWindow.statusBar()->addWidget(m_labelNotAvailable);
 
     m_action = m_mainWindow.menuView()->addAction(QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/refresh.png")),
-                                                  tr("Refresh presence"), this, &PresenceWidget::timeout);
+                                                  tr("Refresh presence"), this, &PresenceWidget::refresh);
 
     auto timer = new QTimer(this);
     timer->setInterval(60000);
-    connect(timer, &QTimer::timeout, this, &PresenceWidget::timeout);
+    connect(timer, &QTimer::timeout, this, &PresenceWidget::refresh);
     timer->start();
 
-    timeout();
+    refresh();
 }
 
-void PresenceWidget::timeout()
+void PresenceWidget::refresh()
 {
     m_labelAvailable->setText(tr("%0: %1").arg(tr("Available")).arg(tr("???")));
     m_labelNotAvailable->setText(tr("%0: %1").arg(tr("Not available")).arg(tr("???")));

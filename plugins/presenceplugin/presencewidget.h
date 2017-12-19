@@ -18,7 +18,7 @@ public:
     explicit PresenceWidget(MainWindow &mainWindow);
 
 private Q_SLOTS:
-    void timeout();
+    void refresh();
     void finished();
 
 private:

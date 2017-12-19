@@ -18,6 +18,9 @@ ReportsWidget::ReportsWidget(MainWindow &mainWindow) :
     QWidget(&mainWindow),
     m_mainWindow(mainWindow)
 {
+    connect(&m_mainWindow, &MainWindow::dateChanged, this, &ReportsWidget::dateChanged);
+    connect(&m_mainWindow, &MainWindow::refreshEverything, this, &ReportsWidget::refresh);
+
     m_labelBalance = new QLabel(this);
     m_labelBalance->setFrameShape(QFrame::Panel);
     m_labelBalance->setFrameShadow(QFrame::Sunken);
