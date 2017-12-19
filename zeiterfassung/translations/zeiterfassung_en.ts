@@ -20,113 +20,113 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../main.cpp" line="342"/>
+        <location filename="../main.cpp" line="337"/>
         <source>Loading settings...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="61"/>
+        <location filename="../main.cpp" line="58"/>
         <source>Loading translations...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
-        <location filename="../main.cpp" line="74"/>
+        <location filename="../main.cpp" line="70"/>
+        <location filename="../main.cpp" line="71"/>
         <source>Invalid language selection!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="75"/>
+        <location filename="../main.cpp" line="72"/>
         <source>You did not select a valid language!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="95"/>
+        <location filename="../main.cpp" line="90"/>
         <source>Loading theme...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="106"/>
-        <location filename="../main.cpp" line="107"/>
-        <location filename="../main.cpp" line="114"/>
-        <location filename="../main.cpp" line="115"/>
+        <location filename="../main.cpp" line="101"/>
+        <location filename="../main.cpp" line="102"/>
+        <location filename="../main.cpp" line="109"/>
+        <location filename="../main.cpp" line="110"/>
         <source>Could not load theme!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="108"/>
+        <location filename="../main.cpp" line="103"/>
         <source>Theme file does not exist!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="172"/>
+        <location filename="../main.cpp" line="167"/>
         <source>Loading login page...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="181"/>
-        <location filename="../main.cpp" line="182"/>
+        <location filename="../main.cpp" line="176"/>
+        <location filename="../main.cpp" line="177"/>
         <source>Could not access Zeiterfassung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="185"/>
+        <location filename="../main.cpp" line="180"/>
         <source>Base url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="186"/>
+        <location filename="../main.cpp" line="181"/>
         <source>Please enter the base url to the Zeiterfassung:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="203"/>
+        <location filename="../main.cpp" line="198"/>
         <source>Authenticating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="224"/>
-        <location filename="../main.cpp" line="225"/>
+        <location filename="../main.cpp" line="219"/>
+        <location filename="../main.cpp" line="220"/>
         <source>Could not authenticate with Zeiterfassung!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="246"/>
+        <location filename="../main.cpp" line="241"/>
         <source>Getting user information...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="255"/>
-        <location filename="../main.cpp" line="256"/>
+        <location filename="../main.cpp" line="250"/>
+        <location filename="../main.cpp" line="251"/>
         <source>Could not get user information!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="297"/>
-        <location filename="../main.cpp" line="298"/>
+        <location filename="../main.cpp" line="292"/>
+        <location filename="../main.cpp" line="293"/>
         <source>Could not load plugin %0!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="308"/>
-        <location filename="../main.cpp" line="309"/>
+        <location filename="../main.cpp" line="303"/>
+        <location filename="../main.cpp" line="304"/>
         <source>Plugin not valid %0!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="128"/>
+        <location filename="../main.cpp" line="123"/>
         <source>Loading strip layouts...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="132"/>
-        <location filename="../main.cpp" line="133"/>
-        <location filename="../main.cpp" line="141"/>
-        <location filename="../main.cpp" line="142"/>
-        <location filename="../main.cpp" line="151"/>
-        <location filename="../main.cpp" line="152"/>
-        <location filename="../main.cpp" line="161"/>
-        <location filename="../main.cpp" line="162"/>
+        <location filename="../main.cpp" line="127"/>
+        <location filename="../main.cpp" line="128"/>
+        <location filename="../main.cpp" line="136"/>
+        <location filename="../main.cpp" line="137"/>
+        <location filename="../main.cpp" line="146"/>
+        <location filename="../main.cpp" line="147"/>
+        <location filename="../main.cpp" line="156"/>
+        <location filename="../main.cpp" line="157"/>
         <source>Could not load strips!</source>
         <translation type="unfinished"></translation>
     </message>

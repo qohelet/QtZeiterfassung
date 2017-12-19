@@ -5,7 +5,7 @@
     <name>LunchMealDialog</name>
     <message>
         <location filename="../lunchmealdialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>Lunch meal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
