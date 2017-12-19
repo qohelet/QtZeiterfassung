@@ -31,7 +31,7 @@
    <item>
     <widget class="QLabel" name="labelLunchMeal">
      <property name="text">
-      <string notr="true">TextLabel</string>
+      <string>Loading...</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
