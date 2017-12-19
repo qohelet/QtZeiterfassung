@@ -32,3 +32,8 @@ TRANSLATIONS += translations/lunchmealplugin_en.ts \
 OTHER_FILES += lunchmealplugin.json
 
 include(../../lrelease.pri)
+
+COMPILED_TRANSLATIONS += $${OUT_PWD}/translations/lunchmealplugin_en.qm \
+                         $${OUT_PWD}/translations/lunchmealplugin_de.qm
+
+include(../copy_translations.pri)

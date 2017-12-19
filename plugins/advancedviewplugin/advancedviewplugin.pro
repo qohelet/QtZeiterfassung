@@ -42,3 +42,8 @@ TRANSLATIONS += translations/advancedviewplugin_en.ts \
 OTHER_FILES += advancedviewplugin.json
 
 include(../../lrelease.pri)
+
+COMPILED_TRANSLATIONS += $${OUT_PWD}/translations/advancedviewplugin_en.qm \
+                         $${OUT_PWD}/translations/advancedviewplugin_de.qm
+
+include(../copy_translations.pri)

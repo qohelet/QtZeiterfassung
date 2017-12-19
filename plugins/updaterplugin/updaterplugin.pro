@@ -30,3 +30,8 @@ TRANSLATIONS += translations/updaterplugin_en.ts \
 OTHER_FILES += updaterplugin.json
 
 include(../../lrelease.pri)
+
+COMPILED_TRANSLATIONS += $${OUT_PWD}/translations/updaterplugin_en.qm \
+                         $${OUT_PWD}/translations/updaterplugin_de.qm
+
+include(../copy_translations.pri)

@@ -30,3 +30,8 @@ TRANSLATIONS += translations/presenceplugin_en.ts \
 OTHER_FILES += presenceplugin.json
 
 include(../../lrelease.pri)
+
+COMPILED_TRANSLATIONS += $${OUT_PWD}/translations/presenceplugin_en.qm \
+                         $${OUT_PWD}/translations/presenceplugin_de.qm
+
+include(../copy_translations.pri)

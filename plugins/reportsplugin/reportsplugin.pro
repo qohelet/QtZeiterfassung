@@ -30,3 +30,8 @@ TRANSLATIONS += translations/reportsplugin_en.ts \
 OTHER_FILES += reportsplugin.json
 
 include(../../lrelease.pri)
+
+COMPILED_TRANSLATIONS += $${OUT_PWD}/translations/reportsplugin_en.qm \
+                         $${OUT_PWD}/translations/reportsplugin_de.qm
+
+include(../copy_translations.pri)

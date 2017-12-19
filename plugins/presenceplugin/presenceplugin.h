@@ -2,6 +2,7 @@
 #define PRESENCEPLUGIN_H
 
 #include <QObject>
+#include <QTranslator>
 
 #include "zeiterfassungplugin.h"
 
@@ -18,6 +19,9 @@ public:
 
     // ZeiterfassungPlugin interface
     void attachTo(MainWindow &mainWindow) Q_DECL_OVERRIDE;
+
+private:
+    QTranslator m_translator;
 };
 
 #endif // PRESENCEPLUGIN_H

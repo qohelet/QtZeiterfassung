@@ -34,14 +34,11 @@ struct {
 
 QVector<ZeiterfassungPlugin*> plugins;
 
-bool loadAndInstallTranslator(QTranslator &translator,
-                              const QLocale &locale,
-                              const QString &filename,
-                              const QString &prefix = QString(),
-                              const QString &directory = QString(),
-                              const QString &suffix = QString())
+bool loadAndInstallTranslator(QTranslator &translator, const QString &filename)
 {
-    if(!translator.load(locale, filename, prefix, directory, suffix))
+    static auto dir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
+
+    if(!translator.load(QLocale(), filename, QStringLiteral("_"), dir))
     {
         qWarning() << "could not load translation" << filename;
         return false;
@@ -79,13 +76,11 @@ bool loadTranslations(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
         settings.setLanguage(dialog.language());
     }
 
-    QLocale locale(settings.language(), QLocale::Austria);
-    QLocale::setDefault(locale);
+    QLocale::setDefault(QLocale(settings.language(), QLocale::Austria));
 
-    auto translationsDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
-    loadAndInstallTranslator(translators.qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
-    loadAndInstallTranslator(translators.zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
-    loadAndInstallTranslator(translators.zeiterfassunglibTranslator, locale, QStringLiteral("zeiterfassunglib"), QStringLiteral("_"), translationsDir);
+    loadAndInstallTranslator(translators.qtTranslator,               QStringLiteral("qt"));
+    loadAndInstallTranslator(translators.zeiterfassungTranslator,    QStringLiteral("zeiterfassung"));
+    loadAndInstallTranslator(translators.zeiterfassunglibTranslator, QStringLiteral("zeiterfassunglib"));
 
     return true;
 }

@@ -30,3 +30,8 @@ TRANSLATIONS += translations/weatherplugin_en.ts \
 OTHER_FILES += weatherplugin.json
 
 include(../../lrelease.pri)
+
+COMPILED_TRANSLATIONS += $${OUT_PWD}/translations/weatherplugin_en.qm \
+                         $${OUT_PWD}/translations/weatherplugin_de.qm
+
+include(../copy_translations.pri)
