@@ -132,16 +132,6 @@ void ZeiterfassungSettings::prependText(const QString &text)
     prependItem(QStringLiteral("texte"), text);
 }
 
-QDate ZeiterfassungSettings::lastUpdateCheck() const
-{
-    return value(QStringLiteral("lastUpdateCheck")).toDate();
-}
-
-void ZeiterfassungSettings::setLastUpdateCheck(const QDate &lastUpdateCheck)
-{
-    setValue(QStringLiteral("lastUpdateCheck"), lastUpdateCheck);
-}
-
 QString ZeiterfassungSettings::theme() const
 {
     return value(QStringLiteral("theme")).toString();

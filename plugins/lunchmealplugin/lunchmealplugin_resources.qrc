@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/zeiterfassung/plugins/lunchmealplugin">
+        <file>images/lunch-meal.png</file>
+    </qresource>
+</RCC>

@@ -3,13 +3,14 @@
 #include <QIcon>
 
 #include "stripswidget.h"
-#include "advanvedviewdialog.h"
+#include "advancedviewdialog.h"
 
 AdvancedViewWidget::AdvancedViewWidget(StripsWidget &stripsWidget) :
-    QPushButton(&stripsWidget),
+    QToolButton(&stripsWidget),
     m_stripsWidget(stripsWidget)
 {
-    setIcon(QIcon(QStringLiteral(":/zeiterfassunglib/plugins/advancedviewplugin/images/advanced-view.png")));
+    setIcon(QIcon(QStringLiteral(":/zeiterfassung/plugins/advancedviewplugin/images/advanced-view.png")));
+    setText(tr("Advanced view"));
 
     connect(&stripsWidget, &StripsWidget::dateChanged, this, &AdvancedViewWidget::dateChanged);
     dateChanged(stripsWidget.date());
@@ -24,6 +25,6 @@ void AdvancedViewWidget::dateChanged(const QDate &date)
 
 void AdvancedViewWidget::pressedSlot()
 {
-    AdvanvedViewDialog dialog(m_stripsWidget);
+    AdvancedViewDialog dialog(m_stripsWidget);
     dialog.exec();
 }

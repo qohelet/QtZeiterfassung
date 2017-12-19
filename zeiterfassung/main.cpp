@@ -1,6 +1,5 @@
 #include <QApplication>
 #include <QTranslator>
-#include <QEventLoop>
 #include <QMessageBox>
 #include <QSplashScreen>
 #include <QPixmap>
@@ -35,14 +34,11 @@ struct {
 
 QVector<ZeiterfassungPlugin*> plugins;
 
-bool loadAndInstallTranslator(QTranslator &translator,
-                              const QLocale &locale,
-                              const QString &filename,
-                              const QString &prefix = QString(),
-                              const QString &directory = QString(),
-                              const QString &suffix = QString())
+bool loadAndInstallTranslator(QTranslator &translator, const QString &filename)
 {
-    if(!translator.load(locale, filename, prefix, directory, suffix))
+    static auto dir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
+
+    if(!translator.load(QLocale(), filename, QStringLiteral("_"), dir))
     {
         qWarning() << "could not load translation" << filename;
         return false;
@@ -80,13 +76,11 @@ bool loadTranslations(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
         settings.setLanguage(dialog.language());
     }
 
-    QLocale locale(settings.language(), QLocale::Austria);
-    QLocale::setDefault(locale);
+    QLocale::setDefault(QLocale(settings.language(), QLocale::Austria));
 
-    auto translationsDir = QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("translations"));
-    loadAndInstallTranslator(translators.qtTranslator, locale, QStringLiteral("qt"), QStringLiteral("_"), translationsDir);
-    loadAndInstallTranslator(translators.zeiterfassungTranslator, locale, QStringLiteral("zeiterfassung"), QStringLiteral("_"), translationsDir);
-    loadAndInstallTranslator(translators.zeiterfassunglibTranslator, locale, QStringLiteral("zeiterfassunglib"), QStringLiteral("_"), translationsDir);
+    loadAndInstallTranslator(translators.qtTranslator,               QStringLiteral("qt"));
+    loadAndInstallTranslator(translators.zeiterfassungTranslator,    QStringLiteral("zeiterfassung"));
+    loadAndInstallTranslator(translators.zeiterfassunglibTranslator, QStringLiteral("zeiterfassunglib"));
 
     return true;
 }
@@ -175,11 +169,7 @@ bool loadLoginPage(QSplashScreen &splashScreen, ZeiterfassungSettings &settings,
     again:
     auto reply = erfassung.doLoginPage();
 
-    {
-        QEventLoop eventLoop;
-        QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-        eventLoop.exec();
-    }
+    reply->waitForFinished();
 
     if(!reply->success())
     {
@@ -222,11 +212,7 @@ bool doAuthentication(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
         again:
         auto reply = erfassung.doLogin(settings.username(), settings.password());
 
-        {
-            QEventLoop eventLoop;
-            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {
@@ -257,11 +243,7 @@ bool loadUserInfo(QSplashScreen &splashScreen, ZeiterfassungApi &erfassung, GetU
     {
         auto reply = erfassung.doUserInfo();
 
-        {
-            QEventLoop eventLoop;
-            QObject::connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-            eventLoop.exec();
-        }
+        reply->waitForFinished();
 
         if(!reply->success())
         {
@@ -291,10 +273,18 @@ bool loadPlugins(QSplashScreen &splashScreen)
     for(const auto &fileInfo : dir.entryInfoList(QDir::Files))
     {
         if(fileInfo.isSymLink())
+        {
+            qWarning() << "skipping" << fileInfo.fileName() << "because symlink";
             continue; // to skip unix so symlinks
+        }
 
         if(!QLibrary::isLibrary(fileInfo.filePath()))
+        {
+            qWarning() << "skipping" << fileInfo.fileName() << "because no QLibrary";
             continue; // to skip windows junk files
+        }
+
+        qDebug() << "loading" << fileInfo.fileName();
 
         QPluginLoader loader(fileInfo.filePath());
         if(!loader.load())

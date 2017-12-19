@@ -1,9 +1,8 @@
-#include "advanvedviewdialog.h"
-#include "ui_advanvedviewdialog.h"
+#include "advancedviewdialog.h"
+#include "ui_advancedviewdialog.h"
 
 #include <QMenu>
 #include <QAction>
-#include <QEventLoop>
 #include <QMessageBox>
 #include <QStringBuilder>
 
@@ -22,9 +21,9 @@
 #include "models/bookingsmodel.h"
 #include "models/timeassignmentsmodel.h"
 
-AdvanvedViewDialog::AdvanvedViewDialog(StripsWidget &stripsWidget) :
+AdvancedViewDialog::AdvancedViewDialog(StripsWidget &stripsWidget) :
     QDialog(&stripsWidget.mainWindow()),
-    ui(new Ui::AdvanvedViewDialog),
+    ui(new Ui::AdvancedViewDialog),
     m_stripsWidget(stripsWidget),
     m_bookingsModel(new BookingsModel(stripsWidget, this)),
     m_timeAssignmentsModel(new TimeAssignmentsModel(stripsWidget, this))
@@ -34,20 +33,20 @@ AdvanvedViewDialog::AdvanvedViewDialog(StripsWidget &stripsWidget) :
     ui->bookingsView->setModel(m_bookingsModel);
     ui->bookingsView->setEnabled(m_bookingsModel->enabled());
     connect(m_bookingsModel, &BookingsModel::enabledChanged, ui->bookingsView, &QWidget::setEnabled);
-    connect(ui->bookingsView, &QWidget::customContextMenuRequested, this, &AdvanvedViewDialog::contextMenuBooking);
+    connect(ui->bookingsView, &QWidget::customContextMenuRequested, this, &AdvancedViewDialog::contextMenuBooking);
 
     ui->timeAssignmentsView->setModel(m_timeAssignmentsModel);
     ui->timeAssignmentsView->setEnabled(m_timeAssignmentsModel->enabled());
     connect(m_timeAssignmentsModel, &TimeAssignmentsModel::enabledChanged, ui->timeAssignmentsView, &QWidget::setEnabled);
-    connect(ui->timeAssignmentsView, &QWidget::customContextMenuRequested, this, &AdvanvedViewDialog::contextMenuTimeAssignment);
+    connect(ui->timeAssignmentsView, &QWidget::customContextMenuRequested, this, &AdvancedViewDialog::contextMenuTimeAssignment);
 }
 
-AdvanvedViewDialog::~AdvanvedViewDialog()
+AdvancedViewDialog::~AdvancedViewDialog()
 {
     delete ui;
 }
 
-void AdvanvedViewDialog::contextMenuBooking(const QPoint &pos)
+void AdvancedViewDialog::contextMenuBooking(const QPoint &pos)
 {
     auto index = ui->bookingsView->indexAt(pos);
 
@@ -73,11 +72,7 @@ void AdvanvedViewDialog::contextMenuBooking(const QPoint &pos)
                     dialog.getText()
                 );
 
-                {
-                    QEventLoop eventLoop;
-                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-                    eventLoop.exec();
-                }
+                reply->waitForFinished();
 
                 if(reply->success())
                 {
@@ -123,11 +118,7 @@ void AdvanvedViewDialog::contextMenuBooking(const QPoint &pos)
                     dialog.getText()
                 );
 
-                {
-                    QEventLoop eventLoop;
-                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-                    eventLoop.exec();
-                }
+                reply->waitForFinished();
 
                 if(reply->success())
                 {
@@ -150,11 +141,7 @@ void AdvanvedViewDialog::contextMenuBooking(const QPoint &pos)
             {
                 auto reply = m_stripsWidget.mainWindow().erfassung().doDeleteBooking(booking.id);
 
-                {
-                    QEventLoop eventLoop;
-                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-                    eventLoop.exec();
-                }
+                reply->waitForFinished();
 
                 if(reply->success())
                     m_stripsWidget.refreshBookings();
@@ -165,7 +152,7 @@ void AdvanvedViewDialog::contextMenuBooking(const QPoint &pos)
     }
 }
 
-void AdvanvedViewDialog::contextMenuTimeAssignment(const QPoint &pos)
+void AdvancedViewDialog::contextMenuTimeAssignment(const QPoint &pos)
 {
     auto index = ui->timeAssignmentsView->indexAt(pos);
 
@@ -193,11 +180,7 @@ void AdvanvedViewDialog::contextMenuTimeAssignment(const QPoint &pos)
                     dialog.getText()
                 );
 
-                {
-                    QEventLoop eventLoop;
-                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-                    eventLoop.exec();
-                }
+                reply->waitForFinished();
 
                 if(reply->success())
                 {
@@ -248,11 +231,7 @@ void AdvanvedViewDialog::contextMenuTimeAssignment(const QPoint &pos)
                     dialog.getText()
                 );
 
-                {
-                    QEventLoop eventLoop;
-                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-                    eventLoop.exec();
-                }
+                reply->waitForFinished();
 
                 if(reply->success())
                 {
@@ -275,11 +254,7 @@ void AdvanvedViewDialog::contextMenuTimeAssignment(const QPoint &pos)
             {
                 auto reply = m_stripsWidget.mainWindow().erfassung().doDeleteTimeAssignment(timeAssignment.id);
 
-                {
-                    QEventLoop eventLoop;
-                    connect(reply.get(), &ZeiterfassungReply::finished, &eventLoop, &QEventLoop::quit);
-                    eventLoop.exec();
-                }
+                reply->waitForFinished();
 
                 if(reply->success())
                 {

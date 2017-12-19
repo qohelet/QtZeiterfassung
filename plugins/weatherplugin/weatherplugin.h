@@ -2,6 +2,7 @@
 #define WEATHERPLUGIN_H
 
 #include <QObject>
+#include <QTranslator>
 
 #include "zeiterfassungplugin.h"
 
@@ -15,6 +16,10 @@ public:
     explicit WeatherPlugin(QObject *parent = Q_NULLPTR);
 
     // ZeiterfassungPlugin interface
+    void attachTo(MainWindow &mainWindow) Q_DECL_OVERRIDE;
+
+private:
+    QTranslator m_translator;
 };
 
 #endif // WEATHERPLUGIN_H

@@ -2,8 +2,11 @@
 #define LUNCHMEALPLUGIN_H
 
 #include <QObject>
+#include <QTranslator>
 
 #include "zeiterfassungplugin.h"
+
+class MainWindow;
 
 class Q_DECL_EXPORT LunchMealPlugin : public ZeiterfassungPlugin
 {
@@ -15,6 +18,10 @@ public:
     explicit LunchMealPlugin(QObject *parent = Q_NULLPTR);
 
     // ZeiterfassungPlugin interface
+    void attachTo(MainWindow &mainWindow) Q_DECL_OVERRIDE;
+
+private:
+    QTranslator m_translator;
 };
 
 #endif // LUNCHMEALPLUGIN_H

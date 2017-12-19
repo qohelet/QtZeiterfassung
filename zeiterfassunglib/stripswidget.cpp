@@ -23,8 +23,8 @@ StripsWidget::StripsWidget(MainWindow &mainWindow, QWidget *parent) :
 {
     auto layout = new QVBoxLayout(this);
 
-    m_headerLayout = new QHBoxLayout(this);
-    m_label = new QLabel(this);
+    m_headerLayout = new QHBoxLayout;
+    m_label = new QLabel;
     {
         auto font = m_label->font();
         font.setBold(true);
@@ -33,7 +33,7 @@ StripsWidget::StripsWidget(MainWindow &mainWindow, QWidget *parent) :
     m_headerLayout->addWidget(m_label, 1);
     layout->addLayout(m_headerLayout);
 
-    m_stripsLayout = new QVBoxLayout(this);
+    m_stripsLayout = new QVBoxLayout;
     layout->addLayout(m_stripsLayout);
 
     layout->addStretch(1);

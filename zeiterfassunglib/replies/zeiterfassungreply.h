@@ -17,6 +17,8 @@ public:
     bool success() const;
     const QString &message() const;
 
+    void waitForFinished();
+
 Q_SIGNALS:
     void finished();
 

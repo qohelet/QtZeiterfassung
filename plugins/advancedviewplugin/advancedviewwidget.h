@@ -1,11 +1,11 @@
 #ifndef ADVANCEDVIEWWIDGET_H
 #define ADVANCEDVIEWWIDGET_H
 
-#include <QPushButton>
+#include <QToolButton>
 
 class StripsWidget;
 
-class AdvancedViewWidget : public QPushButton
+class AdvancedViewWidget : public QToolButton
 {
     Q_OBJECT
 

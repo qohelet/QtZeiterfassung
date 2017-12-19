@@ -24,7 +24,7 @@ class CreateTimeAssignmentReply;
 class UpdateTimeAssignmentReply;
 class DeleteTimeAssignmentReply;
 class GetProjectsReply;
-class GetAuswertungReply;
+class GetReportReply;
 class GetPresenceStatusReply;
 
 class ZEITERFASSUNGLIBSHARED_EXPORT ZeiterfassungApi : public QObject
@@ -62,7 +62,7 @@ public:
     std::unique_ptr<DeleteTimeAssignmentReply> doDeleteTimeAssignment(int timeAssignmentId);
 
     std::unique_ptr<GetProjectsReply> doGetProjects(int userId, const QDate &date);
-    std::unique_ptr<GetAuswertungReply> doGetAuswertung(int userId, const QDate &date);
+    std::unique_ptr<GetReportReply> doGetReport(int userId, const QDate &date);
     std::unique_ptr<GetPresenceStatusReply> doGetPresenceStatus();
 
 private:
