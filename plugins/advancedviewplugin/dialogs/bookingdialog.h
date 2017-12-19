@@ -4,11 +4,9 @@
 #include <QDialog>
 #include <QTime>
 
-#include "zeiterfassunglib_global.h"
-
 namespace Ui { class BookingDialog; }
 
-class ZEITERFASSUNGLIBSHARED_EXPORT BookingDialog : public QDialog
+class BookingDialog : public QDialog
 {
     Q_OBJECT
 
