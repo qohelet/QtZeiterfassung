@@ -15,7 +15,8 @@ class ZEITERFASSUNGLIBSHARED_EXPORT GetUserInfoReply : public ZeiterfassungReply
     Q_OBJECT
 
 public:
-    GetUserInfoReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    GetUserInfoReply(std::unique_ptr<QNetworkReply> &&reply0, std::unique_ptr<QNetworkReply> &&reply1,
+                     ZeiterfassungApi *zeiterfassung);
 
     struct UserInfo
     {
@@ -24,15 +25,29 @@ public:
         QString longUsername;
         QString text;
         QString username;
+        QString gemeinde;
+        QString ort;
+        QDate angFrom;
+        QDate angTill;
+        QString gebOrt;
+        QString plz;
+        QString religion;
+        QString bereich;
+        QString verwendgr;
+        QString taetig;
+        QString arbverh;
+        QString betriebsnr;
     };
 
     const UserInfo &userInfo() const;
 
 private Q_SLOTS:
-    void requestFinished();
+    void request0Finished();
+    void request1Finished();
 
 private:
-    std::unique_ptr<QNetworkReply> m_reply;
+    std::unique_ptr<QNetworkReply> m_reply0;
+    std::unique_ptr<QNetworkReply> m_reply1;
     UserInfo m_userInfo;
 };
 
