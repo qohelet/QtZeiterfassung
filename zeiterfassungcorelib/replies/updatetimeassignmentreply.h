@@ -4,15 +4,15 @@
 
 #include <QNetworkReply>
 
-#include "zeiterfassungguilib_global.h"
+#include "zeiterfassungcorelib_global.h"
 #include "zeiterfassungreply.h"
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT CreateTimeAssignmentReply : public ZeiterfassungReply
+class ZEITERFASSUNGCORELIBSHARED_EXPORT UpdateTimeAssignmentReply : public ZeiterfassungReply
 {
     Q_OBJECT
 
 public:
-    CreateTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    UpdateTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     int timeAssignmentId() const;
 

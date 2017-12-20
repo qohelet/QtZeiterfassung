@@ -4,12 +4,12 @@
 
 #include <QNetworkReply>
 
-#include "zeiterfassungguilib_global.h"
+#include "zeiterfassungcorelib_global.h"
 #include "zeiterfassungreply.h"
 
 class ZeiterfassungApi;
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT GetUserInfoReply : public ZeiterfassungReply
+class ZEITERFASSUNGCORELIBSHARED_EXPORT GetUserInfoReply : public ZeiterfassungReply
 {
     Q_OBJECT
 

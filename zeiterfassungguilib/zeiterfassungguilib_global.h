@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtCore/qglobal.h>
+#include <QtGlobal>
 
 #if defined(ZEITERFASSUNGGUILIB_LIBRARY)
 #  define ZEITERFASSUNGGUILIBSHARED_EXPORT Q_DECL_EXPORT

@@ -12,6 +12,8 @@ COMPILED_TRANSLATIONS += $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm \
                          $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_de.qm \
                          $${OUT_PWD}/translations/zeiterfassung_en.qm \
                          $${OUT_PWD}/translations/zeiterfassung_de.qm \
+                         $${OUT_PWD}/../zeiterfassungcorelib/translations/zeiterfassungcorelib_en.qm \
+                         $${OUT_PWD}/../zeiterfassungcorelib/translations/zeiterfassungcorelib_de.qm \
                          $${OUT_PWD}/../zeiterfassungguilib/translations/zeiterfassungguilib_en.qm \
                          $${OUT_PWD}/../zeiterfassungguilib/translations/zeiterfassungguilib_de.qm
 

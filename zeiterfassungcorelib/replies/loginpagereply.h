@@ -4,15 +4,15 @@
 
 #include <QNetworkReply>
 
-#include "zeiterfassungguilib_global.h"
+#include "zeiterfassungcorelib_global.h"
 #include "zeiterfassungreply.h"
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT LoginReply : public ZeiterfassungReply
+class ZEITERFASSUNGCORELIBSHARED_EXPORT LoginPageReply : public ZeiterfassungReply
 {
     Q_OBJECT
 
 public:
-    LoginReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    LoginPageReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
 private Q_SLOTS:
     void requestFinished();

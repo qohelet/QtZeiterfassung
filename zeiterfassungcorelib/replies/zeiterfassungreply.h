@@ -2,11 +2,11 @@
 
 #include <QObject>
 
-#include "zeiterfassungguilib_global.h"
+#include "zeiterfassungcorelib_global.h"
 
 class ZeiterfassungApi;
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT ZeiterfassungReply : public QObject
+class ZEITERFASSUNGCORELIBSHARED_EXPORT ZeiterfassungReply : public QObject
 {
     Q_OBJECT
 

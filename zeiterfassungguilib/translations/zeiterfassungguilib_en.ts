@@ -55,187 +55,6 @@
     </message>
 </context>
 <context>
-    <name>CreateBookingReply</name>
-    <message>
-        <location filename="../replies/createbookingreply.cpp" line="26"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/createbookingreply.cpp" line="36"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/createbookingreply.cpp" line="43"/>
-        <source>JSON document is not an object!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/createbookingreply.cpp" line="52"/>
-        <source>JSON does not contain bookingNr!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CreateTimeAssignmentReply</name>
-    <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="26"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="36"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="43"/>
-        <source>JSON document is not an object!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/createtimeassignmentreply.cpp" line="52"/>
-        <source>JSON does not contain bookingNr!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DeleteBookingReply</name>
-    <message>
-        <location filename="../replies/deletebookingreply.cpp" line="15"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DeleteTimeAssignmentReply</name>
-    <message>
-        <location filename="../replies/deletetimeassignmentreply.cpp" line="15"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GetBookingsReply</name>
-    <message>
-        <location filename="../replies/getbookingsreply.cpp" line="28"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getbookingsreply.cpp" line="38"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getbookingsreply.cpp" line="45"/>
-        <source>JSON document is not an array!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GetPresenceStatusReply</name>
-    <message>
-        <location filename="../replies/getpresencestatusreply.cpp" line="28"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getpresencestatusreply.cpp" line="38"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getpresencestatusreply.cpp" line="45"/>
-        <source>JSON document is not an array!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GetProjectsReply</name>
-    <message>
-        <location filename="../replies/getprojectsreply.cpp" line="28"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getprojectsreply.cpp" line="38"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getprojectsreply.cpp" line="45"/>
-        <source>JSON document is not an object!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getprojectsreply.cpp" line="54"/>
-        <source>JSON does not contain elements!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getprojectsreply.cpp" line="63"/>
-        <source>elements is not an array!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GetReportReply</name>
-    <message>
-        <location filename="../replies/getreportreply.cpp" line="22"/>
-        <location filename="../replies/getreportreply.cpp" line="40"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GetTimeAssignmentsReply</name>
-    <message>
-        <location filename="../replies/gettimeassignmentsreply.cpp" line="29"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/gettimeassignmentsreply.cpp" line="39"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/gettimeassignmentsreply.cpp" line="46"/>
-        <source>JSON document is not an array!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GetUserInfoReply</name>
-    <message>
-        <location filename="../replies/getuserinforeply.cpp" line="27"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getuserinforeply.cpp" line="37"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getuserinforeply.cpp" line="44"/>
-        <source>JSON document is not an object!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getuserinforeply.cpp" line="53"/>
-        <source>JSON does not contain evoAppsUser!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/getuserinforeply.cpp" line="62"/>
-        <source>evoAppsUser is not an object!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>LanguageSelectionDialog</name>
     <message>
         <location filename="../dialogs/languageselectiondialog.ui" line="20"/>
@@ -261,42 +80,6 @@
     <message>
         <location filename="../dialogs/languageselectiondialog.cpp" line="11"/>
         <source>German</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>LoginPageReply</name>
-    <message>
-        <location filename="../replies/loginpagereply.cpp" line="17"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/loginpagereply.cpp" line="24"/>
-        <source>Could not find necessary keywords in login page!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>LoginReply</name>
-    <message>
-        <location filename="../replies/loginreply.cpp" line="17"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/loginreply.cpp" line="24"/>
-        <source>Response did not contain a Location header.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/loginreply.cpp" line="39"/>
-        <source>Authentication failure. Please check username and password.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/loginreply.cpp" line="45"/>
-        <source>An unknown authentication failure occured. Redirected to: %0</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -544,7 +327,7 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="257"/>
-        <location filename="../stripswidget.cpp" line="448"/>
+        <location filename="../stripswidget.cpp" line="424"/>
         <source>%0: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -555,17 +338,17 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="257"/>
-        <location filename="../stripswidget.cpp" line="379"/>
-        <location filename="../stripswidget.cpp" line="450"/>
+        <location filename="../stripswidget.cpp" line="363"/>
+        <location filename="../stripswidget.cpp" line="426"/>
         <source>%0h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="257"/>
-        <location filename="../stripswidget.cpp" line="450"/>
-        <location filename="../stripswidget.cpp" line="565"/>
-        <location filename="../stripswidget.cpp" line="584"/>
-        <location filename="../stripswidget.cpp" line="603"/>
+        <location filename="../stripswidget.cpp" line="426"/>
+        <location filename="../stripswidget.cpp" line="541"/>
+        <location filename="../stripswidget.cpp" line="560"/>
+        <location filename="../stripswidget.cpp" line="579"/>
         <source>HH:mm</source>
         <translation type="unfinished"></translation>
     </message>
@@ -575,74 +358,60 @@ Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="275"/>
-        <location filename="../stripswidget.cpp" line="326"/>
-        <location filename="../stripswidget.cpp" line="389"/>
-        <source>Expected %0 but received %1 in time assignment.
-Time assignment ID: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../stripswidget.cpp" line="276"/>
-        <location filename="../stripswidget.cpp" line="277"/>
-        <location filename="../stripswidget.cpp" line="327"/>
-        <location filename="../stripswidget.cpp" line="328"/>
-        <location filename="../stripswidget.cpp" line="379"/>
-        <location filename="../stripswidget.cpp" line="390"/>
-        <location filename="../stripswidget.cpp" line="391"/>
-        <location filename="../stripswidget.cpp" line="431"/>
-        <location filename="../stripswidget.cpp" line="432"/>
+        <location filename="../stripswidget.cpp" line="363"/>
+        <location filename="../stripswidget.cpp" line="407"/>
+        <location filename="../stripswidget.cpp" line="408"/>
         <source>HH:mm:ss</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="289"/>
-        <location filename="../stripswidget.cpp" line="403"/>
+        <location filename="../stripswidget.cpp" line="281"/>
+        <location filename="../stripswidget.cpp" line="379"/>
         <source>There is another booking after an unfinished time assignment.
 Booking ID: %0
 Time assignment ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="297"/>
-        <location filename="../stripswidget.cpp" line="340"/>
-        <location filename="../stripswidget.cpp" line="412"/>
+        <location filename="../stripswidget.cpp" line="289"/>
+        <location filename="../stripswidget.cpp" line="324"/>
+        <location filename="../stripswidget.cpp" line="388"/>
         <source>There is another time assignment after an unfinished time assignment.
 Time assignment ID: %0
 Time assignment ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="318"/>
+        <location filename="../stripswidget.cpp" line="310"/>
         <source>The last time assignment is finished without end booking
 Time assignment ID: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="363"/>
+        <location filename="../stripswidget.cpp" line="347"/>
         <source>Expected end booking, instead got type %0
 Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="378"/>
+        <location filename="../stripswidget.cpp" line="362"/>
         <source>Missing time assignment! Missing: %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="430"/>
+        <location filename="../stripswidget.cpp" line="406"/>
         <source>Time assignment time longer than booking time!
 Time assignment: %0
 Booking: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="449"/>
+        <location filename="../stripswidget.cpp" line="425"/>
         <source>Assigned time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="461"/>
+        <location filename="../stripswidget.cpp" line="437"/>
         <source>Strip rendering aborted due error.
 Your bookings and time assignments for this day are in an illegal state!</source>
         <translation type="unfinished"></translation>
@@ -698,54 +467,8 @@ Your bookings and time assignments for this day are in an illegal state!</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="603"/>
+        <location filename="../stripswidget.cpp" line="579"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UpdateBookingReply</name>
-    <message>
-        <location filename="../replies/updatebookingreply.cpp" line="21"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/updatebookingreply.cpp" line="31"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/updatebookingreply.cpp" line="38"/>
-        <source>JSON document is not an object!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/updatebookingreply.cpp" line="47"/>
-        <source>JSON does not contain bookingNr!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>UpdateTimeAssignmentReply</name>
-    <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="26"/>
-        <source>Request error occured: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="36"/>
-        <source>Parsing JSON failed: %0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="43"/>
-        <source>JSON document is not an object!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../replies/updatetimeassignmentreply.cpp" line="52"/>
-        <source>JSON does not contain bookingNr!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

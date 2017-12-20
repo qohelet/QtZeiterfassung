@@ -7,7 +7,7 @@
 #include <QDate>
 #include <QTime>
 
-#include "zeiterfassungguilib_global.h"
+#include "zeiterfassungcorelib_global.h"
 
 class QNetworkAccessManager;
 
@@ -26,7 +26,7 @@ class GetProjectsReply;
 class GetReportReply;
 class GetPresenceStatusReply;
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT ZeiterfassungApi : public QObject
+class ZEITERFASSUNGCORELIBSHARED_EXPORT ZeiterfassungApi : public QObject
 {
     Q_OBJECT
 

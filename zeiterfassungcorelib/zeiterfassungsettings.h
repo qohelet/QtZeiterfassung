@@ -6,9 +6,9 @@
 #include <QStringList>
 #include <QDate>
 
-#include "zeiterfassungguilib_global.h"
+#include "zeiterfassungcorelib_global.h"
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT ZeiterfassungSettings : public QSettings
+class ZEITERFASSUNGCORELIBSHARED_EXPORT ZeiterfassungSettings : public QSettings
 {
     Q_OBJECT
 

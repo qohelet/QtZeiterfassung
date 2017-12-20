@@ -8,10 +8,10 @@ CONFIG -= app_bundle
 
 DESTDIR = $${OUT_PWD}/../bin
 
-LIBS += -L$$OUT_PWD/../lib -lzeiterfassungguilib
+LIBS += -L$$OUT_PWD/../lib -lzeiterfassungcorelib -lzeiterfassungguilib
 
-INCLUDEPATH += $$PWD/../zeiterfassungguilib
-DEPENDPATH += $$PWD/../zeiterfassungguilib
+INCLUDEPATH += $$PWD/../zeiterfassungcorelib $$PWD/../zeiterfassungguilib
+DEPENDPATH += $$PWD/../zeiterfassungcorelib $$PWD/../zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
