@@ -1,5 +1,4 @@
-#ifndef BOOKINGDIALOG_H
-#define BOOKINGDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QTime>
@@ -29,5 +28,3 @@ public:
 private:
     Ui::BookingDialog *ui;
 };
-
-#endif // BOOKINGDIALOG_H

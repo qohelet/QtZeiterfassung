@@ -1,5 +1,4 @@
-#ifndef PRESENCEWIDGET_H
-#define PRESENCEWIDGET_H
+#pragma once
 
 #include <QWidget>
 
@@ -31,5 +30,3 @@ private:
 
     std::unique_ptr<GetPresenceStatusReply> m_reply;
 };
-
-#endif // PRESENCEWIDGET_H

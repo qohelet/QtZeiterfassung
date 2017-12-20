@@ -1,5 +1,4 @@
-#ifndef LUNCHMEALDIALOG_H
-#define LUNCHMEALDIALOG_H
+#pragma once
 
 #include <memory>
 
@@ -25,5 +24,3 @@ private:
     Ui::LunchMealDialog *ui;
     std::unique_ptr<QNetworkReply> m_reply;
 };
-
-#endif // LUNCHMEALDIALOG_H

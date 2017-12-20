@@ -1,5 +1,4 @@
-#ifndef GETBOOKINGSREPLY_H
-#define GETBOOKINGSREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -37,5 +36,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     QVector<Booking> m_bookings;
 };
-
-#endif // GETBOOKINGSREPLY_H

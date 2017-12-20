@@ -1,5 +1,4 @@
-#ifndef REPORTSWIDGET_H
-#define REPORTSWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <QDate>
@@ -39,5 +38,3 @@ private:
 
     std::unique_ptr<GetReportReply> m_reply;
 };
-
-#endif // REPORTSWIDGET_H

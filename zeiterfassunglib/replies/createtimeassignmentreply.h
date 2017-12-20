@@ -1,5 +1,4 @@
-#ifndef CREATETIMEASSIGNMENTREPLY_H
-#define CREATETIMEASSIGNMENTREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -24,5 +23,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     int m_timeAssignmentId;
 };
-
-#endif // CREATETIMEASSIGNMENTREPLY_H

@@ -1,5 +1,4 @@
-#ifndef UPDATETIMEASSIGNMENTREPLY_H
-#define UPDATETIMEASSIGNMENTREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -24,5 +23,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     int m_timeAssignmentId;
 };
-
-#endif // UPDATETIMEASSIGNMENTREPLY_H

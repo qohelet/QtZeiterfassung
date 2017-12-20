@@ -1,5 +1,4 @@
-#ifndef ADVANCEDVIEWDIALOG_H
-#define ADVANCEDVIEWDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -28,5 +27,3 @@ private:
     BookingsModel *m_bookingsModel;
     TimeAssignmentsModel *m_timeAssignmentsModel;
 };
-
-#endif // ADVANCEDVIEWDIALOG_H

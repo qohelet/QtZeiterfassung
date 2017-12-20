@@ -1,8 +1,4 @@
-#ifndef CPP14POLYFILLS_H
-#define CPP14POLYFILLS_H
-
-#ifndef CPP14POLYFILLS_INCLUDED
-#define CPP14POLYFILLS_INCLUDED
+#pragma once
 
 #if __cplusplus < 201402L
 
@@ -45,7 +41,3 @@ namespace std {
 }
 
 #endif // __cplusplus < 201402L
-
-#endif // CPP14POLYFILLS_INCLUDED
-
-#endif // CPP14POLYFILLS_H

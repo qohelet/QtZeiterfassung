@@ -1,5 +1,4 @@
-#ifndef ZEITERFASSUNGSETTINGS_H
-#define ZEITERFASSUNGSETTINGS_H
+#pragma once
 
 #include <QSettings>
 #include <QLocale>
@@ -57,5 +56,3 @@ public:
 private:
     void prependItem(const QString &name, const QString &item);
 };
-
-#endif // ZEITERFASSUNGSETTINGS_H

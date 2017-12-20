@@ -1,5 +1,4 @@
-#ifndef ZEITERFASSUNGAPI_H
-#define ZEITERFASSUNGAPI_H
+#pragma once
 
 #include <memory>
 
@@ -69,5 +68,3 @@ private:
     QString m_url;
     QNetworkAccessManager *m_manager;
 };
-
-#endif // ZEITERFASSUNGAPI_H

@@ -1,5 +1,4 @@
-#ifndef ADVANCEDVIEWWIDGET_H
-#define ADVANCEDVIEWWIDGET_H
+#pragma once
 
 #include <QToolButton>
 
@@ -19,5 +18,3 @@ private Q_SLOTS:
 private:
     StripsWidget &m_stripsWidget;
 };
-
-#endif // ADVANCEDVIEWWIDGET_H

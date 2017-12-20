@@ -1,5 +1,4 @@
-#ifndef GETUSERINFOREPLY_H
-#define GETUSERINFOREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -50,5 +49,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply1;
     UserInfo m_userInfo;
 };
-
-#endif // GETUSERINFOREPLY_H

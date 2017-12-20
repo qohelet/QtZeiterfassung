@@ -1,5 +1,4 @@
-#ifndef DELETETIMEASSIGNMENT_H
-#define DELETETIMEASSIGNMENT_H
+#pragma once
 
 #include <memory>
 
@@ -21,5 +20,3 @@ private Q_SLOTS:
 private:
     std::unique_ptr<QNetworkReply> m_reply;
 };
-
-#endif // DELETETIMEASSIGNMENT_H

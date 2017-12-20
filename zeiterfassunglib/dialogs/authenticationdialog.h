@@ -1,5 +1,4 @@
-#ifndef AUTHENTICATIONDIALOG_H
-#define AUTHENTICATIONDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -26,5 +25,3 @@ public:
 private:
     Ui::AuthenticationDialog *ui;
 };
-
-#endif // AUTHENTICATIONDIALOG_H

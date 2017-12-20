@@ -1,5 +1,4 @@
-#ifndef LUNCHMEALWIDGET_H
-#define LUNCHMEALWIDGET_H
+#pragma once
 
 #include <QToolButton>
 
@@ -17,5 +16,3 @@ private Q_SLOTS:
 private:
     StripsWidget &m_stripsWidget;
 };
-
-#endif // LUNCHMEALWIDGET_H

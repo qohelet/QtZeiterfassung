@@ -1,5 +1,4 @@
-#ifndef LOGINPAGEREPLY_H
-#define LOGINPAGEREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -21,5 +20,3 @@ private Q_SLOTS:
 private:
     std::unique_ptr<QNetworkReply> m_reply;
 };
-
-#endif // LOGINPAGEREPLY_H

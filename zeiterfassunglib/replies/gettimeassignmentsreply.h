@@ -1,5 +1,4 @@
-#ifndef GETTIMEASSIGNMENTSREPLY_H
-#define GETTIMEASSIGNMENTSREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -39,5 +38,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     QVector<TimeAssignment> m_timeAssignments;
 };
-
-#endif // GETTIMEASSIGNMENTSREPLY_H

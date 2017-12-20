@@ -1,5 +1,4 @@
-#ifndef STRIPSWIDGET_H
-#define STRIPSWIDGET_H
+#pragma once
 
 #include <memory>
 
@@ -103,5 +102,3 @@ private:
     std::unique_ptr<GetBookingsReply> m_getBookingsReply;
     std::unique_ptr<GetTimeAssignmentsReply> m_getTimeAssignmentsReply;
 };
-
-#endif // STRIPSWIDGET_H

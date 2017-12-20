@@ -1,5 +1,4 @@
-#ifndef ZEITERFASSUNGLIB_GLOBAL_H
-#define ZEITERFASSUNGLIB_GLOBAL_H
+#pragma once
 
 #include <QtCore/qglobal.h>
 
@@ -8,5 +7,3 @@
 #else
 #  define ZEITERFASSUNGLIBSHARED_EXPORT Q_DECL_IMPORT
 #endif
-
-#endif // ZEITERFASSUNGLIB_GLOBAL_H

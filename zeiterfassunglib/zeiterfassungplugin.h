@@ -1,5 +1,4 @@
-#ifndef ZEITERFASSUNGPLUGIN_H
-#define ZEITERFASSUNGPLUGIN_H
+#pragma once
 
 #include <QObject>
 
@@ -19,5 +18,3 @@ public:
 };
 
 Q_DECLARE_INTERFACE(ZeiterfassungPlugin, "dbsoftware.zeiterfassung.plugin/1.0")
-
-#endif // ZEITERFASSUNGPLUGIN_H

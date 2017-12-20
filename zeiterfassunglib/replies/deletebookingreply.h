@@ -1,5 +1,4 @@
-#ifndef DELETEBOOKINGREPLY_H
-#define DELETEBOOKINGREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -21,5 +20,3 @@ private Q_SLOTS:
 private:
     std::unique_ptr<QNetworkReply> m_reply;
 };
-
-#endif // DELETEBOOKINGREPLY_H

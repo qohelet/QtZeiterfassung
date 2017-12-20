@@ -1,5 +1,4 @@
-#ifndef GETPRESENCESTATUSREPLY_H
-#define GETPRESENCESTATUSREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -34,5 +33,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     QVector<PresenceStatus> m_presenceStatuses;
 };
-
-#endif // GETPRESENCESTATUSREPLY_H

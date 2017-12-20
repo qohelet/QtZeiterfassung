@@ -1,5 +1,4 @@
-#ifndef TIMEASSIGNMENTDIALOG_H
-#define TIMEASSIGNMENTDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QTime>
@@ -40,5 +39,3 @@ public:
 private:
     Ui::TimeAssignmentDialog *ui;
 };
-
-#endif // TIMEASSIGNMENTDIALOG_H

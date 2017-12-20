@@ -1,5 +1,4 @@
-#ifndef ADVANCEDVIEWPLUGIN_H
-#define ADVANCEDVIEWPLUGIN_H
+#pragma once
 
 #include <QObject>
 #include <QTranslator>
@@ -23,5 +22,3 @@ public:
 private:
     QTranslator m_translator;
 };
-
-#endif // ADVANCEDVIEWPLUGIN_H

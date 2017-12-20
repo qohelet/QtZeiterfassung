@@ -1,5 +1,4 @@
-#ifndef UPDATERDIALOG_H
-#define UPDATERDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QUrl>
@@ -29,5 +28,3 @@ private:
 
     QUrl m_url;
 };
-
-#endif // UPDATERDIALOG_H

@@ -1,5 +1,4 @@
-#ifndef GETREPORTREPLY_H
-#define GETREPORTREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -26,5 +25,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     QByteArray m_content;
 };
-
-#endif // GETREPORTREPLY_H

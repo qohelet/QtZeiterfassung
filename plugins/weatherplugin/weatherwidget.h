@@ -1,5 +1,4 @@
-#ifndef WEATHERWIDGET_H
-#define WEATHERWIDGET_H
+#pragma once
 
 #include <memory>
 
@@ -24,5 +23,3 @@ private:
 
     std::unique_ptr<QNetworkReply> m_reply;
 };
-
-#endif // WEATHERWIDGET_H

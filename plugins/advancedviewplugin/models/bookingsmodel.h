@@ -1,5 +1,4 @@
-#ifndef BOOKINGSMODEL_H
-#define BOOKINGSMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QVector>
@@ -36,5 +35,3 @@ private Q_SLOTS:
 private:
     StripsWidget &m_stripsWidget;
 };
-
-#endif // BOOKINGSMODEL_H

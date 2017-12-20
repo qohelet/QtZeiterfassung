@@ -1,5 +1,4 @@
-#ifndef UPDATEBOOKINGREPLY_H
-#define UPDATEBOOKINGREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -22,5 +21,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     int m_bookingId;
 };
-
-#endif // UPDATEBOOKINGREPLY_H

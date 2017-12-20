@@ -1,5 +1,4 @@
-#ifndef STRIPFACTORY_H
-#define STRIPFACTORY_H
+#pragma once
 
 #include <memory>
 
@@ -34,5 +33,3 @@ private:
     QByteArray m_bookingEndStrip;
     QByteArray m_timeAssignmentStrip;
 };
-
-#endif // STRIPFACTORY_H

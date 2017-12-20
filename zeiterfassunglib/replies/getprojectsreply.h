@@ -1,5 +1,4 @@
-#ifndef GETPROJECTSREPLY_H
-#define GETPROJECTSREPLY_H
+#pragma once
 
 #include <memory>
 
@@ -33,5 +32,3 @@ private:
     std::unique_ptr<QNetworkReply> m_reply;
     QVector<Project> m_projects;
 };
-
-#endif // GETPROJECTSREPLY_H

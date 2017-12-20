@@ -1,5 +1,4 @@
-#ifndef ABOUTMEDIALOG_H
-#define ABOUTMEDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -19,5 +18,3 @@ public:
 private:
     Ui::AboutMeDialog *ui;
 };
-
-#endif // ABOUTMEDIALOG_H

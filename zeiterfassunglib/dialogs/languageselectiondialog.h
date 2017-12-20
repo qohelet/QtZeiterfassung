@@ -1,5 +1,4 @@
-#ifndef LANGUAGESELECTIONDIALOG_H
-#define LANGUAGESELECTIONDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QLocale>
@@ -22,5 +21,3 @@ public:
 private:
     Ui::LanguageSelectionDialog *ui;
 };
-
-#endif // LANGUAGESELECTIONDIALOG_H

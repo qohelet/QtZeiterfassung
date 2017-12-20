@@ -1,5 +1,4 @@
-#ifndef ZEITERFASSUNGREPLY_H
-#define ZEITERFASSUNGREPLY_H
+#pragma once
 
 #include <QObject>
 
@@ -32,5 +31,3 @@ private:
     bool m_success;
     QString m_message;
 };
-
-#endif // ZEITERFASSUNGREPLY_H
