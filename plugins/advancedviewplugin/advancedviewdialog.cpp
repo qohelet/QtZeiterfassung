@@ -54,7 +54,7 @@ void AdvancedViewDialog::contextMenuBooking(const QPoint &pos)
     {
         QMenu menu;
         auto createAction = menu.addAction(tr("Create booking"));
-        auto refreshAction = menu.addAction(QIcon(QPixmap(QStringLiteral(":/zeiterfassunglib/images/refresh.png"))), tr("Refresh bookings"));
+        auto refreshAction = menu.addAction(QIcon(QPixmap(QStringLiteral(":/zeiterfassung/zeiterfassunglib/images/refresh.png"))), tr("Refresh bookings"));
         auto selectedAction = menu.exec(ui->bookingsView->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {
@@ -160,7 +160,7 @@ void AdvancedViewDialog::contextMenuTimeAssignment(const QPoint &pos)
     {
         QMenu menu;
         auto createAction = menu.addAction(tr("Create time assignment"));
-        auto refreshAction = menu.addAction(QIcon(QPixmap(QStringLiteral(":/zeiterfassunglib/images/refresh.png"))), tr("Refresh time assignments"));
+        auto refreshAction = menu.addAction(QIcon(QPixmap(QStringLiteral(":/zeiterfassung/zeiterfassunglib/images/refresh.png"))), tr("Refresh time assignments"));
         auto selectedAction = menu.exec(ui->timeAssignmentsView->viewport()->mapToGlobal(pos));
         if(selectedAction == createAction)
         {

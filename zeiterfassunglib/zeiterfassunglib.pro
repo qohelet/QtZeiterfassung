@@ -72,7 +72,7 @@ FORMS += mainwindow.ui \
          dialogs/authenticationdialog.ui \
          dialogs/aboutmedialog.ui
 
-RESOURCES += resources.qrc
+RESOURCES += zeiterfassunglib_resources.qrc
 
 TRANSLATIONS +=  translations/zeiterfassunglib_en.ts \
                  translations/zeiterfassunglib_de.ts

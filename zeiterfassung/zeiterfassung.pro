@@ -25,7 +25,7 @@ FORMS += strips/bookingstartstrip.ui \
          strips/bookingendstrip.ui \
          strips/timeassignmentstrip.ui
 
-RESOURCES +=
+RESOURCES += zeiterfassung_resources.qrc
 
 TRANSLATIONS += translations/zeiterfassung_en.ts \
                 translations/zeiterfassung_de.ts

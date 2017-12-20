@@ -37,7 +37,7 @@
         </size>
        </property>
        <property name="pixmap">
-        <pixmap resource="../resources.qrc">:/zeiterfassunglib/images/authentication.png</pixmap>
+        <pixmap resource="../resources.qrc">:/zeiterfassung/zeiterfassunglib/images/authentication.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
