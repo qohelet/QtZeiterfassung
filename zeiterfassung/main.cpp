@@ -29,7 +29,7 @@
 struct {
     QTranslator qtTranslator;
     QTranslator zeiterfassungTranslator;
-    QTranslator zeiterfassunglibTranslator;
+    QTranslator zeiterfassungguilibTranslator;
 } translators;
 
 QVector<ZeiterfassungPlugin*> plugins;
@@ -80,7 +80,7 @@ bool loadTranslations(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
 
     loadAndInstallTranslator(translators.qtTranslator,               QStringLiteral("qt"));
     loadAndInstallTranslator(translators.zeiterfassungTranslator,    QStringLiteral("zeiterfassung"));
-    loadAndInstallTranslator(translators.zeiterfassunglibTranslator, QStringLiteral("zeiterfassunglib"));
+    loadAndInstallTranslator(translators.zeiterfassungguilibTranslator, QStringLiteral("zeiterfassungguilib"));
 
     return true;
 }

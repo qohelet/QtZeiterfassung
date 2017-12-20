@@ -1,7 +1,7 @@
 CONFIG(debug, release|debug): DEBUG_SIGN = d
 
 LIBRARIES += win32/Qt.conf \
-             $$OUT_PWD/../lib/zeiterfassunglib.dll \
+             $$OUT_PWD/../lib/zeiterfassungguilib.dll \
              $$[QT_INSTALL_BINS]/Qt5Core$${DEBUG_SIGN}.dll \
              $$[QT_INSTALL_BINS]/Qt5Gui$${DEBUG_SIGN}.dll \
              $$[QT_INSTALL_BINS]/Qt5Network$${DEBUG_SIGN}.dll \

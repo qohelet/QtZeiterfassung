@@ -7,10 +7,10 @@ CONFIG += shared c++14
 
 DESTDIR = $${OUT_PWD}/../../bin/plugins/zeiterfassung
 
-LIBS += -L$$OUT_PWD/../../lib -lzeiterfassunglib
+LIBS += -L$$OUT_PWD/../../lib -lzeiterfassungguilib
 
-INCLUDEPATH += $$PWD/../../zeiterfassunglib
-DEPENDPATH += $$PWD/../../zeiterfassunglib
+INCLUDEPATH += $$PWD/../../zeiterfassungguilib
+DEPENDPATH += $$PWD/../../zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 

@@ -1,9 +1,0 @@
-#pragma once
-
-#include <QtCore/qglobal.h>
-
-#if defined(ZEITERFASSUNGLIB_LIBRARY)
-#  define ZEITERFASSUNGLIBSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define ZEITERFASSUNGLIBSHARED_EXPORT Q_DECL_IMPORT
-#endif

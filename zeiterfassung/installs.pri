@@ -12,8 +12,8 @@ COMPILED_TRANSLATIONS += $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm \
                          $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_de.qm \
                          $${OUT_PWD}/translations/zeiterfassung_en.qm \
                          $${OUT_PWD}/translations/zeiterfassung_de.qm \
-                         $${OUT_PWD}/../zeiterfassunglib/translations/zeiterfassunglib_en.qm \
-                         $${OUT_PWD}/../zeiterfassunglib/translations/zeiterfassunglib_de.qm
+                         $${OUT_PWD}/../zeiterfassungguilib/translations/zeiterfassungguilib_en.qm \
+                         $${OUT_PWD}/../zeiterfassungguilib/translations/zeiterfassungguilib_de.qm
 
 copy_compiled_translations.input = COMPILED_TRANSLATIONS
 copy_compiled_translations.output = $${DESTDIR}/translations/${QMAKE_FILE_BASE}${QMAKE_FILE_EXT}
