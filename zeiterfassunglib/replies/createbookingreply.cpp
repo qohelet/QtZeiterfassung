@@ -1,21 +1,10 @@
 #include "createbookingreply.h"
 
-#include <QJsonParseError>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
-
 CreateBookingReply::CreateBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung) :
     ZeiterfassungReply(zeiterfassung),
-    m_reply(std::move(reply)),
-    m_bookingId(-1)
+    m_reply(std::move(reply))
 {
     connect(m_reply.get(), &QNetworkReply::finished, this, &CreateBookingReply::requestFinished);
-}
-
-int CreateBookingReply::bookingId() const
-{
-    return m_bookingId;
 }
 
 void CreateBookingReply::requestFinished()
@@ -27,35 +16,8 @@ void CreateBookingReply::requestFinished()
         goto end;
     }
 
-    {
-        QJsonParseError error;
-        QJsonDocument document = QJsonDocument::fromJson(m_reply->readAll(), &error);
-        if(error.error != QJsonParseError::NoError)
-        {
-            setSuccess(false);
-            setMessage(tr("Parsing JSON failed: %0").arg(error.errorString()));
-            goto end;
-        }
-
-        if(!document.isObject())
-        {
-            setSuccess(false);
-            setMessage(tr("JSON document is not an object!"));
-            goto end;
-        }
-
-        auto obj = document.object();
-
-        if(!obj.contains(QStringLiteral("bookingNr")))
-        {
-            setSuccess(false);
-            setMessage(tr("JSON does not contain bookingNr!"));
-            goto end;
-        }
-
-        setSuccess(true);
-        m_bookingId = obj.value(QStringLiteral("bookingNr")).toInt();
-    }
+    // empty response so nothing to check
+    setSuccess(true);
 
     end:
     m_reply = Q_NULLPTR;

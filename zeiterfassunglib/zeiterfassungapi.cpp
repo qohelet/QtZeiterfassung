@@ -98,9 +98,9 @@ std::unique_ptr<GetBookingsReply> ZeiterfassungApi::doGetBookings(int userId, co
 std::unique_ptr<CreateBookingReply> ZeiterfassungApi::doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan,
                                                                       const QString &type, const QString &text)
 {
-    QNetworkRequest request(QUrl(m_url % "json/booking"));
+    QNetworkRequest request(QUrl(m_url % "json/terminalPageController/evoTerminalBooking"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
-    request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
+    request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("terminal"));
 
     QJsonObject obj;
     obj[QStringLiteral("persNr")] = userId;
@@ -111,6 +111,7 @@ std::unique_ptr<CreateBookingReply> ZeiterfassungApi::doCreateBooking(int userId
     obj[QStringLiteral("hourCategory")] = QStringLiteral("");
     obj[QStringLiteral("empfEinh")] = QStringLiteral("");
     obj[QStringLiteral("bewEinh")] = QStringLiteral("");
+    obj[QStringLiteral("einstuf")] = QStringLiteral("");
     obj[QStringLiteral("text")] = text;
 
     auto reply = std::unique_ptr<QNetworkReply>(m_manager->post(request, QJsonDocument(obj).toJson()));
