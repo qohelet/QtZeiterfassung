@@ -270,14 +270,6 @@ bool StripsWidget::createStrips()
         }
 
         auto timeAssignment = *timeAssignmentsIter++;
-        if(timeAssignment.time != timeAssignmentTime)
-        {
-            errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                    .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
-                    .arg(timeAssignment.time.toString(tr("HH:mm:ss")))
-                    .arg(timeAssignment.id);
-            goto after;
-        }
 
         appendTimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                   timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text);
@@ -321,14 +313,6 @@ bool StripsWidget::createStrips()
                     }
 
                     timeAssignment = *timeAssignmentsIter++;
-                    if(timeAssignment.time != timeAssignmentTime)
-                    {
-                        errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
-                                .arg(timeAssignment.time.toString(tr("HH:mm:ss")))
-                                .arg(timeAssignment.id);
-                        goto after;
-                    }
 
                     appendTimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                               timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text);
@@ -384,14 +368,6 @@ bool StripsWidget::createStrips()
                     }
 
                     timeAssignment = *timeAssignmentsIter++;
-                    if(timeAssignment.time != timeAssignmentTime)
-                    {
-                        errorMessage = tr("Expected %0 but received %1 in time assignment.\nTime assignment ID: %2")
-                                .arg(timeAssignmentTime.toString(tr("HH:mm:ss")))
-                                .arg(timeAssignment.time.toString(tr("HH:mm:ss")))
-                                .arg(timeAssignment.id);
-                        goto after;
-                    }
 
                     appendTimeAssignmentStrip(timeAssignment.id, timeAssignment.timespan, buildProjectString(timeAssignment.project),
                                               timeAssignment.subproject, timeAssignment.workpackage, timeAssignment.text);
