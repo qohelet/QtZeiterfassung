@@ -14,11 +14,16 @@ DEPENDPATH += $$PWD/../../zeiterfassungcorelib $$PWD/../../zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += devtoolsplugin.h
+HEADERS += devtoolsplugin.h \
+    logmodel.h \
+    logdialog.h
 
-SOURCES += devtoolsplugin.cpp
+SOURCES += devtoolsplugin.cpp \
+    logmodel.cpp \
+    logdialog.cpp
 
-FORMS +=
+FORMS += \
+    logdialog.ui
 
 RESOURCES +=
 

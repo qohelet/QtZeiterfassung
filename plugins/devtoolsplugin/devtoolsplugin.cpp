@@ -1,15 +1,34 @@
 #include "devtoolsplugin.h"
 
+#include <memory>
+
 #include <QDebug>
 #include <QDir>
 #include <QCoreApplication>
 #include <QLocale>
+#include <QMenu>
+#include <QAction>
 
 #include "mainwindow.h"
 
+#include "logmodel.h"
+#include "logdialog.h"
+
+std::shared_ptr<LogModel> model;
+QtMessageHandler previousHandler;
+
+void myMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &message)
+{
+    previousHandler(type, context, message);
+
+    if(!model)
+        model = std::make_shared<LogModel>();
+    model->log(type, context.file, context.line, context.function, context.category, message);
+}
+
 void registerMessageHandler()
 {
-    qDebug() << "called";
+    previousHandler = qInstallMessageHandler(myMessageHandler);
 }
 
 Q_COREAPP_STARTUP_FUNCTION(registerMessageHandler)
@@ -36,5 +55,7 @@ DevToolsPlugin::DevToolsPlugin(QObject *parent) :
 
 void DevToolsPlugin::attachTo(MainWindow &mainWindow)
 {
-    //TODO
+    auto dialog = new LogDialog(&mainWindow);
+    dialog->setModel(model.get());
+    mainWindow.menuTools()->addAction(tr("Show log"), dialog, &QDialog::open);
 }
