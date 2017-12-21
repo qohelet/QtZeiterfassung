@@ -4,11 +4,12 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QLocale>
-#include <QDialog>
 #include <QMenu>
 #include <QAction>
 
 #include "mainwindow.h"
+
+#include "webradiodialog.h"
 
 WebRadioPlugin::WebRadioPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -32,9 +33,7 @@ WebRadioPlugin::WebRadioPlugin(QObject *parent) :
 
 void WebRadioPlugin::attachTo(MainWindow &mainWindow)
 {
-    auto dialog = new QDialog(&mainWindow);
-    dialog->setWindowFlag(Qt::WindowCloseButtonHint, true);
-    dialog->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    auto dialog = new WebRadioDialog(&mainWindow);
     mainWindow.menuTools()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/webradioplugin/images/web-radio.png")),
                                       tr("Play webradio"), dialog, &QWidget::show);
 }

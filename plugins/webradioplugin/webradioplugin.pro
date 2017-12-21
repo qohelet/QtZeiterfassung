@@ -14,11 +14,14 @@ DEPENDPATH += $$PWD/../../zeiterfassungcorelib $$PWD/../../zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += webradioplugin.h
+HEADERS += webradioplugin.h \
+    webradiodialog.h
 
-SOURCES += webradioplugin.cpp
+SOURCES += webradioplugin.cpp \
+    webradiodialog.cpp
 
-FORMS +=
+FORMS += \
+    webradiodialog.ui
 
 RESOURCES += webradioplugin_resources.qrc
 
