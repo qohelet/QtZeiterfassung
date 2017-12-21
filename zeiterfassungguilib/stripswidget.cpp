@@ -438,7 +438,7 @@ bool StripsWidget::createStrips()
         auto label = new QLabel(tr("Strip rendering aborted due error.\n"
                                    "Your bookings and time assignments for this day are in an illegal state!") % "\n" %
                                    errorMessage, this);
-        label->setStyleSheet("color: red;");
+        label->setStyleSheet(QStringLiteral("color: red;"));
         m_stripsLayout->addWidget(label);
     }
 

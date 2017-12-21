@@ -69,14 +69,14 @@ void WeatherWidget::finished()
         if(!obj.contains(QStringLiteral("weather")))
         {
             qWarning() << "no weather" << obj;
-            setText("No weater found");
+            setText(tr("No weather found"));
             goto after;
         }
 
         if(!obj.contains(QStringLiteral("main")))
         {
             qWarning() << "no main" << obj;
-            setText("No main found");
+            setText(tr("No main found"));
             goto after;
         }
 
