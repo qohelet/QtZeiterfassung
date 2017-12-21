@@ -4,35 +4,101 @@
 <context>
     <name>AboutMeDialog</name>
     <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="20"/>
-        <location filename="../dialogs/aboutmedialog.ui" line="31"/>
+        <location filename="../dialogs/aboutmedialog.ui" line="14"/>
+        <location filename="../dialogs/aboutmedialog.ui" line="25"/>
         <source>About me</source>
         <translation>Über mich</translation>
     </message>
     <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="40"/>
+        <location filename="../dialogs/aboutmedialog.ui" line="47"/>
         <source>User-ID:</source>
         <translation>Benutzer-ID:</translation>
     </message>
     <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="50"/>
+        <location filename="../dialogs/aboutmedialog.ui" line="57"/>
         <source>E-Mail:</source>
         <translation>E-Mail:</translation>
     </message>
     <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="60"/>
+        <location filename="../dialogs/aboutmedialog.ui" line="67"/>
         <source>Long username:</source>
         <translation>Langer Benutzername:</translation>
     </message>
     <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="70"/>
+        <location filename="../dialogs/aboutmedialog.ui" line="77"/>
         <source>Text:</source>
         <translation>Text:</translation>
     </message>
     <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="80"/>
+        <location filename="../dialogs/aboutmedialog.ui" line="87"/>
         <source>Username:</source>
         <translation>Benutzername:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="135"/>
+        <source>Street:</source>
+        <translation>Straße:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="142"/>
+        <source>City:</source>
+        <translation>Stadt:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="149"/>
+        <source>Employed since:</source>
+        <translation>Angestellt seit:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="156"/>
+        <source>Employed till:</source>
+        <translation>Angestellt bis:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="163"/>
+        <source>Place of birth:</source>
+        <translation>Geburtsort:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="170"/>
+        <source>Zipcode:</source>
+        <translation>Postleitzahl:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="177"/>
+        <source>Religion:</source>
+        <translation>Religion:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="184"/>
+        <source>Department:</source>
+        <translation>Abteilung:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="191"/>
+        <source>Verwendgr:</source>
+        <translation>Verwendgr:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="198"/>
+        <source>Taetig:</source>
+        <translation>Taetig:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="205"/>
+        <source>Arbverh:</source>
+        <translation>Arbverh:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.ui" line="212"/>
+        <source>Betriebsnr:</source>
+        <translation>Betriebsnr:</translation>
+    </message>
+    <message>
+        <location filename="../dialogs/aboutmedialog.cpp" line="17"/>
+        <location filename="../dialogs/aboutmedialog.cpp" line="18"/>
+        <source>dd.MM.yyyy</source>
+        <translation>dd.MM.yyyy</translation>
     </message>
 </context>
 <context>

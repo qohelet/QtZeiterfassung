@@ -148,14 +148,14 @@ void GetUserInfoReply::request1Finished()
         if(!m_reply0)
             setSuccess(true);
 
-        m_userInfo.gemeinde = obj.value(QStringLiteral("gemeinde")).toString();
-        m_userInfo.ort = obj.value(QStringLiteral("ort")).toString();
-        m_userInfo.angFrom = QDate::fromString(QString::number(obj.value(QStringLiteral("angFrom")).toInt()), QStringLiteral("yyyyMMdd"));
-        m_userInfo.angTill = QDate::fromString(QString::number(obj.value(QStringLiteral("angTill")).toInt()), QStringLiteral("yyyyMMdd"));
-        m_userInfo.gebOrt = obj.value(QStringLiteral("gebOrt")).toString();
-        m_userInfo.plz = obj.value(QStringLiteral("plz")).toString();
+        m_userInfo.street = obj.value(QStringLiteral("gemeinde")).toString();
+        m_userInfo.city = obj.value(QStringLiteral("ort")).toString();
+        m_userInfo.employedSince = QDate::fromString(QString::number(obj.value(QStringLiteral("angFrom")).toInt()), QStringLiteral("yyyyMMdd"));
+        m_userInfo.employedTill = QDate::fromString(QString::number(obj.value(QStringLiteral("angTill")).toInt()), QStringLiteral("yyyyMMdd"));
+        m_userInfo.placeOfBirth = obj.value(QStringLiteral("gebOrt")).toString();
+        m_userInfo.zipcode = obj.value(QStringLiteral("plz")).toString();
         m_userInfo.religion = obj.value(QStringLiteral("religion")).toString();
-        m_userInfo.bereich = obj.value(QStringLiteral("bereich")).toString();
+        m_userInfo.department = obj.value(QStringLiteral("bereich")).toString();
         m_userInfo.verwendgr = obj.value(QStringLiteral("verwendgr")).toString();
         m_userInfo.taetig = obj.value(QStringLiteral("taetig")).toString();
         m_userInfo.arbverh = obj.value(QStringLiteral("arbverh")).toString();
