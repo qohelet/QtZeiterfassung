@@ -57,5 +57,6 @@ void DevToolsPlugin::attachTo(MainWindow &mainWindow)
 {
     auto dialog = new LogDialog(&mainWindow);
     dialog->setModel(model.get());
-    mainWindow.menuTools()->addAction(tr("Show log"), dialog, &QDialog::open);
+    mainWindow.menuTools()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/devtoolsplugin/images/dev-tools.png")),
+                                      tr("Show log"), dialog, &QDialog::open);
 }

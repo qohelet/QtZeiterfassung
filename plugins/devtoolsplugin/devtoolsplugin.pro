@@ -25,7 +25,7 @@ SOURCES += devtoolsplugin.cpp \
 FORMS += \
     logdialog.ui
 
-RESOURCES +=
+RESOURCES += devtoolsplugin_resources.qrc
 
 TRANSLATIONS += translations/devtoolsplugin_en.ts \
                 translations/devtoolsplugin_de.ts

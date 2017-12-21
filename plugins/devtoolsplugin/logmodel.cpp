@@ -35,7 +35,17 @@ QVariant LogModel::data(const QModelIndex &index, int role) const
     case Qt::EditRole:
         switch(index.column())
         {
-        case 0: return entry.type;
+        case 0:
+        {
+            switch(entry.type)
+            {
+            case QtDebugMsg: return tr("Debug");
+            case QtWarningMsg: return tr("Warning");
+            case QtCriticalMsg: return tr("Critical");
+            case QtFatalMsg: return tr("Fatal");
+            case QtInfoMsg: return tr("Info");
+            }
+        }
         case 1: return entry.dateTime.toString(QStringLiteral("dd.MM.yyyy HH:mm:ss.zzz"));
         case 2: return entry.functionName;
         case 3: return entry.message;
