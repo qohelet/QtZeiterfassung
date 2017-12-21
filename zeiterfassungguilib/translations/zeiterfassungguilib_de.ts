@@ -214,27 +214,27 @@
         <translation>Über &amp;zeiterfassung</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="278"/>
+        <location filename="../mainwindow.ui" line="282"/>
         <source>About &amp;Qt</source>
         <translation>Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="287"/>
+        <location filename="../mainwindow.ui" line="291"/>
         <source>&amp;Today</source>
         <translation>&amp;Heute</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="296"/>
+        <location filename="../mainwindow.ui" line="300"/>
         <source>&amp;Refresh everything</source>
         <translation>Alles &amp;neu laden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="305"/>
+        <location filename="../mainwindow.ui" line="309"/>
         <source>&amp;Settings</source>
         <translation>&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="314"/>
+        <location filename="../mainwindow.ui" line="318"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
@@ -393,7 +393,7 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="257"/>
-        <location filename="../stripswidget.cpp" line="424"/>
+        <location filename="../stripswidget.cpp" line="425"/>
         <source>%0: %1</source>
         <translation>%0: %1</translation>
     </message>
@@ -404,17 +404,19 @@ Booking ID: %1</source>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="257"/>
-        <location filename="../stripswidget.cpp" line="363"/>
-        <location filename="../stripswidget.cpp" line="426"/>
+        <location filename="../stripswidget.cpp" line="364"/>
+        <location filename="../stripswidget.cpp" line="427"/>
+        <location filename="../stripswidget.cpp" line="566"/>
         <source>%0h</source>
         <translation>%0h</translation>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="257"/>
-        <location filename="../stripswidget.cpp" line="426"/>
-        <location filename="../stripswidget.cpp" line="541"/>
-        <location filename="../stripswidget.cpp" line="560"/>
-        <location filename="../stripswidget.cpp" line="579"/>
+        <location filename="../stripswidget.cpp" line="427"/>
+        <location filename="../stripswidget.cpp" line="542"/>
+        <location filename="../stripswidget.cpp" line="561"/>
+        <location filename="../stripswidget.cpp" line="566"/>
+        <location filename="../stripswidget.cpp" line="585"/>
         <source>HH:mm</source>
         <translation>HH:mm</translation>
     </message>
@@ -424,15 +426,15 @@ Booking ID: %1</source>
         <translation>Kontierung fehlend!</translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="363"/>
-        <location filename="../stripswidget.cpp" line="407"/>
+        <location filename="../stripswidget.cpp" line="364"/>
         <location filename="../stripswidget.cpp" line="408"/>
+        <location filename="../stripswidget.cpp" line="409"/>
         <source>HH:mm:ss</source>
         <translation>HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../stripswidget.cpp" line="281"/>
-        <location filename="../stripswidget.cpp" line="379"/>
+        <location filename="../stripswidget.cpp" line="380"/>
         <source>There is another booking after an unfinished time assignment.
 Booking ID: %0
 Time assignment ID: %1</source>
@@ -441,7 +443,7 @@ Time assignment ID: %1</source>
     <message>
         <location filename="../stripswidget.cpp" line="289"/>
         <location filename="../stripswidget.cpp" line="324"/>
-        <location filename="../stripswidget.cpp" line="388"/>
+        <location filename="../stripswidget.cpp" line="389"/>
         <source>There is another time assignment after an unfinished time assignment.
 Time assignment ID: %0
 Time assignment ID: %1</source>
@@ -460,12 +462,12 @@ Booking ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="362"/>
+        <location filename="../stripswidget.cpp" line="363"/>
         <source>Missing time assignment! Missing: %0</source>
         <translation>Kontierung fehlend! %0 nicht kontiert</translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="425"/>
+        <location filename="../stripswidget.cpp" line="426"/>
         <source>Assigned time</source>
         <translation>Kontierte Zeit</translation>
     </message>
@@ -480,14 +482,14 @@ Booking ID: %1</source>
         <translation>%0 (%1)</translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="406"/>
+        <location filename="../stripswidget.cpp" line="407"/>
         <source>Time assignment time longer than booking time!
 Time assignment: %0
 Booking: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="437"/>
+        <location filename="../stripswidget.cpp" line="438"/>
         <source>Strip rendering aborted due error.
 Your bookings and time assignments for this day are in an illegal state!</source>
         <translation type="unfinished"></translation>
@@ -533,7 +535,7 @@ Your bookings and time assignments for this day are in an illegal state!</source
         <translation>Ungültig</translation>
     </message>
     <message>
-        <location filename="../stripswidget.cpp" line="579"/>
+        <location filename="../stripswidget.cpp" line="585"/>
         <source>Open</source>
         <translation>Offen</translation>
     </message>

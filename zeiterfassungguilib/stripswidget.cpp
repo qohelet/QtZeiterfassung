@@ -352,7 +352,8 @@ bool StripsWidget::createStrips()
 
                 lastBooking = &endBooking;
 
-                bookingTimespan = timeAdd(bookingTimespan, timeBetween(startBooking.time, endBooking.time));
+                auto currBookingDuration = timeBetween(startBooking.time, endBooking.time);
+                bookingTimespan = timeAdd(bookingTimespan, currBookingDuration);
                 minimumTime = timeAdd(endBooking.time, QTime(0, 1));
 
                 while(timeAssignmentTime < bookingTimespan)
@@ -362,7 +363,7 @@ bool StripsWidget::createStrips()
                         errorMessage = tr("Missing time assignment! Missing: %0")
                                 .arg(tr("%0h").arg(timeBetween(timeAssignmentTime, bookingTimespan).toString(tr("HH:mm:ss"))));
 
-                        appendBookingEndStrip(endBooking.id, endBooking.time);
+                        appendBookingEndStrip(endBooking.id, endBooking.time, currBookingDuration);
 
                         goto after;
                     }
@@ -408,7 +409,7 @@ bool StripsWidget::createStrips()
                             .arg(bookingTimespan.toString(tr("HH:mm:ss")));
                 }
 
-                appendBookingEndStrip(endBooking.id, endBooking.time);
+                appendBookingEndStrip(endBooking.id, endBooking.time, currBookingDuration);
 
                 if(timeAssignmentTime > bookingTimespan)
                     goto after;
@@ -552,7 +553,7 @@ QWidget *StripsWidget::appendBookingStartStrip(int id, const QTime &time)
     return widget;
 }
 
-QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
+QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time, const QTime &duration)
 {
     auto widget = m_mainWindow.stripFactory().createBookingEndStrip(this).release();
 
@@ -560,6 +561,11 @@ QWidget *StripsWidget::appendBookingEndStrip(int id, const QTime &time)
         labelTime->setProperty("text", time.toString(tr("HH:mm")));
     else
         qWarning() << "no labelTime found!";
+
+    if(auto labelDuration = widget->findChild<QWidget*>(QStringLiteral("labelDuration")))
+        labelDuration->setProperty("text", tr("%0h").arg(duration.toString(tr("HH:mm"))));
+    else
+        qWarning() << "no labelDuration found!";
 
     if(auto labelId = widget->findChild<QWidget*>(QStringLiteral("labelId")))
         labelId->setProperty("text", QString::number(id));

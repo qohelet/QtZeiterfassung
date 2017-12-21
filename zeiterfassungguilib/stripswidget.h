@@ -74,7 +74,7 @@ private:
     QString buildProjectString(const QString &project) const;
 
     QWidget *appendBookingStartStrip(int id, const QTime &time);
-    QWidget *appendBookingEndStrip(int id, const QTime &time);
+    QWidget *appendBookingEndStrip(int id, const QTime &time, const QTime &duration);
     QWidget *appendTimeAssignmentStrip(int id, const QTime &duration, const QString &project, const QString &subproject,
                                        const QString &workpackage, const QString &text);
 
