@@ -254,12 +254,6 @@ void MainWindow::pushButtonStartPressed()
     }
     else
         m_currentStripWidget->refreshTimeAssignments();
-
-    ui->actionToday->setEnabled(false);
-    ui->actionRefresh->setEnabled(false);
-    ui->dateEditDate->setReadOnly(true);
-    ui->pushButtonPrev->setEnabled(false);
-    ui->pushButtonNext->setEnabled(false);
 }
 
 void MainWindow::pushButtonEndPressed()
@@ -302,12 +296,6 @@ void MainWindow::pushButtonEndPressed()
 
     m_currentStripWidget->refresh();
     //refreshReport();
-
-    ui->actionToday->setEnabled(false);
-    ui->actionRefresh->setEnabled(false);
-    ui->dateEditDate->setReadOnly(true);
-    ui->pushButtonPrev->setEnabled(false);
-    ui->pushButtonNext->setEnabled(false);
 }
 
 void MainWindow::dateChangedSlot(const QDate &date)
