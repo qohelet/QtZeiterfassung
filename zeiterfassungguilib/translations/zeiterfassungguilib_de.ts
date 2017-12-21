@@ -168,8 +168,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="143"/>
-        <location filename="../mainwindow.cpp" line="366"/>
-        <location filename="../mainwindow.cpp" line="377"/>
+        <location filename="../mainwindow.cpp" line="354"/>
+        <location filename="../mainwindow.cpp" line="365"/>
         <source>Start</source>
         <translation>Kommen</translation>
     </message>
@@ -266,19 +266,19 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="192"/>
-        <location filename="../mainwindow.cpp" line="297"/>
+        <location filename="../mainwindow.cpp" line="291"/>
         <source>Could not create booking!</source>
         <translation>Konnte Buchung nicht erstellen!</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="220"/>
-        <location filename="../mainwindow.cpp" line="282"/>
+        <location filename="../mainwindow.cpp" line="276"/>
         <source>Could not edit time assignment!</source>
         <translation>Konnte Kontierung nicht bearbeiten!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="396"/>
-        <location filename="../mainwindow.cpp" line="405"/>
+        <location filename="../mainwindow.cpp" line="384"/>
+        <location filename="../mainwindow.cpp" line="393"/>
         <source>%0 (%1)</source>
         <translation>%0 (%1)</translation>
     </message>
@@ -288,8 +288,8 @@
         <translation>Konnte Kontierung nicht erstellen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="366"/>
-        <location filename="../mainwindow.cpp" line="377"/>
+        <location filename="../mainwindow.cpp" line="354"/>
+        <location filename="../mainwindow.cpp" line="365"/>
         <source>Switch</source>
         <translation>Wechseln</translation>
     </message>

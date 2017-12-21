@@ -4,9 +4,7 @@
 
 #include "zeiterfassungguilib_global.h"
 
-namespace Ui {
-class AuthenticationDialog;
-}
+namespace Ui { class AuthenticationDialog; }
 
 class ZEITERFASSUNGGUILIBSHARED_EXPORT AuthenticationDialog : public QDialog
 {

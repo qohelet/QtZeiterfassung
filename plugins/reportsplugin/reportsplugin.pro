@@ -15,10 +15,10 @@ DEPENDPATH += $$PWD/../../zeiterfassungcorelib $$PWD/../../zeiterfassungguilib
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
 HEADERS += reportsplugin.h \
-    reportswidget.h
+           reportswidget.h
 
 SOURCES += reportsplugin.cpp \
-    reportswidget.cpp
+           reportswidget.cpp
 
 FORMS +=
 

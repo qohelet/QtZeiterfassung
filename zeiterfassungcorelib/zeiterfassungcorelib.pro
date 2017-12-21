@@ -1,4 +1,5 @@
 QT += core network
+QT -= gui widgets
 
 TARGET = zeiterfassungcorelib
 TEMPLATE = lib
