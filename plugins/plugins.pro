@@ -6,4 +6,5 @@ SUBDIRS += advancedviewplugin \
            presenceplugin \
            reportsplugin \
            updaterplugin \
-           weatherplugin
+           weatherplugin \
+           webradioplugin
