@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="zeiterfassungguilib_resources.qrc">
     <normaloff>:/zeiterfassungguilib/images/icon.png</normaloff>:/zeiterfassungguilib/images/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -30,7 +30,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset resource="zeiterfassungguilib_resources.qrc">
           <normaloff>:/zeiterfassungguilib/images/previous.png</normaloff>:/zeiterfassungguilib/images/previous.png</iconset>
         </property>
        </widget>
@@ -44,7 +44,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset resource="zeiterfassungguilib_resources.qrc">
           <normaloff>:/zeiterfassungguilib/images/next.png</normaloff>:/zeiterfassungguilib/images/next.png</iconset>
         </property>
        </widget>
@@ -74,7 +74,7 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="resources.qrc">
+         <iconset resource="zeiterfassungguilib_resources.qrc">
           <normaloff>:/zeiterfassungguilib/images/now.png</normaloff>:/zeiterfassungguilib/images/now.png</iconset>
         </property>
        </widget>
@@ -248,7 +248,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
      <normaloff>:/zeiterfassungguilib/images/quit.png</normaloff>:/zeiterfassungguilib/images/quit.png</iconset>
    </property>
    <property name="text">
@@ -257,7 +257,7 @@
   </action>
   <action name="actionAboutMe">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
      <normaloff>:/zeiterfassungguilib/images/user.png</normaloff>:/zeiterfassungguilib/images/user.png</iconset>
    </property>
    <property name="text">
@@ -266,7 +266,7 @@
   </action>
   <action name="actionAboutzeiterfassung">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
      <normaloff>:/zeiterfassungguilib/images/about.png</normaloff>:/zeiterfassungguilib/images/about.png</iconset>
    </property>
    <property name="text">
@@ -274,13 +274,17 @@
    </property>
   </action>
   <action name="actionAboutQt">
+   <property name="icon">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
+     <normaloff>:/zeiterfassungguilib/images/qt.png</normaloff>:/zeiterfassungguilib/images/qt.png</iconset>
+   </property>
    <property name="text">
     <string>About &amp;Qt</string>
    </property>
   </action>
   <action name="actionToday">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
      <normaloff>:/zeiterfassungguilib/images/today.png</normaloff>:/zeiterfassungguilib/images/today.png</iconset>
    </property>
    <property name="text">
@@ -289,7 +293,7 @@
   </action>
   <action name="actionRefresh">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
      <normaloff>:/zeiterfassungguilib/images/refresh.png</normaloff>:/zeiterfassungguilib/images/refresh.png</iconset>
    </property>
    <property name="text">
@@ -298,7 +302,7 @@
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
      <normaloff>:/zeiterfassungguilib/images/settings.png</normaloff>:/zeiterfassungguilib/images/settings.png</iconset>
    </property>
    <property name="text">
@@ -307,7 +311,7 @@
   </action>
   <action name="actionHelp">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="zeiterfassungguilib_resources.qrc">
      <normaloff>:/zeiterfassungguilib/images/help.png</normaloff>:/zeiterfassungguilib/images/help.png</iconset>
    </property>
    <property name="text">
@@ -316,7 +320,7 @@
   </action>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="zeiterfassungguilib_resources.qrc"/>
  </resources>
  <connections>
   <connection>
