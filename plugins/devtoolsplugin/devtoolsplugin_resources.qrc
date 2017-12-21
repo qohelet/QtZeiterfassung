@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/zeiterfassung/plugins/devtoolsplugin">
+        <file>images/dev-tools.png</file>
+    </qresource>
+</RCC>
