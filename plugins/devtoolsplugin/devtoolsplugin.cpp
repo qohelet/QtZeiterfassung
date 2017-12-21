@@ -7,6 +7,13 @@
 
 #include "mainwindow.h"
 
+void registerMessageHandler()
+{
+    qDebug() << "called";
+}
+
+Q_COREAPP_STARTUP_FUNCTION(registerMessageHandler)
+
 DevToolsPlugin::DevToolsPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
 {

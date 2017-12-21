@@ -1,3 +1,5 @@
+#include <memory>
+
 #include <QApplication>
 #include <QTranslator>
 #include <QMessageBox>
@@ -32,7 +34,7 @@ struct {
     QTranslator zeiterfassungguilibTranslator;
 } translators;
 
-QVector<ZeiterfassungPlugin*> plugins;
+QVector<std::shared_ptr<QPluginLoader> > pluginLoaders;
 
 bool loadAndInstallTranslator(QTranslator &translator, const QString &filename)
 {
@@ -270,44 +272,25 @@ bool loadPlugins(QSplashScreen &splashScreen)
         ).absoluteFilePath(QStringLiteral("zeiterfassung"))
     );
 
-    for(const auto &fileInfo : dir.entryInfoList(QDir::Files))
+    for(const auto &fileInfo : dir.entryInfoList(QDir::Files | QDir::NoSymLinks))
     {
-        if(fileInfo.isSymLink())
-        {
-            qWarning() << "skipping" << fileInfo.fileName() << "because symlink";
-            continue; // to skip unix so symlinks
-        }
-
         if(!QLibrary::isLibrary(fileInfo.filePath()))
         {
             qWarning() << "skipping" << fileInfo.fileName() << "because no QLibrary";
             continue; // to skip windows junk files
         }
 
-        qDebug() << "loading" << fileInfo.fileName();
-
-        QPluginLoader loader(fileInfo.filePath());
-        if(!loader.load())
+        auto pluginLoader = std::make_shared<QPluginLoader>(fileInfo.filePath());
+        if(!pluginLoader->load())
         {
             QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load plugin %0!"),
                                  QCoreApplication::translate("main", "Could not load plugin %0!").arg(fileInfo.fileName()) %
-                                 "\n\n" % loader.errorString());
+                                 "\n\n" % pluginLoader->errorString());
             ok = false;
             continue;
         }
 
-        auto plugin = qobject_cast<ZeiterfassungPlugin*>(loader.instance());
-
-        if(!plugin)
-        {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Plugin not valid %0!"),
-                                 QCoreApplication::translate("main", "Plugin not valid %0!").arg(fileInfo.fileName()) %
-                                 "\n\n" % loader.errorString());
-            ok = false;
-            continue;
-        }
-
-        plugins.append(plugin);
+        pluginLoaders.append(pluginLoader);
     }
 
     return ok;
@@ -370,8 +353,13 @@ int main(int argc, char *argv[])
     MainWindow mainWindow(settings, erfassung, userInfo, stripFactory);
     splashScreen.finish(&mainWindow);
 
-    for(auto plugin : plugins)
-        plugin->attachTo(mainWindow);
+    for(auto &pluginLoader : pluginLoaders)
+        if(auto plugin = qobject_cast<ZeiterfassungPlugin*>(pluginLoader->instance()))
+            plugin->attachTo(mainWindow);
+        else
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Plugin not valid %0!"),
+                                 QCoreApplication::translate("main", "Plugin not valid %0!").arg(pluginLoader->fileName()) %
+                                 "\n\n" % pluginLoader->errorString());
 
     mainWindow.show();
 
