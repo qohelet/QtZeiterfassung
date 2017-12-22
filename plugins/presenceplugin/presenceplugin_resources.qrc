@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/zeiterfassung/plugins/presenceplugin">
+        <file>images/not-present.png</file>
+        <file>images/present.png</file>
         <file>images/refresh.png</file>
     </qresource>
 </RCC>

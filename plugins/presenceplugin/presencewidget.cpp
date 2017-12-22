@@ -18,12 +18,12 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
 {
     connect(&m_mainWindow, &MainWindow::refreshEverything, this, &PresenceWidget::refresh);
 
-    m_buttonAvailable = new QPushButton(this);
+    m_buttonAvailable = new QPushButton(QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/present.png")), QStringLiteral(), this);
     m_menuAvailable = new QMenu(this);
     m_buttonAvailable->setMenu(m_menuAvailable);
     m_mainWindow.statusBar()->addWidget(m_buttonAvailable);
 
-    m_buttonNotAvailable = new QPushButton(this);
+    m_buttonNotAvailable = new QPushButton(QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/not-present.png")), QStringLiteral(), this);
     m_menuNotAvailable = new QMenu(this);
     m_buttonNotAvailable->setMenu(m_menuNotAvailable);
     m_mainWindow.statusBar()->addWidget(m_buttonNotAvailable);
