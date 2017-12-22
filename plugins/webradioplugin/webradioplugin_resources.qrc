@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/zeiterfassung/plugins/webradioplugin">
+        <file>images/web-radio.png</file>
+    </qresource>
+</RCC>
