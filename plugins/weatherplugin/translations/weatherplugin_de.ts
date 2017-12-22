@@ -24,6 +24,16 @@
         <translation>Kein json obj</translation>
     </message>
     <message>
+        <location filename="../weatherwidget.cpp" line="72"/>
+        <source>No weather found</source>
+        <translation>Kein weather gefunden</translation>
+    </message>
+    <message>
+        <location filename="../weatherwidget.cpp" line="79"/>
+        <source>No main found</source>
+        <translation>Kein main gefunden</translation>
+    </message>
+    <message>
         <location filename="../weatherwidget.cpp" line="86"/>
         <source>%0 (%1°C)</source>
         <translation>%0 (%1°C)</translation>

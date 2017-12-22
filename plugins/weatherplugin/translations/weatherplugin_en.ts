@@ -24,6 +24,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../weatherwidget.cpp" line="72"/>
+        <source>No weather found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../weatherwidget.cpp" line="79"/>
+        <source>No main found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../weatherwidget.cpp" line="86"/>
         <source>%0 (%1°C)</source>
         <translation type="unfinished"></translation>
