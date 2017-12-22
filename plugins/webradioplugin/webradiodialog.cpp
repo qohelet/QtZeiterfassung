@@ -11,6 +11,7 @@ WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
     m_player(new QMediaPlayer(this))
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     connect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::stateChanged);
     connect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::updateWidgets);

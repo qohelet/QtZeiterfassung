@@ -6,6 +6,7 @@ LanguageSelectionDialog::LanguageSelectionDialog(QWidget *parent) :
     ui(new Ui::LanguageSelectionDialog)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     ui->comboBoxLanguage->addItem(tr("English"), QLocale::English);
     ui->comboBoxLanguage->addItem(tr("German"), QLocale::German);

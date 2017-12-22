@@ -16,6 +16,7 @@ LunchMealDialog::LunchMealDialog(StripsWidget &stripsWidget) :
     ui(new Ui::LunchMealDialog)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     ui->labelTitle->setText(tr("Lunch meal for %0").arg(stripsWidget.date().toString(tr("dd.MM.yyyy"))));
 

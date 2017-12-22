@@ -13,6 +13,7 @@ TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &project
     ui(new Ui::TimeAssignmentDialog)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     {
         for(const auto &preferedProject : settings.projects())

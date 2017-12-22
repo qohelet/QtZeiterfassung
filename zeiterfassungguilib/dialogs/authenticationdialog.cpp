@@ -6,6 +6,7 @@ AuthenticationDialog::AuthenticationDialog(QWidget *parent) :
     ui(new Ui::AuthenticationDialog)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 }
 
 AuthenticationDialog::~AuthenticationDialog()

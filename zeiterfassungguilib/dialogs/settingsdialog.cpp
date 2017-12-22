@@ -16,6 +16,7 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent)
     m_settings(settings)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     ui->comboBoxLanguage->addItem(tr("English"), QLocale::English);
     ui->comboBoxLanguage->addItem(tr("German"), QLocale::German);

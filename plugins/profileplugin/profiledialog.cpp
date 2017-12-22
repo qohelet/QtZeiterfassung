@@ -6,6 +6,7 @@ ProfileDialog::ProfileDialog(const GetUserInfoReply::UserInfo &userInfo, QWidget
     ui(new Ui::ProfileDialog)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     ui->spinBoxUserId->setValue(userInfo.userId);
     ui->lineEditEmail->setText(userInfo.email);

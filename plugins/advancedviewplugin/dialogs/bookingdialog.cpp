@@ -6,6 +6,7 @@ BookingDialog::BookingDialog(QWidget *parent) :
     ui(new Ui::BookingDialog)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 }
 
 BookingDialog::~BookingDialog()

@@ -24,6 +24,7 @@ UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
     m_mainWindow(mainWindow)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     setAttribute(Qt::WA_DeleteOnClose);
 

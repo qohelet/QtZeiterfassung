@@ -29,6 +29,7 @@ AdvancedViewDialog::AdvancedViewDialog(StripsWidget &stripsWidget) :
     m_timeAssignmentsModel(new TimeAssignmentsModel(stripsWidget, this))
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     ui->bookingsView->setModel(m_bookingsModel);
     ui->bookingsView->setEnabled(m_bookingsModel->enabled());

@@ -6,6 +6,7 @@ LogDialog::LogDialog(QWidget *parent) :
     ui(new Ui::LogDialog)
 {
     ui->setupUi(this);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 }
 
 LogDialog::~LogDialog()
