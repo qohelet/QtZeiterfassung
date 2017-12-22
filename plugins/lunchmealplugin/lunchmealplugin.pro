@@ -14,13 +14,13 @@ DEPENDPATH += $$PWD/../../zeiterfassungcorelib $$PWD/../../zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += lunchmealplugin.h \
-           lunchmealwidget.h \
-           lunchmealdialog.h
+HEADERS += lunchmealdialog.h \
+           lunchmealplugin.h \
+           lunchmealwidget.h
 
-SOURCES += lunchmealplugin.cpp \
-           lunchmealwidget.cpp \
-           lunchmealdialog.cpp
+SOURCES += lunchmealdialog.cpp \
+           lunchmealplugin.cpp \
+           lunchmealwidget.cpp
 
 FORMS += lunchmealdialog.ui
 
