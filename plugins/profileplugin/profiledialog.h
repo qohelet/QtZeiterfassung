@@ -2,12 +2,11 @@
 
 #include <QDialog>
 
-#include "zeiterfassungguilib_global.h"
 #include "replies/getuserinforeply.h"
 
 namespace Ui { class ProfileDialog; }
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT ProfileDialog : public QDialog
+class ProfileDialog : public QDialog
 {
     Q_OBJECT
 
