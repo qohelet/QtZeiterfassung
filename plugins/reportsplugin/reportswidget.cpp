@@ -108,7 +108,7 @@ void ReportsWidget::finished()
         }
 
         {
-            static QRegularExpression regex(QStringLiteral("Urlaubsanspruch +([0-9]+\\.[0-9]+\\-?) +([0-9]+\\.[0-9]+\\-?)"));
+            static QRegularExpression regex(QStringLiteral("Urlaubsanspruch +(\\-?[0-9]+\\.[0-9]+) +(\\-?[0-9]+\\.[0-9]+)"));
             auto match = regex.match(content);
             if(match.hasMatch())
                 m_labelHolidays->setText(tr("%0: %1").arg(tr("Holidays")).arg(match.captured(2)));
