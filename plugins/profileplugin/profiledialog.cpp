@@ -1,9 +1,9 @@
-#include "aboutmedialog.h"
-#include "ui_aboutmedialog.h"
+#include "profiledialog.h"
+#include "ui_profiledialog.h"
 
-AboutMeDialog::AboutMeDialog(const GetUserInfoReply::UserInfo &userInfo, QWidget *parent) :
+ProfileDialog::ProfileDialog(const GetUserInfoReply::UserInfo &userInfo, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::AboutMeDialog)
+    ui(new Ui::ProfileDialog)
 {
     ui->setupUi(this);
 
@@ -26,7 +26,7 @@ AboutMeDialog::AboutMeDialog(const GetUserInfoReply::UserInfo &userInfo, QWidget
     ui->lineEditBetriebsnr->setText(userInfo.betriebsnr);
 }
 
-AboutMeDialog::~AboutMeDialog()
+ProfileDialog::~ProfileDialog()
 {
     delete ui;
 }

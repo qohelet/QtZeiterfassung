@@ -211,7 +211,6 @@
     <property name="title">
      <string>&amp;About</string>
     </property>
-    <addaction name="actionAboutMe"/>
     <addaction name="actionSettings"/>
     <addaction name="actionHelp"/>
     <addaction name="separator"/>

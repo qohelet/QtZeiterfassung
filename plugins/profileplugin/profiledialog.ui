@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AboutMeDialog</class>
- <widget class="QDialog" name="AboutMeDialog">
+ <class>ProfileDialog</class>
+ <widget class="QDialog" name="ProfileDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,21 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About me</string>
+   <string>Profile</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
-   <item>
-    <widget class="QLabel" name="labelTitle">
-     <property name="font">
-      <font>
-       <pointsize>20</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>About me</string>
-     </property>
-    </widget>
-   </item>
    <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable">
@@ -315,7 +303,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>AboutMeDialog</receiver>
+   <receiver>ProfileDialog</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

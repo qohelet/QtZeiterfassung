@@ -19,7 +19,6 @@
 #include "zeiterfassungsettings.h"
 #include "stripfactory.h"
 #include "stripswidget.h"
-#include "dialogs/aboutmedialog.h"
 #include "dialogs/settingsdialog.h"
 #include "replies/getprojectsreply.h"
 #include "replies/createbookingreply.h"
@@ -47,7 +46,6 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
     connect(ui->actionRefresh, &QAction::triggered, this, &MainWindow::refreshEverything);
 
-    connect(ui->actionAboutMe, &QAction::triggered, [=](){ AboutMeDialog(userInfo, this).exec(); });
     connect(ui->actionSettings, &QAction::triggered, [=](){ SettingsDialog(m_settings, this).exec(); });
 
     ui->actionHelp->setShortcut(QKeySequence::HelpContents);
