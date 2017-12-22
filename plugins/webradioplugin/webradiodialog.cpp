@@ -1,16 +1,22 @@
 #include "webradiodialog.h"
 #include "ui_webradiodialog.h"
 
-#include <QMediaPlayer>
+#include "mainwindow.h"
+#include "zeiterfassungsettings.h"
 
-WebRadioDialog::WebRadioDialog(QWidget *parent) :
-    QDialog(parent),
+WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
+    QDialog(&mainWindow),
     ui(new Ui::WebRadioDialog),
+    m_mainWindow(mainWindow),
     m_player(new QMediaPlayer(this))
 {
     ui->setupUi(this);
 
-    for(const auto &url : QStringList {
+    connect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::stateChanged);
+    connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &WebRadioDialog::mediaStatusChanged);
+    connect(m_player, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error), this, &WebRadioDialog::error);
+
+    for(const auto &url : m_mainWindow.settings().value(QStringLiteral("WebRadioPlugin/urls"), QStringList {
         QStringLiteral("http://stream.drumandbass.fm:9002"),
         QStringLiteral("http://stream.trap.fm:6002"),
         QStringLiteral("http://stream.dubbase.fm:7002"),
@@ -22,27 +28,24 @@ WebRadioDialog::WebRadioDialog(QWidget *parent) :
         QStringLiteral("http://lw1.mp3.tb-group.fm/ct.mp3"),
         QStringLiteral("http://lw1.mp3.tb-group.fm/clt.mp3"),
         QStringLiteral("https://live.helsinki.at:8088/live160.ogg")
-    })
+    }).toStringList())
     {
-        ui->comboBox->addItem(url);
+        ui->comboBox->addItem(url, url);
     }
 
-    connect(ui->comboBox, &QComboBox::currentTextChanged, this, [=](const QString &url){ m_player->setMedia(QMediaContent(QUrl(url))); });
+    auto lastUrl = m_mainWindow.settings().value(QStringLiteral("WebRadioPlugin/lastUrl")).toString();
+    qDebug() << lastUrl;
+    auto index = ui->comboBox->findData(lastUrl);
+    qDebug() << index;
+    ui->comboBox->setCurrentIndex(index);
 
-    Q_EMIT ui->comboBox->currentTextChanged(ui->comboBox->currentText());
-
-    connect(ui->pushButtonPlay, &QAbstractButton::pressed, m_player, &QMediaPlayer::play);
+    connect(ui->pushButtonPlay, &QAbstractButton::pressed, this, &WebRadioDialog::play);
     connect(ui->pushButtonPause, &QAbstractButton::pressed, m_player, &QMediaPlayer::pause);
     connect(ui->pushButtonStop, &QAbstractButton::pressed, m_player, &QMediaPlayer::stop);
-    connect(ui->horizontalSlider, &QAbstractSlider::valueChanged, m_player, &QMediaPlayer::setVolume);
 
-    connect(m_player, &QMediaPlayer::stateChanged, [](QMediaPlayer::State newState){ qDebug() << newState; });
-    connect(m_player, &QMediaPlayer::mediaStatusChanged, [](QMediaPlayer::MediaStatus status){ qDebug() << status; });
-    connect(m_player, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
-            [](QMediaPlayer::Error error){ qDebug() << error; });
-    connect(m_player, SIGNAL(volumeChanged(int)), ui->horizontalSlider, SLOT(setValue(int)));
-
-    Q_EMIT m_player->volumeChanged(m_player->volume());
+    m_player->setVolume(m_mainWindow.settings().value(QStringLiteral("WebRadioPlugin/volume"), 100).toInt());
+    ui->horizontalSlider->setValue(m_player->volume());
+    connect(ui->horizontalSlider, &QAbstractSlider::valueChanged, this, &WebRadioDialog::volumeChanged);
 }
 
 WebRadioDialog::~WebRadioDialog()
@@ -50,7 +53,35 @@ WebRadioDialog::~WebRadioDialog()
     delete ui;
 }
 
+void WebRadioDialog::stateChanged(QMediaPlayer::State newState)
+{
+    qDebug() << newState;
+}
+
+void WebRadioDialog::mediaStatusChanged(QMediaPlayer::MediaStatus status)
+{
+    qDebug() << status;
+}
+
+void WebRadioDialog::error(QMediaPlayer::Error error)
+{
+    qDebug() << error;
+}
+
 void WebRadioDialog::play()
 {
+    qDebug() << "called";
+    if(ui->comboBox->currentIndex() == -1)
+        return;
 
+    m_mainWindow.settings().setValue(QStringLiteral("WebRadioPlugin/lastUrl"), ui->comboBox->currentData().toString());
+
+    m_player->setMedia(QMediaContent(QUrl(ui->comboBox->currentData().toString())));
+    m_player->play();
+}
+
+void WebRadioDialog::volumeChanged(int volume)
+{
+    m_mainWindow.settings().setValue(QStringLiteral("WebRadioPlugin/volume"), volume);
+    m_player->setVolume(volume);
 }

@@ -33,7 +33,7 @@ WebRadioPlugin::WebRadioPlugin(QObject *parent) :
 
 void WebRadioPlugin::attachTo(MainWindow &mainWindow)
 {
-    auto dialog = new WebRadioDialog(&mainWindow);
+    auto dialog = new WebRadioDialog(mainWindow);
     mainWindow.menuTools()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/webradioplugin/images/web-radio.png")),
                                       tr("Play webradio"), dialog, &QWidget::show);
 }
