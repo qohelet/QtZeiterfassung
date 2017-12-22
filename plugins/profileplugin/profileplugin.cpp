@@ -4,11 +4,12 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QLocale>
-#include <QDialog>
 #include <QMenu>
 #include <QAction>
 
 #include "mainwindow.h"
+
+#include "profiledialog.h"
 
 ProfilePlugin::ProfilePlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -32,7 +33,7 @@ ProfilePlugin::ProfilePlugin(QObject *parent) :
 
 void ProfilePlugin::attachTo(MainWindow &mainWindow)
 {
-    auto dialog = new QDialog(&mainWindow);
+    auto dialog = new ProfileDialog(mainWindow.userInfo(), &mainWindow);
     mainWindow.menuTools()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/profileplugin/images/profile.png")),
                                       tr("My profile"), dialog, &QDialog::open);
 }

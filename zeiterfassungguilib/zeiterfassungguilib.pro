@@ -19,7 +19,6 @@ SOURCES += mainwindow.cpp \
            stripfactory.cpp \
            stripswidget.cpp \
            zeiterfassungplugin.cpp \
-           dialogs/aboutmedialog.cpp \
            dialogs/authenticationdialog.cpp \
            dialogs/languageselectiondialog.cpp \
            dialogs/settingsdialog.cpp
@@ -29,7 +28,6 @@ HEADERS += mainwindow.h \
            stripswidget.h \
            zeiterfassungguilib_global.h \
            zeiterfassungplugin.h \
-           dialogs/aboutmedialog.h \
            dialogs/authenticationdialog.h \
            dialogs/languageselectiondialog.h \
            dialogs/settingsdialog.h
@@ -37,8 +35,7 @@ HEADERS += mainwindow.h \
 FORMS += mainwindow.ui \
          dialogs/settingsdialog.ui \
          dialogs/languageselectiondialog.ui \
-         dialogs/authenticationdialog.ui \
-         dialogs/aboutmedialog.ui
+         dialogs/authenticationdialog.ui
 
 RESOURCES += zeiterfassungguilib_resources.qrc
 

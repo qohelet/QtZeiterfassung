@@ -14,11 +14,13 @@ DEPENDPATH += $$PWD/../../zeiterfassungcorelib $$PWD/../../zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
-HEADERS += profileplugin.h
+HEADERS += profiledialog.h \
+           profileplugin.h
 
-SOURCES += profileplugin.cpp
+SOURCES += profiledialog.cpp \
+           profileplugin.cpp
 
-FORMS +=
+FORMS += profiledialog.ui
 
 RESOURCES += profileplugin_resources.qrc
 

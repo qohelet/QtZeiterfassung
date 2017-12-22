@@ -2,106 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de_DE">
 <context>
-    <name>AboutMeDialog</name>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="14"/>
-        <location filename="../dialogs/aboutmedialog.ui" line="25"/>
-        <source>About me</source>
-        <translation>Über mich</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="47"/>
-        <source>User-ID:</source>
-        <translation>Benutzer-ID:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="57"/>
-        <source>E-Mail:</source>
-        <translation>E-Mail:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="67"/>
-        <source>Long username:</source>
-        <translation>Langer Benutzername:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="77"/>
-        <source>Text:</source>
-        <translation>Text:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="87"/>
-        <source>Username:</source>
-        <translation>Benutzername:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="135"/>
-        <source>Street:</source>
-        <translation>Straße:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="142"/>
-        <source>City:</source>
-        <translation>Stadt:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="149"/>
-        <source>Employed since:</source>
-        <translation>Angestellt seit:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="156"/>
-        <source>Employed till:</source>
-        <translation>Angestellt bis:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="163"/>
-        <source>Place of birth:</source>
-        <translation>Geburtsort:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="170"/>
-        <source>Zipcode:</source>
-        <translation>Postleitzahl:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="177"/>
-        <source>Religion:</source>
-        <translation>Religion:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="184"/>
-        <source>Department:</source>
-        <translation>Abteilung:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="191"/>
-        <source>Verwendgr:</source>
-        <translation>Verwendgr:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="198"/>
-        <source>Taetig:</source>
-        <translation>Taetig:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="205"/>
-        <source>Arbverh:</source>
-        <translation>Arbverh:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.ui" line="212"/>
-        <source>Betriebsnr:</source>
-        <translation>Betriebsnr:</translation>
-    </message>
-    <message>
-        <location filename="../dialogs/aboutmedialog.cpp" line="17"/>
-        <location filename="../dialogs/aboutmedialog.cpp" line="18"/>
-        <source>dd.MM.yyyy</source>
-        <translation>dd.MM.yyyy</translation>
-    </message>
-</context>
-<context>
     <name>AuthenticationDialog</name>
     <message>
         <location filename="../dialogs/authenticationdialog.ui" line="20"/>
@@ -168,8 +68,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="143"/>
-        <location filename="../mainwindow.cpp" line="354"/>
-        <location filename="../mainwindow.cpp" line="365"/>
+        <location filename="../mainwindow.cpp" line="352"/>
+        <location filename="../mainwindow.cpp" line="363"/>
         <source>Start</source>
         <translation>Kommen</translation>
     </message>
@@ -189,107 +89,107 @@
         <translation>&amp;Über</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="223"/>
+        <location filename="../mainwindow.ui" line="222"/>
         <source>&amp;View</source>
         <translation>&amp;Ansicht</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="230"/>
+        <location filename="../mainwindow.ui" line="229"/>
         <source>&amp;Tools</source>
         <translation>&amp;Werkzeuge</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="255"/>
+        <location filename="../mainwindow.ui" line="254"/>
         <source>&amp;Quit</source>
         <translation>&amp;Beenden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="264"/>
+        <location filename="../mainwindow.ui" line="263"/>
         <source>About &amp;Me</source>
         <translation>Über &amp;mich</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="273"/>
+        <location filename="../mainwindow.ui" line="272"/>
         <source>About &amp;zeiterfassung</source>
         <translation>Über &amp;zeiterfassung</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="282"/>
+        <location filename="../mainwindow.ui" line="281"/>
         <source>About &amp;Qt</source>
         <translation>Über &amp;Qt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="291"/>
+        <location filename="../mainwindow.ui" line="290"/>
         <source>&amp;Today</source>
         <translation>&amp;Heute</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="300"/>
+        <location filename="../mainwindow.ui" line="299"/>
         <source>&amp;Refresh everything</source>
         <translation>Alles &amp;neu laden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="309"/>
+        <location filename="../mainwindow.ui" line="308"/>
         <source>&amp;Settings</source>
         <translation>&amp;Einstellungen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="318"/>
+        <location filename="../mainwindow.ui" line="317"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="41"/>
+        <location filename="../mainwindow.cpp" line="40"/>
         <source>Zeiterfassung - %0 (%1)</source>
         <translation>Zeiterfassung - %0 (%1)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="70"/>
+        <location filename="../mainwindow.cpp" line="68"/>
         <source>Subproject</source>
         <translation>Subprojekt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="71"/>
+        <location filename="../mainwindow.cpp" line="69"/>
         <source>Workpackage</source>
         <translation>Arbeitspaket</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="72"/>
+        <location filename="../mainwindow.cpp" line="70"/>
         <source>Text</source>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="171"/>
-        <location filename="../mainwindow.cpp" line="172"/>
+        <location filename="../mainwindow.cpp" line="169"/>
+        <location filename="../mainwindow.cpp" line="170"/>
         <source>Could not load bookings!</source>
         <translation>Konnte Buchungen nicht laden!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="192"/>
-        <location filename="../mainwindow.cpp" line="291"/>
+        <location filename="../mainwindow.cpp" line="190"/>
+        <location filename="../mainwindow.cpp" line="289"/>
         <source>Could not create booking!</source>
         <translation>Konnte Buchung nicht erstellen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="220"/>
-        <location filename="../mainwindow.cpp" line="276"/>
+        <location filename="../mainwindow.cpp" line="218"/>
+        <location filename="../mainwindow.cpp" line="274"/>
         <source>Could not edit time assignment!</source>
         <translation>Konnte Kontierung nicht bearbeiten!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="384"/>
-        <location filename="../mainwindow.cpp" line="393"/>
+        <location filename="../mainwindow.cpp" line="382"/>
+        <location filename="../mainwindow.cpp" line="391"/>
         <source>%0 (%1)</source>
         <translation>%0 (%1)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="237"/>
+        <location filename="../mainwindow.cpp" line="235"/>
         <source>Could not create time assignment!</source>
         <translation>Konnte Kontierung nicht erstellen!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="354"/>
-        <location filename="../mainwindow.cpp" line="365"/>
+        <location filename="../mainwindow.cpp" line="352"/>
+        <location filename="../mainwindow.cpp" line="363"/>
         <source>Switch</source>
         <translation>Wechseln</translation>
     </message>
