@@ -24,68 +24,68 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="69"/>
+        <location filename="../webradiodialog.cpp" line="75"/>
         <source>Stopped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="70"/>
+        <location filename="../webradiodialog.cpp" line="76"/>
         <source>Playing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="71"/>
+        <location filename="../webradiodialog.cpp" line="77"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="74"/>
-        <location filename="../webradiodialog.cpp" line="93"/>
+        <location filename="../webradiodialog.cpp" line="80"/>
+        <location filename="../webradiodialog.cpp" line="99"/>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="82"/>
+        <location filename="../webradiodialog.cpp" line="88"/>
         <source>Unknown media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="83"/>
+        <location filename="../webradiodialog.cpp" line="89"/>
         <source>No media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="84"/>
+        <location filename="../webradiodialog.cpp" line="90"/>
         <source>Loading media...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="85"/>
+        <location filename="../webradiodialog.cpp" line="91"/>
         <source>Loaded media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="86"/>
+        <location filename="../webradiodialog.cpp" line="92"/>
         <source>Stalled media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="87"/>
+        <location filename="../webradiodialog.cpp" line="93"/>
         <source>Buffering media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="88"/>
+        <location filename="../webradiodialog.cpp" line="94"/>
         <source>Buffered media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="89"/>
+        <location filename="../webradiodialog.cpp" line="95"/>
         <source>End of media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webradiodialog.cpp" line="90"/>
+        <location filename="../webradiodialog.cpp" line="96"/>
         <source>Invalid media</source>
         <translation type="unfinished"></translation>
     </message>

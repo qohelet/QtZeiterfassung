@@ -9,82 +9,82 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="56"/>
+        <location filename="../advancedviewdialog.cpp" line="62"/>
         <source>Create booking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="57"/>
+        <location filename="../advancedviewdialog.cpp" line="63"/>
         <source>Refresh bookings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="83"/>
+        <location filename="../advancedviewdialog.cpp" line="89"/>
         <source>Could not create booking!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="98"/>
+        <location filename="../advancedviewdialog.cpp" line="104"/>
         <source>Edit booking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="99"/>
+        <location filename="../advancedviewdialog.cpp" line="105"/>
         <source>Delete booking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="129"/>
+        <location filename="../advancedviewdialog.cpp" line="135"/>
         <source>Could not edit booking!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="137"/>
+        <location filename="../advancedviewdialog.cpp" line="143"/>
         <source>Do you really want to delete the booking?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="149"/>
+        <location filename="../advancedviewdialog.cpp" line="155"/>
         <source>Could not delete booking!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="162"/>
+        <location filename="../advancedviewdialog.cpp" line="168"/>
         <source>Create time assignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="163"/>
+        <location filename="../advancedviewdialog.cpp" line="169"/>
         <source>Refresh time assignments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="191"/>
+        <location filename="../advancedviewdialog.cpp" line="197"/>
         <source>Could not create time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="206"/>
+        <location filename="../advancedviewdialog.cpp" line="212"/>
         <source>Edit time assignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="207"/>
+        <location filename="../advancedviewdialog.cpp" line="213"/>
         <source>Delete time assignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="242"/>
+        <location filename="../advancedviewdialog.cpp" line="248"/>
         <source>Could not edit time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="250"/>
+        <location filename="../advancedviewdialog.cpp" line="256"/>
         <source>Do you really want to delete the time assignment?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="264"/>
+        <location filename="../advancedviewdialog.cpp" line="270"/>
         <source>Could not delete time assignment!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -193,8 +193,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dialogs/timeassignmentdialog.cpp" line="26"/>
-        <location filename="../dialogs/timeassignmentdialog.cpp" line="35"/>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="32"/>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="41"/>
         <source>%0 (%1)</source>
         <translation type="unfinished"></translation>
     </message>

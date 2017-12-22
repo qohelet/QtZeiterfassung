@@ -20,7 +20,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../updaterdialog.cpp" line="50"/>
+        <location filename="../updaterdialog.cpp" line="56"/>
         <source>Could not open default webbrowser!</source>
         <translation type="unfinished"></translation>
     </message>

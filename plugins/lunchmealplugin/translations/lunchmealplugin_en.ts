@@ -14,12 +14,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunchmealdialog.cpp" line="20"/>
+        <location filename="../lunchmealdialog.cpp" line="26"/>
         <source>Lunch meal for %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunchmealdialog.cpp" line="20"/>
+        <location filename="../lunchmealdialog.cpp" line="26"/>
         <source>dd.MM.yyyy</source>
         <translation type="unfinished"></translation>
     </message>
