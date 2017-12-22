@@ -4,7 +4,8 @@
 
 #include "replies/getpresencestatusreply.h"
 
-class QLabel;
+class QPushButton;
+class QMenu;
 class QAction;
 
 class MainWindow;
@@ -23,8 +24,10 @@ private Q_SLOTS:
 private:
     MainWindow &m_mainWindow;
 
-    QLabel *m_labelAvailable;
-    QLabel *m_labelNotAvailable;
+    QPushButton *m_buttonAvailable;
+    QMenu *m_menuAvailable;
+    QPushButton *m_buttonNotAvailable;
+    QMenu *m_menuNotAvailable;
 
     QAction *m_action;
 
