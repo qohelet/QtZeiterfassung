@@ -20,11 +20,13 @@ private Q_SLOTS:
     void stateChanged(QMediaPlayer::State newState);
     void mediaStatusChanged(QMediaPlayer::MediaStatus status);
     void error(QMediaPlayer::Error error);
-
+    void currentIndexChanged(int index);
     void volumeChanged(int volume);
     void play();
 
 private:
+    void updateWidgets();
+
     Ui::WebRadioDialog *ui;
 
     MainWindow &m_mainWindow;

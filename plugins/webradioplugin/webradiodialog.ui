@@ -28,7 +28,7 @@
         </size>
        </property>
        <property name="text">
-        <string>play()</string>
+        <string>Play</string>
        </property>
       </widget>
      </item>
@@ -41,7 +41,7 @@
         </size>
        </property>
        <property name="text">
-        <string>pause()</string>
+        <string>Pause</string>
        </property>
       </widget>
      </item>
@@ -54,7 +54,7 @@
         </size>
        </property>
        <property name="text">
-        <string>stop()</string>
+        <string>Stop</string>
        </property>
       </widget>
      </item>
@@ -68,11 +68,22 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="labelState">
+       <property name="text">
+        <string notr="true">state</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelMediaStatus">
+       <property name="text">
+        <string notr="true">mediaStatus</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
