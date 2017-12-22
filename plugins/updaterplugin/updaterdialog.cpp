@@ -24,7 +24,12 @@ UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
     m_mainWindow(mainWindow)
 {
     ui->setupUi(this);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+#else
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+#endif
 
     setAttribute(Qt::WA_DeleteOnClose);
 

@@ -6,7 +6,12 @@ BookingDialog::BookingDialog(QWidget *parent) :
     ui(new Ui::BookingDialog)
 {
     ui->setupUi(this);
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
     setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+#else
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+#endif
 }
 
 BookingDialog::~BookingDialog()
