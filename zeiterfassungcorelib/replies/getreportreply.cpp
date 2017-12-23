@@ -19,7 +19,7 @@ void GetReportReply::request0Finished()
     if(m_reply->error() != QNetworkReply::NoError)
     {
         setSuccess(false);
-        setMessage(tr("Request error occured: %0").arg(m_reply->error()));
+        setMessage(tr("Request error occured: %0").arg(m_reply->errorString()));
         m_reply = Q_NULLPTR;
         Q_EMIT finished();
         return;
@@ -37,7 +37,7 @@ void GetReportReply::request1Finished()
     if(m_reply->error() != QNetworkReply::NoError)
     {
         setSuccess(false);
-        setMessage(tr("Request error occured: %0").arg(m_reply->error()));
+        setMessage(tr("Request error occured: %0").arg(m_reply->errorString()));
         goto end;
     }
 

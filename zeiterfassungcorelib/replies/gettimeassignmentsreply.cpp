@@ -26,7 +26,7 @@ void GetTimeAssignmentsReply::requestFinished()
     if(m_reply->error() != QNetworkReply::NoError)
     {
         setSuccess(false);
-        setMessage(tr("Request error occured: %0").arg(m_reply->error()));
+        setMessage(tr("Request error occured: %0").arg(m_reply->errorString()));
         goto end;
     }
 

@@ -31,7 +31,7 @@ void GetUserInfoReply::request0Finished()
     if(m_reply0->error() != QNetworkReply::NoError)
     {
         setSuccess(false);
-        setMessage(tr("Request 0 error occured: %0").arg(m_reply0->error()));
+        setMessage(tr("Request 0 error occured: %0").arg(m_reply0->errorString()));
         m_reply1 = Q_NULLPTR;
         goto end;
     }
@@ -99,7 +99,7 @@ void GetUserInfoReply::request1Finished()
     if(m_reply1->error() != QNetworkReply::NoError)
     {
         setSuccess(false);
-        setMessage(tr("Request 1 error occured: %0").arg(m_reply0->error()));
+        setMessage(tr("Request 1 error occured: %0").arg(m_reply0->errorString()));
         m_reply0 = Q_NULLPTR;
         goto end;
     }
