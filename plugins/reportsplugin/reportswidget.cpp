@@ -1,6 +1,5 @@
 #include "reportswidget.h"
 
-#include <QLabel>
 #include <QStatusBar>
 #include <QMenu>
 #include <QToolBar>
@@ -15,27 +14,25 @@
 #include "zeiterfassungapi.h"
 
 ReportsWidget::ReportsWidget(MainWindow &mainWindow) :
-    QWidget(&mainWindow),
+    QLabel(&mainWindow),
     m_mainWindow(mainWindow)
 {
     connect(&m_mainWindow, &MainWindow::dateChanged, this, &ReportsWidget::dateChanged);
     connect(&m_mainWindow, &MainWindow::refreshEverything, this, &ReportsWidget::refresh);
 
-    m_labelBalance = new QLabel(this);
-    m_labelBalance->setFrameShape(QFrame::Panel);
-    m_labelBalance->setFrameShadow(QFrame::Sunken);
-    m_mainWindow.statusBar()->addPermanentWidget(m_labelBalance);
+    setFrameShape(QFrame::Panel);
+    setFrameShadow(QFrame::Sunken);
 
-    m_labelHolidays = new QLabel(this);
-    m_labelHolidays->setFrameShape(QFrame::Panel);
-    m_labelHolidays->setFrameShadow(QFrame::Sunken);
-    m_mainWindow.statusBar()->addPermanentWidget(m_labelHolidays);
+    m_actionRefreshReport = new QAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/reportsplugin/images/refresh.png")),
+                                        tr("Refresh report"), this);
+    connect(m_actionRefreshReport, &QAction::triggered, this, &ReportsWidget::refresh);
+    m_mainWindow.menuView()->addAction(m_actionRefreshReport);
 
-    m_actionRefreshReport = m_mainWindow.menuView()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/reportsplugin/images/refresh.png")),
-                                                               tr("Refresh report"), this, &ReportsWidget::refresh);
+    m_actionOpenReport = new QAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/reportsplugin/images/report.png")),
+                                     tr("Open report"), this);
+    connect(m_actionOpenReport, &QAction::triggered, this, &ReportsWidget::openReport);
+    m_mainWindow.menuTools()->addAction(m_actionOpenReport);
 
-    m_actionOpenReport = m_mainWindow.menuTools()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/reportsplugin/images/report.png")),
-                                                             tr("Open report"), this, &ReportsWidget::openReport);
     m_mainWindow.toolBar()->addAction(m_actionOpenReport);
 
     dateChanged(m_mainWindow.date());
@@ -65,11 +62,10 @@ void ReportsWidget::refresh()
         return;
     }
 
+    setText(tr("Balance: %0, Holidays: %0").arg(tr("???")).arg(tr("???")));
+
     m_actionRefreshReport->setEnabled(false);
     m_actionOpenReport->setEnabled(false);
-
-    m_labelBalance->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("???")));
-    m_labelHolidays->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("???")));
 
     m_reply = m_mainWindow.erfassung().doGetReport(m_mainWindow.userInfo().userId, m_date);
     connect(m_reply.get(), &ZeiterfassungReply::finished, this, &ReportsWidget::finished);
@@ -87,37 +83,42 @@ void ReportsWidget::finished()
     {
         auto content = m_reply->content();
 
+        QString balance;
+
         {
             static QRegularExpression regex(QStringLiteral("Gleitzeit +([0-9]+\\:[0-9]+\\-?) +([0-9]+\\:[0-9]+\\-?)"));
             auto match = regex.match(content);
             if(match.hasMatch())
             {
-                auto balance = match.captured(2);
+                balance = match.captured(2);
                 if(balance.endsWith(QChar('-')))
                 {
                     balance.chop(1);
                     balance = QChar('-') % balance;
                 }
-                m_labelBalance->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("%0h").arg(balance)));
             }
             else
             {
-                m_labelBalance->setText(tr("%0: %1").arg(tr("Balance")).arg(tr("n/a")));
+                balance = tr("n/a");
                 qWarning() << "balance not found in PDF";
             }
         }
+
+        QString holidays;
 
         {
             static QRegularExpression regex(QStringLiteral("Urlaubsanspruch +(\\-?[0-9]+\\.[0-9]+) +(\\-?[0-9]+\\.[0-9]+)"));
             auto match = regex.match(content);
             if(match.hasMatch())
-                m_labelHolidays->setText(tr("%0: %1").arg(tr("Holidays")).arg(match.captured(2)));
+                holidays = match.captured(2);
             else
             {
-                m_labelHolidays->setText(tr("%0: %1").arg(tr("Holidays")).arg(tr("n/a")));
+                holidays = tr("n/a");
                 qWarning() << "holidays not found in PDF";
             }
         }
+
+        setText(tr("Balance: %0, Holidays: %0").arg(balance).arg(holidays));
 
         {
             QTemporaryFile file(QDir::temp().absoluteFilePath(QStringLiteral("reportXXXXXX.pdf")));
