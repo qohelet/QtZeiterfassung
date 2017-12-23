@@ -62,7 +62,7 @@ void ReportsWidget::refresh()
         return;
     }
 
-    setText(tr("Balance: %0, Holidays: %0").arg(tr("???")).arg(tr("???")));
+    setText(tr("Balance: %0, Holidays: %1").arg(tr("???")).arg(tr("???")));
 
     m_actionRefreshReport->setEnabled(false);
     m_actionOpenReport->setEnabled(false);
@@ -118,7 +118,7 @@ void ReportsWidget::finished()
             }
         }
 
-        setText(tr("Balance: %0, Holidays: %0").arg(balance).arg(holidays));
+        setText(tr("Balance: %0, Holidays: %1").arg(balance).arg(holidays));
 
         {
             QTemporaryFile file(QDir::temp().absoluteFilePath(QStringLiteral("reportXXXXXX.pdf")));

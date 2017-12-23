@@ -4,47 +4,31 @@
 <context>
     <name>PresenceWidget</name>
     <message>
-        <location filename="../presencewidget.cpp" line="32"/>
+        <location filename="../presencewidget.cpp" line="24"/>
         <source>Refresh presence</source>
         <translation>Verfügbarkeit aktualisieren</translation>
     </message>
     <message>
-        <location filename="../presencewidget.cpp" line="44"/>
-        <location filename="../presencewidget.cpp" line="46"/>
-        <location filename="../presencewidget.cpp" line="74"/>
-        <location filename="../presencewidget.cpp" line="75"/>
-        <source>%0: %1</source>
-        <translation>%0: %1</translation>
-    </message>
-    <message>
-        <location filename="../presencewidget.cpp" line="44"/>
-        <location filename="../presencewidget.cpp" line="74"/>
-        <source>Available</source>
-        <translation>Verfügbar</translation>
-    </message>
-    <message>
-        <location filename="../presencewidget.cpp" line="44"/>
-        <location filename="../presencewidget.cpp" line="46"/>
+        <location filename="../presencewidget.cpp" line="38"/>
         <source>???</source>
         <translation>???</translation>
     </message>
     <message>
-        <location filename="../presencewidget.cpp" line="46"/>
-        <location filename="../presencewidget.cpp" line="75"/>
-        <source>Not available</source>
-        <translation>Nicht verfügbar</translation>
+        <location filename="../presencewidget.cpp" line="38"/>
+        <location filename="../presencewidget.cpp" line="79"/>
+        <source>%0 available, %1 not available</source>
+        <translation>%0 verfügbar, %1 nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="../presencewidget.cpp" line="59"/>
-        <location filename="../presencewidget.cpp" line="60"/>
+        <location filename="../presencewidget.cpp" line="51"/>
+        <location filename="../presencewidget.cpp" line="52"/>
         <source>Could not get presence status!</source>
         <translation>Konnte Verfügbarkeit nicht laden!</translation>
     </message>
     <message>
-        <location filename="../presencewidget.cpp" line="67"/>
-        <location filename="../presencewidget.cpp" line="69"/>
+        <location filename="../presencewidget.cpp" line="76"/>
         <source>%0 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%0 %1</translation>
     </message>
 </context>
 </TS>

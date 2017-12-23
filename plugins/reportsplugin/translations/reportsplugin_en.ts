@@ -4,68 +4,44 @@
 <context>
     <name>ReportsWidget</name>
     <message>
-        <location filename="../reportswidget.cpp" line="35"/>
+        <location filename="../reportswidget.cpp" line="27"/>
         <source>Refresh report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="38"/>
+        <location filename="../reportswidget.cpp" line="32"/>
         <source>Open report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="71"/>
-        <location filename="../reportswidget.cpp" line="72"/>
-        <location filename="../reportswidget.cpp" line="101"/>
-        <location filename="../reportswidget.cpp" line="105"/>
-        <location filename="../reportswidget.cpp" line="114"/>
-        <location filename="../reportswidget.cpp" line="117"/>
-        <source>%0: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../reportswidget.cpp" line="71"/>
-        <location filename="../reportswidget.cpp" line="101"/>
-        <location filename="../reportswidget.cpp" line="105"/>
-        <source>Balance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../reportswidget.cpp" line="71"/>
-        <location filename="../reportswidget.cpp" line="72"/>
+        <location filename="../reportswidget.cpp" line="65"/>
         <source>???</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="72"/>
-        <location filename="../reportswidget.cpp" line="114"/>
-        <location filename="../reportswidget.cpp" line="117"/>
-        <source>Holidays</source>
+        <location filename="../reportswidget.cpp" line="65"/>
+        <location filename="../reportswidget.cpp" line="121"/>
+        <source>Balance: %0, Holidays: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="83"/>
+        <location filename="../reportswidget.cpp" line="79"/>
         <source>Could not load report!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="101"/>
-        <source>%0h</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../reportswidget.cpp" line="105"/>
-        <location filename="../reportswidget.cpp" line="117"/>
+        <location filename="../reportswidget.cpp" line="102"/>
+        <location filename="../reportswidget.cpp" line="116"/>
         <source>n/a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="127"/>
+        <location filename="../reportswidget.cpp" line="128"/>
         <source>Could not write report!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="147"/>
+        <location filename="../reportswidget.cpp" line="148"/>
         <source>Could not launch your default PDF viewer!</source>
         <translation type="unfinished"></translation>
     </message>
