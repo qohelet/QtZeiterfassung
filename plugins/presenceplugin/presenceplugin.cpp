@@ -4,6 +4,9 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QLocale>
+#include <QStatusBar>
+
+#include "mainwindow.h"
 
 #include "presencewidget.h"
 
@@ -29,5 +32,5 @@ PresencePlugin::PresencePlugin(QObject *parent) :
 
 void PresencePlugin::attachTo(MainWindow &mainWindow)
 {
-    new PresenceWidget(mainWindow);
+    mainWindow.statusBar()->addWidget(new PresenceWidget(mainWindow));
 }
