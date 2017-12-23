@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include <QToolButton>
+#include <QNetworkReply>
 
 class StripsWidget;
 
@@ -12,7 +15,11 @@ public:
 
 private Q_SLOTS:
     void pressedSlot();
+    void dateChanged(const QDate &date);
+    void finished();
 
 private:
     StripsWidget &m_stripsWidget;
+    std::unique_ptr<QNetworkReply> m_reply;
+    QString m_content;
 };

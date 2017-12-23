@@ -1,9 +1,8 @@
 #pragma once
 
-#include <memory>
-
 #include <QDialog>
-#include <QNetworkReply>
+
+class QDate;
 
 class StripsWidget;
 
@@ -14,13 +13,9 @@ class LunchMealDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit LunchMealDialog(StripsWidget &stripsWidget);
+    explicit LunchMealDialog(const QDate &date, const QString &content, QWidget *parent = Q_NULLPTR);
     ~LunchMealDialog();
-
-private Q_SLOTS:
-    void finished();
 
 private:
     Ui::LunchMealDialog *ui;
-    std::unique_ptr<QNetworkReply> m_reply;
 };
