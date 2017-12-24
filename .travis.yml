@@ -13,7 +13,7 @@ before_script:
   - pushd qt5
   - if [ ! -d qtbase/.git ] ; then perl init-repository --module-subset=qtbase,qtimageformats,qttools ; fi
   - if [ ! -f config.summary ] ; then ./configure -opensource -confirm-license -nomake examples -nomake tests ; fi
-  - make -j2
+  - make -j2 > /dev/null
   - sudo make install
   - popd
 
