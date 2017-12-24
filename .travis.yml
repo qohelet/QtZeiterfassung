@@ -3,21 +3,29 @@ os:
   - linux
 dist: trusty
 compiler:
-  - clang
   - gcc
 
 before_install:
-  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  - sudo apt update -qq
 
 install:
-  - sudo apt install -qq -y qt5-default qt5-qmake qttools5-dev qttools5-dev-tools
 
 before_script:
+  - if [ ! -d qt5 ]
+  - then
+  - git clone --branch=5.10 git://code.qt.io/qt/qt5.git
+  - pushd qt5
+  - perl init-repository --module-subset=qtbase,qtimageformats
+  - ./configure -static -opensource -nomake examples -nomake tests -confirm-license
+  - make -j2
+  - sudo make install
+  - popd
+  - fi
+
+script:
+  - which qmake
+  - which lrelease
   - mkdir -p build
   - pushd build
   - qmake .. -config release
+  - make -j2
   - popd
-
-script:
-  - make -C build
