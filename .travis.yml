@@ -12,7 +12,7 @@ before_script:
   - if [ ! -d qt5/.git ] ; then rm qt5 -Rf ; git clone --branch=5.10 git://code.qt.io/qt/qt5.git ; fi
   - pushd qt5
   - if [ ! -d qtbase/.git ] ; then perl init-repository --module-subset=qtbase,qtimageformats ; fi
-  - if [ ! -f config.summaryr ] ; then ./configure -opensource -nomake examples -nomake tests -confirm-license ; fi
+  - if [ ! -f config.summary ] ; then ./configure -opensource -confirm-license -nomake examples -nomake tests ; fi
   - make -j2
   - sudo make install
   - popd
