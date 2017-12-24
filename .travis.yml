@@ -1,22 +1,20 @@
 language: cpp
-os:
-  - linux
+os: linux
 dist: trusty
-compiler:
-  - gcc
-
-cache:
-  directories:
-    - qt5
+compiler: gcc
 
 before_script:
-  - if [ ! -d qt5 ] ; then source make_qt.sh ; fi
+  - git clone --branch=5.10 git://code.qt.io/qt/qt5.git
+  - pushd qt5
+  - perl init-repository --module-subset=qtbase,qtimageformats
+  - ./configure -opensource -nomake examples -nomake tests -confirm-license
+  - make -j2
+  - sudo make install
+  - popd
 
 script:
-  - which qmake
-  - which lrelease
   - mkdir -p build
   - pushd build
-  - qmake .. -config release
+  - ../qt5/qtbase/bin/qmake .. -config release
   - make -j2
   - popd
