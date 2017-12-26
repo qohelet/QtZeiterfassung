@@ -1,31 +1,25 @@
 language: cpp
-os:
-  - linux
+os: linux
+sudo: false
 dist: trusty
-compiler:
-  - gcc
+compiler: gcc
 
-before_install:
-
-install:
+cache:
+  directories:
+    - qt5
 
 before_script:
-  - if [ ! -d qt5 ]
-  - then
-  - git clone --branch=5.10 git://code.qt.io/qt/qt5.git
+  - mkdir -p qt5
+  - if [ ! -d qt5/.git ] ; then rm qt5 -Rf ; git clone --branch=5.10 git://code.qt.io/qt/qt5.git ; fi
   - pushd qt5
-  - perl init-repository --module-subset=qtbase,qtimageformats
-  - ./configure -static -opensource -nomake examples -nomake tests -confirm-license
-  - make -j2
-  - sudo make install
+  - if [ ! -d qtbase/.git ] ; then perl init-repository --module-subset=qtbase,qtimageformats,qtmultimedia,qttools ; fi
+  - if [ ! -f config.summary ] ; then ./configure -prefix `pwd`/build -opensource -confirm-license -nomake examples -nomake tests ; fi
+  - if [ ! -d build ] ; then make -j2 > /dev/null && make install ; fi
   - popd
-  - fi
 
 script:
-  - which qmake
-  - which lrelease
   - mkdir -p build
   - pushd build
-  - qmake .. -config release
+  - ../qt5/build/bin/qmake .. -config release
   - make -j2
   - popd

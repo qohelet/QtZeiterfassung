@@ -8,3 +8,6 @@ SUBDIRS += plugins \
 plugins.depends += zeiterfassungguilib
 zeiterfassung.depends += zeiterfassungcorelib zeiterfassungguilib
 zeiterfassungguilib.depends += zeiterfassungcorelib
+
+include(installs.pri)
+win32: include(installs_win32.pri)
