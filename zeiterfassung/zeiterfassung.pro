@@ -36,4 +36,3 @@ include($${PROJECT_ROOT}/lrelease.pri)
 
 include(installs.pri)
 unix: include(installs_unix.pri)
-win32: include(installs_win32.pri)

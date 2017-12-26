@@ -1,23 +1,3 @@
-COMPILED_TRANSLATIONS += $$[QT_INSTALL_TRANSLATIONS]/qt_en.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtbase_en.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtmultimedia_en.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtquick1_en.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtscript_en.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_en.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qt_de.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtbase_de.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtmultimedia_de.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtquick1_de.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtscript_de.qm \
-                         $$[QT_INSTALL_TRANSLATIONS]/qtxmlpatterns_de.qm
-
-copy_compiled_translations.input = COMPILED_TRANSLATIONS
-copy_compiled_translations.output = $${DESTDIR}/translations/${QMAKE_FILE_BASE}${QMAKE_FILE_EXT}
-copy_compiled_translations.commands = $${QMAKE_COPY} ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
-copy_compiled_translations.CONFIG += no_link
-QMAKE_EXTRA_COMPILERS += copy_compiled_translations
-PRE_TARGETDEPS += compiler_copy_compiled_translations_make_all
-
 THEMES += themes/dark_theme.qss
 
 copy_themes.input = THEMES
