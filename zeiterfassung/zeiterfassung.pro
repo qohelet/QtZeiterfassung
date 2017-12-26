@@ -6,12 +6,14 @@ TEMPLATE = app
 CONFIG += c++14
 CONFIG -= app_bundle
 
-DESTDIR = $${OUT_PWD}/../bin
+PROJECT_ROOT = ..
 
-LIBS += -L$$OUT_PWD/../lib -lzeiterfassungcorelib -lzeiterfassungguilib
+DESTDIR = $${OUT_PWD}/$${PROJECT_ROOT}/bin
 
-INCLUDEPATH += $$PWD/../zeiterfassungcorelib $$PWD/../zeiterfassungguilib
-DEPENDPATH += $$PWD/../zeiterfassungcorelib $$PWD/../zeiterfassungguilib
+LIBS += -L$${OUT_PWD}/$${PROJECT_ROOT}/bin -lzeiterfassungcorelib -lzeiterfassungguilib
+
+INCLUDEPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}/zeiterfassungguilib
+DEPENDPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}/zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
@@ -30,7 +32,7 @@ RESOURCES += zeiterfassung_resources.qrc
 TRANSLATIONS += translations/zeiterfassung_en.ts \
                 translations/zeiterfassung_de.ts
 
-include(../lrelease.pri)
+include($${PROJECT_ROOT}/lrelease.pri)
 
 include(installs.pri)
 unix: include(installs_unix.pri)

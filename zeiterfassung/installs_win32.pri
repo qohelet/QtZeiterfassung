@@ -1,8 +1,6 @@
 CONFIG(debug, release|debug): DEBUG_SIGN = d
 
 LIBRARIES += win32/Qt.conf \
-             $$OUT_PWD/../lib/zeiterfassungcorelib.dll \
-             $$OUT_PWD/../lib/zeiterfassungguilib.dll \
              $$[QT_INSTALL_BINS]/Qt5Core$${DEBUG_SIGN}.dll \
              $$[QT_INSTALL_BINS]/Qt5Gui$${DEBUG_SIGN}.dll \
              $$[QT_INSTALL_BINS]/Qt5Network$${DEBUG_SIGN}.dll \
@@ -13,7 +11,7 @@ LIBRARIES += win32/Qt.conf \
 
 copy_libraries.input = LIBRARIES
 copy_libraries.output = $${DESTDIR}/${QMAKE_FILE_BASE}${QMAKE_FILE_EXT}
-copy_libraries.commands = $$QMAKE_COPY ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
+copy_libraries.commands = $${QMAKE_COPY} ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
 copy_libraries.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += copy_libraries
 PRE_TARGETDEPS += compiler_copy_libraries_make_all
@@ -30,7 +28,7 @@ IMAGE_FORMATS += $$[QT_INSTALL_PLUGINS]/imageformats/qgif$${DEBUG_SIGN}.dll \
 
 copy_image_formats.input = IMAGE_FORMATS
 copy_image_formats.output = $${DESTDIR}/plugins/imageformats/${QMAKE_FILE_BASE}${QMAKE_FILE_EXT}
-copy_image_formats.commands = $$QMAKE_COPY ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
+copy_image_formats.commands = $${QMAKE_COPY} ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
 copy_image_formats.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += copy_image_formats
 PRE_TARGETDEPS += compiler_copy_image_formats_make_all
@@ -39,7 +37,7 @@ PLATFORMS += $$[QT_INSTALL_PLUGINS]/platforms/qwindows$${DEBUG_SIGN}.dll
 
 copy_platforms.input = PLATFORMS
 copy_platforms.output = $${DESTDIR}/plugins/platforms/${QMAKE_FILE_BASE}${QMAKE_FILE_EXT}
-copy_platforms.commands = $$QMAKE_COPY ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
+copy_platforms.commands = $${QMAKE_COPY} ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
 copy_platforms.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += copy_platforms
 PRE_TARGETDEPS += compiler_copy_platforms_make_all

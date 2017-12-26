@@ -1,3 +1,3 @@
 #!/bin/bash
 cd "${0%/*}"
-LD_LIBRARY_PATH=../lib ./zeiterfassung
+LD_LIBRARY_PATH=. ./zeiterfassung

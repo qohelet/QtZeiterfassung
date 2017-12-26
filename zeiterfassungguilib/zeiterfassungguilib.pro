@@ -5,12 +5,14 @@ TEMPLATE = lib
 
 CONFIG += c++14
 
-DESTDIR = $${OUT_PWD}/../lib
+PROJECT_ROOT = ..
 
-LIBS += -L$$OUT_PWD/../lib -lzeiterfassungcorelib
+DESTDIR = $${OUT_PWD}/$${PROJECT_ROOT}/bin
 
-INCLUDEPATH += $$PWD/../zeiterfassungcorelib
-DEPENDPATH += $$PWD/../zeiterfassungcorelib
+LIBS += -L$$DESTDIR -lzeiterfassungcorelib
+
+INCLUDEPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}/zeiterfassungguilib
+DEPENDPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}/zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 DEFINES += ZEITERFASSUNGGUILIB_LIBRARY
@@ -42,9 +44,4 @@ RESOURCES += zeiterfassungguilib_resources.qrc
 TRANSLATIONS +=  translations/zeiterfassungguilib_en.ts \
                  translations/zeiterfassungguilib_de.ts
 
-include(../lrelease.pri)
-
-# unix {
-#    target.path = /usr/lib
-#    INSTALLS += target
-# }
+include($${PROJECT_ROOT}/lrelease.pri)

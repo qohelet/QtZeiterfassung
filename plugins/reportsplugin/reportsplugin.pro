@@ -5,12 +5,14 @@ TEMPLATE = lib
 
 CONFIG += shared c++14
 
-DESTDIR = $${OUT_PWD}/../../bin/plugins/zeiterfassung
+PROJECT_ROOT = ../..
 
-LIBS += -L$$OUT_PWD/../../lib -lzeiterfassungcorelib -lzeiterfassungguilib
+DESTDIR = $${OUT_PWD}/$${PROJECT_ROOT}/bin/plugins/zeiterfassung
 
-INCLUDEPATH += $$PWD/../../zeiterfassungcorelib $$PWD/../../zeiterfassungguilib
-DEPENDPATH += $$PWD/../../zeiterfassungcorelib $$PWD/../../zeiterfassungguilib
+LIBS += -L$${OUT_PWD}/$${PROJECT_ROOT}/bin -lzeiterfassungcorelib -lzeiterfassungguilib
+
+INCLUDEPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}/zeiterfassungguilib
+DEPENDPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}/zeiterfassungguilib
 
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
@@ -30,8 +32,3 @@ TRANSLATIONS += translations/reportsplugin_en.ts \
 OTHER_FILES += reportsplugin.json
 
 include(../../lrelease.pri)
-
-COMPILED_TRANSLATIONS += $${OUT_PWD}/translations/reportsplugin_en.qm \
-                         $${OUT_PWD}/translations/reportsplugin_de.qm
-
-include(../copy_translations.pri)
