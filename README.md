@@ -13,11 +13,12 @@ mkdir build_QtZeiterfassung
 cd build_QtZeiterfassung
 qmake ../QtZeiterfassung
 make
+make install # only needed on first build to copy Qt resources
 ```
 
 ## Launching (on unix)
 ```
-LD_LIBRARY_PATH=../lib ./zeiterfassung # or just use start.sh
+./zeiterfassung.sh
 ```
 
 ## Launching (on win32)
