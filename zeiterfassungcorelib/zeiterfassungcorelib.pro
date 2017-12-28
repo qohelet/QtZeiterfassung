@@ -20,6 +20,7 @@ SOURCES += timeutils.cpp \
            replies/createtimeassignmentreply.cpp \
            replies/deletebookingreply.cpp \
            replies/deletetimeassignmentreply.cpp \
+           replies/getabsencesreply.cpp \
            replies/getbookingsreply.cpp \
            replies/getpresencestatusreply.cpp \
            replies/getprojectsreply.cpp \
@@ -41,6 +42,7 @@ HEADERS += cpp14polyfills.h \
            replies/createtimeassignmentreply.h \
            replies/deletebookingreply.h \
            replies/deletetimeassignmentreply.h \
+           replies/getabsencesreply.h \
            replies/getbookingsreply.h \
            replies/getpresencestatusreply.h \
            replies/getprojectsreply.h \
