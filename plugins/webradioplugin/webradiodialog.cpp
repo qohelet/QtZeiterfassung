@@ -7,8 +7,7 @@
 WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
     QDialog(&mainWindow),
     ui(new Ui::WebRadioDialog),
-    m_mainWindow(mainWindow),
-    m_player(new QMediaPlayer(this))
+    m_mainWindow(mainWindow)
 {
     ui->setupUi(this);
 
@@ -18,6 +17,7 @@ WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 #endif
 
+    m_player = new QMediaPlayer(this);
     connect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::stateChanged);
     connect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::updateWidgets);
     connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &WebRadioDialog::mediaStatusChanged);
@@ -65,6 +65,13 @@ WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
 
 WebRadioDialog::~WebRadioDialog()
 {
+    // To avoid crash on app close
+    disconnect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::stateChanged);
+    disconnect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::updateWidgets);
+    disconnect(m_player, &QMediaPlayer::mediaStatusChanged, this, &WebRadioDialog::mediaStatusChanged);
+    disconnect(m_player, &QMediaPlayer::mediaStatusChanged, this, &WebRadioDialog::updateWidgets);
+    disconnect(m_player, static_cast<void(QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error), this, &WebRadioDialog::error);
+
     delete ui;
 }
 
