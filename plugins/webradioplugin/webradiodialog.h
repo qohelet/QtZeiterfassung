@@ -1,5 +1,4 @@
-#ifndef WEBRADIODIALOG_H
-#define WEBRADIODIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QMediaPlayer>
@@ -32,5 +31,3 @@ private:
     MainWindow &m_mainWindow;
     QMediaPlayer *m_player;
 };
-
-#endif // WEBRADIODIALOG_H

@@ -1,5 +1,4 @@
-#ifndef LOGMODEL_H
-#define LOGMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QDateTime>
@@ -35,5 +34,3 @@ private:
 
     QList<Entry> m_entries;
 };
-
-#endif // LOGMODEL_H

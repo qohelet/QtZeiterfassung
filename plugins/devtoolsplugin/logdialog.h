@@ -1,5 +1,4 @@
-#ifndef LOGDIALOG_H
-#define LOGDIALOG_H
+#pragma once
 
 #include <QDialog>
 
@@ -20,5 +19,3 @@ public:
 private:
     Ui::LogDialog *ui;
 };
-
-#endif // LOGDIALOG_H
