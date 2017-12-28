@@ -17,10 +17,12 @@ DEPENDPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
 HEADERS += \
-           absenceplugin.h
+           absenceplugin.h \
+    absencewidget.h
 
 SOURCES += \
-           absenceplugin.cpp
+           absenceplugin.cpp \
+    absencewidget.cpp
 
 FORMS +=
 

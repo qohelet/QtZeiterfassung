@@ -4,6 +4,12 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QLocale>
+#include <QBoxLayout>
+
+#include "mainwindow.h"
+#include "stripswidget.h"
+
+#include "absencewidget.h"
 
 AbsencePlugin::AbsencePlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -27,5 +33,6 @@ AbsencePlugin::AbsencePlugin(QObject *parent) :
 
 void AbsencePlugin::attachTo(MainWindow &mainWindow)
 {
-    //TODO
+    for(auto stripsWidget : mainWindow.stripsWidgets())
+        stripsWidget->headerLayout()->addWidget(new AbsenceWidget(stripsWidget));
 }
