@@ -1,5 +1,4 @@
-#ifndef ABSENCEWIDGET_H
-#define ABSENCEWIDGET_H
+#pragma once
 
 #include <QToolButton>
 
@@ -9,6 +8,7 @@ class AbsenceWidget : public QToolButton
 
 public:
     explicit AbsenceWidget(QWidget *parent = Q_NULLPTR);
-};
 
-#endif // ABSENCEWIDGET_H
+private Q_SLOTS:
+    void pressedSlot();
+};

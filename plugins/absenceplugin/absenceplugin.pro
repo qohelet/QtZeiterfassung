@@ -18,13 +18,16 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 
 HEADERS += \
            absenceplugin.h \
-    absencewidget.h
+    absencewidget.h \
+    absencedialog.h
 
 SOURCES += \
            absenceplugin.cpp \
-    absencewidget.cpp
+    absencewidget.cpp \
+    absencedialog.cpp
 
-FORMS +=
+FORMS += \
+    absencedialog.ui
 
 RESOURCES += absenceplugin_resources.qrc
 
