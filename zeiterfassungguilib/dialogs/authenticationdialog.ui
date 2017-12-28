@@ -37,7 +37,7 @@
         </size>
        </property>
        <property name="pixmap">
-        <pixmap resource="../resources.qrc">:/zeiterfassungguilib/images/authentication.png</pixmap>
+        <pixmap resource="../zeiterfassungguilib_resources.qrc">:/zeiterfassungguilib/images/authentication.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -105,7 +105,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../zeiterfassungguilib_resources.qrc"/>
  </resources>
  <connections>
   <connection>
