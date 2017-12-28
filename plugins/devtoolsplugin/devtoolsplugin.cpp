@@ -21,13 +21,12 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext &context, const Q
 {
     previousHandler(type, context, message);
 
-    if(!model)
-        model = std::make_shared<LogModel>();
     model->log(type, context.file, context.line, context.function, context.category, message);
 }
 
 void registerMessageHandler()
 {
+    model = std::make_shared<LogModel>();
     previousHandler = qInstallMessageHandler(myMessageHandler);
 }
 
@@ -58,5 +57,5 @@ void DevToolsPlugin::attachTo(MainWindow &mainWindow)
     auto dialog = new LogDialog(&mainWindow);
     dialog->setModel(model.get());
     mainWindow.menuTools()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/devtoolsplugin/images/dev-tools.png")),
-                                      tr("Show log"), dialog, &QDialog::open);
+                                      tr("Show log"), dialog, &QWidget::show);
 }
