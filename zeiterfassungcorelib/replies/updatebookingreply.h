@@ -12,7 +12,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT UpdateBookingReply : public Zeiterfassun
     Q_OBJECT
 
 public:
-    UpdateBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit UpdateBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
 private Q_SLOTS:
     void requestFinished();

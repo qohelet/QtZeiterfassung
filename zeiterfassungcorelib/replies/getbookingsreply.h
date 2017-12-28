@@ -15,7 +15,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT GetBookingsReply : public ZeiterfassungR
     Q_OBJECT
 
 public:
-    GetBookingsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit GetBookingsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     struct Booking
     {

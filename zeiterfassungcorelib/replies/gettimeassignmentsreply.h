@@ -15,7 +15,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT GetTimeAssignmentsReply : public Zeiterf
     Q_OBJECT
 
 public:
-    GetTimeAssignmentsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit GetTimeAssignmentsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     struct TimeAssignment
     {

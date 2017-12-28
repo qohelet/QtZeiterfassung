@@ -12,7 +12,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT UpdateTimeAssignmentReply : public Zeite
     Q_OBJECT
 
 public:
-    UpdateTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit UpdateTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     int timeAssignmentId() const;
 

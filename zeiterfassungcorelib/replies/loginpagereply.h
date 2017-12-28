@@ -12,7 +12,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT LoginPageReply : public ZeiterfassungRep
     Q_OBJECT
 
 public:
-    LoginPageReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit LoginPageReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
 private Q_SLOTS:
     void requestFinished();

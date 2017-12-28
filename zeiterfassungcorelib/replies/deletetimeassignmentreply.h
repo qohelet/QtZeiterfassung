@@ -12,7 +12,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT DeleteTimeAssignmentReply : public Zeite
     Q_OBJECT
 
 public:
-    DeleteTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit DeleteTimeAssignmentReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
 private Q_SLOTS:
     void requestFinished();

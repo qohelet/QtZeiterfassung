@@ -14,7 +14,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT GetUserInfoReply : public ZeiterfassungR
     Q_OBJECT
 
 public:
-    GetUserInfoReply(std::unique_ptr<QNetworkReply> &&reply0, std::unique_ptr<QNetworkReply> &&reply1,
+    explicit GetUserInfoReply(std::unique_ptr<QNetworkReply> &&reply0, std::unique_ptr<QNetworkReply> &&reply1,
                      ZeiterfassungApi *zeiterfassung);
 
     struct UserInfo

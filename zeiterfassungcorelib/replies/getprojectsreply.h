@@ -15,7 +15,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT GetProjectsReply : public ZeiterfassungR
     Q_OBJECT
 
 public:
-    GetProjectsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit GetProjectsReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     struct Project
     {

@@ -12,7 +12,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT DeleteBookingReply : public Zeiterfassun
     Q_OBJECT
 
 public:
-    DeleteBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit DeleteBookingReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
 private Q_SLOTS:
     void requestFinished();

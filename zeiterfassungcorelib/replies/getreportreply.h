@@ -13,7 +13,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT GetReportReply : public ZeiterfassungRep
     Q_OBJECT
 
 public:
-    GetReportReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
+    explicit GetReportReply(std::unique_ptr<QNetworkReply> &&reply, ZeiterfassungApi *zeiterfassung);
 
     const QByteArray &content() const;
 
