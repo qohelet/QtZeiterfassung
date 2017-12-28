@@ -9,20 +9,21 @@
 #include <QJsonValue>
 #include <QJsonArray>
 
-#include "replies/createbookingreply.h"
-#include "replies/createtimeassignmentreply.h"
-#include "replies/deletebookingreply.h"
-#include "replies/deletetimeassignmentreply.h"
-#include "replies/getreportreply.h"
-#include "replies/getbookingsreply.h"
-#include "replies/getpresencestatusreply.h"
-#include "replies/getprojectsreply.h"
-#include "replies/gettimeassignmentsreply.h"
 #include "replies/loginpagereply.h"
 #include "replies/loginreply.h"
-#include "replies/updatebookingreply.h"
-#include "replies/updatetimeassignmentreply.h"
 #include "replies/getuserinforeply.h"
+#include "replies/getbookingsreply.h"
+#include "replies/createbookingreply.h"
+#include "replies/updatebookingreply.h"
+#include "replies/deletebookingreply.h"
+#include "replies/gettimeassignmentsreply.h"
+#include "replies/createtimeassignmentreply.h"
+#include "replies/updatetimeassignmentreply.h"
+#include "replies/deletetimeassignmentreply.h"
+#include "replies/getprojectsreply.h"
+#include "replies/getreportreply.h"
+#include "replies/getpresencestatusreply.h"
+#include "replies/getabsencesreply.h"
 
 //add support for pre cpp14 compilers
 #include "cpp14polyfills.h"
@@ -285,4 +286,16 @@ std::unique_ptr<GetPresenceStatusReply> ZeiterfassungApi::doGetPresenceStatus()
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("presenceStatus"));
 
     return std::make_unique<GetPresenceStatusReply>(std::unique_ptr<QNetworkReply>(m_manager->get(request)), this);
+}
+
+std::unique_ptr<GetAbsencesReply> ZeiterfassungApi::doGetAbsences(int userId, const QDate &start, const QDate &end)
+{
+    QNetworkRequest request(QUrl(QStringLiteral("%0json/fulldayAbsences?start=%1&end=%2&pnrLst=%3")
+                                 .arg(m_url)
+                                 .arg(start.toString(QStringLiteral("yyyyMMdd")))
+                                 .arg(end.toString(QStringLiteral("yyyyMMdd")))
+                                 .arg(userId)));
+    request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
+
+    return std::make_unique<GetAbsencesReply>(std::unique_ptr<QNetworkReply>(m_manager->get(request)), this);
 }
