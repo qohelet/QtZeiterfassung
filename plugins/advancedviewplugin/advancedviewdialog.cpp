@@ -21,8 +21,8 @@
 #include "models/bookingsmodel.h"
 #include "models/timeassignmentsmodel.h"
 
-AdvancedViewDialog::AdvancedViewDialog(StripsWidget &stripsWidget) :
-    QDialog(&stripsWidget.mainWindow()),
+AdvancedViewDialog::AdvancedViewDialog(StripsWidget &stripsWidget, QWidget *parent) :
+    QDialog(parent),
     ui(new Ui::AdvancedViewDialog),
     m_stripsWidget(stripsWidget),
     m_bookingsModel(new BookingsModel(stripsWidget, this)),

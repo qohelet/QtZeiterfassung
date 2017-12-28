@@ -29,7 +29,7 @@ LunchMealWidget::LunchMealWidget(StripsWidget &stripsWidget) :
 
 void LunchMealWidget::pressedSlot()
 {
-    LunchMealDialog dialog(m_stripsWidget.date(), m_content, &m_stripsWidget.mainWindow());
+    LunchMealDialog dialog(m_stripsWidget.date(), m_content, this);
     dialog.exec();
 }
 

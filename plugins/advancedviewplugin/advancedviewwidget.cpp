@@ -25,6 +25,6 @@ void AdvancedViewWidget::dateChanged(const QDate &date)
 
 void AdvancedViewWidget::pressedSlot()
 {
-    AdvancedViewDialog dialog(m_stripsWidget);
+    AdvancedViewDialog dialog(m_stripsWidget, this);
     dialog.exec();
 }

@@ -12,7 +12,7 @@ class AdvancedViewDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AdvancedViewDialog(StripsWidget &stripsWidget);
+    explicit AdvancedViewDialog(StripsWidget &stripsWidget, QWidget *parent = Q_NULLPTR);
     ~AdvancedViewDialog();
 
 private Q_SLOTS:
