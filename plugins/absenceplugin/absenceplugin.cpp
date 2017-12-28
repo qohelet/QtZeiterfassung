@@ -34,5 +34,5 @@ AbsencePlugin::AbsencePlugin(QObject *parent) :
 void AbsencePlugin::attachTo(MainWindow &mainWindow)
 {
     for(auto stripsWidget : mainWindow.stripsWidgets())
-        stripsWidget->headerLayout()->addWidget(new AbsenceWidget(stripsWidget));
+        stripsWidget->headerLayout()->addWidget(new AbsenceWidget(*stripsWidget));
 }
