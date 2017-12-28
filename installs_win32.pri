@@ -11,17 +11,17 @@ qtLibsInstall.files = win32/Qt.conf \
                       $$[QT_INSTALL_BINS]/libwinpthread-1.dll
 INSTALLS += qtLibsInstall
 
-qtImageFormats.path = $${OUT_PWD}/bin/plugins/imageformats
-qtImageFormats.files = $$[QT_INSTALL_PLUGINS]/imageformats/qgif$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qicns$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qico$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qjpeg$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qsvg$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qtga$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qtiff$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qwbmp$${DEBUG_SIGN}.dll \
-                       $$[QT_INSTALL_PLUGINS]/imageformats/qwebp$${DEBUG_SIGN}.dll
-INSTALLS += qtImageFormats
+qtImageFormatsInstall.path = $${OUT_PWD}/bin/plugins/imageformats
+qtImageFormatsInstall.files = $$[QT_INSTALL_PLUGINS]/imageformats/qgif$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qicns$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qico$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qjpeg$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qsvg$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qtga$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qtiff$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qwbmp$${DEBUG_SIGN}.dll \
+                              $$[QT_INSTALL_PLUGINS]/imageformats/qwebp$${DEBUG_SIGN}.dll
+INSTALLS += qtImageFormatsInstall
 
 qtPlatformsInstall.path = $${OUT_PWD}/bin/plugins/platforms
 qtPlatformsInstall.files = $$[QT_INSTALL_PLUGINS]/platforms/qwindows$${DEBUG_SIGN}.dll
