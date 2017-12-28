@@ -24,7 +24,7 @@ SOURCES += \
 
 FORMS +=
 
-RESOURCES +=
+RESOURCES += absenceplugin_resources.qrc
 
 TRANSLATIONS +=
 

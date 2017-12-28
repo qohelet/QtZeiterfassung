@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/zeiterfassung/plugins/absenceplugin">
+        <file>images/absence.png</file>
+    </qresource>
+</RCC>
