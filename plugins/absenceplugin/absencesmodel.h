@@ -27,6 +27,7 @@ public:
 
 Q_SIGNALS:
     void enabledChanged(bool enabled);
+    void errorOccured(const QString &message);
 
 public Q_SLOTS:
     void setDate(const QDate &date);
@@ -39,4 +40,5 @@ private:
     QDate m_date;
     ZeiterfassungApi &m_erfassung;
     std::unique_ptr<GetAbsencesReply> m_reply;
+    QVector<GetAbsencesReply::Absence> m_absences;
 };

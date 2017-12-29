@@ -32,7 +32,7 @@ public:
         QString text;
     };
 
-    const QVector<Absence> &getAbsences() const;
+    const QVector<Absence> &absences() const;
 
 private Q_SLOTS:
     void requestFinished();

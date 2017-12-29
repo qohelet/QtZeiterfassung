@@ -16,7 +16,7 @@ GetAbsencesReply::GetAbsencesReply(std::unique_ptr<QNetworkReply> &&reply, Zeite
     connect(m_reply.get(), &QNetworkReply::finished, this, &GetAbsencesReply::requestFinished);
 }
 
-const QVector<GetAbsencesReply::Absence> &GetAbsencesReply::getAbsences() const
+const QVector<GetAbsencesReply::Absence> &GetAbsencesReply::absences() const
 {
     return m_absences;
 }
