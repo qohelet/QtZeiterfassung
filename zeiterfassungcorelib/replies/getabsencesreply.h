@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <QString>
+#include <QDate>
 #include <QNetworkReply>
 #include <QVector>
 
@@ -19,7 +21,15 @@ public:
 
     struct Absence
     {
-        //TODO
+        int altRepresentative;
+        QString compositeId;
+        QDate end;
+        QString hourCategory;
+        QString openMarking;
+        int persNr;
+        int representative;
+        QDate start;
+        QString text;
     };
 
     const QVector<Absence> &getAbsences() const;

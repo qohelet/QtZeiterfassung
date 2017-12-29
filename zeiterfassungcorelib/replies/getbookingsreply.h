@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include <QDate>
 #include <QNetworkReply>
 #include <QVector>
 

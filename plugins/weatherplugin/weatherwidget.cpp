@@ -3,8 +3,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QUrl>
-#include <QMessageBox>
-#include <QStringBuilder>
+#include <QDebug>
 #include <QJsonParseError>
 #include <QJsonDocument>
 #include <QJsonObject>
