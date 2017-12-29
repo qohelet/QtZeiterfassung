@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>AbsenceDialog</class>
- <widget class="QDialog" name="AbsenceDialog">
+ <widget class="ZeiterfassungDialog" name="AbsenceDialog">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QDialog>
+#include "zeiterfassungdialog.h"
 
 class QDate;
 
@@ -9,7 +9,7 @@ class ZeiterfassungApi;
 class AbsencesModel;
 namespace Ui { class AbsenceDialog; }
 
-class AbsenceDialog : public QDialog
+class AbsenceDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

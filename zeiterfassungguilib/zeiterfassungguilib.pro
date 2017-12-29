@@ -20,6 +20,7 @@ DEFINES += ZEITERFASSUNGGUILIB_LIBRARY
 SOURCES += mainwindow.cpp \
            stripfactory.cpp \
            stripswidget.cpp \
+           zeiterfassungdialog.cpp \
            zeiterfassungplugin.cpp \
            dialogs/authenticationdialog.cpp \
            dialogs/languageselectiondialog.cpp \
@@ -29,6 +30,7 @@ HEADERS += mainwindow.h \
            stripfactory.h \
            stripswidget.h \
            zeiterfassungguilib_global.h \
+           zeiterfassungdialog.h \
            zeiterfassungplugin.h \
            dialogs/authenticationdialog.h \
            dialogs/languageselectiondialog.h \
