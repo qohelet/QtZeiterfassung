@@ -1,11 +1,12 @@
 #pragma once
 
-#include <QDialog>
 #include <QTime>
+
+#include "zeiterfassungdialog.h"
 
 namespace Ui { class BookingDialog; }
 
-class BookingDialog : public QDialog
+class BookingDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

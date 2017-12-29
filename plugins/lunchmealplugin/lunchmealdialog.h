@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QDialog>
+#include "zeiterfassungdialog.h"
 
 class QDate;
 
@@ -8,7 +8,7 @@ class StripsWidget;
 
 namespace Ui { class LunchMealDialog; }
 
-class LunchMealDialog : public QDialog
+class LunchMealDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

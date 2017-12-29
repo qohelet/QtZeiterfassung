@@ -5,17 +5,11 @@
 #include "zeiterfassungsettings.h"
 
 WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
-    QDialog(&mainWindow),
+    ZeiterfassungDialog(&mainWindow),
     ui(new Ui::WebRadioDialog),
     m_mainWindow(mainWindow)
 {
     ui->setupUi(this);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-#else
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-#endif
 
     m_player = new QMediaPlayer(this);
     connect(m_player, &QMediaPlayer::stateChanged, this, &WebRadioDialog::stateChanged);

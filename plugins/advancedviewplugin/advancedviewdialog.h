@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QDialog>
+#include "zeiterfassungdialog.h"
 
 namespace Ui { class AdvancedViewDialog; }
 class StripsWidget;
 class BookingsModel;
 class TimeAssignmentsModel;
 
-class AdvancedViewDialog : public QDialog
+class AdvancedViewDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

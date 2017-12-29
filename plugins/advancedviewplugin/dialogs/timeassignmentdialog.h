@@ -1,7 +1,8 @@
 #pragma once
 
-#include <QDialog>
 #include <QTime>
+
+#include "zeiterfassungdialog.h"
 
 template <class Key, class T> class QMap;
 
@@ -9,7 +10,7 @@ class ZeiterfassungSettings;
 
 namespace Ui { class TimeAssignmentDialog; }
 
-class TimeAssignmentDialog : public QDialog
+class TimeAssignmentDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

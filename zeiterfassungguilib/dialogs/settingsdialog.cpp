@@ -11,17 +11,11 @@
 #include "zeiterfassungsettings.h"
 
 SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent) :
-    QDialog(parent),
+    ZeiterfassungDialog(parent),
     ui(new Ui::SettingsDialog),
     m_settings(settings)
 {
     ui->setupUi(this);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-#else
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-#endif
 
     ui->comboBoxLanguage->addItem(tr("English"), QLocale::English);
     ui->comboBoxLanguage->addItem(tr("German"), QLocale::German);

@@ -1,12 +1,11 @@
 #pragma once
 
-#include <QDialog>
-
+#include "zeiterfassungdialog.h"
 #include "replies/getuserinforeply.h"
 
 namespace Ui { class ProfileDialog; }
 
-class ProfileDialog : public QDialog
+class ProfileDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

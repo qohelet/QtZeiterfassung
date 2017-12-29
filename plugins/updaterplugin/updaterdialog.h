@@ -1,14 +1,15 @@
 #pragma once
 
-#include <QDialog>
 #include <QUrl>
+
+#include "zeiterfassungdialog.h"
 
 class QNetworkReply;
 
 namespace Ui { class UpdaterDialog; }
 class MainWindow;
 
-class UpdaterDialog : public QDialog
+class UpdaterDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

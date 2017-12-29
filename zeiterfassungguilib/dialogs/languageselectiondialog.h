@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QDialog>
 #include <QLocale>
 
 #include "zeiterfassungguilib_global.h"
+#include "zeiterfassungdialog.h"
 
 namespace Ui { class LanguageSelectionDialog; }
 
-class ZEITERFASSUNGGUILIBSHARED_EXPORT LanguageSelectionDialog : public QDialog
+class ZEITERFASSUNGGUILIBSHARED_EXPORT LanguageSelectionDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

@@ -1,12 +1,12 @@
 #pragma once
 
-#include <QDialog>
+#include "zeiterfassungdialog.h"
 
 class QAbstractItemModel;
 
 namespace Ui { class LogDialog; }
 
-class LogDialog : public QDialog
+class LogDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 

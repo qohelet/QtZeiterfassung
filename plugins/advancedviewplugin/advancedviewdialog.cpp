@@ -22,19 +22,13 @@
 #include "models/timeassignmentsmodel.h"
 
 AdvancedViewDialog::AdvancedViewDialog(StripsWidget &stripsWidget, QWidget *parent) :
-    QDialog(parent),
+    ZeiterfassungDialog(parent),
     ui(new Ui::AdvancedViewDialog),
     m_stripsWidget(stripsWidget),
     m_bookingsModel(new BookingsModel(stripsWidget, this)),
     m_timeAssignmentsModel(new TimeAssignmentsModel(stripsWidget, this))
 {
     ui->setupUi(this);
-
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-#else
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-#endif
 
     ui->bookingsView->setModel(m_bookingsModel);
     ui->bookingsView->setEnabled(m_bookingsModel->enabled());

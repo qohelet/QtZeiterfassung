@@ -1,13 +1,14 @@
 #pragma once
 
-#include <QDialog>
 #include <QMediaPlayer>
+
+#include "zeiterfassungdialog.h"
 
 class MainWindow;
 
 namespace Ui { class WebRadioDialog; }
 
-class WebRadioDialog : public QDialog
+class WebRadioDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 
