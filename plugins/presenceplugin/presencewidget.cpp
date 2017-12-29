@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QMessageBox>
 #include <QStringBuilder>
+#include <QDebug>
 
 #include <QPushButton>
 
@@ -71,7 +72,7 @@ void PresenceWidget::finished()
                 icon = QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/not-present.png"));
             }
             else
-                qWarning() << "unknown presence" << status.firstName << status.lastName << status.presence;
+                qCritical() << "unknown presence" << status.firstName << status.lastName << status.presence;
 
             m_menu->addAction(icon, tr("%0 %1").arg(status.firstName).arg(status.lastName));
         }

@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QToolBar>
 #include <QMessageBox>
+#include <QDebug>
 #include <QStringBuilder>
 #include <QRegularExpression>
 #include <QTemporaryFile>

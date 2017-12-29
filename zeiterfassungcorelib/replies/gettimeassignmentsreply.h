@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <QDate>
+#include <QTime>
 #include <QNetworkReply>
 #include <QVector>
 

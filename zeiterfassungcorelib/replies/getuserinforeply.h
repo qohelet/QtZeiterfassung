@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include <QString>
+#include <QDate>
 #include <QNetworkReply>
 
 #include "zeiterfassungcorelib_global.h"

@@ -35,8 +35,6 @@ void LunchMealWidget::pressedSlot()
 
 void LunchMealWidget::dateChanged(const QDate &date)
 {
-    qDebug() << "called";
-
     setEnabled(false);
     setVisible(false);
 
