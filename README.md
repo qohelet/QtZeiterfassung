@@ -1,8 +1,7 @@
 # Zeiterfassung
 This tool helps me assigning my working hours to projects at work.
 
-master: [![Build Status of master](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung.svg?branch=master)](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung)
-devel: [![Build Status of devel](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung.svg?branch=devel)](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung)
+[![Build Status](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung.svg?branch=master)](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung)
 
 ![Screenshot of the main window](https://raw.githubusercontent.com/0xFEEDC0DE64/QtZeiterfassung/master/screenshot.png)
 
