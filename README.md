@@ -1,6 +1,8 @@
 # Zeiterfassung
 This tool helps me assigning my working hours to projects at work.
 
+[![Build Status](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung.svg?branch=master)](https://travis-ci.org/0xFEEDC0DE64/QtZeiterfassung)
+
 ![Screenshot of the main window](https://raw.githubusercontent.com/0xFEEDC0DE64/QtZeiterfassung/master/screenshot.png)
 
 ## Building from source
@@ -13,11 +15,12 @@ mkdir build_QtZeiterfassung
 cd build_QtZeiterfassung
 qmake ../QtZeiterfassung
 make
+make install # only needed on first build to copy Qt resources
 ```
 
 ## Launching (on unix)
 ```
-LD_LIBRARY_PATH=../lib ./zeiterfassung # or just use start.sh
+./zeiterfassung.sh
 ```
 
 ## Launching (on win32)

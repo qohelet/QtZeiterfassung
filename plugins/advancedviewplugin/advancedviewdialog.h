@@ -1,19 +1,18 @@
-#ifndef ADVANCEDVIEWDIALOG_H
-#define ADVANCEDVIEWDIALOG_H
+#pragma once
 
-#include <QDialog>
+#include "zeiterfassungdialog.h"
 
 namespace Ui { class AdvancedViewDialog; }
 class StripsWidget;
 class BookingsModel;
 class TimeAssignmentsModel;
 
-class AdvancedViewDialog : public QDialog
+class AdvancedViewDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 
 public:
-    explicit AdvancedViewDialog(StripsWidget &stripsWidget);
+    explicit AdvancedViewDialog(StripsWidget &stripsWidget, QWidget *parent = Q_NULLPTR);
     ~AdvancedViewDialog();
 
 private Q_SLOTS:
@@ -28,5 +27,3 @@ private:
     BookingsModel *m_bookingsModel;
     TimeAssignmentsModel *m_timeAssignmentsModel;
 };
-
-#endif // ADVANCEDVIEWDIALOG_H

@@ -1,29 +1,21 @@
-#ifndef LUNCHMEALDIALOG_H
-#define LUNCHMEALDIALOG_H
+#pragma once
 
-#include <memory>
+#include "zeiterfassungdialog.h"
 
-#include <QDialog>
-#include <QNetworkReply>
+class QDate;
 
 class StripsWidget;
 
 namespace Ui { class LunchMealDialog; }
 
-class LunchMealDialog : public QDialog
+class LunchMealDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 
 public:
-    explicit LunchMealDialog(StripsWidget &stripsWidget);
+    explicit LunchMealDialog(const QDate &date, const QString &content, QWidget *parent = Q_NULLPTR);
     ~LunchMealDialog();
-
-private Q_SLOTS:
-    void finished();
 
 private:
     Ui::LunchMealDialog *ui;
-    std::unique_ptr<QNetworkReply> m_reply;
 };
-
-#endif // LUNCHMEALDIALOG_H

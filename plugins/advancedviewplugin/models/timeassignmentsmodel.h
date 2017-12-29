@@ -1,5 +1,4 @@
-#ifndef TIMEASSIGNMENTSMODEL_H
-#define TIMEASSIGNMENTSMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QVector>
@@ -37,5 +36,3 @@ private Q_SLOTS:
 private:
     StripsWidget &m_stripsWidget;
 };
-
-#endif // TIMEASSIGNMENTSMODEL_H

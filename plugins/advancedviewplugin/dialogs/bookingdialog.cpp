@@ -2,7 +2,7 @@
 #include "ui_bookingdialog.h"
 
 BookingDialog::BookingDialog(QWidget *parent) :
-    QDialog(parent),
+    ZeiterfassungDialog(parent),
     ui(new Ui::BookingDialog)
 {
     ui->setupUi(this);

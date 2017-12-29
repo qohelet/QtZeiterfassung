@@ -1,5 +1,4 @@
-#ifndef WEATHERPLUGIN_H
-#define WEATHERPLUGIN_H
+#pragma once
 
 #include <QObject>
 #include <QTranslator>
@@ -21,5 +20,3 @@ public:
 private:
     QTranslator m_translator;
 };
-
-#endif // WEATHERPLUGIN_H

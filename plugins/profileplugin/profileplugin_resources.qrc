@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/zeiterfassung/plugins/profileplugin">
+        <file>images/profile.png</file>
+    </qresource>
+</RCC>

@@ -14,12 +14,12 @@
         <translation>Lade...</translation>
     </message>
     <message>
-        <location filename="../lunchmealdialog.cpp" line="20"/>
+        <location filename="../lunchmealdialog.cpp" line="18"/>
         <source>Lunch meal for %0</source>
         <translation>Mittagsmenü vom %0</translation>
     </message>
     <message>
-        <location filename="../lunchmealdialog.cpp" line="20"/>
+        <location filename="../lunchmealdialog.cpp" line="18"/>
         <source>dd.MM.yyyy</source>
         <translation>dd.MM.yyyy</translation>
     </message>
@@ -27,9 +27,15 @@
 <context>
     <name>LunchMealWidget</name>
     <message>
-        <location filename="../lunchmealwidget.cpp" line="16"/>
+        <location filename="../lunchmealwidget.cpp" line="22"/>
         <source>Lunch meal</source>
         <translation>Mittagsmenü</translation>
+    </message>
+    <message>
+        <location filename="../lunchmealwidget.cpp" line="57"/>
+        <location filename="../lunchmealwidget.cpp" line="58"/>
+        <source>Could not load lunch meal!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

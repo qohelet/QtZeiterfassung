@@ -1,15 +1,15 @@
-#ifndef UPDATERDIALOG_H
-#define UPDATERDIALOG_H
+#pragma once
 
-#include <QDialog>
 #include <QUrl>
+
+#include "zeiterfassungdialog.h"
 
 class QNetworkReply;
 
 namespace Ui { class UpdaterDialog; }
 class MainWindow;
 
-class UpdaterDialog : public QDialog
+class UpdaterDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 
@@ -29,5 +29,3 @@ private:
 
     QUrl m_url;
 };
-
-#endif // UPDATERDIALOG_H

@@ -1,18 +1,16 @@
-#ifndef REPORTSWIDGET_H
-#define REPORTSWIDGET_H
+#pragma once
 
-#include <QWidget>
+#include <QLabel>
 #include <QDate>
 #include <QUrl>
 
 #include "replies/getreportreply.h"
 
-class QLabel;
 class QAction;
 
 class MainWindow;
 
-class ReportsWidget : public QWidget
+class ReportsWidget : public QLabel
 {
     Q_OBJECT
 
@@ -28,9 +26,6 @@ private Q_SLOTS:
 private:
     MainWindow &m_mainWindow;
 
-    QLabel *m_labelBalance;
-    QLabel *m_labelHolidays;
-
     QAction *m_actionOpenReport;
     QAction *m_actionRefreshReport;
 
@@ -39,5 +34,3 @@ private:
 
     std::unique_ptr<GetReportReply> m_reply;
 };
-
-#endif // REPORTSWIDGET_H

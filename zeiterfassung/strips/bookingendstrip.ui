@@ -19,7 +19,7 @@
   <property name="frameShadow">
    <enum>QFrame::Raised</enum>
   </property>
-  <layout class="QHBoxLayout" stretch="0,1,0">
+  <layout class="QHBoxLayout" stretch="0,1,0,0">
    <property name="spacing">
     <number>10</number>
    </property>
@@ -70,6 +70,16 @@
      </property>
      <property name="text">
       <string>END</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelDuration">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(0,0,0,30);</string>
+     </property>
+     <property name="text">
+      <string notr="true">9:99h</string>
      </property>
     </widget>
    </item>

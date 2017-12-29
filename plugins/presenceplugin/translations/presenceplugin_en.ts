@@ -4,40 +4,30 @@
 <context>
     <name>PresenceWidget</name>
     <message>
-        <location filename="../presencewidget.cpp" line="30"/>
+        <location filename="../presencewidget.cpp" line="24"/>
         <source>Refresh presence</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../presencewidget.cpp" line="42"/>
-        <location filename="../presencewidget.cpp" line="43"/>
-        <location filename="../presencewidget.cpp" line="73"/>
-        <location filename="../presencewidget.cpp" line="74"/>
-        <source>%0: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../presencewidget.cpp" line="42"/>
-        <location filename="../presencewidget.cpp" line="73"/>
-        <source>Available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../presencewidget.cpp" line="42"/>
-        <location filename="../presencewidget.cpp" line="43"/>
+        <location filename="../presencewidget.cpp" line="38"/>
         <source>???</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../presencewidget.cpp" line="43"/>
-        <location filename="../presencewidget.cpp" line="74"/>
-        <source>Not available</source>
+        <location filename="../presencewidget.cpp" line="38"/>
+        <location filename="../presencewidget.cpp" line="79"/>
+        <source>%0 available, %1 not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../presencewidget.cpp" line="55"/>
-        <location filename="../presencewidget.cpp" line="56"/>
+        <location filename="../presencewidget.cpp" line="51"/>
+        <location filename="../presencewidget.cpp" line="52"/>
         <source>Could not get presence status!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../presencewidget.cpp" line="76"/>
+        <source>%0 %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

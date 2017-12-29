@@ -1,8 +1,8 @@
-#ifndef TIMEASSIGNMENTDIALOG_H
-#define TIMEASSIGNMENTDIALOG_H
+#pragma once
 
-#include <QDialog>
 #include <QTime>
+
+#include "zeiterfassungdialog.h"
 
 template <class Key, class T> class QMap;
 
@@ -10,7 +10,7 @@ class ZeiterfassungSettings;
 
 namespace Ui { class TimeAssignmentDialog; }
 
-class TimeAssignmentDialog : public QDialog
+class TimeAssignmentDialog : public ZeiterfassungDialog
 {
     Q_OBJECT
 
@@ -40,5 +40,3 @@ public:
 private:
     Ui::TimeAssignmentDialog *ui;
 };
-
-#endif // TIMEASSIGNMENTDIALOG_H

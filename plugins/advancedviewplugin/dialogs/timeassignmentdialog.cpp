@@ -9,7 +9,7 @@
 
 TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &projects, const ZeiterfassungSettings &settings,
                                    QWidget *parent) :
-    QDialog(parent),
+    ZeiterfassungDialog(parent),
     ui(new Ui::TimeAssignmentDialog)
 {
     ui->setupUi(this);

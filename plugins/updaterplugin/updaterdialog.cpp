@@ -19,7 +19,7 @@
 #include "zeiterfassungapi.h"
 
 UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
-    QDialog(&mainWindow),
+    ZeiterfassungDialog(&mainWindow),
     ui(new Ui::UpdaterDialog),
     m_mainWindow(mainWindow)
 {
@@ -31,8 +31,8 @@ UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &UpdaterDialog::rejectedSlot);
 
     auto url = m_mainWindow.settings().value(QStringLiteral("UpdaterPlugin/url"),
-                                             QUrl(QStringLiteral("https://api.github.com/repos/0xFEEDC0DE64/QtZeiterfassung/releases"))).toUrl();
-    m_reply = m_mainWindow.erfassung().manager()->get(QNetworkRequest(url));
+                                             QStringLiteral("https://api.github.com/repos/0xFEEDC0DE64/QtZeiterfassung/releases")).toString();
+    m_reply = m_mainWindow.erfassung().manager()->get(QNetworkRequest(QUrl(url)));
     connect(m_reply, &QNetworkReply::finished, this, &UpdaterDialog::finished);
 }
 

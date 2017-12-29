@@ -1,8 +1,12 @@
 TEMPLATE = subdirs
 
-SUBDIRS += advancedviewplugin \
+SUBDIRS += absenceplugin \
+           advancedviewplugin \
+           devtoolsplugin \
            lunchmealplugin \
+           profileplugin \
            presenceplugin \
            reportsplugin \
            updaterplugin \
-           weatherplugin
+           weatherplugin \
+           webradioplugin

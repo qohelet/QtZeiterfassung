@@ -1,33 +1,30 @@
 #include "presencewidget.h"
 
-#include <QLabel>
-#include <QStatusBar>
 #include <QMenu>
+#include <QStatusBar>
 #include <QTimer>
 #include <QMessageBox>
 #include <QStringBuilder>
+#include <QDebug>
+
+#include <QPushButton>
 
 #include "mainwindow.h"
 #include "zeiterfassungapi.h"
 
 PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
-    QWidget(&mainWindow),
+    QPushButton(&mainWindow),
     m_mainWindow(mainWindow)
 {
     connect(&m_mainWindow, &MainWindow::refreshEverything, this, &PresenceWidget::refresh);
 
-    m_labelAvailable = new QLabel(this);
-    m_labelAvailable->setFrameShape(QFrame::Panel);
-    m_labelAvailable->setFrameShadow(QFrame::Sunken);
-    m_mainWindow.statusBar()->addWidget(m_labelAvailable);
+    m_menu = new QMenu(this);
+    setMenu(m_menu);
 
-    m_labelNotAvailable = new QLabel(this);
-    m_labelNotAvailable->setFrameShape(QFrame::Panel);
-    m_labelNotAvailable->setFrameShadow(QFrame::Sunken);
-    m_mainWindow.statusBar()->addWidget(m_labelNotAvailable);
-
-    m_action = m_mainWindow.menuView()->addAction(QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/refresh.png")),
-                                                  tr("Refresh presence"), this, &PresenceWidget::refresh);
+    m_action = new QAction(QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/refresh.png")),
+                                                  tr("Refresh presence"), this);
+    connect(m_action, &QAction::triggered, this, &PresenceWidget::refresh);
+    m_mainWindow.menuView()->addAction(m_action);
 
     auto timer = new QTimer(this);
     timer->setInterval(60000);
@@ -39,8 +36,8 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
 
 void PresenceWidget::refresh()
 {
-    m_labelAvailable->setText(tr("%0: %1").arg(tr("Available")).arg(tr("???")));
-    m_labelNotAvailable->setText(tr("%0: %1").arg(tr("Not available")).arg(tr("???")));
+    setText(tr("%0 available, %1 not available").arg(tr("???")).arg(tr("???")));
+    m_menu->clear();
 
     m_action->setEnabled(false);
 
@@ -58,20 +55,29 @@ void PresenceWidget::finished()
     }
 
     {
-        int available = 0,
-            notAvailable = 0;
+        int present = 0,
+            notPresent = 0;
+
         for(const auto &status : m_reply->presenceStatuses())
         {
+            QIcon icon;
             if(status.presence == QStringLiteral("J"))
-                available++;
+            {
+                present++;
+                icon = QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/present.png"));
+            }
             else if(status.presence == QStringLiteral("N"))
-                notAvailable++;
+            {
+                notPresent++;
+                icon = QIcon(QStringLiteral(":zeiterfassung/plugins/presenceplugin/images/not-present.png"));
+            }
             else
-                qWarning() << "unknown presence" << status.firstName << status.lastName << status.presence;
+                qCritical() << "unknown presence" << status.firstName << status.lastName << status.presence;
+
+            m_menu->addAction(icon, tr("%0 %1").arg(status.firstName).arg(status.lastName));
         }
 
-        m_labelAvailable->setText(tr("%0: %1").arg(tr("Available")).arg(available));
-        m_labelNotAvailable->setText(tr("%0: %1").arg(tr("Not available")).arg(notAvailable));
+        setText(tr("%0 available, %1 not available").arg(present).arg(notPresent));
     }
 
     after:

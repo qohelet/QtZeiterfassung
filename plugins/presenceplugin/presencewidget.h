@@ -1,16 +1,15 @@
-#ifndef PRESENCEWIDGET_H
-#define PRESENCEWIDGET_H
+#pragma once
 
-#include <QWidget>
+#include <QPushButton>
 
 #include "replies/getpresencestatusreply.h"
 
-class QLabel;
+class QMenu;
 class QAction;
 
 class MainWindow;
 
-class PresenceWidget : public QWidget
+class PresenceWidget : public QPushButton
 {
     Q_OBJECT
 
@@ -24,12 +23,8 @@ private Q_SLOTS:
 private:
     MainWindow &m_mainWindow;
 
-    QLabel *m_labelAvailable;
-    QLabel *m_labelNotAvailable;
-
+    QMenu *m_menu;
     QAction *m_action;
 
     std::unique_ptr<GetPresenceStatusReply> m_reply;
 };
-
-#endif // PRESENCEWIDGET_H

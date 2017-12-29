@@ -4,6 +4,9 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QLocale>
+#include <QStatusBar>
+
+#include "mainwindow.h"
 
 #include "reportswidget.h"
 
@@ -29,5 +32,5 @@ ReportsPlugin::ReportsPlugin(QObject *parent) :
 
 void ReportsPlugin::attachTo(MainWindow &mainWindow)
 {
-    new ReportsWidget(mainWindow);
+    mainWindow.statusBar()->addPermanentWidget(new ReportsWidget(mainWindow));
 }
