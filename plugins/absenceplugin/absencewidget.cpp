@@ -1,6 +1,7 @@
 #include "absencewidget.h"
 
 #include "stripswidget.h"
+#include "mainwindow.h"
 
 #include "absencedialog.h"
 
@@ -16,6 +17,7 @@ AbsenceWidget::AbsenceWidget(StripsWidget &stripsWidget) :
 
 void AbsenceWidget::pressedSlot()
 {
-    AbsenceDialog dialog(m_stripsWidget.date(), this);
+    AbsenceDialog dialog(m_stripsWidget.mainWindow().userInfo().userId, m_stripsWidget.date(),
+                         m_stripsWidget.mainWindow().erfassung(), this);
     dialog.exec();
 }

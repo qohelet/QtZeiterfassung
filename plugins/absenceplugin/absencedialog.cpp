@@ -3,7 +3,9 @@
 
 #include <QDate>
 
-AbsenceDialog::AbsenceDialog(const QDate &date, QWidget *parent) :
+#include "absencesmodel.h"
+
+AbsenceDialog::AbsenceDialog(int userId, const QDate &date, ZeiterfassungApi &erfassung, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AbsenceDialog)
 {
@@ -16,6 +18,8 @@ AbsenceDialog::AbsenceDialog(const QDate &date, QWidget *parent) :
 #endif
 
     ui->labelTitle->setText(tr("Absences for %0").arg(date.toString(tr("dd.MM.yyyy"))));
+
+    ui->treeView->setModel(new AbsencesModel(userId, date, erfassung, this));
 }
 
 AbsenceDialog::~AbsenceDialog()

@@ -4,6 +4,8 @@
 
 class QDate;
 
+class ZeiterfassungApi;
+
 namespace Ui { class AbsenceDialog; }
 
 class AbsenceDialog : public QDialog
@@ -11,7 +13,7 @@ class AbsenceDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AbsenceDialog(const QDate &date, QWidget *parent = 0);
+    explicit AbsenceDialog(int userId, const QDate &date, ZeiterfassungApi &erfassung, QWidget *parent = 0);
     ~AbsenceDialog();
 
 private:
