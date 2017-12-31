@@ -57,7 +57,7 @@ bool loadAndInstallTranslator(QTranslator &translator, const QString &filename)
 
 bool loadTranslations(QSplashScreen &splashScreen, ZeiterfassungSettings &settings)
 {
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading translations..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading translations..."), Qt::AlignHCenter | Qt::AlignBottom);
 
     if(settings.language() == QLocale::AnyLanguage)
     {
@@ -89,7 +89,7 @@ bool loadTranslations(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
 
 bool loadTheme(QSplashScreen &splashScreen, ZeiterfassungSettings &settings)
 {
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading theme..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading theme..."), Qt::AlignHCenter | Qt::AlignBottom);
 
     if(settings.theme().isEmpty())
         return true;
@@ -122,7 +122,7 @@ bool loadTheme(QSplashScreen &splashScreen, ZeiterfassungSettings &settings)
 
 bool loadStripLayouts(QSplashScreen &splashScreen, StripFactory &stripFactory)
 {
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading strip layouts..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading strip layouts..."), Qt::AlignHCenter | Qt::AlignBottom);
 
     if(!stripFactory.load(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("strips"))))
     {
@@ -166,7 +166,7 @@ bool loadStripLayouts(QSplashScreen &splashScreen, StripFactory &stripFactory)
 
 bool loadLoginPage(QSplashScreen &splashScreen, ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung)
 {
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading login page..."), Qt::AlignHCenter | Qt::AlignBottom);
 
     again:
     auto reply = erfassung.doLoginPage();
@@ -197,7 +197,7 @@ bool loadLoginPage(QSplashScreen &splashScreen, ZeiterfassungSettings &settings,
 
 bool doAuthentication(QSplashScreen &splashScreen, ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung)
 {
-    splashScreen.showMessage(QCoreApplication::translate("main", "Authenticating..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Authenticating..."), Qt::AlignHCenter | Qt::AlignBottom);
 
     if(settings.username().isNull() || settings.password().isNull())
     {
@@ -240,7 +240,7 @@ bool doAuthentication(QSplashScreen &splashScreen, ZeiterfassungSettings &settin
 
 bool loadUserInfo(QSplashScreen &splashScreen, ZeiterfassungApi &erfassung, GetUserInfoReply::UserInfo &userInfo)
 {
-    splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Getting user information..."), Qt::AlignHCenter | Qt::AlignBottom);
 
     {
         auto reply = erfassung.doUserInfo();
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(QStringLiteral("1.5"));
 
     QSplashScreen splashScreen(QPixmap(QStringLiteral(":/zeiterfassung/images/splash.png")));
-    splashScreen.showMessage(QCoreApplication::translate("main", "Loading settings..."));
+    splashScreen.showMessage(QCoreApplication::translate("main", "Loading settings..."), Qt::AlignHCenter | Qt::AlignBottom);
     splashScreen.show();
 
     ZeiterfassungSettings settings(&app);
