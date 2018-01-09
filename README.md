@@ -6,11 +6,11 @@ This tool helps me assigning my working hours to projects at work.
 ![Screenshot of the main window](https://raw.githubusercontent.com/0xFEEDC0DE64/QtZeiterfassung/master/screenshot.png)
 
 ## Building from source
-The build process has only been tested with gcc. On windows you have to use MinGW (provided by the Qt setup). All necessary config files or translations should be copied over to the build folder. The executable with all plugin lands in your build folder under /bin
+The build process has only been tested with gcc and clang. On windows you need to use MinGW (provided by the Qt setup). All necessary libraries, config files or translations should be copied over to the build folder in the last build step. The executable and plugin land in the build folder under /bin
 
 The simplest way to get it up and running is to just open it in QtCreator. If you are more like a terminal monkey, you can build it there too:
 ```
-git clone https://github.com/0xFEEDC0DE64/QtZeiterfassung.git
+git clone --recursive https://github.com/0xFEEDC0DE64/QtZeiterfassung.git
 mkdir build_QtZeiterfassung
 cd build_QtZeiterfassung
 qmake ../QtZeiterfassung
@@ -18,12 +18,12 @@ make
 make install # only needed on first build to copy Qt resources
 ```
 
-## Launching (on unix)
+### Launching (on unix)
 ```
 ./zeiterfassung.sh
 ```
 
-## Launching (on win32)
+### Launching (on win32)
 Double click the **zeiterfassung.exe**. Please report any error message like missing libraries or plugins!
 
 ## Configuration
