@@ -26,5 +26,10 @@ make install # only needed on first build to copy Qt resources
 ### Launching (on win32)
 Double click the **zeiterfassung.exe**. Please report any error message like missing libraries or plugins!
 
+### Docker
+1. Building the image: `docker build -t zeiterfassung https://github.com/0xFEEDC0DE64/QtZeiterfassung.git`
+2. Running the tool: `docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --net=host zeiterfassung`
+If this fails due to X11 permission problems, try `xhost +SI:localuser:root`
+
 ## Configuration
 This tool saves its configuration using [QSettings](https://doc.qt.io/qt-5/qsettings.html). On linux, the configuration files are placed in `~/.config/db-software/zeiterfassung.conf`. **Be careful!** This config file contains your password in plain text (if you log in correctly). You can alter the code in main.cpp to change the behaviour of QSettings (for example: saving into an ini file at working directory).
