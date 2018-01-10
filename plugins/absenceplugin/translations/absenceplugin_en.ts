@@ -9,17 +9,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../absencedialog.cpp" line="22"/>
+        <location filename="../absencedialog.cpp" line="16"/>
         <source>Absences for %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../absencedialog.cpp" line="22"/>
+        <location filename="../absencedialog.cpp" line="16"/>
         <source>dd.MM.yyyy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../absencedialog.cpp" line="39"/>
+        <location filename="../absencedialog.cpp" line="33"/>
         <source>Could not load absences!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -35,48 +35,28 @@
 <context>
     <name>AbsencesModel</name>
     <message>
+        <location filename="../absencesmodel.cpp" line="65"/>
+        <source>Id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../absencesmodel.cpp" line="66"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../absencesmodel.cpp" line="67"/>
+        <source>End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../absencesmodel.cpp" line="68"/>
+        <source>Hour Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../absencesmodel.cpp" line="69"/>
-        <source>altRepresentative</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="70"/>
-        <source>compositeId</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="71"/>
-        <source>end</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="72"/>
-        <source>hourCategory</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="73"/>
-        <source>openMarking</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="74"/>
-        <source>persNr</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="75"/>
-        <source>representative</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="76"/>
-        <source>start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../absencesmodel.cpp" line="77"/>
-        <source>text</source>
+        <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

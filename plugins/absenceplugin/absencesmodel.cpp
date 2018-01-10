@@ -26,7 +26,7 @@ int AbsencesModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
 
-    return 9;
+    return 5;
 }
 
 QVariant AbsencesModel::data(const QModelIndex &index, int role) const
@@ -40,15 +40,11 @@ QVariant AbsencesModel::data(const QModelIndex &index, int role) const
     case Qt::EditRole:
         switch(index.column())
         {
-        case 0: return absence.altRepresentative;
-        case 1: return absence.compositeId;
+        case 0: return absence.compositeId;
+        case 1: return absence.start;
         case 2: return absence.end;
         case 3: return absence.hourCategory;
-        case 4: return absence.openMarking;
-        case 5: return absence.persNr;
-        case 6: return absence.representative;
-        case 7: return absence.start;
-        case 8: return absence.text;
+        case 4: return absence.text;
         }
     }
 
@@ -66,15 +62,11 @@ QVariant AbsencesModel::headerData(int section, Qt::Orientation orientation, int
         case Qt::EditRole:
             switch(section)
             {
-            case 0: return tr("altRepresentative");
-            case 1: return tr("compositeId");
-            case 2: return tr("end");
-            case 3: return tr("hourCategory");
-            case 4: return tr("openMarking");
-            case 5: return tr("persNr");
-            case 6: return tr("representative");
-            case 7: return tr("start");
-            case 8: return tr("text");
+            case 0: return tr("Id");
+            case 1: return tr("Start");
+            case 2: return tr("End");
+            case 3: return tr("Hour Category");
+            case 4: return tr("Text");
             }
         }
     default:
