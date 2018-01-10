@@ -49,6 +49,24 @@
     </message>
 </context>
 <context>
+    <name>GetAbsencesReply</name>
+    <message>
+        <location filename="../replies/getabsencesreply.cpp" line="29"/>
+        <source>Request error occured: %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../replies/getabsencesreply.cpp" line="39"/>
+        <source>Parsing JSON failed: %0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../replies/getabsencesreply.cpp" line="46"/>
+        <source>JSON document is not an array!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GetBookingsReply</name>
     <message>
         <location filename="../replies/getbookingsreply.cpp" line="28"/>

@@ -4,44 +4,44 @@
 <context>
     <name>ReportsWidget</name>
     <message>
-        <location filename="../reportswidget.cpp" line="27"/>
+        <location filename="../reportswidget.cpp" line="28"/>
         <source>Refresh report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="32"/>
+        <location filename="../reportswidget.cpp" line="33"/>
         <source>Open report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="65"/>
+        <location filename="../reportswidget.cpp" line="66"/>
         <source>???</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="65"/>
-        <location filename="../reportswidget.cpp" line="121"/>
+        <location filename="../reportswidget.cpp" line="66"/>
+        <location filename="../reportswidget.cpp" line="122"/>
         <source>Balance: %0, Holidays: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="79"/>
+        <location filename="../reportswidget.cpp" line="80"/>
         <source>Could not load report!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="102"/>
-        <location filename="../reportswidget.cpp" line="116"/>
+        <location filename="../reportswidget.cpp" line="103"/>
+        <location filename="../reportswidget.cpp" line="117"/>
         <source>n/a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="128"/>
+        <location filename="../reportswidget.cpp" line="129"/>
         <source>Could not write report!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../reportswidget.cpp" line="148"/>
+        <location filename="../reportswidget.cpp" line="149"/>
         <source>Could not launch your default PDF viewer!</source>
         <translation type="unfinished"></translation>
     </message>

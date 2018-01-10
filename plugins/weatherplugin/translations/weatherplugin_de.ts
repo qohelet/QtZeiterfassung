@@ -4,37 +4,37 @@
 <context>
     <name>WeatherWidget</name>
     <message>
-        <location filename="../weatherwidget.cpp" line="32"/>
+        <location filename="../weatherwidget.cpp" line="31"/>
         <source>Loading...</source>
         <translation>Lade...</translation>
     </message>
     <message>
-        <location filename="../weatherwidget.cpp" line="46"/>
+        <location filename="../weatherwidget.cpp" line="45"/>
         <source>Request failed</source>
         <translation>Anfrage fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../weatherwidget.cpp" line="57"/>
+        <location filename="../weatherwidget.cpp" line="56"/>
         <source>Parsing failed</source>
         <translation>Parsen fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../weatherwidget.cpp" line="63"/>
+        <location filename="../weatherwidget.cpp" line="62"/>
         <source>Not an json obj</source>
         <translation>Kein json obj</translation>
     </message>
     <message>
-        <location filename="../weatherwidget.cpp" line="72"/>
+        <location filename="../weatherwidget.cpp" line="71"/>
         <source>No weather found</source>
         <translation>Kein weather gefunden</translation>
     </message>
     <message>
-        <location filename="../weatherwidget.cpp" line="79"/>
+        <location filename="../weatherwidget.cpp" line="78"/>
         <source>No main found</source>
         <translation>Kein main gefunden</translation>
     </message>
     <message>
-        <location filename="../weatherwidget.cpp" line="86"/>
+        <location filename="../weatherwidget.cpp" line="85"/>
         <source>%0 (%1°C)</source>
         <translation>%0 (%1°C)</translation>
     </message>

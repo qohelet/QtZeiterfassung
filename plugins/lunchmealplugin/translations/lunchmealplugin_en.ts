@@ -14,12 +14,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunchmealdialog.cpp" line="18"/>
+        <location filename="../lunchmealdialog.cpp" line="12"/>
         <source>Lunch meal for %0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunchmealdialog.cpp" line="18"/>
+        <location filename="../lunchmealdialog.cpp" line="12"/>
         <source>dd.MM.yyyy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -32,8 +32,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lunchmealwidget.cpp" line="57"/>
-        <location filename="../lunchmealwidget.cpp" line="58"/>
+        <location filename="../lunchmealwidget.cpp" line="55"/>
+        <location filename="../lunchmealwidget.cpp" line="56"/>
         <source>Could not load lunch meal!</source>
         <translation type="unfinished"></translation>
     </message>

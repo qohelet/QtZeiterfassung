@@ -94,8 +94,8 @@
         <translation>Betriebsnr:</translation>
     </message>
     <message>
-        <location filename="../profiledialog.cpp" line="23"/>
-        <location filename="../profiledialog.cpp" line="24"/>
+        <location filename="../profiledialog.cpp" line="17"/>
+        <location filename="../profiledialog.cpp" line="18"/>
         <source>dd.MM.yyyy</source>
         <translation>dd.MM.yyyy</translation>
     </message>

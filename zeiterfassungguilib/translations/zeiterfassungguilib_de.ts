@@ -39,12 +39,12 @@
         <translation>Sprache:</translation>
     </message>
     <message>
-        <location filename="../dialogs/languageselectiondialog.cpp" line="16"/>
+        <location filename="../dialogs/languageselectiondialog.cpp" line="10"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../dialogs/languageselectiondialog.cpp" line="17"/>
+        <location filename="../dialogs/languageselectiondialog.cpp" line="11"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
@@ -213,60 +213,60 @@
         <translation>Aussehen:</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="26"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="20"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="27"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="21"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="32"/>
-        <location filename="../dialogs/settingsdialog.cpp" line="45"/>
-        <location filename="../dialogs/settingsdialog.cpp" line="64"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="26"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="39"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="58"/>
         <source>Invalid settings!</source>
         <translation>Ungültige Einstellungen!</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="32"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="26"/>
         <source>Unknown language!</source>
         <translation>Unbekannte Sprache!</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="36"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="30"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="45"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="39"/>
         <source>Unknown theme!</source>
         <translation>Unbekanntes Aussehen!</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="64"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="58"/>
         <source>Please fill all options with valid values!</source>
         <translation>Bitte füllen Sie alle Felder mit gültigen Werten!</translation>
     </message>
     <message>
+        <location filename="../dialogs/settingsdialog.cpp" line="81"/>
         <location filename="../dialogs/settingsdialog.cpp" line="87"/>
-        <location filename="../dialogs/settingsdialog.cpp" line="93"/>
         <source>Could not load theme!</source>
         <translation>Konnte Aussehen nicht laden!</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="87"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="81"/>
         <source>Theme file does not exist!</source>
         <translation>Aussehen-Datei existiert nicht!</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="105"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="99"/>
         <source>Restart required!</source>
         <translation>Neustart erforderlich!</translation>
     </message>
     <message>
-        <location filename="../dialogs/settingsdialog.cpp" line="105"/>
+        <location filename="../dialogs/settingsdialog.cpp" line="99"/>
         <source>To apply the new settings a restart is required!</source>
         <translation>Um die neuen Einstellungen zu übernehmen, ist ein Neustart erforderlich!</translation>
     </message>

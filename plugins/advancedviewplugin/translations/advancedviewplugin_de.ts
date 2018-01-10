@@ -9,82 +9,82 @@
         <translation>Erweiterte Anzeige</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="62"/>
+        <location filename="../advancedviewdialog.cpp" line="56"/>
         <source>Create booking</source>
         <translation>Buchung erstellen</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="63"/>
+        <location filename="../advancedviewdialog.cpp" line="57"/>
         <source>Refresh bookings</source>
         <translation>Buchungen aktualisieren</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="89"/>
+        <location filename="../advancedviewdialog.cpp" line="83"/>
         <source>Could not create booking!</source>
         <translation>Konnte Buchung nicht erstellen!</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="104"/>
+        <location filename="../advancedviewdialog.cpp" line="98"/>
         <source>Edit booking</source>
         <translation>Buchung bearbeiten</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="105"/>
+        <location filename="../advancedviewdialog.cpp" line="99"/>
         <source>Delete booking</source>
         <translation>Buchung löschen</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="135"/>
+        <location filename="../advancedviewdialog.cpp" line="129"/>
         <source>Could not edit booking!</source>
         <translation>Konnte Buchung nicht bearbeiten!</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="143"/>
+        <location filename="../advancedviewdialog.cpp" line="137"/>
         <source>Do you really want to delete the booking?</source>
         <translation>Möchten Sie die Buchung wirklich löschen?</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="155"/>
+        <location filename="../advancedviewdialog.cpp" line="149"/>
         <source>Could not delete booking!</source>
         <translation>Konnte Buchung nicht löschen!</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="168"/>
+        <location filename="../advancedviewdialog.cpp" line="162"/>
         <source>Create time assignment</source>
         <translation>Kontierung erstellen</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="169"/>
+        <location filename="../advancedviewdialog.cpp" line="163"/>
         <source>Refresh time assignments</source>
         <translation>Kontierungen aktualisieren</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="197"/>
+        <location filename="../advancedviewdialog.cpp" line="191"/>
         <source>Could not create time assignment!</source>
         <translation>Konnte Kontierung nicht erstellen!</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="212"/>
+        <location filename="../advancedviewdialog.cpp" line="206"/>
         <source>Edit time assignment</source>
         <translation>Kontierung bearbeiten</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="213"/>
+        <location filename="../advancedviewdialog.cpp" line="207"/>
         <source>Delete time assignment</source>
         <translation>Kontierung löschen</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="248"/>
+        <location filename="../advancedviewdialog.cpp" line="242"/>
         <source>Could not edit time assignment!</source>
         <translation>Konnte Kontierung nicht bearbeiten!</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="256"/>
+        <location filename="../advancedviewdialog.cpp" line="250"/>
         <source>Do you really want to delete the time assignment?</source>
         <translation>Möchten Sie die Kontierung wirklich löschen?</translation>
     </message>
     <message>
-        <location filename="../advancedviewdialog.cpp" line="270"/>
+        <location filename="../advancedviewdialog.cpp" line="264"/>
         <source>Could not delete time assignment!</source>
         <translation>Konnte Kontierung nicht löschen!</translation>
     </message>
@@ -193,8 +193,8 @@
         <translation>Text:</translation>
     </message>
     <message>
-        <location filename="../dialogs/timeassignmentdialog.cpp" line="32"/>
-        <location filename="../dialogs/timeassignmentdialog.cpp" line="41"/>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="26"/>
+        <location filename="../dialogs/timeassignmentdialog.cpp" line="35"/>
         <source>%0 (%1)</source>
         <translation>%0 (%1)</translation>
     </message>
