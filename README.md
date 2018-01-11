@@ -5,32 +5,15 @@ This tool helps me assigning my working hours to projects at work.
 
 ![Screenshot of the main window](https://raw.githubusercontent.com/0xFEEDC0DE64/QtZeiterfassung/master/screenshot.png)
 
-## Building from source
-The build process has only been tested with gcc and clang. On windows you need to use MinGW (provided by the Qt setup). All necessary libraries, config files or translations should be copied over to the build folder in the last build step. The executable and plugin land in the build folder under /bin
+# Getting the tool up and running
+Getting prebuilt binaries:
+1. [Launching the tool with docker](https://github.com/0xFEEDC0DE64/QtZeiterfassung/wiki/Launching-the-tool-with-docker)
+2. Download the [latest release](https://github.com/0xFEEDC0DE64/QtZeiterfassung/releases) and use the start script
 
-The simplest way to get it up and running is to just open it in QtCreator. If you are more like a terminal monkey, you can build it there too:
-```
-git clone --recursive https://github.com/0xFEEDC0DE64/QtZeiterfassung.git
-mkdir build_QtZeiterfassung
-cd build_QtZeiterfassung
-qmake ../QtZeiterfassung
-make
-make install # only needed on first build to copy Qt resources
-```
-
-### Launching (on unix)
-```
-./zeiterfassung.sh
-```
-
-### Launching (on win32)
-Double click the **zeiterfassung.exe**. Please report any error message like missing libraries or plugins!
-
-### Docker (on unix)
-1. Building the image: `docker build -t zeiterfassung https://github.com/0xFEEDC0DE64/QtZeiterfassung.git`
-2. Initial config (like username): `docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --net host --name zeiterfassung zeiterfassung`
-   If this fails due to X11 permission problems, try `xhost +SI:localuser:root`
-3. All further launches are simpler: `docker start zeiterfassung`
+Building from source:
+1. [Building the docker image yourself](https://github.com/0xFEEDC0DE64/QtZeiterfassung/wiki/Building-the-docker-image-yourself)
+2. [Building in QtCreator](https://github.com/0xFEEDC0DE64/QtZeiterfassung/wiki/Building-in-QtCreator-on-Windows)
+3. [Building from source](https://github.com/0xFEEDC0DE64/QtZeiterfassung/wiki/Building-from-source)
 
 ## Configuration
 This tool saves its configuration using [QSettings](https://doc.qt.io/qt-5/qsettings.html). On linux, the configuration files are placed in `~/.config/db-software/zeiterfassung.conf`. **Be careful!** This config file contains your password in plain text (if you log in correctly). You can alter the code in main.cpp to change the behaviour of QSettings (for example: saving into an ini file at working directory).
