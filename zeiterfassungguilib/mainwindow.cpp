@@ -41,26 +41,26 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
     ui->actionQuit->setShortcut(QKeySequence::Quit);
 
-    connect(ui->actionToday, &QAction::triggered, [=](){ ui->dateEditDate->setDate(QDate::currentDate()); });
+    connect(ui->actionToday, &QAction::triggered, this, [=](){ ui->dateEditDate->setDate(QDate::currentDate()); });
 
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
     connect(ui->actionRefresh, &QAction::triggered, this, &MainWindow::refreshEverything);
 
-    connect(ui->actionSettings, &QAction::triggered, [=](){ SettingsDialog(m_settings, this).exec(); });
+    connect(ui->actionSettings, &QAction::triggered, this, [this](){ SettingsDialog(m_settings, this).exec(); });
 
     ui->actionHelp->setShortcut(QKeySequence::HelpContents);
 
-    connect(ui->actionAboutQt, &QAction::triggered, [=](){ QMessageBox::aboutQt(this); });
+    connect(ui->actionAboutQt, &QAction::triggered, this, [this](){ QMessageBox::aboutQt(this); });
 
     ui->dateEditDate->setDate(QDate::currentDate());
     connect(ui->dateEditDate, &QDateTimeEdit::dateChanged, this, &MainWindow::dateChangedSlot);
 
-    connect(ui->pushButtonPrev, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
-    connect(ui->pushButtonNext, &QAbstractButton::pressed, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
+    connect(ui->pushButtonPrev, &QAbstractButton::pressed, this, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
+    connect(ui->pushButtonNext, &QAbstractButton::pressed, this, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
 
     ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
 
-    connect(ui->pushButtonNow, &QAbstractButton::pressed, [=](){ ui->timeEditTime->setTime(timeNormalise(QTime::currentTime())); });
+    connect(ui->pushButtonNow, &QAbstractButton::pressed, this, [=](){ ui->timeEditTime->setTime(timeNormalise(QTime::currentTime())); });
 
     m_getProjectsReply = erfassung.doGetProjects(userInfo.userId, QDate::currentDate());
     connect(m_getProjectsReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getProjectsFinished);
