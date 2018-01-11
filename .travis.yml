@@ -10,7 +10,7 @@ cache:
   directories:
     - qt5
 
-before_script:
+install:
   - mkdir -p qt5
   - if [ ! -d qt5/.git ] ; then rm qt5 -Rf ; git clone --branch=5.10 git://code.qt.io/qt/qt5.git ; fi
   - pushd qt5
@@ -24,4 +24,5 @@ script:
   - pushd build
   - ../qt5/build/bin/qmake .. -config release
   - make -j2
+  - make install
   - popd
