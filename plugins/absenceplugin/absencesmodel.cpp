@@ -7,12 +7,24 @@ AbsencesModel::AbsencesModel(int userId, const QDate &date, ZeiterfassungApi &er
     m_userId(userId),
     m_erfassung(erfassung)
 {
+    connect(this, &AbsencesModel::dateChanged, this, &AbsencesModel::refresh);
+
     setDate(date);
 }
 
 bool AbsencesModel::enabled() const
 {
     return m_reply == Q_NULLPTR;
+}
+
+const QDate &AbsencesModel::date() const
+{
+    return m_date;
+}
+
+const QVector<GetAbsencesReply::Absence> &AbsencesModel::absences() const
+{
+    return m_absences;
 }
 
 int AbsencesModel::rowCount(const QModelIndex &parent) const
@@ -76,10 +88,8 @@ QVariant AbsencesModel::headerData(int section, Qt::Orientation orientation, int
     return QVariant();
 }
 
-void AbsencesModel::setDate(const QDate &date)
+void AbsencesModel::refresh()
 {
-    m_date = date;
-
     auto oldEnabled = enabled();
 
     m_reply = m_erfassung.doGetAbsences(m_userId, m_date, m_date);
@@ -87,6 +97,12 @@ void AbsencesModel::setDate(const QDate &date)
 
     if(oldEnabled != enabled())
         Q_EMIT enabledChanged(enabled());
+}
+
+void AbsencesModel::setDate(const QDate &date)
+{
+    if(m_date != date)
+        Q_EMIT dateChanged(m_date = date);
 }
 
 void AbsencesModel::finished()
