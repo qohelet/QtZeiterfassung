@@ -52,6 +52,7 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void getProjectsFinished();
+    void pushButtonNowPressed();
     void pushButtonStartPressed();
     void pushButtonEndPressed();
     void dateChangedSlot(const QDate &date);

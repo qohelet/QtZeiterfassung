@@ -60,7 +60,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
     ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
 
-    connect(ui->pushButtonNow, &QAbstractButton::pressed, this, [=](){ ui->timeEditTime->setTime(timeNormalise(QTime::currentTime())); });
+    connect(ui->pushButtonNow, &QAbstractButton::pressed, this, &MainWindow::pushButtonNowPressed);
 
     m_getProjectsReply = erfassung.doGetProjects(userInfo.userId, QDate::currentDate());
     connect(m_getProjectsReply.get(), &ZeiterfassungReply::finished, this, &MainWindow::getProjectsFinished);
@@ -170,6 +170,12 @@ void MainWindow::getProjectsFinished()
                              tr("Could not load bookings!") % "\n\n" % m_getProjectsReply->message());
 
     m_getProjectsReply = Q_NULLPTR;
+}
+
+void MainWindow::pushButtonNowPressed()
+{
+    ui->dateEditDate->setDate(QDate::currentDate());
+    ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
 }
 
 void MainWindow::pushButtonStartPressed()
