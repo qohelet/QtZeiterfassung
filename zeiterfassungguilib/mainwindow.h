@@ -50,6 +50,10 @@ Q_SIGNALS:
     void dateChanged(const QDate &date);
     void refreshEverything();
 
+protected:
+    // QObject interface
+    virtual void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
+
 private Q_SLOTS:
     void getProjectsFinished();
     void pushButtonNowPressed();
@@ -76,4 +80,6 @@ private:
 
     std::array<StripsWidget*, 7> m_stripsWidgets;
     StripsWidget *m_currentStripWidget;
+
+    int m_timerId;
 };

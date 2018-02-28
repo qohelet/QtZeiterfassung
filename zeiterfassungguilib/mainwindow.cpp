@@ -12,6 +12,7 @@
 #include <QTemporaryFile>
 #include <QDesktopServices>
 #include <QRegularExpression>
+#include <QTimerEvent>
 #include <QDebug>
 
 #include "zeiterfassungapi.h"
@@ -33,7 +34,8 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     m_erfassung(erfassung),
     m_userInfo(userInfo),
     m_stripFactory(stripFactory),
-    m_currentStripWidget(Q_NULLPTR)
+    m_currentStripWidget(Q_NULLPTR),
+    m_timerId(-1)
 {
     ui->setupUi(this);
 
@@ -73,6 +75,8 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
 
     connect(ui->pushButtonStart, &QAbstractButton::pressed, this, &MainWindow::pushButtonStartPressed);
     connect(ui->pushButtonEnd, &QAbstractButton::pressed, this, &MainWindow::pushButtonEndPressed);
+
+    m_timerId = startTimer(60000);
 
     for(quint8 i = 0; i < 7; i++)
     {
@@ -152,6 +156,16 @@ const QMap<QString, QString> &MainWindow::projects() const
 const std::array<StripsWidget*, 7> &MainWindow::stripsWidgets() const
 {
     return m_stripsWidgets;
+}
+
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+    if(event->timerId() == m_timerId)
+    {
+        ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
+    }
+    else
+        QMainWindow::timerEvent(event);
 }
 
 void MainWindow::getProjectsFinished()
