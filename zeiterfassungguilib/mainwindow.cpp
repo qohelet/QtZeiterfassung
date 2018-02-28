@@ -13,6 +13,7 @@
 #include <QDesktopServices>
 #include <QRegularExpression>
 #include <QTimerEvent>
+#include <QSignalBlocker>
 #include <QDebug>
 
 #include "zeiterfassungapi.h"
@@ -60,6 +61,13 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     connect(ui->pushButtonPrev, &QAbstractButton::pressed, this, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(-1)); });
     connect(ui->pushButtonNext, &QAbstractButton::pressed, this, [=](){ ui->dateEditDate->setDate(ui->dateEditDate->date().addDays(1)); });
 
+    connect(ui->timeEditTime, &QTimeEdit::timeChanged, this, [&](){
+        if(m_timerId != -1)
+        {
+            killTimer(m_timerId);
+            m_timerId = -1;
+        }
+    });
     ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
 
     connect(ui->pushButtonNow, &QAbstractButton::pressed, this, &MainWindow::pushButtonNowPressed);
@@ -162,6 +170,7 @@ void MainWindow::timerEvent(QTimerEvent *event)
 {
     if(event->timerId() == m_timerId)
     {
+        QSignalBlocker blocker(ui->timeEditTime);
         ui->timeEditTime->setTime(timeNormalise(QTime::currentTime()));
     }
     else
@@ -194,7 +203,11 @@ void MainWindow::pushButtonNowPressed()
 
 void MainWindow::pushButtonStartPressed()
 {
-    auto bookingsChanged = false;
+    if(m_timerId != -1)
+    {
+        killTimer(m_timerId);
+        m_timerId = -1;
+    }
 
     if(m_currentStripWidget->bookings().rbegin() == m_currentStripWidget->bookings().rend() ||
        m_currentStripWidget->bookings().rbegin()->type == QStringLiteral("G"))
@@ -209,52 +222,52 @@ void MainWindow::pushButtonStartPressed()
         {
             QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % reply->message());
             m_currentStripWidget->refresh();
-            return;
+            goto after;
         }
-
-        bookingsChanged = true;
     }
 
-    auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
-
-    if(m_currentStripWidget->timeAssignments().rbegin() != m_currentStripWidget->timeAssignments().rend())
     {
-        auto timeAssignment = *m_currentStripWidget->timeAssignments().rbegin();
-        if(timeAssignment.timespan == QTime(0, 0))
-        {
-            auto timespan = timeBetween(m_currentStripWidget->lastTimeAssignmentStart(), ui->timeEditTime->time());
+        auto timeAssignmentTime = m_currentStripWidget->timeAssignmentTime();
 
-            auto reply = m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
-                                                            timeAssignment.time, timespan,
-                                                            timeAssignment.project, timeAssignment.subproject,
-                                                            timeAssignment.workpackage, timeAssignment.text);
+        if(m_currentStripWidget->timeAssignments().rbegin() != m_currentStripWidget->timeAssignments().rend())
+        {
+            auto timeAssignment = *m_currentStripWidget->timeAssignments().rbegin();
+            if(timeAssignment.timespan == QTime(0, 0))
+            {
+                auto timespan = timeBetween(m_currentStripWidget->lastTimeAssignmentStart(), ui->timeEditTime->time());
+
+                auto reply = m_erfassung.doUpdateTimeAssignment(timeAssignment.id, m_userInfo.userId, timeAssignment.date,
+                                                                timeAssignment.time, timespan,
+                                                                timeAssignment.project, timeAssignment.subproject,
+                                                                timeAssignment.workpackage, timeAssignment.text);
+
+                reply->waitForFinished();
+
+                if(reply->success())
+                    timeAssignmentTime = timeAdd(timeAssignmentTime, timespan);
+                else
+                {
+                    QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
+                    m_currentStripWidget->refresh();
+                    goto after;
+                }
+            }
+        }
+
+        {
+            auto reply = m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
+                                                            timeAssignmentTime, QTime(0, 0),
+                                                            ui->comboBoxProject->currentData().toString(), ui->comboBoxSubproject->currentText(),
+                                                            ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
 
             reply->waitForFinished();
 
-            if(reply->success())
-                timeAssignmentTime = timeAdd(timeAssignmentTime, timespan);
-            else
+            if(!reply->success())
             {
-                QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
+                QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % reply->message());
                 m_currentStripWidget->refresh();
-                return;
+                goto after;
             }
-        }
-    }
-
-    {
-        auto reply = m_erfassung.doCreateTimeAssignment(m_userInfo.userId, ui->dateEditDate->date(),
-                                                        timeAssignmentTime, QTime(0, 0),
-                                                        ui->comboBoxProject->currentData().toString(), ui->comboBoxSubproject->currentText(),
-                                                        ui->comboBoxWorkpackage->currentText(), ui->comboBoxText->currentText());
-
-        reply->waitForFinished();
-
-        if(!reply->success())
-        {
-            QMessageBox::warning(this, tr("Could not create time assignment!"), tr("Could not create time assignment!") % "\n\n" % reply->message());
-            m_currentStripWidget->refresh();
-            return;
         }
     }
 
@@ -265,17 +278,22 @@ void MainWindow::pushButtonStartPressed()
 
     updateComboboxes();
 
-    if(bookingsChanged)
-    {
-        m_currentStripWidget->refresh();
-        //refreshReport();
-    }
-    else
-        m_currentStripWidget->refreshTimeAssignments();
+    //m_currentStripWidget->refresh();
+    //refreshReport();
+    Q_EMIT refreshEverything();
+
+    after:
+    m_timerId = startTimer(60000);
 }
 
 void MainWindow::pushButtonEndPressed()
 {
+    if(m_timerId != -1)
+    {
+        killTimer(m_timerId);
+        m_timerId = -1;
+    }
+
     {
         auto timeAssignment = *m_currentStripWidget->timeAssignments().rbegin();
         Q_ASSERT(timeAssignment.timespan == QTime(0, 0));
@@ -293,7 +311,7 @@ void MainWindow::pushButtonEndPressed()
         {
             QMessageBox::warning(this, tr("Could not edit time assignment!"), tr("Could not edit time assignment!") % "\n\n" % reply->message());
             m_currentStripWidget->refresh();
-            return;
+            goto after;
         }
     }
 
@@ -308,12 +326,16 @@ void MainWindow::pushButtonEndPressed()
         {
             QMessageBox::warning(this, tr("Could not create booking!"), tr("Could not create booking!") % "\n\n" % reply->message());
             m_currentStripWidget->refresh();
-            return;
+            goto after;
         }
     }
 
-    m_currentStripWidget->refresh();
+    //m_currentStripWidget->refresh();
     //refreshReport();
+    Q_EMIT refreshEverything();
+
+    after:
+    m_timerId = startTimer(60000);
 }
 
 void MainWindow::dateChangedSlot(const QDate &date)
