@@ -15,7 +15,7 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT ZeiterfassungSettings : public QSettings
 
 public:
     explicit ZeiterfassungSettings(const QString &organization,
-                       const QString &application = QString(), QObject *parent = Q_NULLPTR);
+                                   const QString &application = QString(), QObject *parent = Q_NULLPTR);
     ZeiterfassungSettings(Scope scope, const QString &organization,
                           const QString &application = QString(), QObject *parent = Q_NULLPTR);
     ZeiterfassungSettings(Format format, Scope scope, const QString &organization,
