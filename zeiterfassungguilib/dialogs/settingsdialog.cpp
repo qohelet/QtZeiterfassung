@@ -24,7 +24,7 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, const QSet<Zeite
     ui->comboBoxLanguage->addItem(tr("German"), QLocale::German);
 
     {
-        auto index = ui->comboBoxLanguage->findData(settings.language());
+        auto index = ui->comboBoxLanguage->findData(m_settings.language());
         if(index == -1)
             QMessageBox::warning(this, tr("Invalid settings!"), tr("Invalid settings!") % "\n\n" % tr("Unknown language!"));
         ui->comboBoxLanguage->setCurrentIndex(index);
@@ -35,9 +35,9 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, const QSet<Zeite
     for(const auto &entry : QDir(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("themes"))).entryInfoList(QStringList { QStringLiteral("*.qss") }, QDir::Files))
         ui->comboBoxTheme->addItem(entry.baseName(), entry.baseName());
 
-    if(!settings.theme().isEmpty())
+    if(!m_settings.theme().isEmpty())
     {
-        auto index = ui->comboBoxTheme->findData(settings.theme());
+        auto index = ui->comboBoxTheme->findData(m_settings.theme());
         if(index == -1)
             QMessageBox::warning(this, tr("Invalid settings!"), tr("Invalid settings!") % "\n\n" % tr("Unknown theme!"));
         ui->comboBoxTheme->setCurrentIndex(index);
@@ -45,7 +45,7 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, const QSet<Zeite
 
     for(const auto plugin : plugins)
     {
-        auto widget = plugin->settingsWidget(this);
+        auto widget = plugin->settingsWidget(m_settings, this);
         if(!widget)
             continue;
 
@@ -63,8 +63,6 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::submit()
 {
-    auto warning = false;
-
     if(ui->comboBoxLanguage->currentIndex() == -1 ||
        ui->comboBoxTheme->currentIndex() == -1)
     {

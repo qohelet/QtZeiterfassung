@@ -4,8 +4,9 @@
 #include <QLineEdit>
 #include <QDebug>
 
-WeatherSettings::WeatherSettings(QWidget *parent) :
-    SettingsWidget(parent)
+WeatherSettings::WeatherSettings(ZeiterfassungSettings &settings, QWidget *parent) :
+    SettingsWidget(parent),
+    m_settings(settings)
 {
     auto layout = new QFormLayout(this);
     layout->setMargin(0);

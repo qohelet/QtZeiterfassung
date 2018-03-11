@@ -5,16 +5,21 @@
 
 #include "settingswidget.h"
 
+class ZeiterfassungSettings;
+
 class WeatherSettings : public SettingsWidget
 {
     Q_OBJECT
 public:
-    explicit WeatherSettings(QWidget *parent = Q_NULLPTR);
+    explicit WeatherSettings(ZeiterfassungSettings &settings, QWidget *parent = Q_NULLPTR);
 
     bool isValid(QString &message) const Q_DECL_OVERRIDE;
 
 public Q_SLOTS:
     void apply() Q_DECL_OVERRIDE;
+
+private:
+    ZeiterfassungSettings &m_settings;
 };
 
 #endif // WEATHERSETTINGS_H

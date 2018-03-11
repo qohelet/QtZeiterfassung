@@ -7,6 +7,7 @@
 class MainWindow;
 class StripsWidget;
 class SettingsWidget;
+class ZeiterfassungSettings;
 
 class ZEITERFASSUNGGUILIBSHARED_EXPORT ZeiterfassungPlugin : public QObject
 {
@@ -17,7 +18,7 @@ public:
 
     virtual void attachTo(MainWindow &mainWindow) { Q_UNUSED(mainWindow) }
 
-    virtual SettingsWidget *settingsWidget(QWidget *parent = Q_NULLPTR) const { Q_UNUSED(parent) return Q_NULLPTR; }
+    virtual SettingsWidget *settingsWidget(ZeiterfassungSettings &settings, QWidget *parent = Q_NULLPTR) const;
 };
 
 Q_DECLARE_INTERFACE(ZeiterfassungPlugin, "dbsoftware.zeiterfassung.plugin/1.0")
