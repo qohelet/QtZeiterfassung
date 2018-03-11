@@ -20,6 +20,8 @@ public Q_SLOTS:
 
 private:
     ZeiterfassungSettings &m_settings;
+
+    QLineEdit *m_lineEdit;
 };
 
 #endif // WEATHERSETTINGS_H

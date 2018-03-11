@@ -11,7 +11,8 @@ WeatherSettings::WeatherSettings(ZeiterfassungSettings &settings, QWidget *paren
     auto layout = new QFormLayout(this);
     layout->setMargin(0);
 
-    layout->addRow(tr("Weather API:"), new QLineEdit(this));
+    m_lineEdit = new QLineEdit(this);
+    layout->addRow(tr("Weather API:"), m_lineEdit);
 
     setLayout(layout);
 }
