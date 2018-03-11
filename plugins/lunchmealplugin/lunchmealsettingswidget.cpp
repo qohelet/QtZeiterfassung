@@ -3,8 +3,9 @@
 #include <QFormLayout>
 #include <QLineEdit>
 
-LunchMealSettingsWidget::LunchMealSettingsWidget(QWidget *parent) :
-    SettingsWidget(parent)
+LunchMealSettingsWidget::LunchMealSettingsWidget(ZeiterfassungSettings &settings, QWidget *parent) :
+    SettingsWidget(parent),
+    m_settings(settings)
 {
     auto layout = new QFormLayout(this);
     layout->setMargin(0);
@@ -20,7 +21,9 @@ LunchMealSettingsWidget::LunchMealSettingsWidget(QWidget *parent) :
 
 bool LunchMealSettingsWidget::isValid(QString &message) const
 {
+    Q_UNUSED(message)
 
+    return true;
 }
 
 void LunchMealSettingsWidget::apply()

@@ -5,12 +5,14 @@
 
 #include "lunchmealsettings.h"
 
+class QLineEdit;
+
 class LunchMealSettingsWidget : public SettingsWidget
 {
     Q_OBJECT
 
 public:
-    explicit LunchMealSettingsWidget(ZeiterfassungSettings &settings, QWidget *parent = nullptr);
+    explicit LunchMealSettingsWidget(ZeiterfassungSettings &settings, QWidget *parent = Q_NULLPTR);
 
     virtual bool isValid(QString &message) const Q_DECL_OVERRIDE;
 
