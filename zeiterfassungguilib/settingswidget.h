@@ -12,6 +12,8 @@ class ZEITERFASSUNGGUILIBSHARED_EXPORT SettingsWidget : public QWidget
 public:
     explicit SettingsWidget(QWidget *parent = Q_NULLPTR);
 
+    virtual bool isValid(QString &message) const { Q_UNUSED(message) return true; }
+
 public Q_SLOTS:
     virtual void apply() { }
 };

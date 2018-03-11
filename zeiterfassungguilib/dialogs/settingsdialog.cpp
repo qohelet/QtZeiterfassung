@@ -72,10 +72,21 @@ void SettingsDialog::submit()
         return;
     }
 
+    for(const auto widget : m_settingsWidgets)
+    {
+        QString message;
+        if(!widget->isValid(message))
+        {
+            QMessageBox::warning(this, tr("Invalid settings!"), tr("Invalid settings!") % "\n\n" % message);
+            return;
+        }
+    }
+
     if(ui->comboBoxLanguage->currentData().value<QLocale::Language>() != m_settings.language())
     {
         m_settings.setLanguage(ui->comboBoxLanguage->currentData().value<QLocale::Language>());
-        warning = true;
+        //TODO #73 Allow changing of the language without restart
+        QMessageBox::information(this, tr("Restart required!"), tr("To apply the new settings a restart is required!"));
     }
 
     auto theme = ui->comboBoxTheme->currentData().toString();
@@ -108,8 +119,8 @@ void SettingsDialog::submit()
         m_settings.setTheme(theme);
     }
 
-    if(warning)
-        QMessageBox::information(this, tr("Restart required!"), tr("To apply the new settings a restart is required!"));
+    for(const auto widget : m_settingsWidgets)
+        widget->apply();
 
     accept();
 }

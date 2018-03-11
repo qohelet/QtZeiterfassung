@@ -11,6 +11,8 @@ class WeatherSettings : public SettingsWidget
 public:
     explicit WeatherSettings(QWidget *parent = Q_NULLPTR);
 
+    bool isValid(QString &message) const Q_DECL_OVERRIDE;
+
 public Q_SLOTS:
     void apply() Q_DECL_OVERRIDE;
 };

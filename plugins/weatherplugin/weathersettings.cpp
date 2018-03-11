@@ -15,6 +15,14 @@ WeatherSettings::WeatherSettings(QWidget *parent) :
     setLayout(layout);
 }
 
+bool WeatherSettings::isValid(QString &message) const
+{
+    Q_UNUSED(message)
+
+    qDebug() << "called";
+    return true;
+}
+
 void WeatherSettings::apply()
 {
     qDebug() << "called";
