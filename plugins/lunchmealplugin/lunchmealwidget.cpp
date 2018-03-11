@@ -9,10 +9,10 @@
 
 #include "stripswidget.h"
 #include "mainwindow.h"
-#include "zeiterfassungsettings.h"
 #include "zeiterfassungapi.h"
 
 #include "lunchmealdialog.h"
+#include "lunchmealsettings.h"
 
 LunchMealWidget::LunchMealWidget(StripsWidget &stripsWidget) :
     QToolButton(&stripsWidget),
@@ -38,11 +38,9 @@ void LunchMealWidget::dateChanged(const QDate &date)
     setEnabled(false);
     setVisible(false);
 
-    const auto &settings = m_stripsWidget.mainWindow().settings();
+    LunchMealSettings settings(m_stripsWidget.mainWindow().settings());
 
-    auto url = settings.value(QStringLiteral("LunchMealPlugin/url"),
-                              QStringLiteral("https://brunner.ninja/lunch/%0.txt")).toString()
-            .arg(date.toString(settings.value(QStringLiteral("LunchMealPlugin/dateFormat"), QStringLiteral("yyyy-MM-dd")).toString()));
+    auto url = settings.url().toString().arg(date.toString(settings.dateFormat()));
     m_reply = std::unique_ptr<QNetworkReply>(m_stripsWidget.mainWindow().erfassung().manager()->get(QNetworkRequest(QUrl(url))));
     connect(m_reply.get(), &QNetworkReply::finished, this, &LunchMealWidget::finished);
 }
