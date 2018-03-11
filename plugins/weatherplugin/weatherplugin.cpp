@@ -9,6 +9,7 @@
 #include "mainwindow.h"
 
 #include "weatherwidget.h"
+#include "weathersettings.h"
 
 WeatherPlugin::WeatherPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -33,4 +34,9 @@ WeatherPlugin::WeatherPlugin(QObject *parent) :
 void WeatherPlugin::attachTo(MainWindow &mainWindow)
 {
     mainWindow.statusBar()->addWidget(new WeatherWidget(mainWindow));
+}
+
+SettingsWidget *WeatherPlugin::settingsWidget(QWidget *parent)
+{
+    return new WeatherSettings(parent);
 }

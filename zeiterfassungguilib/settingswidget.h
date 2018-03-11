@@ -10,7 +10,7 @@ class ZEITERFASSUNGGUILIBSHARED_EXPORT SettingsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SettingsWidget(QWidget *parent = nullptr);
+    explicit SettingsWidget(QWidget *parent = Q_NULLPTR);
 
 public Q_SLOTS:
     virtual void apply() { }
