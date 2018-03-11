@@ -1,9 +1,11 @@
-#ifndef WEATHERSETTINGS_H
-#define WEATHERSETTINGS_H
+#ifndef WEATHERSETTINGSWIDGET_H
+#define WEATHERSETTINGSWIDGET_H
 
 #include <QWidget>
 
 #include "settingswidget.h"
+
+#include "weathersettings.h"
 
 class QLineEdit;
 
@@ -21,9 +23,9 @@ public Q_SLOTS:
     void apply() Q_DECL_OVERRIDE;
 
 private:
-    ZeiterfassungSettings &m_settings;
+    WeatherSettings m_settings;
 
     QLineEdit *m_lineEdit;
 };
 
-#endif // WEATHERSETTINGS_H
+#endif // WEATHERSETTINGSWIDGET_H
