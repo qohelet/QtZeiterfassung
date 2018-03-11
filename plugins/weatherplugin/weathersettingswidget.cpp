@@ -2,7 +2,6 @@
 
 #include <QFormLayout>
 #include <QLineEdit>
-#include <QDebug>
 
 WeatherSettingsWidget::WeatherSettingsWidget(ZeiterfassungSettings &settings, QWidget *parent) :
     SettingsWidget(parent),
