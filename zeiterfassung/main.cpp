@@ -178,13 +178,22 @@ bool loadLoginPage(QSplashScreen &splashScreen, ZeiterfassungSettings &settings,
         QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not access Zeiterfassung!"),
                              QCoreApplication::translate("main", "Could not access Zeiterfassung!") % "\n\n" % reply->message());
 
+        inputAgain:
         bool ok;
-        auto url = QInputDialog::getText(&splashScreen, QCoreApplication::translate("main", "Base url"),
-                                         QCoreApplication::translate("main", "Please enter the base url to the Zeiterfassung:"),
-                                         QLineEdit::Normal, settings.url(), &ok);
+        auto text = QInputDialog::getText(&splashScreen, QCoreApplication::translate("main", "Base url"),
+                                          QCoreApplication::translate("main", "Please enter the base url to the Zeiterfassung:"),
+                                          QLineEdit::Normal, settings.url().toString(), &ok);
 
         if(!ok)
             return false;
+
+        auto url = QUrl::fromUserInput(text);
+        if(!url.isValid())
+        {
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Invalid url!"),
+                                 QCoreApplication::translate("main", "This url is not valid!"));
+            goto inputAgain;
+        }
 
         settings.setUrl(url);
         erfassung.setUrl(url);
@@ -335,7 +344,7 @@ int main(int argc, char *argv[])
     if(!loadStripLayouts(splashScreen, stripFactory))
         return -3;
 
-    ZeiterfassungApi erfassung(settings.url(), &app);
+    ZeiterfassungApi erfassung(settings.url().toString(), &app);
 
     if(!loadLoginPage(splashScreen, settings, erfassung))
         return -4;

@@ -42,12 +42,12 @@ void ZeiterfassungSettings::setLanguage(QLocale::Language language)
     setValue(QStringLiteral("language"), language);
 }
 
-QString ZeiterfassungSettings::url() const
+QUrl ZeiterfassungSettings::url() const
 {
-    return value(QStringLiteral("url"), QStringLiteral("http://10.1.0.11:8080/evoApps/")).toString();
+    return value(QStringLiteral("url"), QUrl(QStringLiteral("http://10.1.0.11:8080/evoApps/"))).toUrl();
 }
 
-void ZeiterfassungSettings::setUrl(const QString &url)
+void ZeiterfassungSettings::setUrl(const QUrl &url)
 {
     setValue(QStringLiteral("url"), url);
 }

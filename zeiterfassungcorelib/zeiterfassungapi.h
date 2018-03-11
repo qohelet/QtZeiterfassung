@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <QObject>
+#include <QUrl>
 #include <QString>
 #include <QDate>
 #include <QTime>
@@ -32,10 +33,10 @@ class ZEITERFASSUNGCORELIBSHARED_EXPORT ZeiterfassungApi : public QObject
     Q_OBJECT
 
 public:
-    explicit ZeiterfassungApi(const QString &url, QObject *parent = Q_NULLPTR);
+    explicit ZeiterfassungApi(const QUrl &url, QObject *parent = Q_NULLPTR);
 
-    const QString &url() const;
-    void setUrl(const QString &url);
+    const QUrl &url() const;
+    void setUrl(const QUrl &url);
 
     QNetworkAccessManager *manager() const;
 
@@ -67,6 +68,6 @@ public:
     std::unique_ptr<GetAbsencesReply> doGetAbsences(int userId, const QDate &start, const QDate &end);
 
 private:
-    QString m_url;
+    QUrl m_url;
     QNetworkAccessManager *m_manager;
 };

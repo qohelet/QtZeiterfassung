@@ -28,19 +28,19 @@
 //add support for pre cpp14 compilers
 #include "cpp14polyfills.h"
 
-ZeiterfassungApi::ZeiterfassungApi(const QString &url, QObject *parent) :
+ZeiterfassungApi::ZeiterfassungApi(const QUrl &url, QObject *parent) :
     QObject(parent),
     m_url(url),
     m_manager(new QNetworkAccessManager(this))
 {
 }
 
-const QString &ZeiterfassungApi::url() const
+const QUrl &ZeiterfassungApi::url() const
 {
     return m_url;
 }
 
-void ZeiterfassungApi::setUrl(const QString &url)
+void ZeiterfassungApi::setUrl(const QUrl &url)
 {
     m_url = url;
 }
@@ -52,14 +52,14 @@ QNetworkAccessManager *ZeiterfassungApi::manager() const
 
 std::unique_ptr<LoginPageReply> ZeiterfassungApi::doLoginPage()
 {
-    QNetworkRequest request(QUrl(m_url % "pages/login.jsp"));
+    QNetworkRequest request(QUrl(m_url.toString() % "pages/login.jsp"));
 
     return std::make_unique<LoginPageReply>(std::unique_ptr<QNetworkReply>(m_manager->get(request)), this);
 }
 
 std::unique_ptr<LoginReply> ZeiterfassungApi::doLogin(const QString &username, const QString &password)
 {
-    QNetworkRequest request(QUrl(m_url % "pages/j_spring_security_check"));
+    QNetworkRequest request(QUrl(m_url.toString() % "pages/j_spring_security_check"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setMaximumRedirectsAllowed(0);
 
@@ -70,10 +70,10 @@ std::unique_ptr<LoginReply> ZeiterfassungApi::doLogin(const QString &username, c
 
 std::unique_ptr<GetUserInfoReply> ZeiterfassungApi::doUserInfo()
 {
-    QNetworkRequest request0(QUrl(m_url % "json/evoAppsUserInfoDialogController/load-EvoAppsUserInfoTO"));
+    QNetworkRequest request0(QUrl(m_url.toString() % "json/evoAppsUserInfoDialogController/load-EvoAppsUserInfoTO"));
     request0.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("home"));
 
-    QNetworkRequest request1(QUrl(m_url % "json/persons"));
+    QNetworkRequest request1(QUrl(m_url.toString() % "json/persons"));
     request1.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
     return std::make_unique<GetUserInfoReply>(std::unique_ptr<QNetworkReply>(m_manager->get(request0)),
@@ -83,7 +83,7 @@ std::unique_ptr<GetUserInfoReply> ZeiterfassungApi::doUserInfo()
 std::unique_ptr<GetBookingsReply> ZeiterfassungApi::doGetBookings(int userId, const QDate &start, const QDate &end)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/bookings?start=%1&end=%2&pnrLst=%3")
-                                 .arg(m_url)
+                                 .arg(m_url.toString())
                                  .arg(start.toString(QStringLiteral("yyyyMMdd")))
                                  .arg(end.toString(QStringLiteral("yyyyMMdd")))
                                  .arg(userId)));
@@ -95,7 +95,7 @@ std::unique_ptr<GetBookingsReply> ZeiterfassungApi::doGetBookings(int userId, co
 std::unique_ptr<CreateBookingReply> ZeiterfassungApi::doCreateBooking(int userId, const QDate &date, const QTime &time, const QTime &timespan,
                                                                       const QString &type, const QString &text)
 {
-    QNetworkRequest request(QUrl(m_url % "json/booking"));
+    QNetworkRequest request(QUrl(m_url.toString() % "json/booking"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
@@ -118,7 +118,7 @@ std::unique_ptr<CreateBookingReply> ZeiterfassungApi::doCreateBooking(int userId
 std::unique_ptr<UpdateBookingReply> ZeiterfassungApi::doUpdateBooking(int bookingId, int userId, const QDate &date, const QTime &time,
                                                                       const QTime &timespan, const QString &type, const QString &text)
 {
-    QNetworkRequest request(QUrl(QStringLiteral("%0json/booking/%1").arg(m_url).arg(bookingId)));
+    QNetworkRequest request(QUrl(QStringLiteral("%0json/booking/%1").arg(m_url.toString()).arg(bookingId)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
@@ -142,7 +142,7 @@ std::unique_ptr<UpdateBookingReply> ZeiterfassungApi::doUpdateBooking(int bookin
 std::unique_ptr<DeleteBookingReply> ZeiterfassungApi::doDeleteBooking(int bookingId)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/booking/%1?text=")
-                                 .arg(m_url)
+                                 .arg(m_url.toString())
                                  .arg(bookingId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
@@ -152,7 +152,7 @@ std::unique_ptr<DeleteBookingReply> ZeiterfassungApi::doDeleteBooking(int bookin
 std::unique_ptr<GetTimeAssignmentsReply> ZeiterfassungApi::doGetTimeAssignments(int userId, const QDate &start, const QDate &end)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking?start=%1&end=%2&pnrLst=%3")
-                                 .arg(m_url)
+                                 .arg(m_url.toString())
                                  .arg(start.toString(QStringLiteral("yyyyMMdd")))
                                  .arg(end.toString(QStringLiteral("yyyyMMdd")))
                                  .arg(userId)));
@@ -166,7 +166,7 @@ std::unique_ptr<CreateTimeAssignmentReply> ZeiterfassungApi::doCreateTimeAssignm
                                                                                     const QString &subproject, const QString &workpackage,
                                                                                     const QString &text)
 {
-    QNetworkRequest request(QUrl(m_url % "json/azebooking"));
+    QNetworkRequest request(QUrl(m_url.toString() % "json/azebooking"));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
@@ -207,7 +207,7 @@ std::unique_ptr<UpdateTimeAssignmentReply> ZeiterfassungApi::doUpdateTimeAssignm
                                                                                     const QString &subproject, const QString &workpackage,
                                                                                     const QString &text)
 {
-    QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1").arg(m_url).arg(timeAssignmentId)));
+    QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1").arg(m_url.toString()).arg(timeAssignmentId)));
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
@@ -251,7 +251,7 @@ std::unique_ptr<UpdateTimeAssignmentReply> ZeiterfassungApi::doUpdateTimeAssignm
 std::unique_ptr<DeleteTimeAssignmentReply> ZeiterfassungApi::doDeleteTimeAssignment(int timeAssignmentId)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/azebooking/%1")
-                                 .arg(m_url)
+                                 .arg(m_url.toString())
                                  .arg(timeAssignmentId)));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
 
@@ -261,7 +261,7 @@ std::unique_ptr<DeleteTimeAssignmentReply> ZeiterfassungApi::doDeleteTimeAssignm
 std::unique_ptr<GetProjectsReply> ZeiterfassungApi::doGetProjects(int userId, const QDate &date)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/combobox?persnr=%1&date=%2&dqkey=KOST&kowert0=&kowert1=&kowert2=&term=")
-                                 .arg(m_url)
+                                 .arg(m_url.toString())
                                  .arg(userId)
                                  .arg(date.toString(QStringLiteral("yyyyMMdd")))));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
@@ -272,7 +272,7 @@ std::unique_ptr<GetProjectsReply> ZeiterfassungApi::doGetProjects(int userId, co
 std::unique_ptr<GetReportReply> ZeiterfassungApi::doGetReport(int userId, const QDate &date)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/auswertung/month?persNr=%1&date=%2")
-                                 .arg(m_url)
+                                 .arg(m_url.toString())
                                  .arg(userId)
                                  .arg(date.toString(QStringLiteral("yyyyMMdd")))));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("bookingCalendar"));
@@ -282,7 +282,7 @@ std::unique_ptr<GetReportReply> ZeiterfassungApi::doGetReport(int userId, const 
 
 std::unique_ptr<GetPresenceStatusReply> ZeiterfassungApi::doGetPresenceStatus()
 {
-    QNetworkRequest request(QUrl(m_url % "json/presencestatus"));
+    QNetworkRequest request(QUrl(m_url.toString() % "json/presencestatus"));
     request.setRawHeader(QByteArrayLiteral("sisAppName"), QByteArrayLiteral("presenceStatus"));
 
     return std::make_unique<GetPresenceStatusReply>(std::unique_ptr<QNetworkReply>(m_manager->get(request)), this);
@@ -291,7 +291,7 @@ std::unique_ptr<GetPresenceStatusReply> ZeiterfassungApi::doGetPresenceStatus()
 std::unique_ptr<GetAbsencesReply> ZeiterfassungApi::doGetAbsences(int userId, const QDate &start, const QDate &end)
 {
     QNetworkRequest request(QUrl(QStringLiteral("%0json/fulldayAbsences?start=%1&end=%2&pnrLst=%3")
-                                 .arg(m_url)
+                                 .arg(m_url.toString())
                                  .arg(start.toString(QStringLiteral("yyyyMMdd")))
                                  .arg(end.toString(QStringLiteral("yyyyMMdd")))
                                  .arg(userId)));

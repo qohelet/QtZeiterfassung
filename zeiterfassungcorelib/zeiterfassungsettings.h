@@ -2,6 +2,7 @@
 
 #include <QSettings>
 #include <QLocale>
+#include <QUrl>
 #include <QString>
 #include <QStringList>
 #include <QDate>
@@ -25,8 +26,8 @@ public:
     QLocale::Language language() const;
     void setLanguage(QLocale::Language language);
 
-    QString url() const;
-    void setUrl(const QString &url);
+    QUrl url() const;
+    void setUrl(const QUrl &url);
 
     QString username() const;
     void setUsername(const QString &username);
