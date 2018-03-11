@@ -15,6 +15,8 @@ public:
     explicit ZeiterfassungPlugin(QObject *parent = Q_NULLPTR);
 
     virtual void attachTo(MainWindow &mainWindow) { Q_UNUSED(mainWindow) }
+
+    virtual QWidget *settingsWidget(QWidget *parent = Q_NULLPTR) { Q_UNUSED(parent) return Q_NULLPTR; }
 };
 
 Q_DECLARE_INTERFACE(ZeiterfassungPlugin, "dbsoftware.zeiterfassung.plugin/1.0")
