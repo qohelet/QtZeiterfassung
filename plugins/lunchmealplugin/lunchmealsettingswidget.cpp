@@ -21,12 +21,19 @@ LunchMealSettingsWidget::LunchMealSettingsWidget(ZeiterfassungSettings &settings
 
 bool LunchMealSettingsWidget::isValid(QString &message) const
 {
-    Q_UNUSED(message)
+    auto valid = QUrl::fromUserInput(m_lineEditUrl->text()).isValid();
 
-    return true;
+    if(!valid)
+        message = tr("The lunch meal api url is invalid!");
+
+    return valid;
 }
 
 void LunchMealSettingsWidget::apply()
 {
+    auto url = QUrl::fromUserInput(m_lineEditUrl->text());
+    if(m_settings.url() != url)
+        m_settings.setUrl(url);
 
+    m_settings.setDateFormat(m_lineEditDateFormat->text());
 }
