@@ -50,7 +50,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
     connect(ui->actionRefresh, &QAction::triggered, this, &MainWindow::refreshEverything);
 
-    connect(ui->actionSettings, &QAction::triggered, this, [this](){ SettingsDialog(m_settings, this).exec(); });
+    connect(ui->actionSettings, &QAction::triggered, this, [this](){ SettingsDialog(m_settings, m_plugins, this).exec(); });
 
     ui->actionHelp->setShortcut(QKeySequence::HelpContents);
 

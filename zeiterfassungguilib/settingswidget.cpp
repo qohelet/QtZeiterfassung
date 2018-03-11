@@ -3,5 +3,4 @@
 SettingsWidget::SettingsWidget(QWidget *parent) :
     QWidget(parent)
 {
-
 }

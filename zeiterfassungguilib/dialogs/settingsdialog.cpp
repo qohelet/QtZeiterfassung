@@ -5,12 +5,15 @@
 #include <QStringBuilder>
 #include <QDir>
 #include <QApplication>
+#include <QSet>
 #include <QFile>
 #include <QTextStream>
 
 #include "zeiterfassungsettings.h"
+#include "zeiterfassungplugin.h"
+#include "settingswidget.h"
 
-SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent) :
+SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, const QSet<ZeiterfassungPlugin*> &plugins, QWidget *parent) :
     ZeiterfassungDialog(parent),
     ui(new Ui::SettingsDialog),
     m_settings(settings)
@@ -38,6 +41,16 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent)
         if(index == -1)
             QMessageBox::warning(this, tr("Invalid settings!"), tr("Invalid settings!") % "\n\n" % tr("Unknown theme!"));
         ui->comboBoxTheme->setCurrentIndex(index);
+    }
+
+    for(const auto plugin : plugins)
+    {
+        auto widget = plugin->settingsWidget(this);
+        if(!widget)
+            continue;
+
+        ui->verticalLayout->addWidget(widget);
+        m_settingsWidgets.append(widget);
     }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::submit);
