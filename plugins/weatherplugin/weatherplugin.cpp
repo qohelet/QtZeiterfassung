@@ -36,7 +36,7 @@ void WeatherPlugin::attachTo(MainWindow &mainWindow)
     mainWindow.statusBar()->addWidget(new WeatherWidget(mainWindow));
 }
 
-SettingsWidget *WeatherPlugin::settingsWidget(QWidget *parent)
+SettingsWidget *WeatherPlugin::settingsWidget(QWidget *parent) const
 {
     return new WeatherSettings(parent);
 }
