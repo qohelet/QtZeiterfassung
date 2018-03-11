@@ -19,13 +19,15 @@ WeatherSettingsWidget::WeatherSettingsWidget(ZeiterfassungSettings &settings, QW
 
 bool WeatherSettingsWidget::isValid(QString &message) const
 {
-    Q_UNUSED(message)
+    auto valid = QUrl::fromUserInput(m_lineEdit->text()).isValid();
 
-    qDebug() << "called";
-    return true;
+    if(!valid)
+        message = tr("The weather api url is invalid!");
+
+    return valid;
 }
 
 void WeatherSettingsWidget::apply()
 {
-    qDebug() << "called";
+    m_settings.setUrl(QUrl::fromUserInput(m_lineEdit->text()));
 }
