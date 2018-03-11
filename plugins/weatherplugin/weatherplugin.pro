@@ -18,10 +18,12 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 
 HEADERS += weatherplugin.h \
            weathersettings.h \
+           weathersettingswidget.h \
            weatherwidget.h
 
 SOURCES += weatherplugin.cpp \
            weathersettings.cpp \
+           weathersettingswidget.cpp \
            weatherwidget.cpp
 
 FORMS +=

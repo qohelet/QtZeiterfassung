@@ -1,27 +1,20 @@
 #ifndef WEATHERSETTINGS_H
 #define WEATHERSETTINGS_H
 
-#include <QWidget>
-
-#include "settingswidget.h"
+#include <QUrl>
 
 class ZeiterfassungSettings;
 
-class WeatherSettings : public SettingsWidget
+class WeatherSettings
 {
-    Q_OBJECT
 public:
-    explicit WeatherSettings(ZeiterfassungSettings &settings, QWidget *parent = Q_NULLPTR);
+    WeatherSettings(ZeiterfassungSettings &settings);
 
-    bool isValid(QString &message) const Q_DECL_OVERRIDE;
-
-public Q_SLOTS:
-    void apply() Q_DECL_OVERRIDE;
+    QUrl url() const;
+    void setUrl(const QUrl &url);
 
 private:
     ZeiterfassungSettings &m_settings;
-
-    QLineEdit *m_lineEdit;
 };
 
 #endif // WEATHERSETTINGS_H

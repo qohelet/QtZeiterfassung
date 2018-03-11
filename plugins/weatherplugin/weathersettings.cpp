@@ -1,31 +1,21 @@
 #include "weathersettings.h"
 
-#include <QFormLayout>
-#include <QLineEdit>
-#include <QDebug>
+#include "zeiterfassungsettings.h"
 
-WeatherSettings::WeatherSettings(ZeiterfassungSettings &settings, QWidget *parent) :
-    SettingsWidget(parent),
+WeatherSettings::WeatherSettings(ZeiterfassungSettings &settings) :
     m_settings(settings)
 {
-    auto layout = new QFormLayout(this);
-    layout->setMargin(0);
 
-    m_lineEdit = new QLineEdit(this);
-    layout->addRow(tr("Weather API:"), m_lineEdit);
-
-    setLayout(layout);
 }
 
-bool WeatherSettings::isValid(QString &message) const
+QUrl WeatherSettings::url() const
 {
-    Q_UNUSED(message)
-
-    qDebug() << "called";
-    return true;
+    return m_settings.value(QStringLiteral("WeatherPlugin/url"),
+                            QUrl(QStringLiteral("http://api.openweathermap.org/data/2.5/weather?q=Graz,AT&units=metric&APPID=40f6c892c6162680c6c9235169dc9f83")))
+            .toUrl();
 }
 
-void WeatherSettings::apply()
+void WeatherSettings::setUrl(const QUrl &url)
 {
-    qDebug() << "called";
+    m_settings.setValue(QStringLiteral("WeatherPlugin/url"), url);
 }
