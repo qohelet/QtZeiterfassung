@@ -7,6 +7,10 @@ RUN apt update \
  && rm /var/lib/apt/lists/* /var/log/* -Rf
 
 RUN apt update \
+ && apt install libssl1.0.0 ca-certificates libqt5core5a libqt5gui5 libqt5network5 libqt5multimedia5 -y \
+ && rm /var/lib/apt/lists/* /var/log/* -Rf
+
+RUN apt update \
  && apt install git-core g++ make qt5-default qtmultimedia5-dev qttools5-dev qttools5-dev-tools -y \
  && rm /var/lib/apt/lists/* /var/log/* -Rf
 
