@@ -22,7 +22,7 @@ WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
     for(const auto &url : m_settings.urls())
         ui->comboBox->addItem(url, url);
 
-    ui->comboBox->setCurrentIndex(ui->comboBox->findData(m_mainWindow.settings().value(QStringLiteral("WebRadioPlugin/lastUrl")).toString()));
+    ui->comboBox->setCurrentIndex(ui->comboBox->findData(m_settings.lastUrl()));
 
     connect(ui->comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, &WebRadioDialog::currentIndexChanged);
@@ -34,7 +34,7 @@ WebRadioDialog::WebRadioDialog(MainWindow &mainWindow) :
     connect(ui->pushButtonPause, &QAbstractButton::pressed, m_player, &QMediaPlayer::pause);
     connect(ui->pushButtonStop, &QAbstractButton::pressed, m_player, &QMediaPlayer::stop);
 
-    m_player->setVolume(m_mainWindow.settings().value(QStringLiteral("WebRadioPlugin/volume"), 100).toInt());
+    m_player->setVolume(m_settings.volume());
     ui->horizontalSlider->setValue(m_player->volume());
     connect(ui->horizontalSlider, &QAbstractSlider::valueChanged, this, &WebRadioDialog::volumeChanged);
 
@@ -106,7 +106,7 @@ void WebRadioDialog::play()
     if(ui->comboBox->currentIndex() == -1)
         return;
 
-    m_mainWindow.settings().setValue(QStringLiteral("WebRadioPlugin/lastUrl"), ui->comboBox->currentData().toString());
+    m_settings.setLastUrl(ui->comboBox->currentData().toString());
 
     m_player->play();
 }
@@ -123,6 +123,6 @@ void WebRadioDialog::updateWidgets()
 
 void WebRadioDialog::volumeChanged(int volume)
 {
-    m_mainWindow.settings().setValue(QStringLiteral("WebRadioPlugin/volume"), volume);
+    m_settings.setVolume(volume);
     m_player->setVolume(volume);
 }

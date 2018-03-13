@@ -28,3 +28,23 @@ void WebRadioSettings::setUrls(const QStringList &urls)
 {
     m_settings.setValue(QStringLiteral("WebRadioPlugin/urls"), urls);
 }
+
+QString WebRadioSettings::lastUrl() const
+{
+    return m_settings.value(QStringLiteral("WebRadioPlugin/lastUrl")).toString();
+}
+
+void WebRadioSettings::setLastUrl(const QString &lastUrl)
+{
+    m_settings.setValue(QStringLiteral("WebRadioPlugin/lastUrl"), lastUrl);
+}
+
+int WebRadioSettings::volume() const
+{
+    return m_settings.value(QStringLiteral("WebRadioPlugin/volume"), 100).toInt();
+}
+
+void WebRadioSettings::setVolume(int volume)
+{
+    m_settings.setValue(QStringLiteral("WebRadioPlugin/volume"), volume);
+}

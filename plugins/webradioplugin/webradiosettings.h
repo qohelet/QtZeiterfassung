@@ -13,6 +13,12 @@ public:
     QStringList urls() const;
     void setUrls(const QStringList &urls);
 
+    QString lastUrl() const;
+    void setLastUrl(const QString &lastUrl);
+
+    int volume() const;
+    void setVolume(int volume);
+
 private:
     ZeiterfassungSettings &m_settings;
 };
