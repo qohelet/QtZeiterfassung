@@ -10,6 +10,7 @@
 #include "stripswidget.h"
 
 #include "lunchmealwidget.h"
+#include "lunchmealsettingswidget.h"
 
 LunchMealPlugin::LunchMealPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -35,4 +36,9 @@ void LunchMealPlugin::attachTo(MainWindow &mainWindow)
 {
     for(auto stripsWidget : mainWindow.stripsWidgets())
         stripsWidget->headerLayout()->addWidget(new LunchMealWidget(*stripsWidget));
+}
+
+SettingsWidget *LunchMealPlugin::settingsWidget(ZeiterfassungSettings &settings, QWidget *parent) const
+{
+    return new LunchMealSettingsWidget(settings, parent);
 }

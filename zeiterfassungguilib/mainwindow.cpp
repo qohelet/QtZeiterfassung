@@ -28,13 +28,14 @@
 #include "replies/updatetimeassignmentreply.h"
 
 MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const GetUserInfoReply::UserInfo &userInfo,
-                       StripFactory &stripFactory, QWidget *parent) :
+                       StripFactory &stripFactory, const QSet<ZeiterfassungPlugin*> &plugins, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_settings(settings),
     m_erfassung(erfassung),
     m_userInfo(userInfo),
     m_stripFactory(stripFactory),
+    m_plugins(plugins),
     m_currentStripWidget(Q_NULLPTR),
     m_timerId(-1)
 {
@@ -49,7 +50,7 @@ MainWindow::MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfass
     ui->actionRefresh->setShortcut(QKeySequence::Refresh);
     connect(ui->actionRefresh, &QAction::triggered, this, &MainWindow::refreshEverything);
 
-    connect(ui->actionSettings, &QAction::triggered, this, [this](){ SettingsDialog(m_settings, this).exec(); });
+    connect(ui->actionSettings, &QAction::triggered, this, [this](){ SettingsDialog(m_settings, m_plugins, this).exec(); });
 
     ui->actionHelp->setShortcut(QKeySequence::HelpContents);
 

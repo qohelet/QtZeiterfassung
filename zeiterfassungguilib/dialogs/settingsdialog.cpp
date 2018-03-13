@@ -5,12 +5,15 @@
 #include <QStringBuilder>
 #include <QDir>
 #include <QApplication>
+#include <QSet>
 #include <QFile>
 #include <QTextStream>
 
 #include "zeiterfassungsettings.h"
+#include "zeiterfassungplugin.h"
+#include "settingswidget.h"
 
-SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent) :
+SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, const QSet<ZeiterfassungPlugin*> &plugins, QWidget *parent) :
     ZeiterfassungDialog(parent),
     ui(new Ui::SettingsDialog),
     m_settings(settings)
@@ -21,7 +24,7 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent)
     ui->comboBoxLanguage->addItem(tr("German"), QLocale::German);
 
     {
-        auto index = ui->comboBoxLanguage->findData(settings.language());
+        auto index = ui->comboBoxLanguage->findData(m_settings.language());
         if(index == -1)
             QMessageBox::warning(this, tr("Invalid settings!"), tr("Invalid settings!") % "\n\n" % tr("Unknown language!"));
         ui->comboBoxLanguage->setCurrentIndex(index);
@@ -32,12 +35,22 @@ SettingsDialog::SettingsDialog(ZeiterfassungSettings &settings, QWidget *parent)
     for(const auto &entry : QDir(QDir(QCoreApplication::applicationDirPath()).absoluteFilePath(QStringLiteral("themes"))).entryInfoList(QStringList { QStringLiteral("*.qss") }, QDir::Files))
         ui->comboBoxTheme->addItem(entry.baseName(), entry.baseName());
 
-    if(!settings.theme().isEmpty())
+    if(!m_settings.theme().isEmpty())
     {
-        auto index = ui->comboBoxTheme->findData(settings.theme());
+        auto index = ui->comboBoxTheme->findData(m_settings.theme());
         if(index == -1)
             QMessageBox::warning(this, tr("Invalid settings!"), tr("Invalid settings!") % "\n\n" % tr("Unknown theme!"));
         ui->comboBoxTheme->setCurrentIndex(index);
+    }
+
+    for(const auto plugin : plugins)
+    {
+        auto widget = plugin->settingsWidget(m_settings, this);
+        if(!widget)
+            continue;
+
+        ui->verticalLayout->addWidget(widget);
+        m_settingsWidgets.append(widget);
     }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::submit);
@@ -50,8 +63,6 @@ SettingsDialog::~SettingsDialog()
 
 void SettingsDialog::submit()
 {
-    auto warning = false;
-
     if(ui->comboBoxLanguage->currentIndex() == -1 ||
        ui->comboBoxTheme->currentIndex() == -1)
     {
@@ -59,10 +70,21 @@ void SettingsDialog::submit()
         return;
     }
 
+    for(const auto widget : m_settingsWidgets)
+    {
+        QString message;
+        if(!widget->isValid(message))
+        {
+            QMessageBox::warning(this, tr("Invalid settings!"), tr("Invalid settings!") % "\n\n" % message);
+            return;
+        }
+    }
+
     if(ui->comboBoxLanguage->currentData().value<QLocale::Language>() != m_settings.language())
     {
         m_settings.setLanguage(ui->comboBoxLanguage->currentData().value<QLocale::Language>());
-        warning = true;
+        //TODO #73 Allow changing of the language without restart
+        QMessageBox::information(this, tr("Restart required!"), tr("To apply the new settings a restart is required!"));
     }
 
     auto theme = ui->comboBoxTheme->currentData().toString();
@@ -95,8 +117,8 @@ void SettingsDialog::submit()
         m_settings.setTheme(theme);
     }
 
-    if(warning)
-        QMessageBox::information(this, tr("Restart required!"), tr("To apply the new settings a restart is required!"));
+    for(const auto widget : m_settingsWidgets)
+        widget->apply();
 
     accept();
 }

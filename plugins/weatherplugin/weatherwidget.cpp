@@ -14,6 +14,8 @@
 #include "zeiterfassungsettings.h"
 #include "zeiterfassungapi.h"
 
+#include "weathersettings.h"
+
 WeatherWidget::WeatherWidget(MainWindow &mainWindow) :
     QLabel(&mainWindow),
     m_mainWindow(mainWindow)
@@ -30,10 +32,9 @@ void WeatherWidget::refresh()
 {
     setText(tr("Loading..."));
 
-    auto url = m_mainWindow.settings().value(QStringLiteral("WeatherPlugin/url"),
-    QStringLiteral("http://api.openweathermap.org/data/2.5/weather?q=Graz,AT&units=metric&APPID=40f6c892c6162680c6c9235169dc9f83")).toString();
+    auto url = WeatherSettings(m_mainWindow.settings()).url();
 
-    m_reply = std::unique_ptr<QNetworkReply>(m_mainWindow.erfassung().manager()->get(QNetworkRequest(QUrl(url))));
+    m_reply = std::unique_ptr<QNetworkReply>(m_mainWindow.erfassung().manager()->get(QNetworkRequest(url)));
     connect(m_reply.get(), &QNetworkReply::finished, this, &WeatherWidget::finished);
 }
 

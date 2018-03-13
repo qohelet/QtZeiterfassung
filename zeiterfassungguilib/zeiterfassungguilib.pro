@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 DEFINES += ZEITERFASSUNGGUILIB_LIBRARY
 
 SOURCES += mainwindow.cpp \
+           settingswidget.cpp \
            stripfactory.cpp \
            stripswidget.cpp \
            zeiterfassungdialog.cpp \
@@ -27,6 +28,7 @@ SOURCES += mainwindow.cpp \
            dialogs/settingsdialog.cpp
 
 HEADERS += mainwindow.h \
+           settingswidget.h \
            stripfactory.h \
            stripswidget.h \
            zeiterfassungguilib_global.h \

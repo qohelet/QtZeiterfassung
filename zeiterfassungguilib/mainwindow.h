@@ -18,6 +18,7 @@ class QBoxLayout;
 namespace Ui { class MainWindow; }
 class ZeiterfassungSettings;
 class StripFactory;
+class ZeiterfassungPlugin;
 class StripsWidget;
 
 class ZEITERFASSUNGGUILIBSHARED_EXPORT MainWindow : public QMainWindow
@@ -26,7 +27,7 @@ class ZEITERFASSUNGGUILIBSHARED_EXPORT MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(ZeiterfassungSettings &settings, ZeiterfassungApi &erfassung, const GetUserInfoReply::UserInfo &userInfo,
-                        StripFactory &stripFactory, QWidget *parent = Q_NULLPTR);
+                        StripFactory &stripFactory, const QSet<ZeiterfassungPlugin*> &plugins, QWidget *parent = Q_NULLPTR);
     ~MainWindow();
 
     QMenu *menuFile() const;
@@ -73,6 +74,7 @@ private:
     ZeiterfassungApi &m_erfassung;
     const GetUserInfoReply::UserInfo &m_userInfo;
     StripFactory &m_stripFactory;
+    const QSet<ZeiterfassungPlugin*> &m_plugins;
 
     std::unique_ptr<GetProjectsReply> m_getProjectsReply;
 
