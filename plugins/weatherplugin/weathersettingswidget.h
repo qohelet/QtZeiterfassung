@@ -14,6 +14,7 @@ class ZeiterfassungSettings;
 class WeatherSettingsWidget : public SettingsWidget
 {
     Q_OBJECT
+
 public:
     explicit WeatherSettingsWidget(ZeiterfassungSettings &settings, QWidget *parent = Q_NULLPTR);
 
