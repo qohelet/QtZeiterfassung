@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 
 HEADERS += webradiodialog.h \
            webradioplugin.h \
-           webradiosettings.h
+           webradiosettings.h \
+    webradiosettingswidget.h
 
 SOURCES += webradiodialog.cpp \
            webradioplugin.cpp \
-           webradiosettings.cpp
+           webradiosettings.cpp \
+    webradiosettingswidget.cpp
 
 FORMS += webradiodialog.ui
 
