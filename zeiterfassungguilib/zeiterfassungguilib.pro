@@ -49,3 +49,5 @@ TRANSLATIONS +=  translations/zeiterfassungguilib_en.ts \
                  translations/zeiterfassungguilib_de.ts
 
 include($${PROJECT_ROOT}/lrelease.pri)
+
+include(QStringListWidget/QStringListWidget.pri)
