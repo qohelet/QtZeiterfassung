@@ -19,7 +19,16 @@ WebRadioSettingsWidget::WebRadioSettingsWidget(ZeiterfassungSettings &settings, 
 
 bool WebRadioSettingsWidget::isValid(QString &message) const
 {
+    for(const auto &url : m_urlsWidget->stringList())
+    {
+        if(!QUrl::fromUserInput(url).isValid())
+        {
+            message = tr("A web radio url is invalid!");
+            return false;
+        }
+    }
 
+    return true;
 }
 
 void WebRadioSettingsWidget::apply()
