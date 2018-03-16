@@ -10,8 +10,9 @@ class LunchMealSettings
 public:
     LunchMealSettings(ZeiterfassungSettings &settings);
 
-    QUrl url() const;
-    void setUrl(const QUrl &url);
+    // no QString becuase placeholder %0 encodes wrong in urls!
+    QString url() const;
+    void setUrl(const QString &url);
 
     QString dateFormat() const;
     void setDateFormat(const QString &dateFormat);

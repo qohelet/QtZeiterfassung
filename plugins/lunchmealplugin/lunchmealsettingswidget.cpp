@@ -10,7 +10,7 @@ LunchMealSettingsWidget::LunchMealSettingsWidget(ZeiterfassungSettings &settings
     auto layout = new QFormLayout(this);
     layout->setMargin(0);
 
-    m_lineEditUrl = new QLineEdit(m_settings.url().toString(), this);
+    m_lineEditUrl = new QLineEdit(m_settings.url(), this);
     layout->addRow(tr("Lunch meal API:"), m_lineEditUrl);
 
     m_lineEditDateFormat = new QLineEdit(m_settings.dateFormat(), this);
@@ -31,9 +31,9 @@ bool LunchMealSettingsWidget::isValid(QString &message) const
 
 void LunchMealSettingsWidget::apply()
 {
-    auto url = QUrl::fromUserInput(m_lineEditUrl->text());
-    if(m_settings.url() != url)
-        m_settings.setUrl(url);
+    if(m_settings.url() != m_lineEditUrl->text())
+        m_settings.setUrl(m_lineEditUrl->text());
 
-    m_settings.setDateFormat(m_lineEditDateFormat->text());
+    if(m_settings.dateFormat() != m_lineEditDateFormat->text())
+        m_settings.setDateFormat(m_lineEditDateFormat->text());
 }

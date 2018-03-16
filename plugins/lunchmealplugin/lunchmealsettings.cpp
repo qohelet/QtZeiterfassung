@@ -8,14 +8,14 @@ LunchMealSettings::LunchMealSettings(ZeiterfassungSettings &settings) :
 
 }
 
-QUrl LunchMealSettings::url() const
+QString LunchMealSettings::url() const
 {
     return m_settings.value(QStringLiteral("LunchMealPlugin/url"),
-                            QUrl(QStringLiteral("https://brunner.ninja/lunch/%0.txt")))
-            .toUrl();
+                            QStringLiteral("https://brunner.ninja/lunch/%0.txt"))
+            .toString();
 }
 
-void LunchMealSettings::setUrl(const QUrl &url)
+void LunchMealSettings::setUrl(const QString &url)
 {
     m_settings.setValue(QStringLiteral("LunchMealPlugin/url"), url);
 }

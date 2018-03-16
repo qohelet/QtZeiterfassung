@@ -40,8 +40,8 @@ void LunchMealWidget::dateChanged(const QDate &date)
 
     LunchMealSettings settings(m_stripsWidget.mainWindow().settings());
 
-    auto url = settings.url().toString().arg(date.toString(settings.dateFormat()));
-    m_reply = std::unique_ptr<QNetworkReply>(m_stripsWidget.mainWindow().erfassung().manager()->get(QNetworkRequest(QUrl(url))));
+    auto url = QUrl(settings.url().arg(date.toString(settings.dateFormat())));
+    m_reply = std::unique_ptr<QNetworkReply>(m_stripsWidget.mainWindow().erfassung().manager()->get(QNetworkRequest(url)));
     connect(m_reply.get(), &QNetworkReply::finished, this, &LunchMealWidget::finished);
 }
 
