@@ -292,7 +292,7 @@ bool loadPlugins(QSplashScreen &splashScreen)
         QPluginLoader pluginLoader(fileInfo.filePath());
         if(!pluginLoader.load())
         {
-            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load plugin %0!"),
+            QMessageBox::warning(&splashScreen, QCoreApplication::translate("main", "Could not load plugin %0!").arg(fileInfo.fileName()),
                                  QCoreApplication::translate("main", "Could not load plugin %0!").arg(fileInfo.fileName()) %
                                  "\n\n" % pluginLoader.errorString());
             ok = false;
