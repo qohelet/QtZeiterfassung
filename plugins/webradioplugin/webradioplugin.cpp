@@ -10,6 +10,7 @@
 #include "mainwindow.h"
 
 #include "webradiodialog.h"
+#include "webradiosettingswidget.h"
 
 WebRadioPlugin::WebRadioPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -36,4 +37,9 @@ void WebRadioPlugin::attachTo(MainWindow &mainWindow)
     auto dialog = new WebRadioDialog(mainWindow);
     mainWindow.menuTools()->addAction(QIcon(QStringLiteral(":/zeiterfassung/plugins/webradioplugin/images/web-radio.png")),
                                       tr("Play webradio"), dialog, &QWidget::show);
+}
+
+SettingsWidget *WebRadioPlugin::settingsWidget(ZeiterfassungSettings &settings, QWidget *parent) const
+{
+    return new WebRadioSettingsWidget(settings, parent);
 }

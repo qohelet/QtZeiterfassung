@@ -10,6 +10,7 @@ class StripsWidget;
 class LunchMealWidget : public QToolButton
 {
     Q_OBJECT
+
 public:
     explicit LunchMealWidget(StripsWidget &stripsWidget);
 

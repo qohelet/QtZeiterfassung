@@ -4,6 +4,8 @@
 
 #include "zeiterfassungdialog.h"
 
+#include "webradiosettings.h"
+
 class MainWindow;
 
 namespace Ui { class WebRadioDialog; }
@@ -30,5 +32,7 @@ private:
     Ui::WebRadioDialog *ui;
 
     MainWindow &m_mainWindow;
+    WebRadioSettings m_settings;
+
     QMediaPlayer *m_player;
 };

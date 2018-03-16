@@ -9,6 +9,7 @@
 class ZEITERFASSUNGGUILIBSHARED_EXPORT SettingsWidget : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit SettingsWidget(QWidget *parent = Q_NULLPTR);
 
