@@ -9,6 +9,7 @@
 #include "mainwindow.h"
 
 #include "presencewidget.h"
+#include "presencesettingswidget.h"
 
 PresencePlugin::PresencePlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -33,4 +34,9 @@ PresencePlugin::PresencePlugin(QObject *parent) :
 void PresencePlugin::attachTo(MainWindow &mainWindow)
 {
     mainWindow.statusBar()->addWidget(new PresenceWidget(mainWindow));
+}
+
+SettingsWidget *PresencePlugin::settingsWidget(ZeiterfassungSettings &settings, QWidget *parent) const
+{
+    return new PresenceSettingsWidget(settings, parent);
 }

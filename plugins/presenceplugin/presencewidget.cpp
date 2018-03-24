@@ -1,16 +1,16 @@
 #include "presencewidget.h"
 
 #include <QMenu>
-#include <QStatusBar>
+#include <QAction>
 #include <QTimer>
 #include <QMessageBox>
 #include <QStringBuilder>
 #include <QDebug>
 
-#include <QPushButton>
-
 #include "mainwindow.h"
 #include "zeiterfassungapi.h"
+
+#include "presencesettings.h"
 
 PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
     QPushButton(&mainWindow),
@@ -27,7 +27,7 @@ PresenceWidget::PresenceWidget(MainWindow &mainWindow) :
     m_mainWindow.menuView()->addAction(m_action);
 
     auto timer = new QTimer(this);
-    timer->setInterval(60000);
+    timer->setInterval(PresenceSettings(mainWindow.settings()).interval());
     connect(timer, &QTimer::timeout, this, &PresenceWidget::refresh);
     timer->start();
 
