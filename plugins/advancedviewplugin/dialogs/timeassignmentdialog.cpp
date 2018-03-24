@@ -44,7 +44,7 @@ TimeAssignmentDialog::TimeAssignmentDialog(const QMap<QString, QString> &project
         ui->comboBoxWorkpackage->addItem(workpackage);
     ui->comboBoxWorkpackage->clearEditText();
 
-    for(const auto &text : settings.texte())
+    for(const auto &text : settings.texts())
         ui->comboBoxText->addItem(text);
     ui->comboBoxText->clearEditText();
 }

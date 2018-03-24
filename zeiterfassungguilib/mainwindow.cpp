@@ -458,7 +458,7 @@ void MainWindow::updateComboboxes()
     ui->comboBoxText->clear();
 
     {
-        auto texte = m_settings.texte();
+        auto texte = m_settings.texts();
         for(const auto &text : texte)
             ui->comboBoxText->addItem(text);
         if(texte.count())

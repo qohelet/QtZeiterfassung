@@ -12,6 +12,15 @@
 class ZEITERFASSUNGCORELIBSHARED_EXPORT ZeiterfassungSettings : public QSettings
 {
     Q_OBJECT
+    Q_PROPERTY(QLocale::Language language READ language WRITE setLanguage NOTIFY languageChanged)
+    Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)
+    Q_PROPERTY(QString username READ username WRITE setUsername NOTIFY usernameChanged)
+    Q_PROPERTY(QString password READ password WRITE setPassword NOTIFY passwordChanged)
+    Q_PROPERTY(QStringList projects READ projects WRITE setProjects NOTIFY projectsChanged)
+    Q_PROPERTY(QStringList subprojects READ subprojects WRITE setSubprojects NOTIFY subprojectsChanged)
+    Q_PROPERTY(QStringList workpackages READ workpackages WRITE setWorkpackages NOTIFY workpackagesChanged)
+    Q_PROPERTY(QStringList texts READ texts WRITE setTexts NOTIFY textsChanged)
+    Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
 
 public:
     explicit ZeiterfassungSettings(const QString &organization,
@@ -47,13 +56,36 @@ public:
     void setWorkpackages(const QStringList &workpackages);
     void prependWorkpackage(const QString &workpackage);
 
-    QStringList texte() const;
-    void setTexte(const QStringList &texte);
+    QStringList texts() const;
+    void setTexts(const QStringList &texts);
     void prependText(const QString &text);
 
     QString theme() const;
     void setTheme(const QString &theme);
 
+Q_SIGNALS:
+    void languageChanged(QLocale::Language language);
+    void urlChanged(const QUrl &url);
+    void usernameChanged(const QString &username);
+    void passwordChanged(const QString &password);
+    void projectsChanged(const QStringList &projects);
+    void subprojectsChanged(const QStringList &subprojects);
+    void workpackagesChanged(const QStringList &workpackages);
+    void textsChanged(const QStringList &texts);
+    void themeChanged(const QString &theme);
+
 private:
-    void prependItem(const QString &name, const QString &item);
+    QStringList prependItem(QStringList list, const QString &item);
+
+    static const QString m_language;
+    static const QString m_url;
+    static const QString m_username;
+    static const QString m_password;
+    static const QString m_projects;
+    static const QString m_subprojects;
+    static const QString m_workpackages;
+    static const QString m_texts;
+    static const QString m_theme;
+    static const QLocale::Language m_defaultLanguage;
+    static const QUrl m_defaultUrl;
 };
