@@ -41,7 +41,6 @@ ZeiterfassungSettings::ZeiterfassungSettings(const QString &fileName, QSettings:
 ZeiterfassungSettings::ZeiterfassungSettings(QObject *parent) :
     QSettings(parent)
 {
-
 }
 
 QLocale::Language ZeiterfassungSettings::language() const
@@ -53,7 +52,10 @@ void ZeiterfassungSettings::setLanguage(QLocale::Language language)
 {
     if(this->language() != language)
     {
-        setValue(m_language, language);
+        if(m_defaultLanguage == language)
+            remove(m_language);
+        else
+            setValue(m_language, language);
         Q_EMIT languageChanged(language);
     }
 }
@@ -67,7 +69,10 @@ void ZeiterfassungSettings::setUrl(const QUrl &url)
 {
     if(this->url() != url)
     {
-        setValue(m_url, url);
+        if(m_defaultUrl == url)
+            remove(m_url);
+        else
+            setValue(m_url, url);
         Q_EMIT urlChanged(url);
     }
 }
@@ -81,7 +86,10 @@ void ZeiterfassungSettings::setUsername(const QString &username)
 {
     if(this->username() != username)
     {
-        setValue(m_username, username);
+        if(username.isEmpty())
+            remove(m_username);
+        else
+            setValue(m_username, username);
         Q_EMIT usernameChanged(username);
     }
 }
@@ -95,7 +103,10 @@ void ZeiterfassungSettings::setPassword(const QString &password)
 {
     if(this->password() != password)
     {
-        setValue(m_password, password);
+        if(password.isEmpty())
+            remove(m_password);
+        else
+            setValue(m_password, password);
         Q_EMIT passwordChanged(password);
     }
 }
@@ -109,7 +120,10 @@ void ZeiterfassungSettings::setProjects(const QStringList &projects)
 {
     if(this->projects() != projects)
     {
-        setValue(m_projects, projects);
+        if(projects.isEmpty())
+            remove(m_projects);
+        else
+            setValue(m_projects, projects);
         Q_EMIT projectsChanged(projects);
     }
 }
@@ -128,7 +142,10 @@ void ZeiterfassungSettings::setSubprojects(const QStringList &subprojects)
 {
     if(this->subprojects() != subprojects)
     {
-        setValue(m_subprojects, subprojects);
+        if(subprojects.isEmpty())
+            remove(m_subprojects);
+        else
+            setValue(m_subprojects, subprojects);
         Q_EMIT subprojectsChanged(subprojects);
     }
 }
@@ -147,7 +164,10 @@ void ZeiterfassungSettings::setWorkpackages(const QStringList &workpackages)
 {
     if(this->workpackages() != workpackages)
     {
-        setValue(m_workpackages, workpackages);
+        if(workpackages.isEmpty())
+            remove(m_workpackages);
+        else
+            setValue(m_workpackages, workpackages);
         Q_EMIT workpackagesChanged(workpackages);
     }
 }
@@ -166,7 +186,10 @@ void ZeiterfassungSettings::setTexts(const QStringList &texts)
 {
     if(this->texts() != texts)
     {
-        setValue(m_texts, texts);
+        if(m_texts.isEmpty())
+            remove(m_texts);
+        else
+            setValue(m_texts, texts);
         Q_EMIT textsChanged(texts);
     }
 }
@@ -185,7 +208,10 @@ void ZeiterfassungSettings::setTheme(const QString &theme)
 {
     if(this->theme() != theme)
     {
-        setValue(m_theme, theme);
+        if(theme.isEmpty())
+            remove(m_theme);
+        else
+            setValue(m_theme, theme);
         Q_EMIT themeChanged(theme);
     }
 }
