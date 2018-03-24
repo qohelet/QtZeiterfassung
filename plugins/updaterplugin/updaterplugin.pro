@@ -17,10 +17,12 @@ DEPENDPATH += $$PWD/$${PROJECT_ROOT}/zeiterfassungcorelib $$PWD/$${PROJECT_ROOT}
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSAGELOGCONTEXT
 
 HEADERS += updaterdialog.h \
-           updaterplugin.h
+           updaterplugin.h \
+    updatersettings.h
 
 SOURCES += updaterdialog.cpp \
-           updaterplugin.cpp
+           updaterplugin.cpp \
+    updatersettings.cpp
 
 FORMS += updaterdialog.ui
 

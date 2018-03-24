@@ -9,6 +9,7 @@
 #include "zeiterfassungsettings.h"
 #include "zeiterfassungapi.h"
 
+#include "updatersettings.h"
 #include "updaterdialog.h"
 
 UpdaterPlugin::UpdaterPlugin(QObject *parent) :
@@ -33,7 +34,7 @@ UpdaterPlugin::UpdaterPlugin(QObject *parent) :
 
 void UpdaterPlugin::attachTo(MainWindow &mainWindow)
 {
-    if(mainWindow.settings().value(QStringLiteral("UpdaterPlugin/lastUpdateCheck")).toDate().isNull() ||
-       mainWindow.settings().value(QStringLiteral("UpdaterPlugin/lastUpdateCheck")).toDate() < QDate::currentDate())
+    auto lastUpdateCheck = UpdaterSettings(mainWindow.settings()).lastUpdateCheck();
+    if(lastUpdateCheck.isNull() || lastUpdateCheck < QDate::currentDate())
         new UpdaterDialog(mainWindow);
 }

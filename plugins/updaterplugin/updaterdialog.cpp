@@ -18,6 +18,8 @@
 #include "zeiterfassungsettings.h"
 #include "zeiterfassungapi.h"
 
+#include "updatersettings.h"
+
 UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
     ZeiterfassungDialog(&mainWindow),
     ui(new Ui::UpdaterDialog),
@@ -30,9 +32,7 @@ UpdaterDialog::UpdaterDialog(MainWindow &mainWindow) :
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &UpdaterDialog::acceptedSlot);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &UpdaterDialog::rejectedSlot);
 
-    auto url = m_mainWindow.settings().value(QStringLiteral("UpdaterPlugin/url"),
-                                             QStringLiteral("https://api.github.com/repos/0xFEEDC0DE64/QtZeiterfassung/releases")).toString();
-    m_reply = m_mainWindow.erfassung().manager()->get(QNetworkRequest(QUrl(url)));
+    m_reply = m_mainWindow.erfassung().manager()->get(QNetworkRequest(UpdaterSettings(mainWindow.settings()).url()));
     connect(m_reply, &QNetworkReply::finished, this, &UpdaterDialog::finished);
 }
 
@@ -44,7 +44,7 @@ UpdaterDialog::~UpdaterDialog()
 void UpdaterDialog::acceptedSlot()
 {
     if(ui->checkBoxDontShow->isChecked())
-        m_mainWindow.settings().setValue(QStringLiteral("UpdaterPlugin/lastUpdateCheck"), QDate::currentDate());
+        UpdaterSettings(m_mainWindow.settings()).setLastUpdateCheck(QDate::currentDate());
 
     if(!QDesktopServices::openUrl(m_url))
         QMessageBox::warning(this, tr("Could not open default webbrowser!"), tr("Could not open default webbrowser!"));
@@ -55,7 +55,7 @@ void UpdaterDialog::acceptedSlot()
 void UpdaterDialog::rejectedSlot()
 {
     if(ui->checkBoxDontShow->isChecked())
-        m_mainWindow.settings().setValue(QStringLiteral("UpdaterPlugin/lastUpdateCheck"), QDate::currentDate());
+        UpdaterSettings(m_mainWindow.settings()).setLastUpdateCheck(QDate::currentDate());
 
     reject();
 }
@@ -102,7 +102,7 @@ void UpdaterDialog::finished()
         }
     }
 
-    m_mainWindow.settings().setValue(QStringLiteral("UpdaterPlugin/lastUpdateCheck"), QDate::currentDate());
+    UpdaterSettings(m_mainWindow.settings()).setLastUpdateCheck(QDate::currentDate());
 
     deleteLater();
 }
