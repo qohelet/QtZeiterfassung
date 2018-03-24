@@ -19,6 +19,8 @@ public:
     // ZeiterfassungPlugin interface
     void attachTo(MainWindow &mainWindow) Q_DECL_OVERRIDE;
 
+    virtual SettingsWidget *settingsWidget(ZeiterfassungSettings &settings, QWidget *parent = Q_NULLPTR) const Q_DECL_OVERRIDE;
+
 private:
     QTranslator m_translator;
 };

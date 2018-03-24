@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 
 HEADERS += updaterdialog.h \
            updaterplugin.h \
-    updatersettings.h
+    updatersettings.h \
+    updatersettingswidget.h
 
 SOURCES += updaterdialog.cpp \
            updaterplugin.cpp \
-    updatersettings.cpp
+    updatersettings.cpp \
+    updatersettingswidget.cpp
 
 FORMS += updaterdialog.ui
 

@@ -11,6 +11,7 @@
 
 #include "updatersettings.h"
 #include "updaterdialog.h"
+#include "updatersettingswidget.h"
 
 UpdaterPlugin::UpdaterPlugin(QObject *parent) :
     ZeiterfassungPlugin(parent)
@@ -37,4 +38,9 @@ void UpdaterPlugin::attachTo(MainWindow &mainWindow)
     auto lastUpdateCheck = UpdaterSettings(mainWindow.settings()).lastUpdateCheck();
     if(lastUpdateCheck.isNull() || lastUpdateCheck < QDate::currentDate())
         new UpdaterDialog(mainWindow);
+}
+
+SettingsWidget *UpdaterPlugin::settingsWidget(ZeiterfassungSettings &settings, QWidget *parent) const
+{
+    return new UpdaterSettingsWidget(settings, parent);
 }
