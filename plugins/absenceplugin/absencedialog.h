@@ -19,6 +19,7 @@ public:
 
 private Q_SLOTS:
     void errorOccured(const QString &message);
+    void customContextMenuRequested(const QPoint &pos);
 
 private:
     Ui::AbsenceDialog *ui;
