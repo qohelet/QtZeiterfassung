@@ -14,7 +14,7 @@ class UpdaterSettings : public QObject
     Q_PROPERTY(QDate lastUpdateCheck READ lastUpdateCheck WRITE setLastUpdateCheck NOTIFY lastUpdateCheckChanged)
 
 public:
-    explicit UpdaterSettings(ZeiterfassungSettings &settings, QObject *parent = nullptr);
+    explicit UpdaterSettings(ZeiterfassungSettings &settings, QObject *parent = Q_NULLPTR);
 
     QUrl url() const;
     void setUrl(const QUrl &url);

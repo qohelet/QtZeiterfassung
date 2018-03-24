@@ -20,7 +20,8 @@ const QStringList WebRadioSettings::m_defaultUrls {
 };
 const int WebRadioSettings::m_defaultVolume(100);
 
-WebRadioSettings::WebRadioSettings(ZeiterfassungSettings &settings) :
+WebRadioSettings::WebRadioSettings(ZeiterfassungSettings &settings, QObject *parent) :
+    QObject(parent),
     m_settings(settings)
 {
 }

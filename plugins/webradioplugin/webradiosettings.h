@@ -14,7 +14,7 @@ class WebRadioSettings : public QObject
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
 
 public:
-    WebRadioSettings(ZeiterfassungSettings &settings);
+    WebRadioSettings(ZeiterfassungSettings &settings, QObject *parent = Q_NULLPTR);
 
     QStringList urls() const;
     void setUrls(const QStringList &urls);

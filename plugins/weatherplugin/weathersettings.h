@@ -1,14 +1,18 @@
 #ifndef WEATHERSETTINGS_H
 #define WEATHERSETTINGS_H
 
+#include <QObject>
 #include <QUrl>
 
 class ZeiterfassungSettings;
 
-class WeatherSettings
+class WeatherSettings : public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(QUrl url READ url WRITE setUrl NOTIFY urlChanged)
+
 public:
-    WeatherSettings(ZeiterfassungSettings &settings);
+    WeatherSettings(ZeiterfassungSettings &settings, QObject *parent = Q_NULLPTR);
 
     QUrl url() const;
     void setUrl(const QUrl &url);

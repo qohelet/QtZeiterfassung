@@ -5,7 +5,8 @@
 const QString WeatherSettings::m_url("WeatherPlugin/url");
 const QUrl WeatherSettings::m_defaultUrl(QStringLiteral("http://api.openweathermap.org/data/2.5/weather?q=Graz,AT&units=metric&APPID=40f6c892c6162680c6c9235169dc9f83"));
 
-WeatherSettings::WeatherSettings(ZeiterfassungSettings &settings) :
+WeatherSettings::WeatherSettings(ZeiterfassungSettings &settings, QObject *parent) :
+    QObject(parent),
     m_settings(settings)
 {
 
