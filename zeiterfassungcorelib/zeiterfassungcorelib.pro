@@ -62,6 +62,4 @@ RESOURCES +=
 TRANSLATIONS +=  translations/zeiterfassungcorelib_en.ts \
                  translations/zeiterfassungcorelib_de.ts
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)

@@ -31,6 +31,4 @@ TRANSLATIONS += translations/reportsplugin_en.ts \
 
 OTHER_FILES += reportsplugin.json
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)

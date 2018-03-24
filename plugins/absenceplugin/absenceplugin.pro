@@ -35,6 +35,4 @@ TRANSLATIONS += translations/absenceplugin_en.ts \
 
 OTHER_FILES += absenceplugin.json
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)

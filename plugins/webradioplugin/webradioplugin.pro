@@ -35,6 +35,4 @@ TRANSLATIONS += translations/webradioplugin_en.ts \
 
 OTHER_FILES += webradioplugin.json
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)

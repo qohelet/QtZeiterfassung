@@ -35,6 +35,4 @@ TRANSLATIONS += translations/weatherplugin_en.ts \
 
 OTHER_FILES += weatherplugin.json
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)

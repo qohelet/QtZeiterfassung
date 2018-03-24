@@ -33,6 +33,4 @@ TRANSLATIONS += translations/devtoolsplugin_en.ts \
 
 OTHER_FILES += devtoolsplugin.json
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)

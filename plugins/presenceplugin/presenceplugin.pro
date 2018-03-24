@@ -35,6 +35,4 @@ TRANSLATIONS += translations/presenceplugin_en.ts \
 
 OTHER_FILES += presenceplugin.json
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)

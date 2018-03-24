@@ -32,8 +32,6 @@ RESOURCES += zeiterfassung_resources.qrc
 TRANSLATIONS += translations/zeiterfassung_en.ts \
                 translations/zeiterfassung_de.ts
 
-include($${PROJECT_ROOT}/ccache.pri)
-
 include($${PROJECT_ROOT}/lrelease.pri)
 
 include(installs.pri)
