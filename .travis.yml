@@ -8,6 +8,7 @@ compiler:
 
 cache:
   directories:
+    - ~/.ccache
     - qt5
 
 install:
@@ -18,11 +19,12 @@ install:
   - if [ ! -f config.summary ] ; then ./configure -prefix `pwd`/build -opensource -confirm-license -nomake examples -nomake tests ; fi
   - if [ ! -d build ] ; then make -j2 > /dev/null && make install ; fi
   - popd
+  - ccache -s
 
 script:
   - mkdir -p build
   - pushd build
-  - ../qt5/build/bin/qmake .. -config release
+  - ../qt5/build/bin/qmake CONFIG+=ccache .. -config release
   - make -j2
   - make install
   - popd
