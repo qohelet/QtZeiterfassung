@@ -37,4 +37,6 @@ TRANSLATIONS += translations/lunchmealplugin_en.ts \
 
 OTHER_FILES += lunchmealplugin.json
 
-include(../../lrelease.pri)
+include($${PROJECT_ROOT}/ccache.pri)
+
+include($${PROJECT_ROOT}/lrelease.pri)

@@ -19,12 +19,12 @@ DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_BEFORE=0x060000 QT_MESSA
 HEADERS += webradiodialog.h \
            webradioplugin.h \
            webradiosettings.h \
-    webradiosettingswidget.h
+           webradiosettingswidget.h
 
 SOURCES += webradiodialog.cpp \
            webradioplugin.cpp \
            webradiosettings.cpp \
-    webradiosettingswidget.cpp
+           webradiosettingswidget.cpp
 
 FORMS += webradiodialog.ui
 
@@ -35,4 +35,6 @@ TRANSLATIONS += translations/webradioplugin_en.ts \
 
 OTHER_FILES += webradioplugin.json
 
-include(../../lrelease.pri)
+include($${PROJECT_ROOT}/ccache.pri)
+
+include($${PROJECT_ROOT}/lrelease.pri)

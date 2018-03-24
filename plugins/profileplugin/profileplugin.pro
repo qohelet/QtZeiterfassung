@@ -31,4 +31,6 @@ TRANSLATIONS += translations/profileplugin_en.ts \
 
 OTHER_FILES += profileplugin.json
 
-include(../../lrelease.pri)
+include($${PROJECT_ROOT}/ccache.pri)
+
+include($${PROJECT_ROOT}/lrelease.pri)

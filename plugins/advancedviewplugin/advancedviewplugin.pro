@@ -43,4 +43,6 @@ TRANSLATIONS += translations/advancedviewplugin_en.ts \
 
 OTHER_FILES += advancedviewplugin.json
 
-include(../../lrelease.pri)
+include($${PROJECT_ROOT}/ccache.pri)
+
+include($${PROJECT_ROOT}/lrelease.pri)

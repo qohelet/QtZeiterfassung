@@ -48,6 +48,8 @@ RESOURCES += zeiterfassungguilib_resources.qrc
 TRANSLATIONS +=  translations/zeiterfassungguilib_en.ts \
                  translations/zeiterfassungguilib_de.ts
 
+include($${PROJECT_ROOT}ccache.pri)
+
 include($${PROJECT_ROOT}/lrelease.pri)
 
 include(QStringListWidget/QStringListWidget.pri)

@@ -14,3 +14,5 @@ win32: include(installs_win32.pri)
 
 OTHER_FILES += .travis.yml \
                Dockerfile
+
+include(ccache.pri)
