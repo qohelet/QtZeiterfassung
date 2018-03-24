@@ -28,7 +28,5 @@ bool WeatherSettingsWidget::isValid(QString &message) const
 
 void WeatherSettingsWidget::apply()
 {
-    auto url = QUrl::fromUserInput(m_lineEdit->text());
-    if(m_settings.url() != url)
-        m_settings.setUrl(url);
+    m_settings.setUrl(QUrl::fromUserInput(m_lineEdit->text()));
 }

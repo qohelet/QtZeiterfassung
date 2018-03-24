@@ -31,9 +31,6 @@ bool LunchMealSettingsWidget::isValid(QString &message) const
 
 void LunchMealSettingsWidget::apply()
 {
-    if(m_settings.url() != m_lineEditUrl->text())
-        m_settings.setUrl(m_lineEditUrl->text());
-
-    if(m_settings.dateFormat() != m_lineEditDateFormat->text())
-        m_settings.setDateFormat(m_lineEditDateFormat->text());
+    m_settings.setUrl(m_lineEditUrl->text());
+    m_settings.setDateFormat(m_lineEditDateFormat->text());
 }
